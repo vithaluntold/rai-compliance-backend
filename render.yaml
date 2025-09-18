@@ -4,5 +4,5 @@ services:
     env: python
     plan: starter
     buildCommand: pip install fastapi uvicorn
-    startCommand: uvicorn minimal:app --host 0.0.0.0 --port $PORT
+    startCommand: unset AZURE_OPENAI_EMBEDDING_DEPLOYMENT && uvicorn minimal:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/v1/health
