@@ -15,7 +15,7 @@ from services.document_chunker import DocumentChunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
 
 # Import route modules
-from routes import analysis_routes
+from routes import analysis_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -47,7 +47,7 @@ app.add_middleware(
 )
 
 # Include route modules
-app.include_router(analysis_routes.router, prefix="/api/v1", tags=["analysis"])
+app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
 
 # Global storage for documents and sessions
 documents_db: Dict[str, Dict] = {}
