@@ -14,6 +14,9 @@ from io import BytesIO
 from services.document_chunker import DocumentChunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
 
+# Import route modules
+from routes import analysis_routes
+
 # Initialize FastAPI app
 app = FastAPI(
     title="RAi Compliance Engine",
@@ -34,6 +37,7 @@ app.add_middleware(
         "https://complianceengine-*.vercel.app",
         "https://compliance-engine.vercel.app",
         "https://compliance-engine-*.vercel.app",
+        "https://rai-compliance-frontend.onrender.com",
         "http://localhost:3000",
         "*"
     ],
@@ -41,6 +45,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include route modules
+app.include_router(analysis_routes.router, prefix="/api/v1", tags=["analysis"])
 
 # Global storage for documents and sessions
 documents_db: Dict[str, Dict] = {}
