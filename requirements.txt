@@ -17,3 +17,6 @@ tiktoken>=0.5.0
 # Additional dependencies for the AI system
 aiofiles>=23.0.0
 httpx>=0.25.0
+
+# Geographical detection dependencies
+country_converter>=1.2.0
