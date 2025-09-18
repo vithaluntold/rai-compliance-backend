@@ -3,6 +3,6 @@ services:
     name: rai-compliance-backend
     env: python
     plan: starter
-    buildCommand: pip install fastapi uvicorn
-    startCommand: python start.py
+    buildCommand: echo "No build needed"
+    startCommand: python ultra-minimal.py
     healthCheckPath: /api/v1/health
