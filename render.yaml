@@ -10,4 +10,16 @@ services:
         value: 3.9.18
       - key: PYTHONPATH
         value: /opt/render/project/src
+      - key: AZURE_OPENAI_API_KEY
+        sync: false
+      - key: AZURE_OPENAI_ENDPOINT
+        sync: false
+      - key: AZURE_OPENAI_DEPLOYMENT_NAME
+        value: o3-mini
+      - key: AZURE_OPENAI_API_VERSION
+        value: 2025-01-01-preview
+      - key: AZURE_OPENAI_EMBEDDING_DEPLOYMENT
+        value: text-embedding-3-large
+      - key: AZURE_OPENAI_EMBEDDING_API_VERSION
+        value: 2023-05-15
     healthCheckPath: /api/v1/health
