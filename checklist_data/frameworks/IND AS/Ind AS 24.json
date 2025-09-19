@@ -1,0 +1,67 @@
+﻿{
+    "title": "Related Party Disclosures (Ind AS 24) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 24",
+            "title": "Related Party Disclosures",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 24.",
+            "items": [
+                {
+                    "id": "241",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.13",
+                    "question": "Has the entity disclosed the **relationship between parent and its subsidiaries**, irrespective of whether there have been transactions between them, and the **name of the parent and, if different, the ultimate controlling party** (or the next most senior parent if applicable)?"
+                },
+                {
+                    "id": "242",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.14",
+                    "question": "Has the entity disclosed **relationships, name of the related party, and nature of the related party relationship, when control exists**, irrespective of whether there have been transactions between the related parties?"
+                },
+                {
+                    "id": "243",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.17",
+                    "question": "Has the entity disclosed the **key management personnel compensation in total** for each of the following categories: Short-term employee benefits, Post-employment benefits, Other long-term benefits, Termination benefits, and Share-based payment?"
+                },
+                {
+                    "id": "244",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.18, Ind AS 24.18A",
+                    "question": "If the entity had related party transactions, has it disclosed **information about the transactions and outstanding balances**, including commitments, necessary for an understanding of the potential effect of the relationship on the financial statements, including: **Nature of related party relationship, Amount of transactions, Amount of outstanding balances** (including terms and conditions, security, nature of consideration, and details of guarantees), **Provisions for doubtful debts related to outstanding balances**, and **Expense recognised in respect of bad or doubtful debts** due from related parties, and **amounts incurred for provision of key management personnel services** provided by a separate entity?"
+                },
+                {
+                    "id": "245",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.19",
+                    "question": "Have the disclosures required under paragraph 24.18 been **separately made for all categories of related parties**, including: The parent, Entities with joint control or significant influence over the entity, Subsidiaries, Associates, Joint ventures in which the entity is a joint venturer, Key management personnel of the entity or its parent, and Other related parties?"
+                },
+                {
+                    "id": "246",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.22",
+                    "question": "If there is a participation by a parent or subsidiary in a defined benefit plan that shares risks between group entities, has this been disclosed as a **related party transaction**?"
+                },
+                {
+                    "id": "247",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.23",
+                    "question": "Has the entity disclosed that related party transactions were made on **terms equivalent to those that prevail in an arm’s length transactions** provided that such terms can be substantiated?"
+                },
+                {
+                    "id": "248",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.24, Ind AS 24.24A",
+                    "question": "Have items of similar nature been disclosed in aggregate, **except when separate disclosure is necessary for an understanding of the effects of related party transactions** on the financial statements of the entity, ensuring significant transactions are not obscured (e.g., purchases/sales of goods aggregated with fixed assets, or material individual transactions clubbed)?"
+                },
+                {
+                    "id": "249",
+                    "section": "Ind AS 24",
+                    "reference": "Ind AS 24.26",
+                    "question": "If the exemption available in paragraph 24.25 (for government-related entities) is availed, has the entity disclosed: **The name of the government and the nature of its relationship** with the reporting entity, the **nature and amount of each individually significant transaction**, and for other collectively but not individually significant transactions, a **qualitative or quantitative indication of their extent**?"
+                }
+            ]
+        }
+    ]
+}

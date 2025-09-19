@@ -1,0 +1,79 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 102: Share-based Payments Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 102",
+            "title": "Share-based Payments",
+            "description": "Checklist for disclosure requirements under Ind AS 102, Share-based Payments.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 102",
+                    "reference": "102.44",
+                    "question": "Whether the entity has disclosed information that enables users of the Financial Statements to understand the nature and extent of share-based payment arrangements that existed during the period [1]."
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 102",
+                    "reference": "102.45 (a)",
+                    "question": "With regard to the nature and extent of share-based transactions, whether the entity has disclosed: (i) a description of each type of share-based payment arrangement that existed at any time during the period, including the general terms and conditions of each arrangement, such as vesting requirements, the maximum term of options granted, and the method of settlement; and (ii) aggregated information for substantially similar types of share-based payment arrangements (unless separate disclosure of each arrangement is necessary) [1, 2]."
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 102",
+                    "reference": "102.45 (b)",
+                    "question": "Whether the entity has disclosed the number and weighted average exercise prices of share options for each of the following groups of options: (i) Outstanding at the beginning of the period; (ii) Granted during the period; (iii) Forfeited during the period; (iv) Exercised during the period; (v) Expired during the period; (vi) Outstanding at the end of the period; and (vii) Exercisable at the end of the period [2, 3]."
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 102",
+                    "reference": "102.45 (c)",
+                    "question": "(a) Whether the disclosure of weighted average share price at the date of exercise with regards to share options exercised during the period, has been made. (b) Whether the disclosure of the weighted average share price during the period, if options were exercised on a regular basis throughout the period has been given [3]."
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 102",
+                    "reference": "102.45 (d)",
+                    "question": "For share options outstanding at the end of the period, whether the disclosure of the range of exercise prices and weighted average remaining contractual life has been given. (Note: If the range of exercise prices is wide, the outstanding options is divided into ranges that are meaningful for assessing number and timing of additional shares that may be issued and the cash that may be received upon exercise of those options) [4]."
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 102",
+                    "reference": "102.46",
+                    "question": "Whether the entity has given the disclosure of such information that enables users of the financial statements to understand how the fair value of the goods or services received, or the fair value of the equity instruments granted, during the period was determined [4]."
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 102",
+                    "reference": "102.47",
+                    "question": "In case the fair value of goods or services received is measured as consideration for equity instruments of the entity indirectly, by reference to the fair value of the equity instruments granted, whether the entity has disclosed at least the following: a) For share options granted during the period, the weighted average fair value of those options at the measurement date and information on how that fair value was measured, including: i) the option pricing model used and the inputs to that model, including the weighted average share price, exercise price, expected volatility, option life, expected dividends, the risk-free interest rate and any other inputs to the model, including the method used and the assumptions made to incorporate the effects of expected early exercise; ii) how expected volatility was determined, including an explanation of the extent to which expected volatility was based on historical volatility; and iii) whether and how any other features of the option grant were incorporated into the measurement of fair value, such as a market condition. b) For other equity instruments granted during the period (i.e. other than share options), the number and weighted average fair value of those equity instruments at the measurement date, and information on how that fair value was measured, including: i) if fair value was not measured on the basis of an observable market price, how it was determined; ii) whether and how any other features of the equity instruments granted were incorporated into the measurement of fair value; and iii) whether and how any other features of the equity instruments granted were incorporated into the measurement of fair value. c) For share-based payment arrangements that were modified during the period: i) an explanation of those modifications; ii) the incremental fair value granted (as a result of those modifications); and iii) information on how the incremental fair value granted was measured, consistently with the requirements set out in (a) and (b) above, where applicable [5-8]."
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 102",
+                    "reference": "102.48",
+                    "question": "In case fair value of goods or services received during the period is measured directly, whether the entity has provided disclosure of how that fair value was determined [8]."
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 102",
+                    "reference": "102.49",
+                    "question": "In case the presumption in paragraph 102.13 that the fair value of the goods or services received cannot be estimated reliably is rebutted, whether the entity has given disclosure of that fact, and an explanation of why the presumption was rebutted [9]."
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 102",
+                    "reference": "102.50 and 102.51",
+                    "question": "Whether the entity has Disclosed the following with regard to understanding the effect of share-based payment transactions on the entity’s profit or loss for the period and on its financial position: a) the total expense recognised for the period arising from share-based payment transactions in which the goods or services received did not qualify for recognition as assets and hence were recognised immediately as an expense, including portion of the total expense that arises from transactions accounted for as equity-settled share-based payment transactions; and b) for liabilities arising from share-based payment transactions: i) the total carrying amount at the end of the period; ii) the total intrinsic value at the end of the period of liabilities for which the counterparty’s right to cash or other assets had vested by the end of the period [9, 10]."
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 102",
+                    "reference": "102.52",
+                    "question": "If the information required to be disclosed by this Standard does not satisfy the principles in the disclosure paragraphs, has the entity disclosed such additional information as is necessary to satisfy them [10]."
+                }
+            ]
+        }
+    ]
+}

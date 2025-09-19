@@ -1,0 +1,392 @@
+﻿
+{
+    "title": "Indian Accounting Standards (Ind AS) : Disclosures Checklist",
+    "version": "Revised April 2024",
+    "sections": [
+        {
+            "section": "Ind AS 1",
+            "title": "Presentation of Financial Statements",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 1.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 1",
+                    "reference": "1.10",
+                    "question": "Has the entity presented a complete set of Financial Statements, including a Balance Sheet, a statement of profit and loss, a Statement of Changes in Equity, a statement of cash flows, notes comprising material accounting policy and explanatory information, comparative information for the preceding period (as per paragraphs 38 and 38A), and a Balance Sheet at the beginning of the preceding period if applying an accounting policy retrospectively, making a retrospective restatement, or reclassifying items (as per paragraphs 40A–40D)?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 1",
+                    "reference": "1.10A",
+                    "question": "Has the entity presented a single statement of profit and loss with profit or loss and other comprehensive income in two sections, with the profit or loss section presented first, followed directly by the other comprehensive income section?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 1",
+                    "reference": "1.11",
+                    "question": "Has the entity presented all of the financial statements in a complete set with equal prominence?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 1",
+                    "reference": "1.13",
+                    "question": "When presenting a financial review by management outside the financial statements, has the entity included a review of the main factors influencing financial performance (including environmental changes, entity's response, and investment/dividend policy), sources of funding and targeted liabilities-to-equity ratio, and resources not recognized in the balance sheet?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 1",
+                    "reference": "1.16",
+                    "question": "If the financial statements comply with Ind AS, has the entity provided an explicit and unreserved statement of such compliance in the notes, and has the entity avoided describing financial statements as complying with Ind AS if they do not meet all requirements?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 1",
+                    "reference": "1.17(c)",
+                    "question": "Has the entity provided additional disclosures when compliance with the specific requirements in Ind ASs is insufficient to enable users to understand the impact of particular transactions, other events and conditions on the entity’s financial position and financial performance?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 1",
+                    "reference": "1.19-1.20",
+                    "question": "In extremely rare circumstances where compliance with an Ind AS requirement would be misleading and departure is permitted, has the entity disclosed that management concluded the financial statements present a true and fair view, complied with applicable Ind ASs except for the stated departure, provided the title of the departed Ind AS, nature of departure, required treatment, reasons for misleading nature, and the adopted treatment, and for each period presented, the financial effect of the departure on each financial statement item?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 1",
+                    "reference": "1.21",
+                    "question": "If the entity departed from a requirement of an Ind AS in a prior period and that departure affects current period financial statements, have the disclosures required by paragraph 1.20(c) and 1.20(d) been provided?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 1",
+                    "reference": "1.23",
+                    "question": "In extremely rare circumstances where compliance with an Ind AS requirement would be misleading but departure is prohibited, has the entity, to the maximum extent possible, reduced misleading aspects by disclosing the title of the Ind AS, nature of the requirement, reasons why compliance is misleading, and for each period presented, the adjustments necessary to present a true and fair view?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 1",
+                    "reference": "1.25",
+                    "question": "Has the entity disclosed material uncertainties related to events or conditions that may cast significant doubt upon the entity’s ability to continue as a going concern if financial statements are prepared on a going concern basis despite such uncertainties, or if not prepared on a going concern basis, has it disclosed that fact, the basis of preparation, and the reason for not being regarded as a going concern?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 1",
+                    "reference": "1.29",
+                    "question": "Has the entity separately presented each material class of similar items, and separately presented items of a dissimilar nature or function unless they are immaterial or required by law to be aggregated?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 1",
+                    "reference": "1.32",
+                    "question": "Has the entity avoided offsetting assets and liabilities or income and expenses, unless explicitly required or permitted by an Ind AS?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 1",
+                    "reference": "1.36",
+                    "question": "When changing the reporting period end resulting in financial statements longer or shorter than one year, has the entity disclosed the reason for the period change and the fact that amounts presented in the Financial Statements are not entirely comparable?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 1",
+                    "reference": "1.38",
+                    "question": "Has the entity presented comparative information in respect of the preceding period for all amounts reported in the current period’s Financial Statements, and included comparative narrative and descriptive information if it is relevant to understanding the current period’s Financial Statements?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 1",
+                    "reference": "1.38A",
+                    "question": "Has the entity presented a minimum of two Balance Sheets, two statements of profit and loss, two statements of cash flows, two Statements of Changes in Equity, and related notes?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 1",
+                    "reference": "1.38B",
+                    "question": "Does the narrative information provided in the financial statements for the preceding period(s) continue to be relevant in the current period?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 1",
+                    "reference": "1.38C",
+                    "question": "If presenting comparative information in addition to the minimum comparative Financial Statements required by Ind ASs, has the entity prepared it in accordance with Ind ASs, consisting of one or more statements referred to in paragraph 10 (not necessarily a complete set), and presented related note information for those additional statements?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 1",
+                    "reference": "1.40A",
+                    "question": "Has the entity presented a third balance sheet as at the beginning of the preceding period, in addition to the minimum comparative financial statements required in paragraph 38A, when it applies an accounting policy retrospectively, makes a retrospective restatement of items in its financial statements, or reclassifies items in its financial statements, and such action has a material effect on the information in the balance sheet at the beginning of the preceding period?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 1",
+                    "reference": "1.40B",
+                    "question": "In the circumstances described in paragraph 40A, has the entity presented three balance sheets as at the end of the current period, the end of the preceding period, and the beginning of the preceding period?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 1",
+                    "reference": "1.40D",
+                    "question": "Is the date of the opening balance sheet as at the beginning of the preceding period, regardless of whether the entity’s financial statements present comparative information for earlier periods or not?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 1",
+                    "reference": "1.41",
+                    "question": "When the entity reclassifies comparative amounts, has it disclosed (including as at the beginning of the preceding period): the nature of the reclassification; the amount of each item or class of items that is reclassified; and the reason for the reclassification?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 1",
+                    "reference": "1.42",
+                    "question": "When it is impracticable to reclassify comparative amounts, has the entity disclosed: the reason for not reclassifying the amounts, and the nature of the adjustments that would have been made if the amounts had been reclassified?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 1",
+                    "reference": "1.45",
+                    "question": "Has the entity retained the presentation and classification of items in the financial statements from one period to the next unless: it is apparent, following a significant change in the nature of the entity’s operations or a review of its financial statements, that another presentation or classification would be more appropriate having regard to the criteria for the selection and application of accounting policies in Ind AS 8 Accounting Policies, Changes in Accounting Estimates and Errors; or an Ind AS requires a change in presentation?"
+                },
+                {
+                    "id": "24",
+                    "section": "Ind AS 1",
+                    "reference": "1.49",
+                    "question": "Has the entity clearly identified the financial statements and distinguished them from other information in the same published document?"
+                },
+                {
+                    "id": "25",
+                    "section": "Ind AS 1",
+                    "reference": "1.51",
+                    "question": "Has the entity clearly identified each financial statement and the notes, and prominently displayed (repeating as necessary) the name of the reporting entity/other means of identification (and any changes), whether the Financial Statements are of an individual or group entity, the date of the reporting period end/period covered, the presentation currency (as defined in Ind AS 21), and the level of rounding used?"
+                },
+                {
+                    "id": "26",
+                    "section": "Ind AS 1",
+                    "reference": "1.54",
+                    "question": "Has the entity presented the following amounts for the period in the Balance Sheet: Property, Plant and Equipment (PPE); investment property; intangible assets; financial assets (excluding investments accounted for using the equity method, trade and other receivables, and cash and cash equivalents); investments accounted for using the equity method; biological assets within the scope of Ind AS 41 Agriculture; inventories; trade and other receivables; cash and cash equivalents; total of assets classified as held for sale and assets included in disposal groups classified as held for sale in accordance with Ind AS 105; trade and other payables; provisions; financial liabilities (excluding trade and other payables and provisions); liabilities and assets for current tax (as defined in Ind AS 12); deferred tax liabilities and deferred tax assets (as defined in Ind AS 12); liabilities included in disposal groups classified as held for sale in accordance with Ind AS 105; non-controlling interests (presented within equity); and issued capital and reserves attributable to owners of the parent?"
+                },
+                {
+                    "id": "27",
+                    "section": "Ind AS 1",
+                    "reference": "1.55",
+                    "question": "Has the entity presented additional line items (including by disaggregating the line items listed in paragraph 1.54), headings and subtotals in the Balance Sheet when such presentation is relevant to an understanding of the entity’s financial position?"
+                },
+                {
+                    "id": "28",
+                    "section": "Ind AS 1",
+                    "reference": "1.55A",
+                    "question": "When an entity presents subtotals in accordance with paragraph 1.55, are those subtotals comprised of line items made up of amounts recognised and measured in accordance with Ind AS; presented and labelled in a manner that makes the constituent line items clear and understandable; consistent from period to period (in accordance with paragraph 45); and not displayed with more prominence than the subtotals and totals required in Ind AS for the balance sheet?"
+                },
+                {
+                    "id": "29",
+                    "section": "Ind AS 1",
+                    "reference": "1.56",
+                    "question": "When the entity presents current and non-current assets, and current and non-current liabilities, as separate classifications in its Balance Sheet, has it ensured that deferred tax assets (liabilities) are not classified as current assets (liabilities)?"
+                },
+                {
+                    "id": "30",
+                    "section": "Ind AS 1",
+                    "reference": "1.60",
+                    "question": "Has the entity presented current and non-current assets, and current and non-current liabilities, as separate classifications in its Balance Sheet, or, as an exception, presented all assets and liabilities in order of liquidity if that presentation provides information that is more reliable and relevant?"
+                },
+                {
+                    "id": "31",
+                    "section": "Ind AS 1",
+                    "reference": "1.61",
+                    "question": "Whichever method of presentation is adopted, has the entity disclosed the amount expected to be recovered or settled after more than twelve months for each asset and liability line item that combines amounts expected to be recovered or settled: no more than twelve months after the reporting period; and more than twelve months after the reporting period?"
+                },
+                {
+                    "id": "32",
+                    "section": "Ind AS 1",
+                    "reference": "1.77",
+                    "question": "Has the entity disclosed, either in the Balance Sheet or in the notes, further sub-classifications of the line items presented, classified in a manner appropriate to the entity’s operations?"
+                },
+                {
+                    "id": "33",
+                    "section": "Ind AS 1",
+                    "reference": "1.79",
+                    "question": "Has the entity disclosed the following, either in the Balance Sheet or the Statement of Changes in Equity, or in the notes: for each class of share capital (the number of shares authorised; the number of shares issued and fully paid, and issued but not fully paid; par value per share, or that the shares have no par value; a reconciliation of the number of shares outstanding at the beginning and at the end of the period; the rights, preferences and restrictions attaching to that class including restrictions on the distribution of dividends and the repayment of capital; shares in the entity held by the entity or by its subsidiaries or associates; and shares reserved for issue under options and contracts for the sale of shares, including terms and amounts); and a description of the nature and purpose of each reserve within equity?"
+                },
+                {
+                    "id": "34",
+                    "section": "Ind AS 1",
+                    "reference": "1.80",
+                    "question": "For an entity whose capital is not limited by shares (e.g., a company limited by guarantee), has it disclosed information equivalent to that required by paragraph 1.79(a), showing changes during the period in each category of equity interest, and the rights, preferences and restrictions attaching to each category of equity interest?"
+                },
+                {
+                    "id": "35",
+                    "section": "Ind AS 1",
+                    "reference": "1.80A",
+                    "question": "When the entity has reclassified a puttable financial instrument or an instrument that imposes an obligation to deliver a pro rata share of net assets only on liquidation, from equity to financial liabilities (or vice versa), has it disclosed the amount reclassified into and out of each category (financial liabilities or equity), the timing, and the reason for that reclassification?"
+                },
+                {
+                    "id": "36",
+                    "section": "Ind AS 1",
+                    "reference": "1.81A",
+                    "question": "Does the statement of profit and loss present, in addition to the profit or loss and Other Comprehensive Income sections: profit or loss; total Other Comprehensive Income; and comprehensive income for the period (being the total of profit or loss and Other Comprehensive Income)?"
+                },
+                {
+                    "id": "37",
+                    "section": "Ind AS 1",
+                    "reference": "1.81B",
+                    "question": "Has the entity presented the following items, in addition to the profit or loss and Other Comprehensive Income sections, as allocation of profit or loss and Other Comprehensive Income for the period: profit or loss for the period attributable to non-controlling interests and owners of the parent; and comprehensive income for the period attributable to non-controlling interests and owners of the parent?"
+                },
+                {
+                    "id": "38",
+                    "section": "Ind AS 1",
+                    "reference": "1.82",
+                    "question": "In addition to items required by other Ind ASs, has the profit or loss section of the statement of profit and loss included line items that present the following amounts for the period: revenue (presenting separately interest revenue calculated using the effective interest method); gains and losses arising from the derecognition of financial assets measured at amortised cost; finance costs; impairment losses (including reversals of impairment losses or impairment gains); share of the profit or loss of associates and joint ventures accounted for using the equity method; if a financial asset is reclassified out of the amortised cost measurement category so that it is measured at Fair Value through profit or loss, any gain or loss arising from a difference between the previous amortised cost of the financial asset and its Fair Value at the reclassification date; if a financial asset is reclassified out of the Fair Value through Other Comprehensive Income measurement category so that it is measured at Fair Value through profit or loss, any cumulative gain or loss previously recognized in Other Comprehensive Income that is reclassified to profit or loss; tax expense; and a single amount for the total of discontinued operations?"
+                },
+                {
+                    "id": "39",
+                    "section": "Ind AS 1",
+                    "reference": "1.82A",
+                    "question": "Does the Other Comprehensive Income section present line items for the amounts for the period of: items of Other Comprehensive Income (excluding amounts related to equity-method associates/joint ventures), classified by nature and grouped into those that, in accordance with other Ind ASs: will not be reclassified subsequently to profit or loss; and will be reclassified subsequently to profit or loss when specific conditions are met; and the share of the Other Comprehensive Income of associates and joint ventures accounted for using the equity method, separated into the share of items that, in accordance with other Ind ASs: will not be reclassified subsequently to profit or loss; and will be reclassified subsequently to profit or loss when specific conditions are met?"
+                },
+                {
+                    "id": "40",
+                    "section": "Ind AS 1",
+                    "reference": "1.85",
+                    "question": "Has the entity presented additional line items (including by disaggregating the line items listed in paragraph 1.82), headings and subtotals in the statement of profit and loss, when such presentation is relevant to an understanding of the entity’s financial performance?"
+                },
+                {
+                    "id": "41",
+                    "section": "Ind AS 1",
+                    "reference": "1.85A",
+                    "question": "When an entity presents subtotals in accordance with paragraph 1.85, are those subtotals: comprised of line items made up of amounts recognised and measured in accordance with Ind AS; presented and labelled in a manner that makes the line items that constitute the subtotal clear and understandable; consistent from period to period (in accordance with paragraph 1.45); and not displayed with more prominence than the subtotals and totals required in Ind AS for the statement of profit and loss?"
+                },
+                {
+                    "id": "42",
+                    "section": "Ind AS 1",
+                    "reference": "1.85B",
+                    "question": "Has the entity presented the line items in the statement of profit and loss that reconcile any subtotals presented in accordance with paragraph 1.85 with the subtotals or totals required in Ind AS for such statement?"
+                },
+                {
+                    "id": "43",
+                    "section": "Ind AS 1",
+                    "reference": "1.87",
+                    "question": "Has the entity avoided presenting any items of income or expense as 'extraordinary items' in the statement of profit and loss or in the notes?"
+                },
+                {
+                    "id": "44",
+                    "section": "Ind AS 1",
+                    "reference": "1.90",
+                    "question": "Has the entity disclosed the amount of income tax relating to each item of Other Comprehensive Income, including reclassification adjustments, either in the statement of profit and loss or in the notes?"
+                },
+                {
+                    "id": "45",
+                    "section": "Ind AS 1",
+                    "reference": "1.91",
+                    "question": "Has the entity presented items of other comprehensive income either net of related tax effects, or before related tax effects with one amount shown for the aggregate amount of income tax relating to those items, and if the latter, has it allocated the tax between the items that might be reclassified subsequently to the profit or loss section and those that will not be reclassified subsequently to the profit or loss section?"
+                },
+                {
+                    "id": "46",
+                    "section": "Ind AS 1",
+                    "reference": "1.92",
+                    "question": "Has the entity disclosed the reclassification adjustments relating to components of Other Comprehensive Income?"
+                },
+                {
+                    "id": "47",
+                    "section": "Ind AS 1",
+                    "reference": "1.94",
+                    "question": "Has the entity presented reclassification adjustments in the statement of profit and loss or in the notes, and if presenting in the notes, has it presented the items of other comprehensive income after any related reclassification adjustments?"
+                },
+                {
+                    "id": "48",
+                    "section": "Ind AS 1",
+                    "reference": "1.97",
+                    "question": "When items of income or expense are material, has the entity disclosed their nature and amount separately?"
+                },
+                {
+                    "id": "49",
+                    "section": "Ind AS 1",
+                    "reference": "1.99 -1.100 (voluntary disclosure)",
+                    "question": "Has the entity presented the analysis of expenses recognized in profit or loss using a classification based on the nature of expense method in the statement of profit and loss?"
+                },
+                {
+                    "id": "50",
+                    "section": "Ind AS 1",
+                    "reference": "1.106",
+                    "question": "Does the Statement of Changes in Equity include: total comprehensive income for the period (showing separately amounts attributable to owners of the parent and to non-controlling interests); for each component of equity, the effects of retrospective application or retrospective restatement recognized in accordance with Ind AS 8; and for each component of equity, a reconciliation between the carrying amount at the beginning and the end of the period, separately disclosing changes resulting from: profit or loss; Other Comprehensive Income; transactions with owners in their capacity as owners (showing separately contributions by and distributions to owners and changes in ownership interests in subsidiaries that do not result in a loss of control); and any item recognized directly in equity (such as capital reserve)?"
+                },
+                {
+                    "id": "51",
+                    "section": "Ind AS 1",
+                    "reference": "1.106A - 107",
+                    "question": "Has the following information been presented in the Statement of Changes in Equity or in the notes: for each component of equity an analysis of Other Comprehensive Income by item; the amount of dividends recognized as distributions to owners during the period; and the related amount of dividends per share?"
+                },
+                {
+                    "id": "52",
+                    "section": "Ind AS 1",
+                    "reference": "1.112",
+                    "question": "Do the notes present information about the basis of preparation of the Financial Statements and the specific accounting policies used; disclose the information required by Ind ASs that is not presented elsewhere in the Financial Statements; and provide information that is not presented elsewhere in the Financial Statements, but is relevant to an understanding of any of them?"
+                },
+                {
+                    "id": "53",
+                    "section": "Ind AS 1",
+                    "reference": "1.113-1.114",
+                    "question": "Has the entity presented notes in a systematic manner, and has it cross-referenced each item in the Balance Sheet, statement of profit and loss, and in the statements of changes in equity and of cash flows to any related information in the notes?"
+                },
+                {
+                    "id": "54",
+                    "section": "Ind AS 1",
+                    "reference": "1.116",
+                    "question": "Has the entity presented notes providing information about the basis of preparation of the financial statements and specific accounting policies as a separate section of the financial statements?"
+                },
+                {
+                    "id": "55",
+                    "section": "Ind AS 1",
+                    "reference": "1.117",
+                    "question": "Has the entity provided disclosure of material accounting policy information (referencing paragraphs 117A -117E for guidance)?"
+                },
+                {
+                    "id": "56",
+                    "section": "Ind AS 1",
+                    "reference": "1.122",
+                    "question": "Has the entity disclosed, along with its material accounting policy information or other notes, the judgements (apart from those involving estimations as per paragraph 1.125) made by management in the process of applying the entity’s accounting policies that have the most significant effect on the amounts recognised in the financial statements?"
+                },
+                {
+                    "id": "57",
+                    "section": "Ind AS 1",
+                    "reference": "1.125 and 1.129",
+                    "question": "Has the entity disclosed information about the assumptions made about the future, and other major sources of estimation uncertainty at the end of the reporting period, that have a significant risk of resulting in a material adjustment to the carrying amounts of assets and liabilities within the next financial year, including in the notes, details of their nature and their carrying amount as at the end of the reporting period?"
+                },
+                {
+                    "id": "58",
+                    "section": "Ind AS 1",
+                    "reference": "1.131",
+                    "question": "When it is impracticable to disclose the extent of the possible effects of an assumption or another source of estimation uncertainty at the end of the reporting period, has the entity disclosed that it is reasonably possible, on the basis of existing knowledge, that outcomes within the next financial year that are different from the assumption could require a material adjustment to the carrying amount of the asset or liability affected, and in all cases, has the entity disclosed the nature and carrying amount of the specific asset or liability (or class of assets or liabilities) affected by the assumption?"
+                },
+                {
+                    "id": "59",
+                    "section": "Ind AS 1",
+                    "reference": "1.134-1.135",
+                    "question": "Has the entity disclosed information to enable users of its financial statements to evaluate the entity’s objectives, policies and processes for managing capital, including: qualitative information (description of what it manages as capital, nature of externally imposed capital requirements and how incorporated, and how objectives are met); summary quantitative data about what it manages as capital; any changes from the previous period; whether it complied with any externally imposed capital requirements; and when not complied, the consequences of such non-compliance?"
+                },
+                {
+                    "id": "60",
+                    "section": "Ind AS 1",
+                    "reference": "1.136",
+                    "question": "Has the entity disclosed information separately for each capital requirement to which it is subject, when an aggregate disclosure would not provide useful information or distorts a financial statement user’s understanding of an entity’s capital resources?"
+                },
+                {
+                    "id": "61",
+                    "section": "Ind AS 1",
+                    "reference": "1.136A",
+                    "question": "For puttable financial instruments classified as equity instruments (to the extent not disclosed elsewhere), has the entity disclosed: summary quantitative data about the amount classified as equity; its objectives, policies and processes for managing its obligation to repurchase or redeem the instruments (including any changes from the previous period); the expected cash outflow on redemption or repurchase of that class of financial instruments; and information about how the expected cash outflow on redemption or repurchase was determined?"
+                },
+                {
+                    "id": "62",
+                    "section": "Ind AS 1",
+                    "reference": "1.137",
+                    "question": "Has the entity made the following disclosure in the notes: the amount of dividends proposed or declared before the financial statements were approved for issue but not recognised as a distribution to owners during the period, and the related amount per share; and the amount of any cumulative preference dividends not recognised?"
+                },
+                {
+                    "id": "63",
+                    "section": "Ind AS 1",
+                    "reference": "1.138",
+                    "question": "Has the entity provided disclosure of the following, if not disclosed elsewhere in information published with the financial statements: the domicile and legal form of the entity, its country of incorporation and the address of its registered office (or principal place of business, if different); a description of the nature of the entity’s operations and its principal activities; the name of the parent and the ultimate parent of the group; and if it is a limited life entity, information regarding the length of its life?"
+                }
+            ]
+        }
+    ]
+}

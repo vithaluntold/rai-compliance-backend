@@ -1,0 +1,31 @@
+﻿{
+    "title": "Investments in Associates and Joint Ventures (IAS 28) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 28",
+            "title": "Investments in Associates and Joint Ventures",
+            "description": "Checklist for presentation and disclosure requirements under IAS 28.",
+            "items": [
+                {
+                    "id": "58",
+                    "section": "IAS 28",
+                    "reference": "IAS 28.15",
+                    "question": "For investments in associates or joint ventures, or any retained interest in such investments, that are not classified as held for sale under IFRS 5, does the entity classify these as non-current assets accounted for using the equity method?"
+                },
+                {
+                    "id": "205",
+                    "section": "IAS 28",
+                    "reference": "IAS 28.45C",
+                    "question": "If the entity applies Amendments to IFRS 10 and IAS 28 – Sale or Contribution of Assets between an Investor and its Associate or Joint Venture, issued in September 2014, does it disclose that fact?"
+                },
+                {
+                    "id": "217",
+                    "section": "IAS 28",
+                    "reference": "IAS 28.45C",
+                    "question": "If the entity applies Amendments to IFRS 10 and IAS 28 – Sale or Contribution of Assets between an Investor and its Associate or Joint Venture issued in September 2014, does it disclose that fact?"
+                }
+            ]
+        }
+    ]
+}

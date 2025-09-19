@@ -1,0 +1,289 @@
+﻿{
+    "title": "IFRS 8 Flattened Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 8",
+            "title": "Operating segments",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 8.",
+            "items": [
+                {
+                    "id": "IFRS8-467.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.20, IFRS 8.21, IFRS 8.22",
+                    "question": "Does the entity disclose general information as described in IFRS 8.22 for each period for which a statement of comprehensive income is presented?"
+                },
+                {
+                    "id": "IFRS8-467.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.20, IFRS 8.21, IFRS 8.23–27",
+                    "question": "Does the entity disclose reported segment profit or loss (including specified revenues and expenses), segment assets, segment liabilities and the basis of measurement for each period for which a statement of comprehensive income is presented?"
+                },
+                {
+                    "id": "IFRS8-467.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.20, IFRS 8.21, IFRS 8.28",
+                    "question": "Does the entity provide reconciliations of total segment revenues, profit or loss, assets, liabilities and other material segment items to the corresponding entity amounts for each period presented?"
+                },
+                {
+                    "id": "IFRS8-468",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.21, IFRS 8.29–30",
+                    "question": "For each date that a statement of financial position is presented, does the entity reconcile the amounts in that statement to the amounts for reportable segments (restating prior periods as required)?"
+                },
+                {
+                    "id": "IFRS8-469.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.22(a)",
+                    "question": "Does the entity disclose the factors used to identify its reportable segments, including the basis of organisation and any segment aggregation?"
+                },
+                {
+                    "id": "IFRS8-469.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.22(b)",
+                    "question": "Does the entity disclose the judgements made by management in applying the aggregation criteria, including a description of aggregated segments and assessed economic indicators?"
+                },
+                {
+                    "id": "IFRS8-469.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.22(c)",
+                    "question": "Does the entity disclose the types of products and services from which each reportable segment derives its revenues?"
+                },
+                {
+                    "id": "IFRS8-470",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose a measure of profit or loss for each reportable segment?"
+                },
+                {
+                    "id": "IFRS8-471",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose a measure of total assets and liabilities for each reportable segment when such amounts are regularly provided to the chief operating decision maker?"
+                },
+                {
+                    "id": "IFRS8-472.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose revenues from external customers for each reportable segment when included in the reviewed measure of segment profit or loss?"
+                },
+                {
+                    "id": "IFRS8-472.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose revenues from transactions with other operating segments of the same entity for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose interest revenue for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.4",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose interest expense for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.5",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose depreciation and amortisation for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.6",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose material items of income and expense (per IAS 1.97) for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.7",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose its interest in the profit or loss of associates and joint ventures accounted for by the equity method for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.8",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose income tax expense or income for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-472.9",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.23",
+                    "question": "Does the entity disclose material non-cash items other than depreciation and amortisation for each reportable segment when included in the reviewed measure?"
+                },
+                {
+                    "id": "IFRS8-473.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.24(a)",
+                    "question": "Does the entity disclose the amount of its investment in associates and joint ventures accounted for by the equity method for each reportable segment when included in the reviewed measure of segment assets?"
+                },
+                {
+                    "id": "IFRS8-473.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.24(b)",
+                    "question": "Does the entity disclose additions to non-current assets (other than financial instruments, deferred tax assets, post-employment benefit assets and insurance rights) for each reportable segment when included in the reviewed measure of segment assets?"
+                },
+                {
+                    "id": "IFRS8-474",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.25",
+                    "question": "Are the amounts in each segment item reported the same as those reported to the chief operating decision maker for allocating resources and assessing performance?"
+                },
+                {
+                    "id": "IFRS8-475",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.26",
+                    "question": "If the chief operating decision maker uses only one measure for profit or loss, assets or liabilities, is segment information reported at those measures?"
+                },
+                {
+                    "id": "IFRS8-476.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.27(a)",
+                    "question": "Does the entity disclose the basis of accounting for any transactions between reportable segments?"
+                },
+                {
+                    "id": "IFRS8-476.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.27(b)",
+                    "question": "Does the entity disclose the nature of any differences between segment profit or loss measures and the entity’s profit or loss before tax and discontinued operations?"
+                },
+                {
+                    "id": "IFRS8-476.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.27(c)",
+                    "question": "Does the entity disclose the nature of any differences between segment assets and the entity’s assets?"
+                },
+                {
+                    "id": "IFRS8-476.4",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.27(d)",
+                    "question": "Does the entity disclose the nature of any differences between segment liabilities and the entity’s liabilities?"
+                },
+                {
+                    "id": "IFRS8-477.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28(a)",
+                    "question": "Does the entity reconcile total reportable segments’ revenues to the entity’s revenue?"
+                },
+                {
+                    "id": "IFRS8-477.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28(b)",
+                    "question": "Does the entity reconcile total reportable segments’ measures of profit or loss to the entity’s profit or loss before tax and discontinued operations?"
+                },
+                {
+                    "id": "IFRS8-477.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28(c)",
+                    "question": "Does the entity reconcile total reportable segments’ assets to the entity’s assets when segment assets are reported?"
+                },
+                {
+                    "id": "IFRS8-477.4",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28(d)",
+                    "question": "Does the entity reconcile total reportable segments’ liabilities to the entity’s liabilities when segment liabilities are reported?"
+                },
+                {
+                    "id": "IFRS8-477.5",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28(e)",
+                    "question": "Does the entity reconcile total reportable segments’ amounts for every other material item to the corresponding entity amounts?"
+                },
+                {
+                    "id": "IFRS8-478",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.28",
+                    "question": "Does the entity separately identify and describe all material reconciling items?"
+                },
+                {
+                    "id": "IFRS8-479",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.29",
+                    "question": "If the entity changes its internal organisation causing reportable segment composition to change, has comparative information been restated for earlier periods when available and not excessive in cost?"
+                },
+                {
+                    "id": "IFRS8-480",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.30",
+                    "question": "If the entity does not restate prior period segment information after a change in organisation, does it disclose current period information on both the old and new basis when necessary and practicable?"
+                },
+                {
+                    "id": "IFRS8-481",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.32",
+                    "question": "Does the entity report revenues from external customers for each product or service (or group of similar products and services) unless information is unavailable and cost to develop it would be excessive?"
+                },
+                {
+                    "id": "IFRS8-482.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(a)",
+                    "question": "Does the entity report revenues from external customers attributed to its country of domicile?"
+                },
+                {
+                    "id": "IFRS8-482.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(a)",
+                    "question": "Does the entity report revenues from external customers attributed to all foreign countries in total?"
+                },
+                {
+                    "id": "IFRS8-482.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(a)",
+                    "question": "Does the entity report revenues from external customers attributed to an individual foreign country if material?"
+                },
+                {
+                    "id": "IFRS8-482.4",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(a)",
+                    "question": "Does the entity disclose the basis for attributing revenues from external customers to individual countries?"
+                },
+                {
+                    "id": "IFRS8-482.5",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(b)",
+                    "question": "Does the entity report non-current assets (other than financial instruments, deferred tax assets, post-employment benefit assets and insurance rights) located in its country of domicile?"
+                },
+                {
+                    "id": "IFRS8-482.6",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(b)",
+                    "question": "Does the entity report those non-current assets located in all foreign countries in total?"
+                },
+                {
+                    "id": "IFRS8-482.7",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(b)",
+                    "question": "Does the entity report those non-current assets located in an individual foreign country if material?"
+                },
+                {
+                    "id": "IFRS8-482.8",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.33(c)",
+                    "question": "If necessary information is unavailable and cost to develop it is excessive, does the entity disclose that fact?"
+                },
+                {
+                    "id": "IFRS8-483.1",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.34(a)",
+                    "question": "If revenues from a single external customer amount to 10% or more of total revenues, does the entity disclose that fact?"
+                },
+                {
+                    "id": "IFRS8-483.2",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.34(b)",
+                    "question": "Does the entity disclose the revenues from each such customer?"
+                },
+                {
+                    "id": "IFRS8-483.3",
+                    "section": "IFRS 8",
+                    "reference": "IFRS 8.34(c)",
+                    "question": "Does the entity disclose the identity of the segment or segments reporting those revenues?"
+                }
+            ]
+        }
+    ]
+}

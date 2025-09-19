@@ -1,0 +1,25 @@
+﻿{
+    "title": "Borrowing Costs (IAS 23) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 23",
+            "title": "Borrowing Costs",
+            "description": "Checklist for presentation and disclosure requirements under IAS 23.",
+            "items": [
+                {
+                    "id": "174.1",
+                    "section": "IAS 23",
+                    "reference": "IAS 23.26(a)",
+                    "question": "If the entity capitalised borrowing costs during the reporting period, does it disclose the amount of borrowing costs capitalised during the period?"
+                },
+                {
+                    "id": "174.2",
+                    "section": "IAS 23",
+                    "reference": "IAS 23.26(b)",
+                    "question": "If the entity capitalised borrowing costs during the reporting period, does it disclose the capitalisation rate used to determine the amount of borrowing costs eligible for capitalisation?"
+                }
+            ]
+        }
+    ]
+}

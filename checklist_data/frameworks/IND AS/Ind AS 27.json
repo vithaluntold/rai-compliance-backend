@@ -1,0 +1,67 @@
+﻿{
+    "title": "Separate Financial Statements (Ind AS 27) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 27",
+            "title": "Separate Financial Statements",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 27.",
+            "items": [
+                {
+                    "id": "271",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.16",
+                    "question": "If the parent entity has elected not to prepare consolidated financial statements (in accordance with Ind AS 110.4(a)) and instead prepares separate financial statements, has it disclosed: the fact that the financial statements are separate financial statements, that the exemption from consolidation was used, the name and principal place of business (and country of incorporation, if different) of the entity whose consolidated financial statements complying with Ind ASs have been produced for public use, and the address where those consolidated financial statements are obtainable?"
+                },
+                {
+                    "id": "272",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.16",
+                    "question": "If the parent entity has elected not to prepare consolidated financial statements, has it provided a list of significant investments in subsidiaries, joint ventures, and associates, including their name, principal place of business (and country of incorporation if different), and the proportion of ownership interest (and voting rights, if different) held?"
+                },
+                {
+                    "id": "273",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.16",
+                    "question": "If the parent entity has elected not to prepare consolidated financial statements, has it described the method used to account for the listed investments?"
+                },
+                {
+                    "id": "274",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.16A",
+                    "question": "If an investment entity that is a parent prepares separate financial statements as its only financial statements (in accordance with Ind AS 27.8A), has it disclosed that fact?"
+                },
+                {
+                    "id": "275",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.16A",
+                    "question": "If an investment entity that is a parent prepares separate financial statements as its only financial statements, has it provided disclosures relating to investment entities as required by Ind AS 112, 'Disclosure of Interests in Other Entities'?"
+                },
+                {
+                    "id": "276",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.17",
+                    "question": "If a parent entity (other than those covered by Ind AS 27.16-27.16A) or an investor with joint control of, or significant influence over, an investee prepares separate financial statements, has it identified the financial statements prepared in accordance with Ind AS 110, Ind AS 111, or Ind AS 28 to which they relate?"
+                },
+                {
+                    "id": "277",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.17",
+                    "question": "If a parent entity (other than those covered by Ind AS 27.16-27.16A) or an investor with joint control of, or significant influence over, an investee prepares separate financial statements, has it disclosed that the statements are separate financial statements?"
+                },
+                {
+                    "id": "278",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.17",
+                    "question": "If a parent entity (other than those covered by Ind AS 27.16-27.16A) or an investor with joint control of, or significant influence over, an investee prepares separate financial statements, has it provided a list of significant investments in subsidiaries, joint ventures, and associates, including their name, principal place of business (and country of incorporation if different), and the proportion of ownership interest (and voting rights, if different) held?"
+                },
+                {
+                    "id": "279",
+                    "section": "Ind AS 27",
+                    "reference": "Ind AS 27.17",
+                    "question": "If a parent entity (other than those covered by Ind AS 27.16-27.16A) or an investor with joint control of, or significant influence over, an investee prepares separate financial statements, has it described the method used to account for the listed investments?"
+                }
+            ]
+        }
+    ]
+}

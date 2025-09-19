@@ -1,0 +1,104 @@
+﻿
+{
+    "title": "Property, Plant and Equipment (Ind AS 16) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 16",
+            "title": "Property, Plant and Equipment",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 16.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 16",
+                    "reference": "16.42",
+                    "question": "Are the effects of taxes on income, if any, resulting from the revaluation of Property, Plant and Equipment (PPE) recognized and disclosed in accordance with Ind AS 12, Income Taxes?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 16",
+                    "reference": "16.73",
+                    "question": "For each class of PPE, has the entity disclosed the measurement bases used for determining the gross carrying amount, depreciation methods used, useful lives or depreciation rates used, and the gross carrying amount and accumulated depreciation (aggregated with accumulated impairment losses) at the beginning and end of the period?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 16",
+                    "reference": "16.73",
+                    "question": "For each class of PPE, has the entity provided a reconciliation of the carrying amount at the beginning and end of the period showing additions, assets classified as held for sale or included in a disposal group, acquisitions through business combinations, increases or decreases from revaluations, impairment losses recognized or reversed, depreciation, net exchange differences, and other changes?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 16",
+                    "reference": "16.74",
+                    "question": "Has the entity disclosed the existence and amounts of restrictions on title, and PPE pledged as security for liabilities?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 16",
+                    "reference": "16.74",
+                    "question": "Has the entity disclosed the amount of expenditures recognized in the carrying amount of a PPE item in the course of its construction?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 16",
+                    "reference": "16.74",
+                    "question": "Has the entity disclosed the amount of contractual commitments for the acquisition of PPE?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 16",
+                    "reference": "16.74",
+                    "question": "If not separately disclosed in the statement of profit and loss, has the entity disclosed the amount of compensation from third parties for PPE items that were impaired, lost, or given up and included in profit or loss?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 16",
+                    "reference": "16.75",
+                    "question": "Has the entity provided disclosure for depreciation, whether recognized in profit or loss or as part of the cost of other assets, during a period?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 16",
+                    "reference": "16.75",
+                    "question": "Has the entity provided disclosure for accumulated depreciation at the end of the period?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 16",
+                    "reference": "16.76",
+                    "question": "In case of a change in an accounting estimate in accordance with Ind AS 8 that affects the current or future periods, has the entity disclosed information regarding residual values, estimated costs of dismantling/removing/restoring PPE, useful lives, and depreciation methods?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 16",
+                    "reference": "16.77",
+                    "question": "If PPE items are stated at revalued amounts, has the entity disclosed, in addition to Ind AS 113 requirements, the effective date of revaluation, involvement of an independent valuer, the carrying amount under the cost model for each revalued class, and the revaluation surplus (change for the period and distribution restrictions)?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 16",
+                    "reference": "16.79",
+                    "question": "Has the entity voluntarily disclosed the carrying amount of temporarily idle PPE?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 16",
+                    "reference": "16.79",
+                    "question": "Has the entity voluntarily disclosed the gross carrying amount of any fully depreciated PPE that is still in use?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 16",
+                    "reference": "16.79",
+                    "question": "Has the entity voluntarily disclosed the carrying amount of PPE retired from active use and not classified as held for sale in accordance with Ind AS 105?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 16",
+                    "reference": "16.79",
+                    "question": "When the cost model is used, has the entity voluntarily disclosed the fair value of PPE when this is materially different from the carrying amount?"
+                }
+            ]
+        }
+    ]
+}

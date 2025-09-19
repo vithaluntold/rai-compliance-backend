@@ -1,0 +1,21 @@
+﻿  
+{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 1",
+            "title": "Statement of profit or loss and other comprehensive income",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 1.",
+            "items": [
+                {
+                    "id": "75",
+                    "section": "IFRIC 1",
+                    "reference": "IFRIC 1.6(d)",
+                    "question": "Does the entity disclose the change in the revaluation surplus arising from a change in the decommissioning, restoration and similar liability in other comprehensive income as a separate line item"
+                }
+            ]
+        }
+    ]
+}
+    

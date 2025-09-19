@@ -1,0 +1,31 @@
+﻿{
+    "title": "Financial Instruments: Presentation (Ind AS 32) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 32",
+            "title": "Financial Instruments: Presentation",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 32.",
+            "items": [
+                {
+                    "id": "321",
+                    "section": "Ind AS 32",
+                    "reference": "Ind AS 32.28",
+                    "question": "Whether the issuer of a non-derivative financial instrument has evaluated the terms of the financial instrument to determine that it contains both a liability and an equity component. Whether such component has been classified separately as financial liabilities, financial assets or equity instruments?"
+                },
+                {
+                    "id": "322",
+                    "section": "Ind AS 32",
+                    "reference": "Ind AS 32.34, Ind AS 1, Ind AS 24",
+                    "question": "Whether the amount of treasury shares held is disclosed separately either in the balance sheet or in the notes, in accordance with Ind AS 1. Whether the entity provides disclosure in accordance with Ind AS 24 if the entity reacquires its own equity instruments from related parties?"
+                },
+                {
+                    "id": "323",
+                    "section": "Ind AS 32",
+                    "reference": "Ind AS 32.39, Ind AS 1",
+                    "question": "Whether the amount of transaction costs accounted for as a deduction from equity in the period is disclosed separately in accordance with Ind AS 1, Presentation of Financial Statements?"
+                }
+            ]
+        }
+    ]
+}

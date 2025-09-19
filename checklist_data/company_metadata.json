@@ -1,0 +1,25 @@
+{
+  "fields": [
+    {
+      "field": "company_name",
+      "patterns": [
+        "Company Name",
+        "Legal Entity Name"
+      ]
+    },
+    {
+      "field": "nature_of_business",
+      "patterns": [
+        "Nature of Business",
+        "Business Activity"
+      ]
+    },
+    {
+      "field": "operational_demographics",
+      "patterns": [
+        "Operating Locations",
+        "Geographic Regions"
+      ]
+    }
+  ]
+}

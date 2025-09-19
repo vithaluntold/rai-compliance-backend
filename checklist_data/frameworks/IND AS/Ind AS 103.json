@@ -1,0 +1,67 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 103: Business Combinations Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 103",
+            "title": "Business Combinations",
+            "description": "Checklist for disclosure requirements under Ind AS 103, Business Combinations.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 103",
+                    "reference": "103.59",
+                    "question": "Whether the entity has given disclosed information that enables users of its financial statements to evaluate the nature and financial effect of a business combination that occurs either: (a) during the current reporting period; or (b) after the end of the reporting period but before the financial statements are approved for issue."
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 103",
+                    "reference": "103.61",
+                    "question": "Whether the acquirer has disclosed information that enables users of its financial statements to evaluate the financial effects of adjustments recognised in the current reporting period that relate to business combinations that occurred in the period or previous reporting periods."
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 103",
+                    "reference": "103.63",
+                    "question": "If the specific disclosures required by this and other Ind ASs do not meet the objectives set out in paragraphs 103.59 and 103.61, then whether the entity has provided disclosure of whatever additional information that is necessary to meet those objectives."
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 103",
+                    "reference": "103.B64",
+                    "question": "To meet the objective in paragraph 103.59, whether the entity has disclosed the following information for each business combination that occurs during the reporting period: (a) the name and a description of the acquiree; (b) the acquisition date; (c) the percentage of voting equity interests acquired; (d) the primary reasons for the business combination and a description of how the acquirer obtained control of the acquiree; (e) a qualitative description of the factors that make up the goodwill recognised, such as expected synergies from combining operations of the acquiree and the acquirer, intangible assets that do not qualify for separate recognition or other factors; (f) the acquisition-date fair value of the total consideration transferred and the acquisition-date fair value of each major class of consideration, such as: (i) cash; (ii) other tangible or intangible assets, including a business or subsidiary of the acquirer; (iii) liabilities incurred; and (iv) equity interests of the acquirer, including the number of instruments or interests issued or issuable and the method of measuring the fair value of those instruments or interests; (g) for contingent consideration arrangements and indemnification assets: (i) the amount recognised as of the acquisition date; (ii) a description of the arrangement and the basis for determining the amount of the payment; and (iii) an estimate of the range of outcomes (undiscounted) or, if a range cannot be estimated, that fact and the reasons why a range cannot be estimated. If the maximum amount of the payment is unlimited, the acquirer shall disclose that fact; (h) for acquired receivables: (i) the fair value of the receivables; (ii) the gross contractual amounts receivable; and (iii) the best estimate at the acquisition date of the contractual cash flows not expected to be collected. The disclosures shall be provided by major class of receivable, such as loans, direct finance leases and any other class of receivables; (i) the amounts recognised as of the acquisition date for each major class of assets acquired and liabilities assumed; (j) for each contingent liability recognised in accordance with paragraph 103.23, the information required in paragraph 37.85. If a contingent liability is not recognised because its fair value cannot be measured reliably, the acquirer shall disclose: (i) the information required by paragraph 37.86; and (ii) the reasons why the liability cannot be measured reliably; (k) the total amount of goodwill that is expected to be deductible for tax purposes; (l) for transactions that are recognised separately from the acquisition of assets and assumption of liabilities in the business combination in accordance with paragraph 103.51: (i) a description of each transaction; (ii) how the acquirer accounted for each transaction; (iii) the amounts recognised for each transaction and the line item in the financial statements in which each amount is recognised; and (iv) if the transaction is the effective settlement of a pre-existing relationship, the method used to determine the settlement amount; (m) the disclosure of separately recognised transactions required by (l) shall include the amount of acquisition-related costs and, separately, the amount of those costs recognised as an expense and the line item or items in the statement of profit and loss in which those expenses are recognised. The amount of any issue costs not recognised as an expense and how they were recognised shall also be disclosed; (n) in a bargain purchase (in accordance with paragraphs 103.34–103.36A): (i) the amount of any gain recognised in other comprehensive income in accordance with paragraph 103.34; (ii) the amount of any gain directly recognised in equity in accordance with paragraph 103.36A; and (iii) a description of the reasons why the transaction resulted in a gain in case of (i) above; (o) for each business combination in which the acquirer holds less than 100 per cent of the equity interests in the acquiree at the acquisition date: (i) the amount of the non-controlling interest in the acquiree recognised at the acquisition date and the measurement basis for that amount; and (ii) for each non-controlling interest in an acquiree measured at fair value, the valuation technique(s) and significant inputs used to measure that value; (p) in a business combination achieved in stages: (i) the acquisition-date fair value of the equity interest in the acquiree held by the acquirer immediately before the acquisition date; and (ii) the amount of any gain or loss recognised as a result of remeasuring to fair value the equity interest in the acquiree held by the acquirer before the business combination (paragraph 103.42) and the line item in the statement of profit and loss in which that gain or loss is recognised; (q) the following information: (i) the amounts of revenue and profit or loss of the acquiree since the acquisition date included in the consolidated statement of profit and loss for the reporting period; and (ii) the revenue and profit or loss of the combined entity for the current reporting period as though the acquisition date for all business combinations that occurred during the year had been as of the beginning of the annual reporting period. If disclosure of any of the information required by this subparagraph is impracticable, disclosure by the acquirer of that fact and explanation why the disclosure is impracticable. This Ind AS uses the term ‘impracticable’ with the same meaning as in Ind AS 8, Accounting Policies, Changes in Accounting Estimates and Errors."
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 103",
+                    "reference": "103.B65",
+                    "question": "For individually immaterial business combinations occurring during the reporting period that are material collectively, whether the acquirer has given disclosure in aggregate about the information required by paragraph 103.B64(e)–(q)."
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 103",
+                    "reference": "103.B66",
+                    "question": "If the acquisition date of a business combination is after the end of the reporting period but before the financial statements are approved for issue, disclosure by acquirer the information required by paragraph 103.B64 unless the initial accounting for the business combination is incomplete at the time the financial statements are approved for issue. In that situation, whether the acquirer has described which disclosures could not be made and the reasons why they cannot be made."
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 103",
+                    "reference": "103.B67",
+                    "question": "To meet the objective in paragraph 103.61, whether the entity has given disclosure of the following information for each material business combination or in the aggregate for individually immaterial business combinations that are material collectively: (a) if the initial accounting for a business combination is incomplete (see paragraph 103.45) for particular assets, liabilities, non-controlling interests or items of consideration and the amounts recognised in the financial statements for the business combination thus have been determined only provisionally: (i) the reasons why the initial accounting for the business combination is incomplete; (ii) the assets, liabilities, equity interests or items of consideration for which the initial accounting is incomplete; and (iii) the nature and amount of any measurement period adjustments recognised during the reporting period in accordance with paragraph 103.49; (b) for each reporting period after the acquisition date until the entity collects, sells or otherwise loses the right to a contingent consideration asset, or until the entity settles a contingent consideration liability or the liability is cancelled or expires; (c) for contingent liabilities recognised in a business combination, the acquirer shall disclose the information required by paragraphs 37.84 and 37.85 for each class of provision; (d) a reconciliation of the carrying amount of goodwill at the beginning and end of the reporting period showing separately: (i) the gross amount and accumulated impairment losses at the beginning of the reporting period; (ii) additional goodwill recognised during the reporting period, except goodwill included in a disposal group that, on acquisition, meets the criteria to be classified as held for sale in accordance with Ind AS 105, Non-current Assets Held for Sale and Discontinued Operations; (iii) adjustments resulting from the subsequent recognition of deferred tax assets during the reporting period in accordance with paragraph 103.67; (iv) goodwill included in a disposal group classified as held for sale in accordance with Ind AS 105 and goodwill derecognised during the reporting period without having previously been included in a disposal group classified as held for sale; (v) impairment losses recognised during the reporting period in accordance with Ind AS 36. (Ind AS 36 requires disclosure of information about the recoverable amount and impairment of goodwill in addition to this requirement.); (vi) net exchange rate differences arising during the reporting period in accordance with Ind AS 21, The Effects of Changes in Foreign Exchange Rates; and (vii) any other changes in the carrying amount during the reporting; (e) the amount and an explanation of any gain or loss recognised in the current reporting period that both: (i) relates to the identifiable assets acquired or liabilities assumed in a business combination that was effected in the current or previous reporting period; and (ii) is of such a size, nature or incidence that disclosure is relevant to understanding the combined entity’s financial statements."
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 103",
+                    "reference": "103.C13",
+                    "question": "Whether the entity has provided the following disclosures in the first financial statements following the business combination: (a) names and general nature of business of the combining entities; (b) date on which transferee obtains control of the transferor; (c) description and number of shares issued, together with the percentage of each entity’s equity shares exchanged to effect the combination; and (d) amount of any difference between the consideration and the value of net assets taken over, and the treatment thereof."
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 103",
+                    "reference": "103.C14",
+                    "question": "When a combination is effected after the balance sheet but before approval of the financial statements for issue by either party to the business combination, then whether the entity has made disclosure in accordance with Ind AS 10, as the combination is not incorporated in the financial statements."
+                }
+            ]
+        }
+    ]
+}

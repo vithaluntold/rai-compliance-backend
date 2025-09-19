@@ -1,0 +1,555 @@
+{
+  "version": "1.0",
+  "frameworks": [
+    {
+      "id": "IFRS",
+      "name": "IFRS",
+      "description": "International Financial Reporting Standards (IFRS), including International Accounting Standards (IAS).",
+      "standards": [
+        {
+          "id": "IAS 1",
+          "name": "IAS 1 - Presentation of Financial Statements",
+          "description": "IAS 1 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 2",
+          "name": "IAS 2 - Inventories",
+          "description": "IAS 2 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 7",
+          "name": "IAS 7 - Statement of Cash Flows",
+          "description": "IAS 7 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 8",
+          "name": "IAS 8 - Accounting Policies, Changes in Accounting Estimates and Errors",
+          "description": "IAS 8 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 10",
+          "name": "IAS 10 - Events after the Reporting Period",
+          "description": "IAS 10 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 12",
+          "name": "IAS 12 - Income Taxes",
+          "description": "IAS 12 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 16",
+          "name": "IAS 16 - Property, Plant and Equipment",
+          "description": "IAS 16 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 19",
+          "name": "IAS 19 - Employee Benefits",
+          "description": "IAS 19 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 20",
+          "name": "IAS 20 - Accounting for Government Grants",
+          "description": "IAS 20 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 21",
+          "name": "IAS 21 - The Effects of Changes in Foreign Exchange Rates",
+          "description": "IAS 21 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 23",
+          "name": "IAS 23 - Borrowing Costs",
+          "description": "IAS 23 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 24",
+          "name": "IAS 24 - Related Party Disclosures",
+          "description": "IAS 24 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 26",
+          "name": "IAS 26 - Accounting and Reporting by Retirement Benefit Plans",
+          "description": "IAS 26 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 27",
+          "name": "IAS 27 - Separate Financial Statements",
+          "description": "IAS 27 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 28",
+          "name": "IAS 28 - Investments in Associates and Joint Ventures",
+          "description": "IAS 28 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 29",
+          "name": "IAS 29 - Financial Reporting in Hyperinflationary Economies",
+          "description": "IAS 29 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 32",
+          "name": "IAS 32 - Financial Instruments: Presentation",
+          "description": "IAS 32 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 33",
+          "name": "IAS 33 - Earnings per Share",
+          "description": "IAS 33 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 34",
+          "name": "IAS 34 - Interim Financial Reporting",
+          "description": "IAS 34 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 36",
+          "name": "IAS 36 - Impairment of Assets",
+          "description": "IAS 36 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 37",
+          "name": "IAS 37 - Provisions, Contingent Liabilities and Contingent Assets",
+          "description": "IAS 37 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 38",
+          "name": "IAS 38 - Intangible Assets",
+          "description": "IAS 38 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 39",
+          "name": "IAS 39 - Financial Instruments: Recognition and Measurement",
+          "description": "IAS 39 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 40",
+          "name": "IAS 40 - Investment Property",
+          "description": "IAS 40 checklist",
+          "available": true
+        },
+        {
+          "id": "IAS 41",
+          "name": "IAS 41 - Agriculture",
+          "description": "IAS 41 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 1",
+          "name": "IFRS 1 - First-time Adoption of International Financial Reporting Standards",
+          "description": "IFRS 1 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 2",
+          "name": "IFRS 2 - Share-based Payment",
+          "description": "IFRS 2 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 3",
+          "name": "IFRS 3 - Business Combinations",
+          "description": "IFRS 3 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 4",
+          "name": "IFRS 4 - Insurance Contracts",
+          "description": "IFRS 4 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 5",
+          "name": "IFRS 5 - Non-current Assets Held for Sale and Discontinued Operations",
+          "description": "IFRS 5 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 6",
+          "name": "IFRS 6 - Exploration for and Evaluation of Mineral Resources",
+          "description": "IFRS 6 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 7",
+          "name": "IFRS 7 - Financial Instruments: Disclosures",
+          "description": "IFRS 7 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 8",
+          "name": "IFRS 8 - Operating Segments",
+          "description": "IFRS 8 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 9",
+          "name": "IFRS 9 - Financial Instruments",
+          "description": "IFRS 9 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 10",
+          "name": "IFRS 10 - Consolidated Financial Statements",
+          "description": "IFRS 10 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 11",
+          "name": "IFRS 11 - Joint Arrangements",
+          "description": "IFRS 11 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 12",
+          "name": "IFRS 12 - Disclosure of Interests in Other Entities",
+          "description": "IFRS 12 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 13",
+          "name": "IFRS 13 - Fair Value Measurement",
+          "description": "IFRS 13 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 14",
+          "name": "IFRS 14 - Regulatory Deferral Accounts",
+          "description": "IFRS 14 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 15",
+          "name": "IFRS 15 - Revenue from Contracts with Customers",
+          "description": "IFRS 15 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 16",
+          "name": "IFRS 16 - Leases",
+          "description": "IFRS 16 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 17",
+          "name": "IFRS 17 - Insurance Contracts",
+          "description": "IFRS 17 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRS 18",
+          "name": "IFRS 18 - Presentation and Disclosure in Financial Statements",
+          "description": "IFRS 18 checklist",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "IFRIC",
+      "name": "IFRIC",
+      "description": "IFRIC standards.",
+      "standards": [
+        {
+          "id": "IFRIC 1",
+          "name": "IFRIC 1",
+          "description": "IFRIC 1 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 12",
+          "name": "IFRIC 12",
+          "description": "IFRIC 12 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 17",
+          "name": "IFRIC 17",
+          "description": "IFRIC 17 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 19",
+          "name": "IFRIC 19",
+          "description": "IFRIC 19 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 2",
+          "name": "IFRIC 2",
+          "description": "IFRIC 2 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 5",
+          "name": "IFRIC 5",
+          "description": "IFRIC 5 checklist",
+          "available": true
+        },
+        {
+          "id": "IFRIC 6",
+          "name": "IFRIC 6",
+          "description": "IFRIC 6 checklist",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "IND AS",
+      "name": "IND AS",
+      "description": "IND AS standards.",
+      "standards": [
+        {
+          "id": "Ind AS 1",
+          "name": "Ind AS 1",
+          "description": "Ind AS 1 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 10",
+          "name": "Ind AS 10",
+          "description": "Ind AS 10 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 101",
+          "name": "Ind AS 101",
+          "description": "Ind AS 101 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 102",
+          "name": "Ind AS 102",
+          "description": "Ind AS 102 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 103",
+          "name": "Ind AS 103",
+          "description": "Ind AS 103 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 104",
+          "name": "Ind AS 104",
+          "description": "Ind AS 104 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 105",
+          "name": "Ind AS 105",
+          "description": "Ind AS 105 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 106",
+          "name": "Ind AS 106",
+          "description": "Ind AS 106 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 107",
+          "name": "Ind AS 107",
+          "description": "Ind AS 107 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 108",
+          "name": "Ind AS 108",
+          "description": "Ind AS 108 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 109",
+          "name": "Ind AS 109",
+          "description": "Ind AS 109 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 112",
+          "name": "Ind AS 112",
+          "description": "Ind AS 112 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 113",
+          "name": "Ind AS 113",
+          "description": "Ind AS 113 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 114",
+          "name": "Ind AS 114",
+          "description": "Ind AS 114 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 115",
+          "name": "Ind AS 115",
+          "description": "Ind AS 115 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 116",
+          "name": "Ind AS 116",
+          "description": "Ind AS 116 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 12",
+          "name": "Ind AS 12",
+          "description": "Ind AS 12 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 16",
+          "name": "Ind AS 16",
+          "description": "Ind AS 16 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 19",
+          "name": "Ind AS 19",
+          "description": "Ind AS 19 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 2",
+          "name": "Ind AS 2",
+          "description": "Ind AS 2 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 20",
+          "name": "Ind AS 20",
+          "description": "Ind AS 20 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 21",
+          "name": "Ind AS 21",
+          "description": "Ind AS 21 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 23",
+          "name": "Ind AS 23",
+          "description": "Ind AS 23 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 24",
+          "name": "Ind AS 24",
+          "description": "Ind AS 24 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 27",
+          "name": "Ind AS 27",
+          "description": "Ind AS 27 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 29",
+          "name": "Ind AS 29",
+          "description": "Ind AS 29 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 32",
+          "name": "Ind AS 32",
+          "description": "Ind AS 32 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 33",
+          "name": "Ind AS 33",
+          "description": "Ind AS 33 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 34",
+          "name": "Ind AS 34",
+          "description": "Ind AS 34 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 36",
+          "name": "Ind AS 36",
+          "description": "Ind AS 36 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 37",
+          "name": "Ind AS 37",
+          "description": "Ind AS 37 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 38",
+          "name": "Ind AS 38",
+          "description": "Ind AS 38 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 40",
+          "name": "Ind AS 40",
+          "description": "Ind AS 40 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 41",
+          "name": "Ind AS 41",
+          "description": "Ind AS 41 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 7",
+          "name": "Ind AS 7",
+          "description": "Ind AS 7 checklist",
+          "available": true
+        },
+        {
+          "id": "Ind AS 8",
+          "name": "Ind AS 8",
+          "description": "Ind AS 8 checklist",
+          "available": true
+        }
+      ]
+    },
+    {
+      "id": "SIC",
+      "name": "SIC",
+      "description": "SIC standards.",
+      "standards": [
+        {
+          "id": "SIC 29",
+          "name": "SIC 29",
+          "description": "SIC 29 checklist",
+          "available": true
+        }
+      ]
+    }
+  ]
+}

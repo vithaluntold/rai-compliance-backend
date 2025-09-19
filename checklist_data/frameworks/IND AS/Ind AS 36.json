@@ -1,0 +1,73 @@
+﻿{
+    "title": "Impairment of Assets (Ind AS 36) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 36",
+            "title": "Impairment of Assets",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 36.",
+            "items": [
+                {
+                    "id": "361",
+                    "section": "Ind AS 36",
+                    "reference": "36.126 and 36.128",
+                    "question": "Whether the entity has disclosed the following for each class of assets: (a) The amount of impairment losses recognised in profit or loss during the period and the line item(s) of the statement of profit and loss in which those impairment losses are included, (b) The amount of reversals of impairment losses recognised in profit or loss during the period and the line item(s) of the statement of profit and loss in which those impairment losses are reversed, (c) The amount of impairment losses on revalued assets recognised in other comprehensive income during the period, if any, and (d) The amount of reversals of impairment losses on revalued assets recognised in other comprehensive income during the period, if any. Note: The information required in paragraph 36.126 may be presented with other information disclosed for the class of assets. A class of assets is a grouping of assets of similar nature and use in an entity’s operations?"
+                },
+                {
+                    "id": "362",
+                    "section": "Ind AS 36",
+                    "reference": "36.129",
+                    "question": "In case segment information is reported in accordance with Ind AS 108, whether the disclosure of the following for each reportable segment has been made: (a) The amount of impairment losses recognised in profit or loss and in other comprehensive income during the period, and (b) The amount of reversals of impairment losses recognised in profit or loss and in other comprehensive income during the period?"
+                },
+                {
+                    "id": "363",
+                    "section": "Ind AS 36",
+                    "reference": "36.130",
+                    "question": "In case an impairment loss is recognised/reversed during the period for an individual asset or CGU, whether the disclosure of the following has been made: (a) the events and circumstances that led to the recognition or reversal of the impairment loss (b) the amount of the impairment loss recognised or reversed. (c) for an individual asset: (i) the nature of the asset; and (ii) if the entity reports segment information in accordance with Ind AS 108, the reportable segment to which the asset belongs. (d) for a cash-generating unit: (i) a description of the cash-generating unit (such as whether it is a product line, a plant, a business operation, a geographical area, or a reportable segment as defined in Ind AS 108); (ii) the amount of the impairment loss recognised or reversed by class of assets and, if the entity reports segment information in accordance with Ind AS 108, by reportable segment; and (iii) if the aggregation of assets for identifying the cash-generating unit has changed since the previous estimate of the cash-generating unit’s recoverable amount (if any), a description of the current and former way of aggregating assets and the reasons for changing the way the cash generating unit is identified. (e) the recoverable amount of the asset (cash-generating unit) and whether the recoverable amount of the asset (cash-generating unit) is its fair value less costs of disposal or its value in use. (f) if the recoverable amount is fair value less costs of disposal, the entity shall disclose the following information: (i) the level of the fair value hierarchy (see Ind AS 113) within which the fair value measurement of the asset (cash-generating unit) is categorised in its entirety (without taking into account whether the ‘costs of disposal’ are observable); (ii) for fair value measurements categorised within Level 2 and Level 3 of the fair value hierarchy, a description of the valuation technique(s) used to measure fair value less costs of disposal. If there has been a change in valuation technique, the entity shall disclose that change and the reason(s) for making it; and (iii) for fair value measurements categorised within Level 2 and Level 3 of the fair value hierarchy, each key assumption on which management has based its determination of fair value less costs of disposal. Key assumptions are those to which the asset’s (cash-generating unit’s) recoverable amount is most sensitive. The entity shall also disclose the discount rate(s) used in the current measurement and previous measurement if fair value less costs of disposal is measured using a present value technique. (g) if recoverable amount is value in use, the discount rate(s) used in the current estimate and previous estimate (if any) of value in use?"
+                },
+                {
+                    "id": "364",
+                    "section": "Ind AS 36",
+                    "reference": "36.131",
+                    "question": "With respect to aggregate impairment losses and the aggregate reversals of impairment losses recognised during the period for which no information has been disclosed in accordance with paragraph 36.130, whether disclosure of the following has been given: (a) The main classes of assets affected by impairment losses and the main classes of assets affected by reversal of impairment losses, and (b) The main events and circumstances that led to the recognition of these impairment losses and reversals of impairment losses?"
+                },
+                {
+                    "id": "365",
+                    "section": "Ind AS 36",
+                    "reference": "36.132 (voluntary disclosure)",
+                    "question": "Whether the entity has disclosed assumptions used to determine the recoverable amount of assets (cash-generating units) during the period."
+                },
+                {
+                    "id": "366",
+                    "section": "Ind AS 36",
+                    "reference": "36.134",
+                    "question": "As required by paragraph 36.134 whether the entity has disclosed the information about the estimates used to measure the recoverable amount of a cash-generating unit when goodwill or an intangible asset with an indefinite useful life is included in the carrying amount of that unit."
+                },
+                {
+                    "id": "367",
+                    "section": "Ind AS 36",
+                    "reference": "36.133",
+                    "question": "If any portion of the goodwill acquired in a business combination during the period has not been allocated to a CGU (group of units) at the end of the reporting period, whether the disclosure of the amount of unallocated goodwill together with the reasons why that amount remains unallocated has been given by the entity. Estimates used to measure recoverable amounts of cash-generating units containing goodwill or intangible assets with indefinite useful lives"
+                },
+                {
+                    "id": "368",
+                    "section": "Ind AS 36",
+                    "reference": "36.134",
+                    "question": "Whether the entity has made disclosure of the following information for each CGU (group of units) for which the carrying amount of goodwill or intangible assets with indefinite useful lives allocated to that unit (group of units) is significant in comparison with the entity’s total carrying amount of goodwill or intangible assets with indefinite useful lives: (a) The carrying amount of goodwill allocated to the unit (group of units), (b) The carrying amount of intangible assets with indefinite useful lives allocated to the unit (group of units), (c) The basis on which the unit’s (group of units’) recoverable amount has been determined (i.e. value in use or fair value less costs of disposal), (d) If the unit’s (group of units’) recoverable amount is based on value in use: i) each key assumption on which management has based its cash flow projections for the period covered by the most recent budgets/forecasts. Key assumptions are those to which the unit’s (group of units’) recoverable amount is most sensitive, ii) A description of management’s approach to determining the value(s) assigned to each key assumption, whether those value(s) reflect past experience or, if appropriate, are consistent with external sources of information, and, if not, how and why they differ from past experience or external sources of information, iii) the period over which management has projected cash flows based on financial budgets/forecasts approved by management and, when a period greater than five years is used for a unit (group of units), an explanation of why that longer period is justified, iv) the growth rate used to extrapolate cash flow projections beyond the period covered by the most recent budgets/ forecasts, and the justification for using any growth rate that exceeds the long-term average growth rate for the products, industries, or country or countries in which the entity operates, or for the market to which the unit (group of units) is dedicated, and v) the discount rate(s) applied to the cash flow projections. (e) if the unit’s (group of units’) recoverable amount is based on fair value less costs of disposal, the valuation technique(s) used to measure fair value less costs of disposal. An entity is not required to provide the disclosures required by Ind AS 113. If fair value less costs of disposal is not measured using a quoted price for an identical unit (group of units), an entity shall disclose the following information: i) each key assumption on which management has based its determination of fair value less costs of disposal. Key assumptions are those to which the unit’s (group of units’) recoverable amount is most sensitive, ii) a description of management’s approach to determining the value (or values) assigned to each key assumption, whether those values reflect past experience or, if appropriate, are consistent with external sources of information, and, if not, how and why they differ from past experience or external sources of information: iiA) the level of the fair value hierarchy (see Ind AS 113, Fair Value Measurement within which the fair value measurement is categorised in its entirety (without giving regard to the observability of 'costs of disposal'), and iiB) if there has been a change in valuation technique, the change and the reason(s) for making it, If fair value less costs of disposal is measured using discounted cash flow projections, the entity shall disclose the following information: iii) the period over which management has projected cash flows, iv) the growth rate used to extrapolate cash flow projections, v) the discount rate(s) applied to the cash flow projections, (f) If a reasonably possible change in a key assumption on which management has based its determination of the unit’s (group of units’) recoverable amount would cause the unit’s (group of units’) carrying amount to exceed its recoverable amount: i) The amount by which the unit’s (group of units’) recoverable amount exceeds its carrying amount, ii) The value assigned to the key assumption, and iii) The amount by which the value assigned to the key assumption must change, after incorporating any consequential effects of that change on the other variables used to measure recoverable amount, in order for the unit’s (group of units’) recoverable amount to be equal to its carrying amount."
+                },
+                {
+                    "id": "369",
+                    "section": "Ind AS 36",
+                    "reference": "36.135",
+                    "question": "If some or all of the carrying amount of goodwill or intangible assets with indefinite useful lives is allocated across multiple CGUs (groups of units), and the amount so allocated to each unit (group of units) is not significant in comparison with the entity’s total carrying amount of goodwill or intangible assets with indefinite useful lives, whether the entity has disclosed this fact, together with the aggregate carrying amount of goodwill or intangible assets with indefinite useful lives allocated to those units (groups of units)."
+                },
+                {
+                    "id": "3610",
+                    "section": "Ind AS 36",
+                    "reference": "36.135",
+                    "question": "If the recoverable amounts of any of those units (groups of units) are based on the same key assumption(s) and the aggregate carrying amount of goodwill or intangible assets with indefinite useful lives allocated to them is significant in comparison with the entity’s total carrying amount of goodwill or intangible assets with indefinite useful lives, whether the entity has given the disclosure of that fact together with the following: (a) the aggregate carrying amount of goodwill allocated to those units (groups of units), (b) the aggregate carrying amount of intangible assets with indefinite useful lives allocated to those units (groups of units), (c) a description of the key assumptions, (d) a description of management’s approach to determining the value(s) assigned to the key assumption(s), whether those value(s) reflect past experience or, if appropriate, are consistent with external sources of information, and, if not, how and why they differ from past experience or external sources of information, and (e) if a reasonably possible change in the key assumption(s) would cause the aggregate of the units’ (groups of units’) carrying amounts to exceed the aggregate of their recoverable amounts: i) The amount by which the aggregate of the units’ (groups of units’) recoverable amounts exceeds the aggregate of their carrying amounts, ii) The value(s) assigned to the key assumptions, and iii) The amount by which the value(s) assigned to the key assumption(s) must change, after incorporating any consequential effects of the change on the other variables used to measure recoverable amount, in order for the aggregate of the units’ (groups of units’) recoverable amounts to be equal to the aggregate of their carrying amounts."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+﻿{
+    "title": "SIC 29 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 12",
+            "title": "Service concession arrangements",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 12.",
+            "items": [
+                {
+                    "id": "534.1",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose a description of each service concession arrangement (or, if aggregated, each class of arrangement)?"
+                },
+                {
+                    "id": "534.2",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose a description of the significant terms of each arrangement that may affect the amount, timing and uncertainty of future cash flows (for example, the concession period, next renegotiation date, and variable or fixed payments)?"
+                },
+                {
+                    "id": "534.3",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose its rights and obligations to acquire or build items of property, plant and equipment under each arrangement?"
+                },
+                {
+                    "id": "534.4",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose its obligations to deliver, or rights to receive, specified assets at the end of the concession period?"
+                },
+                {
+                    "id": "534.5",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose renewal and termination options and the associated rights and obligations under each arrangement?"
+                },
+                {
+                    "id": "534.6",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose any other significant rights and obligations arising from each arrangement?"
+                },
+                {
+                    "id": "534.7",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose any changes in each arrangement that occurred during the reporting period?"
+                },
+                {
+                    "id": "534.8",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose how each service concession arrangement is classified (for example, as a financial asset or intangible asset)?"
+                },
+                {
+                    "id": "534.9",
+                    "section": "IFRIC 12",
+                    "reference": "SIC 29.6, SIC 29.6A, SIC 29.7",
+                    "question": "Does the entity disclose the revenue and profit or loss recognised in the reporting period on exchanging construction services for a financial asset or an intangible asset under each arrangement?"
+                }
+            ]
+        }
+    ]
+}

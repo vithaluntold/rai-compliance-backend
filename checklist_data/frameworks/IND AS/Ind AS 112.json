@@ -1,0 +1,308 @@
+﻿
+{
+    "title": "Ind AS 112: Disclosure of Interests in Other Entities Disclosure Checklist",
+    "version": "Revised April 2024",
+    "sections": [
+        {
+            "section": "Ind AS 112",
+            "title": "Disclosure of Interests in Other Entities",
+            "description": "Checklist for disclosure requirements under Ind AS 112, enabling users to evaluate the nature, risks, and effects of interests in other entities on financial position, performance, and cash flows.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 112",
+                    "reference": "112.1",
+                    "question": "Has the entity disclosed information that enables users of its financial statements to evaluate the nature of, and risks associated with, its interests in other entities, and the effects of those interests on its financial position, financial performance, and cash flows [112.1]?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 112",
+                    "reference": "112.2",
+                    "question": "To meet the objective in paragraph 112.1, has the entity disclosed the significant judgements and assumptions made in determining the nature of its interest in another entity or arrangement, the type of joint arrangement in which it has an interest, and if applicable, that it meets the definition of an investment entity [112.2]?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 112",
+                    "reference": "112.3",
+                    "question": "If the disclosures required by Ind AS 112, together with other Ind ASs, do not meet the objective in paragraph 112.1, has the entity disclosed any additional information necessary to meet that objective [112.3]?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 112",
+                    "reference": "112.7",
+                    "question": "Has the entity disclosed information about significant judgements and assumptions made (and changes to them) in determining that it has control of another entity (per 110.5 and 110.6), joint control of an arrangement, or significant influence over another entity, and the type of joint arrangement when structured through a separate vehicle [112.7]?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 112",
+                    "reference": "112.9",
+                    "question": "To address paragraph 112.7, has the entity disclosed significant judgements and assumptions made in determining that it does or does not control another entity despite its voting rights, whether it is an agent or principal, or whether it does or does not have significant influence despite its voting rights [112.9]?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 112",
+                    "reference": "112.9A",
+                    "question": "If the parent entity determines it is an investment entity, has it disclosed significant judgements and assumptions made in determining this status (per 110.27), and reasons for this conclusion if it lacks typical characteristics (per 110.28) [112.9A]?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 112",
+                    "reference": "112.9B",
+                    "question": "If the entity becomes or ceases to be an investment entity, has it disclosed the change in status, the reasons for the change, and if becoming an investment entity, the total fair value of deconsolidated subsidiaries, any related gain or loss (per 110.B101), and the line item(s) where such gain or loss is recognized [112.9B]?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 112",
+                    "reference": "112.10",
+                    "question": "Has the entity disclosed information enabling users of consolidated financial statements to understand the group's composition and non-controlling interests' stake (112.12), and to evaluate significant restrictions on asset access/liability settlement (112.13), risks from consolidated structured entities (112.14-112.17), consequences of changes in ownership interest not losing control (112.18), and consequences of losing control (112.19) of a subsidiary [112.10]?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 112",
+                    "reference": "112.11",
+                    "question": "If a subsidiary's financial statements used for consolidation have a different reporting date or period, has the entity disclosed the subsidiary's reporting date and the reason for the difference [112.11]?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 112",
+                    "reference": "112.12",
+                    "question": "For each material subsidiary with non-controlling interests, has the entity disclosed its name, principal place of business, proportion of ownership and voting rights held by non-controlling interests, profit or loss allocated to NCI, accumulated NCI at period-end, and summarised financial information (per 112.B10) [112.12]?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 112",
+                    "reference": "112.13",
+                    "question": "Has the entity disclosed significant restrictions on its ability to access/use group assets and settle liabilities, including restrictions on cash/asset transfers to/from other group entities, guarantees restricting distributions or loan repayments, the nature and extent of NCI protective rights causing such restrictions, and the carrying amounts of assets/liabilities affected by these restrictions [112.13]?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 112",
+                    "reference": "112.14",
+                    "question": "Has the entity disclosed the terms of any contractual arrangements that could require the parent or its subsidiaries to provide financial support to a consolidated structured entity, including events or circumstances that could expose the reporting entity to a loss [112.14]?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 112",
+                    "reference": "112.15",
+                    "question": "If a parent or its subsidiaries provided non-contractual financial or other support to a consolidated structured entity during the period, has the entity disclosed the type and amount of support (including assistance in obtaining financial support) and the reasons for providing it [112.15]?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 112",
+                    "reference": "112.16",
+                    "question": "If a parent or its subsidiaries provided non-contractual support to a previously unconsolidated structured entity during the period, resulting in control, has the entity disclosed an explanation of the relevant factors for that decision [112.16]?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 112",
+                    "reference": "112.17",
+                    "question": "Has the entity disclosed any current intentions to provide financial or other support to a consolidated structured entity, including intentions to assist in obtaining financial support [112.17]?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 112",
+                    "reference": "112.18",
+                    "question": "Has the entity presented a schedule showing the effects on equity attributable to owners of the parent for any changes in ownership interest in a subsidiary that do not result in loss of control [112.18]?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 112",
+                    "reference": "112.19",
+                    "question": "Has the entity disclosed any gain or loss (calculated per 110.25) from losing control of a subsidiary, including the portion attributable to measuring retained investment at fair value, and the relevant profit or loss line item(s) [112.19]?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 112",
+                    "reference": "112.19A",
+                    "question": "If the entity is required by Ind AS 110 to apply the exception to consolidation and has accounted for its investment in a subsidiary at fair value through profit or loss, has this fact been disclosed [112.19A]?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 112",
+                    "reference": "112.19B",
+                    "question": "For each unconsolidated subsidiary, has an investment entity disclosed its name, principal place of business (and country of incorporation if different), and the proportion of ownership interest and, if different, voting rights held [112.19B]?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 112",
+                    "reference": "112.19C",
+                    "question": "If an investment entity is the parent of another investment entity, has the parent disclosed the information required by paragraph 112.19B(a)–(c) for investments controlled by its investment entity subsidiary, possibly by including the subsidiary's financial statements [112.19C]?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 112",
+                    "reference": "112.19D",
+                    "question": "Has the investment entity disclosed the nature and extent of significant restrictions on an unconsolidated subsidiary's ability to transfer funds (dividends, loan repayments) to the investment entity, and any current commitments or intentions to provide financial or other support to an unconsolidated subsidiary [112.19D]?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 112",
+                    "reference": "112.19E",
+                    "question": "If an investment entity or its subsidiaries provided non-contractual financial or other support to an unconsolidated subsidiary during the period, has the entity disclosed the type and amount of support and the reasons for providing it [112.19E]?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 112",
+                    "reference": "112.19F",
+                    "question": "Has an investment entity disclosed the terms of any contractual arrangements that could require the entity or its unconsolidated subsidiaries to provide financial support to an unconsolidated, controlled, structured entity, including events or circumstances that could expose the reporting entity to a loss [112.19F]?"
+                },
+                {
+                    "id": "24",
+                    "section": "Ind AS 112",
+                    "reference": "112.19G",
+                    "question": "If an investment entity or its unconsolidated subsidiaries provided non-contractual financial or other support to an unconsolidated structured entity (that the investment entity did not control), resulting in control, has the investment entity disclosed an explanation of the relevant factors for that decision [112.19G]?"
+                },
+                {
+                    "id": "25",
+                    "section": "Ind AS 112",
+                    "reference": "112.20",
+                    "question": "Has the entity disclosed information enabling users of its financial statements to evaluate the nature, extent, and financial effects of its interests in joint arrangements and associates, including the nature and effects of its contractual relationship with other investors, and the nature of and changes in risks associated with its interests in joint ventures and associates [112.20]?"
+                },
+                {
+                    "id": "26",
+                    "section": "Ind AS 112",
+                    "reference": "112.21",
+                    "question": "Has the entity disclosed for each material joint arrangement and associate: its name, nature of relationship, principal place of business, and ownership/voting proportions [112.21(a)]? For material joint ventures and associates, has it disclosed the measurement method (equity or fair value), summarised financial information (per 112.B12, 112.B13), and fair value if equity-method accounted and a quoted price exists [112.21(b)]? For individually immaterial joint ventures and associates, has it disclosed aggregated financial information (per 112.B16) [112.21(c)]? (Note: Investment entities are explicitly stated as not needing to provide disclosures required by paragraphs 112.21(b)-(c))."
+                },
+                {
+                    "id": "27",
+                    "section": "Ind AS 112",
+                    "reference": "112.21A",
+                    "question": "Has an investment entity provided the disclosures required by paragraphs 112.21(b)–112.21(c) [112.21A]?"
+                },
+                {
+                    "id": "28",
+                    "section": "Ind AS 112",
+                    "reference": "112.22",
+                    "question": "Has the entity disclosed the nature and extent of any significant restrictions on joint ventures' or associates' ability to transfer funds (dividends, loan repayments) to the entity [112.22(a)]? If equity-method financial statements of a joint venture or associate have a different reporting date/period, has the entity disclosed the date and reason for the difference [112.22(b)]? If the entity stopped recognizing its share of losses, has it disclosed the unrecognized share of losses for the period and cumulatively [112.22(c)]?"
+                },
+                {
+                    "id": "29",
+                    "section": "Ind AS 112",
+                    "reference": "112.23",
+                    "question": "Has the entity disclosed commitments related to its joint ventures separately from other commitments [112.23(a)]? Has it disclosed contingent liabilities related to its interests in joint ventures or associates separately from other contingent liabilities [112.23(b)]?"
+                },
+                {
+                    "id": "30",
+                    "section": "Ind AS 112",
+                    "reference": "112.24",
+                    "question": "Has the entity disclosed information enabling users to understand the nature and extent of its interests in unconsolidated structured entities and to evaluate the nature of, and changes in, risks associated with those interests [112.24]? (Note: Investment entities may be exempt from this disclosure for unconsolidated structured entities they control and for which they provide disclosures under 112.19A–112.19G)."
+                },
+                {
+                    "id": "31",
+                    "section": "Ind AS 112",
+                    "reference": "112.25",
+                    "question": "Does the information required by paragraph 112.24(b) include the entity's exposure to risk from past involvement with unconsolidated structured entities, even if there is no current contractual involvement at the reporting date [112.25]?"
+                },
+                {
+                    "id": "32",
+                    "section": "Ind AS 112",
+                    "reference": "112.26 - 112.27",
+                    "question": "Has the entity disclosed qualitative and quantitative information about its interests in unconsolidated structured entities, including their nature, purpose, size, activities, and financing [112.26]? If the entity sponsored an unconsolidated structured entity and does not provide other required information for it, has it disclosed how sponsored entities were determined, income from them (preferably tabular), and carrying amount of transferred assets (preferably tabular) [112.27]?"
+                },
+                {
+                    "id": "33",
+                    "section": "Ind AS 112",
+                    "reference": "112.29",
+                    "question": "Has the entity disclosed (preferably in tabular format) the carrying amounts of assets and liabilities related to its interests in unconsolidated structured entities, the balance sheet line items where they are recognized, the amount representing its maximum exposure to loss (and how determined, or reasons if not quantifiable), and a comparison of carrying amounts to maximum loss exposure [112.29]?"
+                },
+                {
+                    "id": "34",
+                    "section": "Ind AS 112",
+                    "reference": "112.30",
+                    "question": "If the entity provided non-contractual financial or other support to an unconsolidated structured entity (in which it had an interest) during the period, has it disclosed the type and amount of support (including assistance in obtaining financial support) and the reasons for providing it [112.30]?"
+                },
+                {
+                    "id": "35",
+                    "section": "Ind AS 112",
+                    "reference": "112.31",
+                    "question": "Has the entity disclosed any current intentions to provide financial or other support to an unconsolidated structured entity, including intentions to assist in obtaining financial support [112.31]?"
+                },
+                {
+                    "id": "36",
+                    "section": "Ind AS 112",
+                    "reference": "112.B4",
+                    "question": "Has the entity presented information separately for interests in subsidiaries, joint ventures, joint operations, associates, and unconsolidated structured entities [112.B4]?"
+                },
+                {
+                    "id": "37",
+                    "section": "Ind AS 112",
+                    "reference": "112.B10 - 112.B11",
+                    "question": "For each material subsidiary with non-controlling interests, has the entity disclosed dividends paid to NCI [112.B10(a)]? Has it provided summarised financial information (assets, liabilities, P&L, cash flows) for the subsidiary (before inter-company eliminations) to help users understand NCI's interest in group activities and cash flows [112.B10(b)]?"
+                },
+                {
+                    "id": "38",
+                    "section": "Ind AS 112",
+                    "reference": "112.B12",
+                    "question": "For each material joint venture and associate, has the entity disclosed dividends received and summarised financial information including current/non-current assets/liabilities, revenue, profit/loss from continuing/discontinued operations, other comprehensive income, and total comprehensive income [112.B12]?"
+                },
+                {
+                    "id": "39",
+                    "section": "Ind AS 112",
+                    "reference": "112.B13",
+                    "question": "For each material joint venture, has the entity disclosed, in addition to 112.B12 information, the amounts of cash and cash equivalents, current financial liabilities (excluding trade/other payables/provisions), non-current financial liabilities (excluding trade/other payables/provisions), depreciation/amortization, interest income, interest expense, and income tax expense/income [112.B13]?"
+                },
+                {
+                    "id": "40",
+                    "section": "Ind AS 112",
+                    "reference": "112.B14",
+                    "question": "Is the summarised financial information per 112.B12 and 112.B13 based on the joint venture's or associate's Ind AS financial statements (not the entity's share) [112.B14(a)]? If the equity method is used, has the entity disclosed adjusted amounts (for fair value/policy differences) and a reconciliation to the carrying amount of its interest [112.B14(b)]?"
+                },
+                {
+                    "id": "41",
+                    "section": "Ind AS 112",
+                    "reference": "112.B15",
+                    "question": "Has the entity presented summarised financial information (per 112.B12 and 112.B13) based on the joint venture's or associate's financial statements only if its interest is measured at fair value (per Ind AS 28) and the joint venture/associate does not prepare Ind AS financial statements and doing so would be impracticable/costly [112.B15]?"
+                },
+                {
+                    "id": "42",
+                    "section": "Ind AS 112",
+                    "reference": "112.B15",
+                    "question": "Has the entity disclosed the basis on which the summarised financial information has been prepared [112.B15]?"
+                },
+                {
+                    "id": "43",
+                    "section": "Ind AS 112",
+                    "reference": "112.B16",
+                    "question": "Has the entity disclosed, in aggregate, the carrying amount of its interests in all individually immaterial joint ventures or associates that are accounted for using the equity method [112.B16]?"
+                },
+                {
+                    "id": "44",
+                    "section": "Ind AS 112",
+                    "reference": "112.B16",
+                    "question": "Has the entity separately disclosed the aggregate amount of its share of individually immaterial equity-accounted joint ventures' or associates' profit/loss from continuing operations, post-tax profit/loss from discontinued operations, other comprehensive income, and total comprehensive income [112.B16]?"
+                },
+                {
+                    "id": "45",
+                    "section": "Ind AS 112",
+                    "reference": "112.B18",
+                    "question": "Has the entity disclosed total unrecognised commitments at the reporting date (including its share of jointly made commitments) related to its interests in joint ventures, which may give rise to future cash or resource outflows [112.B18]?"
+                },
+                {
+                    "id": "46",
+                    "section": "Ind AS 112",
+                    "reference": "112.B25",
+                    "question": "In addition to information required by paragraphs 112.29–112.31, has the entity disclosed any additional information necessary to meet the disclosure objective in paragraph 112.24(b) [112.B25]?"
+                },
+                {
+                    "id": "47",
+                    "section": "Ind AS 112",
+                    "reference": "112.B25 (a) and (b)",
+                    "question": "For each material subsidiary with non-controlling interests, has the entity disclosed the profit or loss allocated to NCI (per 112.12(e)) [112.B25(a)]? If the entity recognizes regulatory deferral account balances, has it disclosed the net movement in these balances included in the amounts required by 112.12(e) [112.B25(b)]?"
+                },
+                {
+                    "id": "48",
+                    "section": "Ind AS 112",
+                    "reference": "112.B27",
+                    "question": "If the entity recognizes regulatory deferral account balances, has it disclosed, in addition to other specified information (112.12, 112.21, 112.B10, 112.B12-112.B13, 112.B16), the total regulatory deferral account debit balance, total credit balance, and net movements split by profit or loss and other comprehensive income, for each entity requiring Ind AS 112 disclosures [112.B27]?"
+                },
+                {
+                    "id": "49",
+                    "section": "Ind AS 112",
+                    "reference": "112.B28",
+                    "question": "When recognizing a gain or loss on losing control of a subsidiary (calculated per 110.25), has the entity disclosed the information specified by paragraph 112.19 [112.B28(a)]? Additionally, if electing to apply this Standard, has it disclosed the portion of that gain or loss attributable to derecognizing regulatory deferral account balances in the former subsidiary at the control loss date [112.B28(b)]?"
+                }
+            ]
+        }
+    ]
+}

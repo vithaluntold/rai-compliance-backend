@@ -1,0 +1,25 @@
+﻿{
+    "title": "Interim Financial Reporting (IAS 34) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 34",
+            "title": "Interim Financial Reporting",
+            "description": "Checklist for presentation and disclosure requirements under IAS 34.",
+            "items": [
+                {
+                    "id": "393.1",
+                    "section": "IAS 34",
+                    "reference": "IAS 34.26(a)",
+                    "question": "If an estimate of an amount reported in a previous interim period is changed significantly during the final interim period of the financial year, but a separate financial report is not published for that final interim period, has the nature of that change in estimate been disclosed in a note to the annual financial statements for that financial year?"
+                },
+                {
+                    "id": "393.2",
+                    "section": "IAS 34",
+                    "reference": "IAS 34.26(b)",
+                    "question": "If an estimate of an amount reported in a previous interim period is changed significantly during the final interim period of the financial year, but a separate financial report is not published for that final interim period, has the amount of that change in estimate been disclosed in a note to the annual financial statements for that financial year?"
+                }
+            ]
+        }
+    ]
+}

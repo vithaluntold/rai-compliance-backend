@@ -1,0 +1,43 @@
+﻿{
+    "title": "Government Grants (IAS 20) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 20",
+            "title": "Government Grants",
+            "description": "Checklist for presentation and disclosure requirements under IAS 20.",
+            "items": [
+                {
+                    "id": "396.1",
+                    "section": "IAS 20",
+                    "reference": "IAS 20.39(a)",
+                    "question": "Does the entity disclose the accounting policy for government grants?"
+                },
+                {
+                    "id": "396.2",
+                    "section": "IAS 20",
+                    "reference": "IAS 20.39(b)",
+                    "question": "Does the entity disclose the methods of presentation of government grants in the financial statements?"
+                },
+                {
+                    "id": "396.3",
+                    "section": "IAS 20",
+                    "reference": "IAS 20.39(c)",
+                    "question": "Does the entity disclose the nature and extent of government grants recognised in the financial statements?"
+                },
+                {
+                    "id": "396.4",
+                    "section": "IAS 20",
+                    "reference": "IAS 20.39(d)",
+                    "question": "Does the entity provide an indication of other forms of government assistance from which it has directly benefited?"
+                },
+                {
+                    "id": "396.5",
+                    "section": "IAS 20",
+                    "reference": "IAS 20.39(e)",
+                    "question": "Does the entity disclose any unfulfilled conditions and other contingencies attaching to government assistance that has been recognised?"
+                }
+            ]
+        }
+    ]
+}

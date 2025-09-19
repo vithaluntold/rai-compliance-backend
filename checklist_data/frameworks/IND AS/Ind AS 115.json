@@ -1,0 +1,175 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) : Disclosures Checklist (Revised April, 2024)",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 115",
+            "title": "Revenue from Contracts with Customers",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 115, as revised in April 2024.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 115",
+                    "reference": "115.105",
+                    "question": "When either party to a contract has performed, whether the entity presented the contract in the balance sheet as a contract asset or a contract liability, depending on the relationship between the entity’s performance and the customer’s payment [1]? Whether the entity presented any unconditional rights to consideration separately as a receivable [1]?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 115",
+                    "reference": "115.107",
+                    "question": "Whether an entity has measured, presented and disclosed an impairment of a contract asset on the same basis as a financial asset that is within the scope of Ind AS 109 (see also paragraph 115.113(b)) [2]?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 115",
+                    "reference": "115.109",
+                    "question": "If an entity uses an alternative description for a contract asset, whether the entity provided sufficient information for a user of the financial statements to distinguish between receivables and contract assets [2]?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 115",
+                    "reference": "115.109AA",
+                    "question": "Whether the entity presented separately the amount of excise duty included in the revenue recognised in the statement of profit and loss [2]?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 115",
+                    "reference": "115.110",
+                    "question": "Whether the entity has provided disclosure of qualitative and quantitative information about all of the following: (a) its contracts with customers (see paragraphs 115.113–115.122) [2]; (b) the significant judgements, and changes in the judgements, made in applying this Standard to those contracts (see paragraphs 115.123–115.126) [2]; and (c) any assets recognised from the costs to obtain or fulfil a contract with a customer in accordance with paragraph 115.91 or 115.95 (see paragraphs 115.127–115.128) [3]?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 115",
+                    "reference": "115.113",
+                    "question": "Whether the entity provided disclosure of all of the following amounts for the reporting period unless those amounts are presented separately in the statement of profit and loss in accordance with other Standards: (a) revenue recognised from contracts with customers, which the entity shall disclose separately from its other sources of revenue [3]; and (b) any impairment losses recognised (in accordance with Ind AS 109) on any receivables or contract assets arising from an entity’s contracts with customers, which the entity shall disclose separately from impairment losses from other contracts [4]?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 115",
+                    "reference": "115.114",
+                    "question": "Whether the entity shall disaggregated revenue recognised from contracts with customers into categories that depict how the nature, amount, timing and uncertainty of revenue and cash flows are affected by economic factors [4]?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 115",
+                    "reference": "115.115",
+                    "question": "Whether an entity has disclosed sufficient information to enable users of financial statements to understand the relationship between the disclosure of disaggregated revenue (in accordance with paragraph 115.114) and revenue information that is disclosed for each reportable segment, if the entity applies Ind AS 108, Operating Segments [4]?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 115",
+                    "reference": "115.116",
+                    "question": "Whether the entity has given disclosure of all of the following: (a) the opening and closing balances of receivables, contract assets and contract liabilities from contracts with customers, if not otherwise separately presented or disclosed [5]; (b) revenue recognised in the reporting period that was included in the contract liability balance at the beginning of the period [5]; and (c) revenue recognised in the reporting period from performance obligations satisfied (or partially satisfied) in previous periods [5]?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 115",
+                    "reference": "115.117",
+                    "question": "Whether the entity has provided appropriate explanation about how the timing of satisfaction of its performance obligations (see paragraph 115.119(a)) relates to the typical timing of payment (see paragraph 115.119(b)) and the effect that those factors have on the contract asset and the contract liability balances [5]?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 115",
+                    "reference": "115.118",
+                    "question": "Whether the entity has provided explanation about the significant changes in the contract asset and the contract liability balances during the reporting period [5]?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 115",
+                    "reference": "115.119",
+                    "question": "Whether the entity has given disclosure of information about entity’s performance obligations in contracts with customers, including a description of all of the following: (a) when the entity typically satisfies its performance obligations including when performance obligations are satisfied in a bill-and-hold arrangement [5]; (b) the significant payment terms [5]; (c) the nature of the goods or services that the entity has promised to transfer, highlighting any performance obligations to arrange for another party to transfer goods or services (ie if the entity is acting as an agent) [6]; (d) obligations for returns, refunds and other similar obligations [6]; and (e) types of warranties and related obligations [6]?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 115",
+                    "reference": "115.120",
+                    "question": "Whether the entity has given disclosure of the following information about entity’s remaining performance obligations: (a) the aggregate amount of the transaction price allocated to the performance obligations that are unsatisfied (or partially unsatisfied) as of the end of the reporting period [6]; and (b) an explanation of when the entity expects to recognise as revenue the amount disclosed in accordance with paragraph 120(a), which the entity shall disclose in either of the following ways: (i) on a quantitative basis using the time bands that would be most appropriate for the duration of the remaining performance obligations; or (ii) by using qualitative information [6]?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 115",
+                    "reference": "115.122",
+                    "question": "Has the entity explained qualitatively that whether it is applying the practical expedient in paragraph 121 and whether any consideration from contracts with customers is not included in the transaction price and, therefore, not included in the information disclosed in accordance with paragraph 120 [6]?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 115",
+                    "reference": "115.123",
+                    "question": "Whether the entity has given disclosure of the judgements, and changes in the judgements, made in applying this Standard that significantly affect the determination of the amount and timing of revenue from contracts with customers [6, 7]? In particular, an entity shall explain the judgements, and changes in the judgements, used in determining both of the following: (a) the timing of satisfaction of performance obligations (see paragraphs 115.124–115.125) [7]; and (b) the transaction price and the amounts allocated to performance obligations (see paragraph 115.126) [7]?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 115",
+                    "reference": "115.124",
+                    "question": "Whether the entity has disclosed the following for performance obligations that an entity satisfies over time: (a) the methods used to recognise revenue [8]; and (b) an explanation of why the methods used provide a faithful depiction of the transfer of goods or services [8]?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 115",
+                    "reference": "115.125",
+                    "question": "Whether the entity has disclosed the significant judgements that it has made in evaluating when a customer obtains control of promised goods or services for the performance obligations satisfied at a point in time [8]?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 115",
+                    "reference": "115.126",
+                    "question": "Whether the entity disclosed the information about the methods, inputs and assumptions used for all of the following: (a) determining the transaction price, which includes, but is not limited to, estimating variable consideration, adjusting the consideration for the effects of the time value of money and measuring non-cash consideration [8]; (b) assessing whether an estimate of variable consideration is constrained [8]; (c) allocating the transaction price, including estimating stand-alone selling prices of promised goods or services and allocating discounts and variable consideration to a specific part of the contract (if applicable) [9]; and (d) measuring obligations for returns, refunds and other similar obligations [9]?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 115",
+                    "reference": "115.126AA",
+                    "question": "Whether the entity has reconciled the amount of revenue recognised in the statement of profit and loss with the contracted price showing separately each of the adjustments made to the contract price, specifying the nature and amount of each such adjustment separately [9]?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 115",
+                    "reference": "115.127",
+                    "question": "Whether an entity has described both of the following: (a) the judgements made in determining the amount of the costs incurred to obtain or fulfil a contract with a customer (in accordance with paragraph 115.91 or 115.95) [9]; and (b) the method it uses to determine the amortisation for each reporting period [9]?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 115",
+                    "reference": "115.128",
+                    "question": "Whether the entity has disclosed of all of the following: (a) the closing balances of assets recognised from the costs incurred to obtain or fulfil a contract with a customer (in accordance with paragraph 115.91 or 115.95), by main category of asset [9]; and (b) the amount of amortisation and any impairment losses recognised in the reporting period [10]?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 115",
+                    "reference": "115.129",
+                    "question": "If the entity has elected practical expedient in paragraph 115.63 (about the existence of a significant financing component) or paragraph 115.94 (about the incremental costs of obtaining a contract), whether it has disclosed that fact [10]?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 115",
+                    "reference": "115.C6",
+                    "question": "For any of the practical expedients in paragraph 115.C5 that an entity uses, it shall apply that expedient consistently to all contracts within all reporting periods presented. In addition, whether it has disclosed all of the following information: (a) the expedients that have been used [10]; and (b) to the extent reasonably possible, a qualitative assessment of the estimated effect of applying each of those expedients [11]?"
+                },
+                {
+                    "id": "24",
+                    "section": "Ind AS 115",
+                    "reference": "115.C7A",
+                    "question": "An entity applying this Standard retrospectively in accordance with paragraph 115.C3(b) may also use the practical expedient described in paragraph 115.C5(c), either: (a) for all contract modifications that occur before the beginning of the earliest period presented; or (b) for all contract modifications that occur before the date of initial application. If an entity uses this practical expedient, whether the entity has applied the expedient consistently to all contracts and disclosed the information required by paragraph 115.C6 [11]?"
+                },
+                {
+                    "id": "25",
+                    "section": "Ind AS 115",
+                    "reference": "115.C8",
+                    "question": "Whether the entity provided both of the following additional disclosures for the reporting periods that include the date of initial application, if this standard is applied retrospectively in accordance with paragraph C3(b): (a) the amount by which each financial statement line item is affected in the current reporting period by the application of this Standard as compared to Ind AS 11 and Ind AS 18 [11]; and (b) an explanation of the reasons for significant changes identified in C8(a) [12]?"
+                },
+                {
+                    "id": "26",
+                    "section": "Ind AS 115",
+                    "reference": "115.E6",
+                    "question": "Whether the entity has provided disclosure of the following in each period by an operator and a grantor: (a) a description of the arrangement [12]; (b) significant terms of the arrangement that may affect the amount, timing and certainty of future cash flows [12]; (c) the nature and extent of: (i) rights to use specified assets [12]; (ii) obligations to provide or rights to expect provision of services [12]; (iii) obligations to acquire or build items of property, plant and equipment [12]; (iv) obligations to deliver or rights to receive specified assets at the end of the concession period [13]; (v) renewal and termination options [13]; and (vi) other rights and obligations [13]; (d) changes in the arrangement occurring during the period [13]; and (e) how the service arrangement has been classified [13]?"
+                },
+                {
+                    "id": "27",
+                    "section": "Ind AS 115",
+                    "reference": "115.E6A",
+                    "question": "Whether the operator has disclosed the amount of revenue and profits or losses recognized in the period on exchanging construction services for a financial asset or an intangible asset [13]?"
+                }
+            ]
+        }
+    ]
+}

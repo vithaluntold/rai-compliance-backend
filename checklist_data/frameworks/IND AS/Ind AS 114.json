@@ -1,0 +1,108 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) : Disclosures Checklist (Revised April, 2024)",
+    "version": "Revised April 2024",
+    "sections": [
+        {
+            "section": "Ind AS 114",
+            "title": "Regulatory Deferral Accounts",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 114.",
+            "items": [
+                {
+                    "id": "1",
+                    "reference": "114.20",
+                    "question": "Whether the entity has presented separate line items in the Balance Sheet for: a) the total of all regulatory deferral account debit balances; b) the total of all regulatory deferral account credit balances."
+                },
+                {
+                    "id": "2",
+                    "reference": "114.22",
+                    "question": "Whether the entity has presented in the Other Comprehensive Income section of the statement of profit and loss, the net movement in all regulatory deferral account balances for the reporting period that relate to items recognized in Other Comprehensive Income. b) Whether separate line items have been used for the net movement related to items that, in accordance with other Standards: (i) will not be reclassified subsequently to profit or loss; and (ii) will be reclassified subsequently to profit or loss when specific conditions are met."
+                },
+                {
+                    "id": "3",
+                    "reference": "114.23",
+                    "question": "Whether the entity has presented a separate line item in the profit or loss section of the statement of profit and loss, for the remaining net movement in all regulatory deferral account balances for the reporting period, excluding movements that are not reflected in profit or loss, such as amounts acquired. b) Whether this separate line item has distinguished from the income and expenses that are presented in accordance with other Standards by the use of a sub-total, which is drawn before the net movement in regulatory deferral account balances."
+                },
+                {
+                    "id": "4",
+                    "reference": "114.24",
+                    "question": "When the entity recognizes a deferred tax asset or a deferred tax liability as a result of recognizing regulatory deferral account balances, whether the entity has presented: a) the resulting deferred tax asset (liability) and the related movement in that deferred tax asset (liability) with the related regulatory deferral account balances; and b) movements in those balances, instead of within the total presented in accordance with Ind AS 12 Income Taxes for deferred tax assets (liabilities) and the tax expense (income)."
+                },
+                {
+                    "id": "5",
+                    "reference": "114.25",
+                    "question": "When the entity presents a discontinued operation or a disposal group in accordance with Ind AS 105 Non-current Assets Held for Sale and Discontinued Operations, whether the entity has presented: a) any related regulatory deferral account balances; b) the net movement in those balances, as applicable; c) with the regulatory deferral account balances and movements in those balances, instead of within the disposal groups or discontinued operations."
+                },
+                {
+                    "id": "6",
+                    "reference": "114.26",
+                    "question": "When the entity presents earnings per share in accordance with Ind AS 33, Earnings per Share, whether the entity has presented additional basic and diluted earnings per share, which are calculated using the earnings amounts required by Ind AS 33 but excluding the movements in regulatory deferral account balances."
+                },
+                {
+                    "id": "7",
+                    "reference": "114.27",
+                    "question": "In case entity elects to apply this Standard, whether the entity has given disclosure of the information that enables users to assess: (a) the nature of, and the risks associated with, the rate regulation that establishes the price(s) that the entity can charge customers for the goods or services it provides; and (b) the effects of that rate regulation on its financial position, financial performance and cash flows."
+                },
+                {
+                    "id": "8",
+                    "reference": "114.28",
+                    "question": "If any of the disclosures set out in paragraphs 114.30–114.36 are not considered relevant to meet the objective in paragraph 114.27, they may be omitted from the financial statements. If the disclosures provided in accordance with paragraphs 114.30–114.36 are insufficient to meet the objective in paragraph 114.27, then whether the entity has given disclosure of additional information that is necessary to meet that objective."
+                },
+                {
+                    "id": "9",
+                    "reference": "114.30",
+                    "question": "Whether the entity has disclosed the following information, to help a user of the financial statements to assess the nature of, and the risks associated with, the entity’s rate-regulated activities, for each type of rate-regulated activity, disclosure of: (a) a brief description of the nature and extent of the rate-regulated activity and the nature of the regulatory rate-setting process; (b) the identity of the rate regulator(s). If the rate regulator is a related party (as defined in Ind AS 24, Related Party Disclosures), the entity shall disclose that fact, together with an explanation of how it is related; (c) how the future recovery of each class (ie each type of cost or income) of regulatory deferral account debit balance or reversal of each class of regulatory deferral account credit balance is affected by risks and uncertainty:"
+                },
+                {
+                    "id": "10",
+                    "reference": "114.31",
+                    "question": "(a) Whether the disclosures required by paragraph 114.30 has been given in the financial statements either directly in the notes or incorporated by cross-reference from the financial statements to some other statement, such as a management commentary or risk report, that is available to users of the financial statements on the same terms as the financial statements and at the same time. Note: If the information is not included in the financial statements directly or incorporated by cross-reference, the financial statements are incomplete."
+                },
+                {
+                    "id": "11",
+                    "reference": "114.32",
+                    "question": "Whether the entity has disclosed the basis on which regulatory deferral account balances are recognised and derecognised, and how they are measured initially and subsequently, including how regulatory deferral account balances are assessed for recoverability and how any impairment loss is allocated."
+                },
+                {
+                    "id": "12",
+                    "reference": "114.33",
+                    "question": "For each type of rate-regulated activity, whether the entity has disclosed the following information for each class of regulatory deferral account balance: (a) a reconciliation of the carrying amount at the beginning and the end of the period, in a table unless another format is more appropriate. The entity shall apply judgement in deciding the level of detail necessary (see paragraphs 114.28– 114.29), but the following components would usually be relevant: (i) the amounts that have been recognised in the current period in the balance sheet as regulatory deferral account balances; (ii) the amounts that have been recognised in the statement of profit and loss relating to balances that have been recovered (sometimes described as amortised) or reversed in the current period; and (iii) other amounts, separately identified, that affected the regulatory deferral account balances, such as impairments, items acquired or assumed in a business combination, items disposed of, or the effects of changes in foreign exchange rates or discount rates; (b) the rate of return or discount rate (including a zero rate or a range of rates, when applicable) used to reflect the time value of money that is applicable to each class of regulatory deferral account balance; and (c) the remaining periods over which the entity expects to recover (or amortise) the carrying amount of each class of regulatory deferral account debit balance or to reverse each class of regulatory deferral account credit balance."
+                },
+                {
+                    "id": "13",
+                    "reference": "114.34",
+                    "question": "(a) When rate regulation affect the amount and timing of an entity’s income tax expense (income), whether the entity has disclosed the impact of the rate regulation on the amounts of current and deferred tax recognised. (b) In addition, whether the entity has separately disclosed any regulatory deferral account balance that relates to taxation and the related movement in that balance."
+                },
+                {
+                    "id": "14",
+                    "reference": "114.35",
+                    "question": "When an entity provides disclosures in accordance with Ind AS 112 Disclosure of Interests in Other Entities, for an interest in a subsidiary, associate or joint venture that has rate-regulated activities and for which regulatory deferral account balances are recognised in accordance with this Standard, whether the entity has provided disclosure of the amounts that are included for the regulatory deferral account debit and credit balances and the net movement in those balances for the interests disclosed (see paragraphs 114.B25–114.B28)."
+                },
+                {
+                    "id": "15",
+                    "reference": "114.36",
+                    "question": "When an entity concludes that a regulatory deferral account balance is no longer fully recoverable or reversible, then whether the entity has disclosed that fact, the reason why it is not recoverable or reversible and the amount by which the regulatory deferral account balance has been reduced."
+                },
+                {
+                    "id": "16",
+                    "reference": "114.B22",
+                    "question": "If the entity chooses to include the regulatory deferral account balances and movements in those balances that are related to the disposal group or discontinued operation within the related regulated deferral account line items, whether the entity has disclosed them separately as part of the analysis of the regulatory deferral account line items described by paragraph 114.33."
+                },
+                {
+                    "id": "17",
+                    "reference": "114.B25",
+                    "question": "(a) Whether the entity has given the disclosure required by paragraph 112.12(e) for each of its subsidiaries that have non-controlling interests that are material to the reporting entity, of the profit or loss that was allocated to non-controlling interests of the subsidiary during the reporting period. (b) In case an entity that recognises regulatory deferral account balances in accordance with this Standard, whether the entity has made disclosure of the net movement in regulatory deferral account balances that is included within the amounts that are required to be disclosed by paragraph Ind AS 112.12(e)."
+                },
+                {
+                    "id": "18",
+                    "reference": "114.B27",
+                    "question": "In addition to the information specified in paragraphs 112.12, 112.21, 112.B10, 112.B12–112.B13 and 112.B16, in case entity recognises regulatory deferral account balances in accordance with this Standard, whether the entity has provided disclosure of i. the total regulatory deferral account debit balance, ii. the total regulatory deferral account credit balance and iii. the net movements in those balances, split between amounts recognised in profit or loss and amounts recognised as other comprehensive income, for each entity for which those Ind AS 112 disclosures are required."
+                },
+                {
+                    "id": "19",
+                    "reference": "114.B28",
+                    "question": "(a) Whether an entity has disclosed the information specified by paragraph 112.19 when the entity recognises a gain or loss on losing control of a subsidiary, calculated in accordance with paragraph 110.25. (b) In addition to the information required by paragraph 112.19, in case an entity elects to apply this Standard, whether it has provided disclosure of the portion of that gain or loss that is attributable to derecognising regulatory deferral account balances in the former subsidiary at the date when control is lost."
+                }
+            ]
+        }
+    ]
+}

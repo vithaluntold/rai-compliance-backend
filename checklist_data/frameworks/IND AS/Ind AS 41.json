@@ -1,0 +1,91 @@
+﻿{
+    "title": "Agriculture (Ind AS 41) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 41",
+            "title": "Agriculture",
+            "description": "Checklist for disclosure requirements under Ind AS 41.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 41",
+                    "reference": "41.40",
+                    "question": "Does the entity disclose the **aggregate gain or loss arising during the current period on initial recognition of biological assets and agriculture produce**?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 41",
+                    "reference": "41.40",
+                    "question": "Does the entity disclose the **aggregate gain or loss arising during the current period from the change in fair value less costs to sell of biological assets**?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 41",
+                    "reference": "41.41",
+                    "question": "Does the entity provide a **description of each group of biological assets (in the form of narrative or quantified description)**?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 41",
+                    "reference": "41.43",
+                    "question": "Does the entity provide a **quantified description of each group of biological assets**, distinguishing between: a) consumable and bearer biological assets, or b) between mature and immature biological assets?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 41",
+                    "reference": "41.46",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, has the entity disclosed the following: a) **nature of its activities involving each group of biological assets**, b) non-financial measures or estimates of the **physical quantities of**: i) each group of entity's biological assets at the end of period, and ii) output of agricultural produce during the period?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 41",
+                    "reference": "41.49",
+                    "question": "Does the entity disclose the following: a) the **existence and carrying amounts of biological assets whose title is restricted**, and carrying amounts of biological assets pledged as security for liabilities, b) the **amount of commitments for the development or acquisition of biological assets**, and c) **financial risk management strategies related to agricultural activity**?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 41",
+                    "reference": "41.50",
+                    "question": "Has a **reconciliation been provided of changes in carrying amount of biological assets between the beginning and the end of the current period**, including: a) the gain or loss arising from changes in fair value less costs to sell, b) increases due to purchases, c) decreases attributable to sales and biological assets classified as held for sale (or included in a disposal group that is classified as held for sale) in accordance with Ind AS 105, d) decreases due to harvest, e) increases resulting from business combinations, f) net exchange differences arising on the translation of financial statements into a different presentation currency, and on the translation of a foreign operation into the presentation currency of the reporting entity, and g) Other changes?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 41",
+                    "reference": "41.51 (voluntary disclosure)",
+                    "question": "The fair value less costs to sell of a biological asset can change due to both physical changes and price changes in the market. Separate disclosure of physical and price changes is useful in appraising current period performance and future prospects, particularly when there is a production cycle of more than one year. In such cases, does the entity disclose, by group or otherwise, the **amount of change in fair value less costs to sell included in profit or loss due to physical changes and due to price changes**?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 41",
+                    "reference": "41.53",
+                    "question": "Agricultural activity is often exposed to climatic, disease and other natural risks. If an event occurs that gives rise to a material item of income or expense, does the entity disclose the following in accordance with Ind AS 1: a) the **nature**; and b) **amount of that item**?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 41",
+                    "reference": "41.54",
+                    "question": "In case biological assets are measured at their cost less any accumulated depreciation and any accumulated impairment losses (paragraph 41.30) at the end of the period, does the entity disclose the following: a) **description of the biological assets**, b) an explanation of why fair value cannot be measured reliably, c) the range of estimates within which fair value is highly likely to lie (if possible), d) the depreciation method used, e) useful lives or depreciation rates used, and f) the gross carrying amount and the accumulated depreciation (aggregated with accumulated impairment losses) at the beginning and end of the period?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 41",
+                    "reference": "41.55",
+                    "question": "If, during the current period, an entity measures biological assets at their cost less any accumulated depreciation and any accumulated impairment losses (see paragraph 41.30), does it disclose any **gain or loss recognised on disposal of such biological assets** and does the reconciliation required by paragraph 41.50 disclose amounts related to such biological assets separately? In addition, does the reconciliation include the following amounts included in profit or loss related to those biological assets: a) Impairment losses, b) Reversals of impairment losses, and c) Depreciation?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 41",
+                    "reference": "41.56",
+                    "question": "In case the fair value of a biological asset previously measured at its cost less any accumulated depreciation and any accumulated impairment losses becomes reliably measurable during the current period, has the entity disclosed the following: a) **description of biological assets**, b) an explanation of why fair value has become reliably measurable, and c) the effect of the change?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 41",
+                    "reference": "41.57",
+                    "question": "Does the entity disclose the following related to agricultural activity covered by the Standard: a) **nature and extent of government grants recognised in the financial statements**; b) unfulfilled conditions and other contingencies attaching to government grants; c) significant decreases expected in the level of government grants?"
+                }
+            ]
+        }
+    ]
+}

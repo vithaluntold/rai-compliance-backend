@@ -1,0 +1,68 @@
+﻿
+{
+    "title": "Inventories (Ind AS 2) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 2",
+            "title": "Inventories",
+            "description": "Checklist for presentation and disclosure requirements related to inventories under Ind AS 2. This standard outlines specific disclosure requirements to enable users of financial statements to understand an entity's financial position and performance concerning inventories.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(a)",
+                    "question": "Whether the entity has made disclosure of **the accounting policies adopted in measuring inventories**, including the **cost formula used**?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(b)",
+                    "question": "Whether the entity has made disclosure of **the total carrying amount of inventories** and the carrying amount in **classifications appropriate to the entity**?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(c)",
+                    "question": "Whether the entity has made disclosure of the **carrying amount of inventories carried at fair value less costs to sell**?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(d)",
+                    "question": "Whether the entity has made disclosure of **the amount of inventories recognised as an expense during the period**?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(e)",
+                    "question": "Whether the entity has made disclosure of **the amount of any write-down of inventories recognized as an expense in the period** in accordance with paragraph 2.34?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(f)",
+                    "question": "Whether the entity has made disclosure of **the amount of any reversal of any write-down** that is recognized as a reduction in the amount of inventories recognized as expense in the period in accordance with paragraph 2.34?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(g)",
+                    "question": "Whether the entity has made disclosure of **the circumstances or events that led to the reversal of a write-down of inventories** in accordance with paragraph 2.34?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 2",
+                    "reference": "2.36(h)",
+                    "question": "Whether the entity has made disclosure of the **carrying amount of inventories pledged as security for liabilities**?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 2",
+                    "reference": "2.39",
+                    "question": "In case the entity adopts a format for profit and loss that results in amounts being disclosed other than the cost of inventories recognized as an expense during the period and the entity presents an analysis of expenses using a classification based on the nature of expenses, then whether the entity has given disclosures of **the costs recognized as an expense for raw materials and consumables, labour costs and other costs together with the amount of the net change in inventories for the period**?"
+                }
+            ]
+        }
+    ]
+}

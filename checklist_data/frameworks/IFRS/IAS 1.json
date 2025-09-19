@@ -1,0 +1,1315 @@
+﻿{
+    "title": "International Financial Reporting Standards Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 1",
+            "title": "Presentation of Financial Statements",
+            "description": "Checklist for presentation and disclosure requirements under IAS 1.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.49",
+                    "question": "Are the financial statements identified clearly (using an unambiguous title) and distinguished from other information in the same published document?"
+                },
+                {
+                    "id": "2a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present a statement of financial position as at the end of the period as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "2b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present a statement of profit or loss and other comprehensive income for the period as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "2c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present a statement of changes in equity for the period as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "2d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present a statement of cash flows for the period as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "2e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present notes, comprising material accounting policy information and other explanatory information as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "2f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.10",
+                    "question": "Does the entity present comparative information in respect of the preceding period as specified in IAS 1.38 and 38A as part of a complete set of financial statements?"
+                },
+                {
+                    "id": "3a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.51, IAS 21.8",
+                    "question": "Does the entity prominently display the name of the reporting entity or other means of identification, and any change in that information from the end of the preceding reporting period, at least once in the financial statements?"
+                },
+                {
+                    "id": "3b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.51, IAS 21.8",
+                    "question": "Does the entity prominently display whether the financial statements cover the individual entity or a group of entities at least once in the financial statements?"
+                },
+                {
+                    "id": "3c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.51, IAS 21.8",
+                    "question": "Does the entity prominently display the date of the end of the reporting period or the period covered by the financial statements or notes at least once in the financial statements?"
+                },
+                {
+                    "id": "3d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.51, IAS 21.8",
+                    "question": "Does the entity prominently display the presentation currency, as defined in IAS 21.8, at least once in the financial statements?"
+                },
+                {
+                    "id": "3e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.51, IAS 21.8",
+                    "question": "Does the entity prominently display the level of rounding used in the presentation of amounts in the financial statements at least once in the financial statements?"
+                },
+                {
+                    "id": "4a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the domicile of the entity?"
+                },
+                {
+                    "id": "4b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the legal form of the entity?"
+                },
+                {
+                    "id": "4c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the entity's country of incorporation?"
+                },
+                {
+                    "id": "4d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the address of the registered office (or principal place of business, if different from the registered office)?"
+                },
+                {
+                    "id": "4e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the nature of the entity's operations and its principal activities?"
+                },
+                {
+                    "id": "4f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the name of the parent?"
+                },
+                {
+                    "id": "4g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose the name of the ultimate parent of the group?"
+                },
+                {
+                    "id": "4h",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.138",
+                    "question": "If not disclosed elsewhere in information published with the financial statements, does the entity disclose information regarding the length of its life (if the entity is a limited life entity)?"
+                },
+                {
+                    "id": "5",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.15, IAS 1.17, IAS 1.112, IFRS 5.5B",
+                    "question": "Does the entity provide additional disclosures if the requirements in IFRSs are insufficient to enable users to understand the impact of particular transactions, other events, and conditions on the entity's financial position and financial performance?"
+                },
+                {
+                    "id": "6",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.16",
+                    "question": "Does the entity disclose an explicit and unreserved statement of compliance with IFRSs?"
+                },
+                {
+                    "id": "7a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose that management concluded that the financial statements present fairly the entity's financial position, financial performance and cash flows?"
+                },
+                {
+                    "id": "7b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose that it complies with applicable IFRS accounting standards, except that it departs from a requirement of an IFRS to achieve a fair presentation?"
+                },
+                {
+                    "id": "7c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose the title of the IFRS from which the entity departs?"
+                },
+                {
+                    "id": "7d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose the nature of the departure?"
+                },
+                {
+                    "id": "7e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose the treatment that the IFRS would require?"
+                },
+                {
+                    "id": "7f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose the reason why that treatment would be so misleading in the circumstances that it would conflict with the objective of financial statements set out in the Conceptual Framework?"
+                },
+                {
+                    "id": "7g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose the treatment adopted?"
+                },
+                {
+                    "id": "7h",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.19, IAS 1.20",
+                    "question": "When departing from an IFRS requirement due to misleading compliance, does the entity disclose for each period presented, the financial impact of the departure on each item in the financial statements that would have been reported in complying with the requirement?"
+                },
+                {
+                    "id": "8a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose the title of the IFRS from which the entity has departed?"
+                },
+                {
+                    "id": "8b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose the nature of the departure?"
+                },
+                {
+                    "id": "8c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose the treatment that the IFRS would require?"
+                },
+                {
+                    "id": "8d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose the reason why that treatment would be so misleading in the circumstances that it would conflict with the objective of financial statements set out in the Conceptual Framework?"
+                },
+                {
+                    "id": "8e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose the treatment adopted?"
+                },
+                {
+                    "id": "8f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.21, IAS 1.20",
+                    "question": "If the entity departed from an IFRS requirement in a prior period affecting current period amounts, does the entity disclose for each period presented, the financial impact of the departure on each item in the financial statements that would have been reported in complying with the requirement?"
+                },
+                {
+                    "id": "9a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.23, IAS 1.20",
+                    "question": "When compliance with an IFRS requirement would be misleading but departure is prohibited, does the entity disclose the title of the IFRS in question?"
+                },
+                {
+                    "id": "9b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.23, IAS 1.20",
+                    "question": "When compliance with an IFRS requirement would be misleading but departure is prohibited, does the entity disclose the nature of the requirement?"
+                },
+                {
+                    "id": "9c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.23, IAS 1.20",
+                    "question": "When compliance with an IFRS requirement would be misleading but departure is prohibited, does the entity disclose the reason why management concluded that complying with that requirement is so misleading in the circumstances that it conflicts with the objective of financial statements set out in the Conceptual Framework?"
+                },
+                {
+                    "id": "9d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.23, IAS 1.20",
+                    "question": "When compliance with an IFRS requirement would be misleading but departure is prohibited, does the entity disclose for each period presented, the adjustments to each item in the financial statements that management concluded would be necessary to achieve a fair presentation?"
+                },
+                {
+                    "id": "10",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.25",
+                    "question": "Does the entity disclose material uncertainties related to events or conditions that may cast significant doubt upon the entity's ability to continue as a going concern?"
+                },
+                {
+                    "id": "11a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.25",
+                    "question": "If the financial statements are not prepared on a going concern basis, does the entity disclose the fact that the financial statements are not prepared on a going concern basis?"
+                },
+                {
+                    "id": "11b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.25",
+                    "question": "If the financial statements are not prepared on a going concern basis, does the entity disclose the basis on which the financial statements are prepared?"
+                },
+                {
+                    "id": "11c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.25",
+                    "question": "If the financial statements are not prepared on a going concern basis, does the entity disclose the reason why the entity is not regarded as a going concern?"
+                },
+                {
+                    "id": "12",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.36",
+                    "question": "If the end of the entity's reporting period changes and the annual financial statements are presented for a period longer or shorter than one year, does the entity disclose: a. The reporting period covered by the financial statements?"
+                },
+                {
+                    "id": "15a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.41",
+                    "question": "If the presentation or classification of items in the financial statements is amended and comparative amounts are reclassified, does the entity disclose the nature of the reclassification?"
+                },
+                {
+                    "id": "15b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.41",
+                    "question": "If the presentation or classification of items in the financial statements is amended and comparative amounts are reclassified, does the entity disclose the amount of each item or class of items that is reclassified?"
+                },
+                {
+                    "id": "15c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.41",
+                    "question": "If the presentation or classification of items in the financial statements is amended and comparative amounts are reclassified, does the entity disclose the reason for the reclassification?"
+                },
+                {
+                    "id": "16a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.42",
+                    "question": "If the entity cannot reclassify comparative amounts after making every reasonable effort to do so, does the entity disclose the reason for not reclassifying the amounts?"
+                },
+                {
+                    "id": "16b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.42",
+                    "question": "If the entity cannot reclassify comparative amounts after making every reasonable effort to do so, does the entity disclose the nature of the adjustments that would have been made if the amounts were reclassified?"
+                },
+                {
+                    "id": "17",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.38A",
+                    "question": "Does the entity present, as a minimum, two statements of financial position, two statements of profit or loss and other comprehensive income, two separate statements of profit or loss (if presented), two statements of cash flows and two statements of changes in equity, and related notes?"
+                },
+                {
+                    "id": "18",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.38C",
+                    "question": "When an entity voluntarily presents comparative information in addition to the minimum comparative financial statements required by IFRSs, does the entity present related note information for those additional statements?"
+                },
+                {
+                    "id": "19a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.40B",
+                    "question": "In the circumstances described in IAS 1.40A, does the entity present a statement of financial position as at the end of the current period?"
+                },
+                {
+                    "id": "19b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.40B",
+                    "question": "In the circumstances described in IAS 1.40A, does the entity present a statement of financial position as at the end of the preceding period?"
+                },
+                {
+                    "id": "19c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.40B",
+                    "question": "In the circumstances described in IAS 1.40A, does the entity present a statement of financial position as at the beginning of the preceding period?"
+                },
+                {
+                    "id": "20",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.40C",
+                    "question": "When an entity is required to present an additional statement of financial position in accordance with IAS 1.40A, does the entity disclose the information required by IAS 1.41–44 and IAS 8?"
+                },
+                {
+                    "id": "21",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.40D",
+                    "question": "When an entity presents an opening statement of financial position in accordance with IAS 1.40A, is the date of this statement the beginning of the preceding period even if additional comparative information is presented in terms of IAS 1.38C?"
+                },
+                {
+                    "id": "22a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.45",
+                    "question": "Does the entity retain the presentation of items in the financial statements from one period to the next?"
+                },
+                {
+                    "id": "22b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.45",
+                    "question": "Does the entity retain the classification of items in the financial statements from one period to the next?"
+                },
+                {
+                    "id": "23a",
+                    "section": "IAS 1",
+                    "reference": "IAS 10.17",
+                    "question": "Does the entity disclose the date when the financial statements were authorised for issue?"
+                },
+                {
+                    "id": "23b",
+                    "section": "IAS 1",
+                    "reference": "IAS 10.17",
+                    "question": "Does the entity disclose who authorised the financial statements?"
+                },
+                {
+                    "id": "23c",
+                    "section": "IAS 1",
+                    "reference": "IAS 10.17",
+                    "question": "Does the entity disclose the fact that the entity's owners or others have the power to amend the financial statements after issue, if applicable?"
+                },
+                {
+                    "id": "43a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.13",
+                    "question": "Does the entity present, outside the financial statements, a financial review by management that describes changes in the environment in which the entity operates?"
+                },
+                {
+                    "id": "43b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.13",
+                    "question": "Does the entity present, outside the financial statements, a financial review by management that describes the entity's response to environmental changes and their effect?"
+                },
+                {
+                    "id": "43c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.13",
+                    "question": "Does the entity present, outside the financial statements, a financial review by management that describes the entity's policy for investment to maintain and enhance financial performance, including its dividend policy?"
+                },
+                {
+                    "id": "43d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.13",
+                    "question": "Does the entity present, outside the financial statements, a financial review by management that describes the entity's sources of funding and its targeted ratio of liability to equity?"
+                },
+                {
+                    "id": "43e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.13",
+                    "question": "Does the entity present, outside the financial statements, a financial review by management that describes the entity's resources not recognised in the statement of financial position in accordance with IFRS accounting standards?"
+                },
+                {
+                    "id": "44",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.14",
+                    "question": "Does the entity present reports and statements, outside the financial statements, such as environmental reports and value-added statements, particularly in industries in which environmental factors are significant and if employees are an important user group?"
+                },
+                {
+                    "id": "45",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present each material class of similar items separately in the statement of financial position?"
+                },
+                {
+                    "id": "46",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present separately items of a dissimilar nature or function unless they are immaterial?"
+                },
+                {
+                    "id": "47",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.32",
+                    "question": "Unless required or permitted by another IFRS accounting standard, does the entity present separately, and not offset, assets and liabilities?"
+                },
+                {
+                    "id": "49",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.60",
+                    "question": "If the entity does not present separately current and non-current assets in its statement of financial position, does it present all assets in order of liquidity?"
+                },
+                {
+                    "id": "50",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.60",
+                    "question": "If the entity does not present separately current and non-current liabilities in its statement of financial position, does it present all liabilities in order of liquidity?"
+                },
+                {
+                    "id": "51a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.66",
+                    "question": "If the entity separately presents current and non-current assets, does it classify an asset as current when it is expected to be realised in, or is intended for sale or consumption in, the entity's normal operating cycle?"
+                },
+                {
+                    "id": "51b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.66",
+                    "question": "If the entity separately presents current and non-current assets, does it classify an asset as current when it is held primarily for trading?"
+                },
+                {
+                    "id": "51c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.66",
+                    "question": "If the entity separately presents current and non-current assets, does it classify an asset as current when it is expected to be realised within 12 months after the reporting period?"
+                },
+                {
+                    "id": "51d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.66",
+                    "question": "If the entity separately presents current and non-current assets, does it classify cash or a cash equivalent asset as current unless it is restricted from being exchanged or used to settle a liability for at least 12 months after the reporting period?"
+                },
+                {
+                    "id": "52a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.69",
+                    "question": "If the entity separately presents current and non-current liabilities, does it classify a liability as current if it expects to settle the liability in its normal operating cycle?"
+                },
+                {
+                    "id": "52b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.69",
+                    "question": "If the entity separately presents current and non-current liabilities, does it classify a liability as current if it holds the liability primarily for the purpose of trading?"
+                },
+                {
+                    "id": "52c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.69",
+                    "question": "If the entity separately presents current and non-current liabilities, does it classify a liability as current if the liability is due to be settled within 12 months after the reporting period?"
+                },
+                {
+                    "id": "53a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.72",
+                    "question": "If the entity separately presents current and non-current liabilities, does it classify financial liabilities as current if they are due to be settled within 12 months after the reporting period, even if the original term was for a period longer than 12 months?"
+                },
+                {
+                    "id": "53b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.72",
+                    "question": "If the entity separately presents current and non-current liabilities, does it classify financial liabilities as current if they are due to be settled within 12 months after the reporting period, even if an agreement to refinance, or to reschedule payments, on a long-term basis is completed after the reporting period and before the financial statements are authorised for issue?"
+                },
+                {
+                    "id": "54",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.74",
+                    "question": "If the entity separately presents current and non-current liabilities in its statement of financial position, does the entity classify its long-term liability as current if the entity breaches a covenant of a long-term loan agreement on or before the end of the reporting period with the effect that the liability becomes payable on demand, even if the lender agreed after the reporting period and before the authorisation of the financial statements for issue, not to demand payment as a consequence of the breach?"
+                },
+                {
+                    "id": "55",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.61",
+                    "question": "Does the entity disclose the amount expected to be recovered or settled after more than 12 months for each asset and liability line item that combines amounts expected to be recovered or settled within twelve months and amounts expected to be recovered or settled more than 12 months after the reporting period?"
+                },
+                {
+                    "id": "56",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.56",
+                    "question": "If the entity distinguishes between current and non-current assets in its financial statements, does it present deferred tax assets as non-current assets?"
+                },
+                {
+                    "id": "57",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.56",
+                    "question": "If the entity distinguishes between current and non-current liabilities in its financial statements, does it present deferred tax liabilities as non-current liabilities?"
+                },
+                {
+                    "id": "58",
+                    "section": "IAS 1",
+                    "reference": "IAS 28.15",
+                    "question": "For investments in associates or joint ventures, or any retained interest in such investments, that are not classified as held for sale under IFRS 5, does the entity classify these as non-current assets accounted for using the equity method?"
+                },
+                {
+                    "id": "59a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include property, plant and equipment as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include investment property as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include intangible assets as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include financial assets (excluding amounts shown under equity method investments, trade and other receivables, and cash and cash equivalents) as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include portfolios of contracts within the scope of IFRS 17 that are assets, disaggregated as required by IFRS 17.78, as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include investments accounted for using the equity method as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include biological assets within the scope of IAS 41 as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59h",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include inventories as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59i",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include trade and other receivables as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59j",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include cash and cash equivalents as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59k",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include trade and other payables as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59l",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include provisions as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59m",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include financial liabilities (excluding amounts shown under trade and other payables and provisions) as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59n",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include portfolios of contracts within the scope of IFRS 17 that are liabilities, disaggregated as required by IFRS 17.78, as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59o",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include liabilities and assets for current tax as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59p",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include deferred tax liabilities and deferred tax assets as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59q",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include non-controlling interest, presented within equity, as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "59r",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54",
+                    "question": "Does the entity include issued capital and reserves attributable to owners of the parent as a line item in its statement of financial position?"
+                },
+                {
+                    "id": "60a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54, IFRS 5.38",
+                    "question": "Does the entity include non-current assets classified as held for sale and assets included in disposal groups classified as held for sale in accordance with IFRS 5 as a line item in the statement of financial position?"
+                },
+                {
+                    "id": "60b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.54, IFRS 5.38",
+                    "question": "Does the entity include liabilities included in disposal groups classified as held for sale in accordance with IFRS 5 as a line item in the statement of financial position?"
+                },
+                {
+                    "id": "61",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.55, IAS 1.57",
+                    "question": "Does the entity present additional line items (including by disaggregating the line items listed in IAS 1.54), headings and subtotals in the statement of financial position if such presentation is relevant to an understanding of the entity's financial position?"
+                },
+                {
+                    "id": "62a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.55A",
+                    "question": "When the entity presents subtotals under IAS 1.55, are those subtotals comprised of line items made up of amounts recognised and measured under IFRS accounting standards?"
+                },
+                {
+                    "id": "62b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.55A",
+                    "question": "When the entity presents subtotals under IAS 1.55, are those subtotals presented and labelled in a manner that makes the line items that constitute the subtotal clear and understandable?"
+                },
+                {
+                    "id": "62c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.55A",
+                    "question": "When the entity presents subtotals under IAS 1.55, are those subtotals consistent from period to period under IAS 1.45?"
+                },
+                {
+                    "id": "62d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.55A",
+                    "question": "When the entity presents subtotals under IAS 1.55, are those subtotals not displayed with more prominence than the subtotals and totals required in IFRS accounting standards for the statement of financial position?"
+                },
+                {
+                    "id": "63",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.77",
+                    "question": "Does the entity disclose further sub-classifications of the line items presented, classified in a manner appropriate to the entity's operations?"
+                },
+                {
+                    "id": "64",
+                    "section": "IAS 1",
+                    "reference": "IFRS 5.38, IFRS 5.39",
+                    "question": "Does the entity disclose separately the major classes of assets and liabilities classified as held for sale, except if the disposal group is a newly acquired subsidiary that meets the criteria to be classified as held for sale on acquisition?"
+                },
+                {
+                    "id": "65a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81A",
+                    "question": "Does the entity present profit or loss in the statement of profit or loss and other comprehensive income, in addition to the profit or loss and other comprehensive income sections?"
+                },
+                {
+                    "id": "65b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81A",
+                    "question": "Does the entity present total other comprehensive income in the statement of profit or loss and other comprehensive income, in addition to the profit or loss and other comprehensive income sections?"
+                },
+                {
+                    "id": "65c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81A",
+                    "question": "Does the entity present comprehensive income for the period, being the total of profit or loss and other comprehensive income, in the statement of profit or loss and other comprehensive income?"
+                },
+                {
+                    "id": "66",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81A",
+                    "question": "If an entity presents a separate statement of profit or loss, does the statement presenting comprehensive income exclude the profit or loss section?"
+                },
+                {
+                    "id": "67a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81B",
+                    "question": "Does the entity present profit or loss for the period attributable to non-controlling interests as allocation of profit or loss and other comprehensive income for the period?"
+                },
+                {
+                    "id": "67b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81B",
+                    "question": "Does the entity present profit or loss for the period attributable to owners of the parent as allocation of profit or loss and other comprehensive income for the period?"
+                },
+                {
+                    "id": "67c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81B",
+                    "question": "Does the entity present comprehensive income for the period attributable to non-controlling interests as allocation of profit or loss and other comprehensive income for the period?"
+                },
+                {
+                    "id": "67d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81B",
+                    "question": "Does the entity present comprehensive income for the period attributable to owners of the parent as allocation of profit or loss and other comprehensive income for the period?"
+                },
+                {
+                    "id": "68",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.81B",
+                    "question": "If an entity presents profit or loss in a separate statement, does the entity present the allocation of profit or loss between non-controlling interests and owners of the parent in that statement?"
+                },
+                {
+                    "id": "69",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present each material class of similar items separately in the statement of comprehensive income?"
+                },
+                {
+                    "id": "70",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present separately items of a dissimilar nature or function unless they are immaterial?"
+                },
+                {
+                    "id": "71",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.32",
+                    "question": "Unless required or permitted by another IFRS accounting standard, does the entity present separately, and not offset, income and expenses?"
+                },
+                {
+                    "id": "72",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.88",
+                    "question": "Does the entity include all items of income and expense in a reporting period in profit or loss (unless an IFRS requires or permits otherwise)?"
+                },
+                {
+                    "id": "73a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present revenue (excluding interest revenue calculated using the effective interest method and insurance revenue) as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present interest revenue calculated using the effective interest method separately as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present insurance revenue separately as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present insurance service expenses from contracts issued within the scope of IFRS 17 as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present income or expenses from reinsurance contracts held as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present gains and losses arising from the derecognition of financial assets measured at amortised cost as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present insurance finance income or expenses from contracts issued within the scope of IFRS 17 as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73h",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present finance income or expenses from reinsurance contracts held as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73i",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present finance costs as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73j",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present impairment losses (including reversals of impairment losses or impairment gains) determined under Section 5.5 of IFRS 9 as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73k",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present share of the profit or loss of associates and joint ventures accounted for using the equity method as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73l",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present any gain or loss arising from reclassifying a financial asset out of the amortised cost measurement category to fair value through profit or loss as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73m",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present any cumulative gain or loss from reclassifying a financial asset out of the fair value through other comprehensive income measurement category to fair value through profit or loss as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73n",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present tax expense as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "73o",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82",
+                    "question": "Does the entity present a single amount for the total of discontinued operations (see IFRS 5) as a line item in the profit or loss section or the statement of profit or loss?"
+                },
+                {
+                    "id": "74a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82A",
+                    "question": "Does the entity present line items in the other comprehensive income section for items of other comprehensive income (excluding share of associates and joint ventures), classified by nature and grouped into those that will not be reclassified subsequently to profit or loss?"
+                },
+                {
+                    "id": "74b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82A",
+                    "question": "Does the entity present line items in the other comprehensive income section for items of other comprehensive income (excluding share of associates and joint ventures), classified by nature and grouped into those that will be reclassified subsequently to profit or loss when specific conditions are met?"
+                },
+                {
+                    "id": "74c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82A",
+                    "question": "Does the entity present line items in the other comprehensive income section for the share of the other comprehensive income of associates and joint ventures accounted for using the equity method that will not be reclassified subsequently to profit or loss?"
+                },
+                {
+                    "id": "74d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.82A",
+                    "question": "Does the entity present line items in the other comprehensive income section for the share of the other comprehensive income of associates and joint ventures accounted for using the equity method that will be reclassified subsequently to profit or loss when specific conditions are met?"
+                },
+                {
+                    "id": "76",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85, IAS 1.86",
+                    "question": "Does the entity present additional line items (including by disaggregating the line items listed in IAS 1.82), headings and subtotals in the statement of profit or loss and other comprehensive income if such presentation is relevant to an understanding of the entity's financial performance?"
+                },
+                {
+                    "id": "77a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85A",
+                    "question": "When the entity presents subtotals under IAS 1.85, are those subtotals comprised of line items made up of amounts recognised and measured under IFRS accounting standards?"
+                },
+                {
+                    "id": "77b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85A",
+                    "question": "When the entity presents subtotals under IAS 1.85, are those subtotals presented and labelled in a manner that makes the line items that constitute the subtotal clear and understandable?"
+                },
+                {
+                    "id": "77c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85A",
+                    "question": "When the entity presents subtotals under IAS 1.85, are those subtotals consistent from period to period under IAS 1.45?"
+                },
+                {
+                    "id": "77d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85A",
+                    "question": "When the entity presents subtotals under IAS 1.85, are those subtotals not displayed with more prominence than the subtotals and totals required in IFRS accounting standards for the statement(s) presenting profit or loss and other comprehensive income?"
+                },
+                {
+                    "id": "78",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.85B",
+                    "question": "Does the entity present the line items in the statement(s) presenting profit or loss and other comprehensive income that reconcile any subtotals presented under IAS 1.85 with the subtotals or totals required in IFRS accounting standards for such statement(s)?"
+                },
+                {
+                    "id": "79a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.97",
+                    "question": "If items of income and expense are material, does the entity disclose the amount?"
+                },
+                {
+                    "id": "79b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.97",
+                    "question": "If items of income and expense are material, does the entity disclose the nature of the item?"
+                },
+                {
+                    "id": "80a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.99, IAS 1.102, IAS 1.103",
+                    "question": "Does the entity present or disclose an analysis of expenses recognised in profit or loss using a classification based on the nature of expenses?"
+                },
+                {
+                    "id": "80b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.99, IAS 1.102, IAS 1.103",
+                    "question": "Does the entity present or disclose an analysis of expenses recognised in profit or loss using a classification based on the function of expenses within the entity (in which case the entity discloses, as a minimum, its cost of sales)?"
+                },
+                {
+                    "id": "81",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.100",
+                    "question": "Does the entity present the analysis of expenses, as described in IAS 1.99, in its statement of profit or loss and other comprehensive income?"
+                },
+                {
+                    "id": "82",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.104",
+                    "question": "If the entity classifies expenses by function, does it disclose additional information on the nature of expenses, including: a. Depreciation and amortisation expense b. Employee benefits expense?"
+                },
+                {
+                    "id": "83",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.90, IAS 12.81",
+                    "question": "Does the entity disclose the income tax relating to each item of other comprehensive income, including reclassification adjustments?"
+                },
+                {
+                    "id": "84",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.94",
+                    "question": "If an entity presents reclassification adjustments in the notes, are the items of other comprehensive income presented in the statement of profit or loss and other comprehensive income after any reclassification adjustments?"
+                },
+                {
+                    "id": "85",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.92",
+                    "question": "Does the entity disclose reclassification adjustments relating to items of other comprehensive income?"
+                },
+                {
+                    "id": "102",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "If the entity applies IAS 1, does it present each material class of similar items separately in the statement of cash flows?"
+                },
+                {
+                    "id": "103",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "If the entity applies IAS 1, does it present separately items of a dissimilar nature or function unless they are immaterial?"
+                },
+                {
+                    "id": "111",
+                    "section": "IAS 1",
+                    "reference": "IAS 7.18",
+                    "question": "Does the entity report cash flows from operating activities using either: a. The direct method, disclosing major classes of gross cash receipts and gross cash payments (this method is encouraged) Or b. The indirect method, in which the entity adjusts profit or loss (or operating profit or loss, if the entity early adopts IFRS 18) for: ...?"
+                },
+                {
+                    "id": "131",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present each material class of similar items separately in the statement of changes in equity?"
+                },
+                {
+                    "id": "132",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.29",
+                    "question": "Does the entity present separately items of a dissimilar nature or function unless they are immaterial?"
+                },
+                {
+                    "id": "133a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include total comprehensive income for the period, showing separately the total amounts attributable to owners of the parent and to non-controlling interests?"
+                },
+                {
+                    "id": "133b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include, for each component of equity, the effects of retrospective application or retrospective restatement recognised in accordance with IAS 8?"
+                },
+                {
+                    "id": "133c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include, for each component of equity, a reconciliation between the carrying amount at the beginning and the end of the period, separately disclosing changes resulting from profit or loss?"
+                },
+                {
+                    "id": "133d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include, for each component of equity, a reconciliation between the carrying amount at the beginning and the end of the period, separately disclosing changes resulting from other comprehensive income?"
+                },
+                {
+                    "id": "133e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include, for each component of equity, a reconciliation between the carrying amount at the beginning and the end of the period, separately disclosing changes resulting from transactions with owners in their capacity as owners, showing separately contributions by and distributions to owners?"
+                },
+                {
+                    "id": "133f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106",
+                    "question": "Does the statement of changes in equity include, for each component of equity, a reconciliation between the carrying amount at the beginning and the end of the period, separately disclosing changes in ownership interests in subsidiaries that do not result in a loss of control?"
+                },
+                {
+                    "id": "134",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.106A",
+                    "question": "Does the entity disclose for each component of equity, either in the statement of changes in equity or in the notes, an analysis of other comprehensive income by item?"
+                },
+                {
+                    "id": "135a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.107, IAS 32.35, IFRS 3.53",
+                    "question": "Does the entity disclose, either in the statement of changes in equity, or in the notes, the amount of dividends recognised as distributions to owners during the period?"
+                },
+                {
+                    "id": "135b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.107, IAS 32.35, IFRS 3.53",
+                    "question": "Does the entity disclose, either in the statement of changes in equity, or in the notes, the related amount of dividends per share?"
+                },
+                {
+                    "id": "136",
+                    "section": "IAS 1",
+                    "reference": "IAS 32.39, IAS 1.109",
+                    "question": "Does the entity separately disclose the amount of transaction costs accounted for as a deduction from equity in the reporting period in the statement of changes in equity?"
+                },
+                {
+                    "id": "137",
+                    "section": "IAS 1",
+                    "reference": "IAS 32.39, IAS 12.81",
+                    "question": "Does the entity include the amount of income taxes associated with transaction costs accounted for as a deduction from equity in the aggregate amount of current and deferred tax credited or charged directly to equity?"
+                },
+                {
+                    "id": "138a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.112",
+                    "question": "Do the notes to the financial statements disclose the basis of preparation of the financial statements?"
+                },
+                {
+                    "id": "138b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.112",
+                    "question": "Do the notes to the financial statements disclose the specific accounting policies used?"
+                },
+                {
+                    "id": "138c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.112",
+                    "question": "Do the notes to the financial statements disclose the information required by IFRS accounting standards that is not presented in the statement of financial position, statement of profit or loss and other comprehensive income, statement of changes in equity or the statement of cash flows?"
+                },
+                {
+                    "id": "138d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.112",
+                    "question": "Do the notes to the financial statements disclose information that is not presented in the statement of financial position, statement of profit or loss and other comprehensive income, statement of changes in equity or the statement of cash flows, but is relevant to an understanding of any of them?"
+                },
+                {
+                    "id": "139",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.113",
+                    "question": "Does the entity present notes to the financial statements in a systematic manner, as far as practicable?"
+                },
+                {
+                    "id": "140a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.113",
+                    "question": "Does the entity cross-reference each item in the statement of financial position to any related information in the notes?"
+                },
+                {
+                    "id": "140b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.113",
+                    "question": "Does the entity cross-reference each item in the statement of profit or loss and other comprehensive income to any related information in the notes?"
+                },
+                {
+                    "id": "140c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.113",
+                    "question": "Does the entity cross-reference each item in the statement of changes in equity to any related information in the notes?"
+                },
+                {
+                    "id": "140d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.113",
+                    "question": "Does the entity cross-reference each item in the statement of cash flows to any related information in the notes?"
+                },
+                {
+                    "id": "141",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.117",
+                    "question": "Does the entity disclose material accounting policy information?"
+                },
+                {
+                    "id": "142",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.117D",
+                    "question": "If an entity discloses immaterial accounting policy information, does it not obscure material accounting policy information?"
+                },
+                {
+                    "id": "143",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.122",
+                    "question": "Does the entity disclose, along with its material accounting policy information or other notes, the judgements (apart from those involving estimations) by management that have the most significant effect on the amounts recognised in the financial statements?"
+                },
+                {
+                    "id": "148",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.125, IFRS 5.5B",
+                    "question": "Does the entity disclose key assumptions about the future, and other sources of key estimation uncertainty at the end of the reporting period, that have a significant risk of causing a material adjustment to the carrying amounts of assets and liabilities within the next financial year?"
+                },
+                {
+                    "id": "149a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.125",
+                    "question": "For the assets and liabilities in IAS 1.125 above, does the entity disclose their nature?"
+                },
+                {
+                    "id": "149b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.125",
+                    "question": "For the assets and liabilities in IAS 1.125 above, does the entity disclose their carrying amount as at the end of the reporting period?"
+                },
+                {
+                    "id": "150",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.134",
+                    "question": "Does the entity disclose information that enables users of its financial statements to evaluate the entity's objectives, policies and processes for managing capital?"
+                },
+                {
+                    "id": "151a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose qualitative information about its objectives, policies and processes for managing capital, including a description of what it manages as capital?"
+                },
+                {
+                    "id": "151b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose qualitative information about its objectives, policies and processes for managing capital, including (if subject to externally imposed capital requirements) the nature of those requirements and how those requirements are incorporated into the management of capital?"
+                },
+                {
+                    "id": "151c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose qualitative information about its objectives, policies and processes for managing capital, including how it is meeting its objectives for managing capital?"
+                },
+                {
+                    "id": "151d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose summary quantitative data about what it manages as capital?"
+                },
+                {
+                    "id": "151e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose any changes in its objectives, policies and processes for managing capital and its summary quantitative data from the previous period?"
+                },
+                {
+                    "id": "151f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose whether during the period it complied with any externally imposed capital requirements to which it is subject?"
+                },
+                {
+                    "id": "151g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.135",
+                    "question": "Does the entity disclose, if it did not comply with the externally imposed capital requirements to which it is subject, the consequences of such non-compliance?"
+                },
+                {
+                    "id": "173",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.117, IAS 8.27A",
+                    "question": "Does the entity disclose the accounting policy for the recognition of borrowing costs?"
+                },
+                {
+                    "id": "251a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.137, IFRS 18.132",
+                    "question": "Does the entity disclose the amount of dividends proposed or declared before the financial statements were authorised for issue, but not recognised as a distribution to owners during the reporting period?"
+                },
+                {
+                    "id": "251b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.137, IFRS 18.132",
+                    "question": "Does the entity disclose the related amount per share for dividends proposed or declared before the financial statements were authorised for issue?"
+                },
+                {
+                    "id": "251c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.137, IFRS 18.132",
+                    "question": "Does the entity disclose the amount of any cumulative preference dividends not recognised?"
+                },
+                {
+                    "id": "271",
+                    "section": "IAS 1",
+                    "reference": "IFRIC 14.10, IAS 1.125, IAS 8.31A",
+                    "question": "Does the entity disclose any restrictions on the current realisability of the surplus (from a defined benefit plan) or the basis used to determine the amount of the economic benefit available?"
+                },
+                {
+                    "id": "272a",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose the number of shares authorised for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272b",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose the number of shares issued and fully paid, and issued but not fully paid, for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272c",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose par value per share, or a statement that the shares have no par value, for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272d",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose a reconciliation of the shares outstanding at the beginning and at the end of the reporting period for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272e",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose the rights, preferences and restrictions attaching to each class of share capital including restrictions on the distribution of dividends and the repayment of capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272f",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose shares in the entity held by the entity or by its subsidiaries or associates (\"treasury shares\") for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "272g",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose shares reserved for issue under options and contracts for the sale of shares, including terms and amounts, for each class of share capital in the statement of financial position, the statement of changes in equity or in the notes?"
+                },
+                {
+                    "id": "273",
+                    "section": "IAS 1",
+                    "reference": "IAS 1.79, IFRS 18.130",
+                    "question": "Does the entity disclose the nature and purpose of each reserve within equity?"
+                },
+                {
+                    "id": "277a",
+                    "section": "IAS 1",
+                    "reference": "IAS 10.21, IAS 10.22, IAS 1.76, IFRS 18.B105",
+                    "question": "If non-adjusting events after the reporting period are material, does the entity disclose the nature of the event for each material category of non-adjusting events after the reporting period?"
+                },
+                {
+                    "id": "277b",
+                    "section": "IAS 1",
+                    "reference": "IAS 10.21, IAS 10.22, IAS 1.76, IFRS 18.B105",
+                    "question": "If non-adjusting events after the reporting period are material, does the entity disclose an estimate of its financial effect, or a statement that such an estimate cannot be made, for each material category of non-adjusting events after the reporting period?"
+                },
+                {
+                    "id": "424",
+                    "section": "IAS 1",
+                    "reference": "IAS 2.39",
+                    "question": "If the entity adopts a format for profit or loss under IAS 1 that results in amounts being disclosed other than the cost of inventories recognised as an expense during the period and presents an analysis of expenses using a classification based on the nature of expenses, does the entity disclose the costs recognised as an expense for raw materials and consumables, labour costs and other costs together with the amount of the net change in inventories for the period?"
+                },
+                {
+                    "id": "435",
+                    "section": "IAS 1",
+                    "reference": "IFRS 16.49",
+                    "question": "In the statement of profit or loss and other comprehensive income, does the entity present interest expense on the lease liability separately from the depreciation charge for the right-of-use asset?"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 104: Insurance Contracts Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 104",
+            "title": "Insurance Contracts",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 104.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 104",
+                    "reference": "104.36",
+                    "question": "Whether an insurer has disclosed information that identifies and explains the amounts in its financial statements arising from insurance contracts [1]."
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 104",
+                    "reference": "104.37",
+                    "question": "To comply with paragraph 104.36, whether an insurer has disclosed: (a) its accounting policies for insurance contracts and related assets, liabilities, income and expense [1]; (b) the recognised assets, liabilities, income and expense (and, if it presents its statement of cash flows using the direct method, cash flows) arising from insurance contracts, including gains and losses recognised in profit or loss on buying reinsurance, and if the cedant defers and amortises gains and losses arising on buying reinsurance, the amortisation for the period and the amounts remaining unamortised at the beginning and end of the period [1]; (c) the process used to determine the assumptions that have the greatest effect on the measurement of the recognised amounts described in (b), with quantified disclosure of those assumptions when practicable [1]; (d) the effect of changes in assumptions used to measure insurance assets and insurance liabilities, showing separately the effect of each change that has a material effect on the financial statements [1]; and (e) reconciliations of changes in insurance liabilities, reinsurance assets and, if any, related deferred acquisition costs [1]."
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 104",
+                    "reference": "104.38",
+                    "question": "Whether an insurer has disclosed information that enables users of its financial statements to evaluate the nature and extent of risks arising from insurance contracts [1]."
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 104",
+                    "reference": "104.39",
+                    "question": "To comply with paragraph 104.38, whether an insurer has disclosed: (a) its objectives, policies and processes for managing risks arising from insurance contracts and the methods used to manage those risks [1]; (b) information about insurance risk (both before and after risk mitigation by reinsurance), including information about: (i) sensitivity to insurance risk (see paragraph 104.39A) [1]; (ii) concentrations of insurance risk, including a description of how management determines concentrations and a description of the shared characteristic that identifies each concentration (e.g., type of insured event, geographical area, or currency) [1]; and (iii) actual claims compared with previous estimates (i.e., claims development), going back to the period when the earliest material claim arose for which there is still uncertainty about the amount and timing of the claims payments (but not more than ten years), unless uncertainty is typically resolved within one year [1]; (c) information about credit risk, liquidity risk and market risk that paragraphs 107.31–107.42 would require if the insurance contracts were within the scope of Ind AS 107, with specific considerations for maturity analysis and sensitivity analysis if alternative methods are used [1]; and (d) information about exposures to market risk arising from embedded derivatives contained in a host insurance contract if the insurer is not required to, and does not, measure the embedded derivatives at fair value [1]."
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 104",
+                    "reference": "104.39A",
+                    "question": "To comply with paragraph 104.39(c)(i), whether an insurer has disclosed either: (a) a sensitivity analysis that shows how profit or loss and equity would have been affected by reasonably possible changes in the relevant risk variable at the end of the reporting period, including methods, assumptions, and changes from the previous period (or an alternative sensitivity analysis if used to manage market conditions, with disclosures required by paragraph 107.41) [1]; or (b) qualitative information about sensitivity, and information about those terms and conditions of insurance contracts that have a material effect on the amount, timing and uncertainty of the insurer’s future cash flows [1]."
+                }
+            ]
+        }
+    ]
+}

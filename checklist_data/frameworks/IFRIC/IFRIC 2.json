@@ -1,0 +1,21 @@
+﻿  
+{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 2",
+            "title": "Members' shares in co-operative entities and similar instruments",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 2.",
+            "items": [
+                {
+                    "id": "275",
+                    "section": "IFRIC 2",
+                    "reference": "IFRIC 2.13",
+                    "question": "If a change in the redemption prohibition of members’ shares leads to a transfer between financial liabilities and equity, does the entity disclose separately the amount, timing and reason for the transfer"
+                }
+            ]
+        }
+    ]
+}
+    

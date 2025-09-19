@@ -1,0 +1,25 @@
+﻿{
+    "title": "Borrowing Costs (Ind AS 23) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 23",
+            "title": "Borrowing Costs",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 23.",
+            "items": [
+                {
+                    "id": "231",
+                    "section": "Ind AS 23",
+                    "reference": "Ind AS 23.26(a)",
+                    "question": "Has the entity disclosed the **amount of borrowing costs capitalised** during the period?"
+                },
+                {
+                    "id": "232",
+                    "section": "Ind AS 23",
+                    "reference": "Ind AS 23.26(b)",
+                    "question": "Has the entity disclosed the **capitalisation rate used** to determine the amount of borrowing costs eligible for capitalisation?"
+                }
+            ]
+        }
+    ]
+}

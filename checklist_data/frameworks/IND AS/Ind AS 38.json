@@ -1,0 +1,55 @@
+﻿{
+    "title": "Intangible Assets (Ind AS 38) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 38",
+            "title": "Intangible Assets",
+            "description": "Checklist for disclosure requirements under Ind AS 38.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 38",
+                    "reference": "38.118",
+                    "question": "Whether the entity has disclosed the following for each class of intangible assets, distinguishing between internally generated intangible assets and other intangible assets:\n  a) whether the useful lives are indefinite or finite and, if finite, the useful lives or the amortisation rates used;\n  b) the amortisation methods used for intangible assets with finite useful lives;\n  c) the gross carrying amount and any accumulated amortisation (aggregated with accumulated impairment losses) at the beginning and end of the period;\n  d) the line item(s) of the statement of profit and loss in which any amortisation of intangible assets is included;\n  e) a reconciliation of the carrying amount at the beginning and end of the period showing:\n    i) additions, indicating separately those from internal development, those acquired separately, and those acquired through business combinations;\n    ii) assets classified as held for sale or included in a disposal group classified as held for sale in accordance with Ind AS 105 and other disposals;\n    iii) increases or decreases during the period resulting from revaluations under paragraphs 38.75, 38.85 and 38.86 and from impairment losses recognised or reversed in other comprehensive income in accordance with Ind AS 36 (if any);\n    iv) impairment losses recognised in profit or loss during the period in accordance with Ind AS 36 (if any);\n    v) impairment losses reversed in profit or loss during the period in accordance with Ind AS 36 (if any);\n    vi) any amortisation recognised during the period;\n    vii) net exchange differences arising on the translation of the financial statements into the presentation currency, and on the translation of a foreign operation into the presentation currency of the entity; and\n    viii) other changes in the carrying amount during the period?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 38",
+                    "reference": "38.120",
+                    "question": "Whether the entity has made disclosures of information on impaired intangible assets in accordance with Ind AS 36 in addition to the information required by paragraph 38.118(e)(iii)–(v)?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 38",
+                    "reference": "38.121",
+                    "question": "Whether the entity has provided the disclosure required under Ind AS 8 regarding nature and amount of a change in an accounting estimate that has a material effect in the current period or is expected to have a material effect in subsequent periods resulting from factors such as:\n  a) the assessment of an intangible asset’s useful life;\n  b) the amortisation method; or\n  c) residual values?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 38",
+                    "reference": "38.122",
+                    "question": "Whether the entity has provided disclosure of the following:\n  a) for an intangible asset assessed as having an indefinite useful life, the carrying amount of that asset and the reasons supporting the assessment of an indefinite useful life. In giving these reasons, the entity shall describe the factor(s) that played a significant role in determining that the asset has an indefinite useful life.\n  b) a description, the carrying amount and remaining amortisation period of any individual intangible asset that is material to the entity’s financial statements.\n  c) for intangible assets acquired by way of a government grant and initially recognised at fair value (paragraph 38.44):\n    i) the fair value initially recognised for these assets;\n    ii) their carrying amount; and\n    iii) whether they are measured after recognition under the cost model or the revaluation model.\n  d) the existence and carrying amounts of intangible assets whose title is restricted and the carrying amounts of intangible assets pledged as security for liabilities.\n  e) the amount of contractual commitments for the acquisition of intangible assets?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 38",
+                    "reference": "38.124",
+                    "question": "In case intangible assets are accounted for at revalued amounts, whether the following has been disclosed:\n  a) by class of intangible assets:\n    i) the effective date of the revaluation;\n    ii) the carrying amount of revalued intangible assets; and\n    iii) the carrying amount that would have been recognised had the revalued class of intangible assets been measured after recognition using the cost model in paragraph 38.74; and\n  b) the amount of the revaluation surplus that relates to intangible assets at the beginning and end of the period, indicating the changes during the period and any restrictions on the distribution of the balance to shareholders?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 38",
+                    "reference": "38.126",
+                    "question": "Whether the entity has disclosed the aggregate amount of research and development expenditure recognised as an expense during the period?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 38",
+                    "reference": "38.128",
+                    "question": "Whether the entity has provided the disclosure of the following information:\n  a) a description of any fully amortised intangible asset that is still in use; and\n  b) a brief description of significant intangible assets controlled by the entity but not recognised as assets because they did not meet the recognition criteria in this Standard or because they were acquired or generated before this standard was effective?"
+                }
+            ]
+        }
+    ]
+}

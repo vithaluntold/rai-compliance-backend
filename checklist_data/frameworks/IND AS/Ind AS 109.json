@@ -1,0 +1,500 @@
+﻿
+{
+    "title": "Indian Accounting Standards (Ind AS) 109: Financial Instruments Disclosures Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 109",
+            "title": "Financial Instruments",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 109, as laid out in Ind AS 107.",
+            "items": [
+                {
+                    "id": 1,
+                    "section": "Ind AS 109",
+                    "reference": "107.6",
+                    "question": "Has the entity grouped financial instruments into appropriate classes for disclosure, considering their characteristics, and provided sufficient information for reconciliation to balance sheet line items?"
+                },
+                {
+                    "id": 2,
+                    "section": "Ind AS 109",
+                    "reference": "107.7",
+                    "question": "Has the entity disclosed information enabling users of its financial statements to evaluate the significance of financial instruments for its financial position and performance?"
+                },
+                {
+                    "id": 3,
+                    "section": "Ind AS 109",
+                    "reference": "107.8, 109.6.7.1, 109.4.1.2A, 109.5.7.5",
+                    "question": "Has the entity disclosed the carrying amounts of financial assets and liabilities by categories specified in Ind AS 109 (fair value through profit or loss, amortised cost, fair value through other comprehensive income), differentiating between those designated as such and those mandatorily measured, where applicable?"
+                },
+                {
+                    "id": 4,
+                    "section": "Ind AS 109",
+                    "reference": "107.9, 107.36(a), 107.36(b)",
+                    "question": "For financial assets designated at fair value through profit or loss, has the entity disclosed the maximum exposure to credit risk, the mitigation by related credit derivatives, and the change in fair value attributable to changes in credit risk (both for the period and cumulatively)?"
+                },
+                {
+                    "id": 5,
+                    "section": "Ind AS 109",
+                    "reference": "107.10, 109.4.2.2, 109.5.7.7, 109.B5.7.13-109.B5.7.20",
+                    "question": "For financial liabilities designated at fair value through profit or loss where changes in credit risk are presented in other comprehensive income, has the entity disclosed the cumulative change in fair value attributable to credit risk, the difference between carrying amount and maturity payment, transfers of cumulative gain/loss within equity, and amounts realized on derecognition?"
+                },
+                {
+                    "id": 6,
+                    "section": "Ind AS 109",
+                    "reference": "107.10A, 109.4.2.2, 109.5.7.7, 109.5.7.8, 109.B5.7.13-109.B5.7.20",
+                    "question": "For financial liabilities designated at fair value through profit or loss where all fair value changes are presented in profit or loss, has the entity disclosed the change in fair value attributable to changes in credit risk (both for the period and cumulatively) and the difference between the carrying amount and the amount contractually required at maturity?"
+                },
+                {
+                    "id": 7,
+                    "section": "Ind AS 109",
+                    "reference": "107.11, 107.9(c), 107.10(a), 107.10A(a), 109.5.7.7(a), 109.5.7.7, 109.5.7.8, 109.B5.7.6",
+                    "question": "Has the entity provided a detailed description of the methods used to comply with requirements regarding credit risk effects on fair value, explained reasons for non-faithful representation if applicable, and described methodologies for assessing accounting mismatches?"
+                },
+                {
+                    "id": 8,
+                    "section": "Ind AS 109",
+                    "reference": "107.11A, 109.5.7.5",
+                    "question": "For equity instruments designated to be measured at fair value through other comprehensive income, has the entity disclosed which investments are so designated, reasons for this presentation, fair value at period end, dividends recognized (separately for derecognized and held investments), and any transfers of cumulative gain or loss within equity?"
+                },
+                {
+                    "id": 9,
+                    "section": "Ind AS 109",
+                    "reference": "107.11B",
+                    "question": "For equity instruments measured at fair value through other comprehensive income that were derecognized during the period, has the entity disclosed the reasons for disposal, their fair value at derecognition date, and the cumulative gain or loss on disposal?"
+                },
+                {
+                    "id": 10,
+                    "section": "Ind AS 109",
+                    "reference": "107.12B, 109.4.4.1",
+                    "question": "For any financial assets reclassified in the current or previous reporting periods, has the entity disclosed the date of reclassification, a detailed explanation of the change in business model and its qualitative effect on financial statements, and the amount reclassified into and out of each category?"
+                },
+                {
+                    "id": 11,
+                    "section": "Ind AS 109",
+                    "reference": "107.12C, 109.4.4.1",
+                    "question": "For each reporting period following reclassification of assets out of the fair value through profit or loss category to amortised cost or fair value through other comprehensive income, has the entity disclosed the effective interest rate determined at reclassification date and the interest revenue recognized?"
+                },
+                {
+                    "id": 12,
+                    "section": "Ind AS 109",
+                    "reference": "107.12D",
+                    "question": "For financial assets reclassified from fair value through other comprehensive income or fair value through profit or loss to amortised cost or fair value through other comprehensive income since the last annual reporting date, has the entity disclosed their fair value at period end and the hypothetical fair value gain or loss that would have been recognized if not reclassified?"
+                },
+                {
+                    "id": 13,
+                    "section": "Ind AS 109",
+                    "reference": "107.13A, 107.13B-107.13E, 32.42",
+                    "question": "Are disclosures regarding netting arrangements provided for all recognized financial instruments that are set off or subject to enforceable master netting arrangements, supplementing other Ind AS 107 requirements?"
+                },
+                {
+                    "id": 14,
+                    "section": "Ind AS 109",
+                    "reference": "107.13B, 107.13A",
+                    "question": "Has the entity disclosed information enabling users to evaluate the effect or potential effect of netting arrangements and rights of set-off on its financial position?"
+                },
+                {
+                    "id": 15,
+                    "section": "Ind AS 109",
+                    "reference": "107.13C, 107.13A, 107.13B, 32.42",
+                    "question": "Has the entity provided quantitative tabular disclosures at period end for financial assets and liabilities within netting arrangements, including gross amounts, set-off amounts, net amounts, and amounts subject to master netting arrangements (including collateral)?"
+                },
+                {
+                    "id": 16,
+                    "section": "Ind AS 109",
+                    "reference": "107.13D, 107.13C(c), 107.13C(d)",
+                    "question": "Is the total amount disclosed for instruments subject to netting arrangements limited to their net balance sheet amount?"
+                },
+                {
+                    "id": 17,
+                    "section": "Ind AS 109",
+                    "reference": "107.13E, 107.13C(d)",
+                    "question": "Has the entity provided a description of the rights of set-off associated with recognized financial assets and liabilities subject to enforceable master netting arrangements?"
+                },
+                {
+                    "id": 18,
+                    "section": "Ind AS 109",
+                    "reference": "107.13F, 107.13B-107.13E",
+                    "question": "If netting information is disclosed in more than one note, are cross-references provided between those notes?"
+                },
+                {
+                    "id": 19,
+                    "section": "Ind AS 109",
+                    "reference": "107.14, 109.3.2.23(a)",
+                    "question": "Has the entity disclosed the carrying amount of financial assets pledged as collateral for liabilities or contingent liabilities (including reclassified amounts) and their terms and conditions?"
+                },
+                {
+                    "id": 20,
+                    "section": "Ind AS 109",
+                    "reference": "107.15",
+                    "question": "For collateral held (financial or non-financial) that the entity is permitted to sell or repledge, has it disclosed the fair value of collateral held, fair value of any sold/repledged collateral with return obligation, and terms/conditions of its use?"
+                },
+                {
+                    "id": 21,
+                    "section": "Ind AS 109",
+                    "reference": "107.16A, 109.4.1.2A",
+                    "question": "For financial assets measured at fair value through other comprehensive income where loss allowance is not reduced from carrying amount, has the entity disclosed the loss allowance in the notes?"
+                },
+                {
+                    "id": 22,
+                    "section": "Ind AS 109",
+                    "reference": "107.17, 32.28",
+                    "question": "For an instrument containing both a liability and an equity component with multiple interdependent embedded derivatives, has the entity disclosed the existence of these features?"
+                },
+                {
+                    "id": 23,
+                    "section": "Ind AS 109",
+                    "reference": "107.18",
+                    "question": "For loans payable at period end, has the entity disclosed details of any defaults (principal, interest, etc.), the carrying amount of defaulted loans, and whether defaults were remedied or renegotiated before financial statements approval?"
+                },
+                {
+                    "id": 24,
+                    "section": "Ind AS 109",
+                    "reference": "107.19, 107.18",
+                    "question": "For loan agreement breaches (other than 107.18) that permitted accelerated repayment, has the entity disclosed similar information to defaults, unless remedied or renegotiated by period end?"
+                },
+                {
+                    "id": 25,
+                    "section": "Ind AS 109",
+                    "reference": "107.20, 109.6.7.1, 109.5.7.5, 109.4.1.2A",
+                    "question": "Has the entity disclosed items of income, expense, gains, or losses (either in P&L or notes) for net gains/losses on FVTPL (designated/mandatory), amortised cost financial liabilities/assets, FVTOCI equity instruments, and FVTOCI debt instruments (including OCI recognition and reclassification adjustments), total interest revenue/expense by effective interest method, and fee income/expense?"
+                },
+                {
+                    "id": 26,
+                    "section": "Ind AS 109",
+                    "reference": "107.20A",
+                    "question": "Has the entity provided an analysis of gains or losses recognized in the statement of profit and loss arising from the derecognition of financial assets measured at amortised cost, showing separately gains and losses and the reasons for derecognition?"
+                },
+                {
+                    "id": 27,
+                    "section": "Ind AS 109",
+                    "reference": "107.21, 107.B5, 1.117, 109.4.2.2, 109.4.1.5",
+                    "question": "Has the entity disclosed material accounting policy information for financial instruments, including details for FVTPL designations (nature, criteria, satisfaction of conditions), regular way purchase/sale accounting, determination of net gains/losses, and significant judgments?"
+                },
+                {
+                    "id": 28,
+                    "section": "Ind AS 109",
+                    "reference": "107.21A, 107.21B-107.24F",
+                    "question": "For risk exposures applying hedge accounting, has the entity disclosed its risk management strategy, how hedging affects future cash flows (amount, timing, uncertainty), and the effect of hedge accounting on its financial statements?"
+                },
+                {
+                    "id": 29,
+                    "section": "Ind AS 109",
+                    "reference": "107.21B",
+                    "question": "Are all relevant hedging disclosures presented in a single note or section, or are they adequately cross-referenced if located elsewhere?"
+                },
+                {
+                    "id": 30,
+                    "section": "Ind AS 109",
+                    "reference": "107.21D, 107.21A, 113",
+                    "question": "Has the entity determined the appropriate level of detail and aggregation for hedging disclosures, ensuring consistency with Ind AS 113 for related fair value information?"
+                },
+                {
+                    "id": 31,
+                    "section": "Ind AS 109",
+                    "reference": "107.22A",
+                    "question": "Has the entity explained its risk management strategy for each hedged risk category, enabling users to evaluate how each risk arises, how it's managed (entire item or risk components), and the extent of risk exposure managed?"
+                },
+                {
+                    "id": 32,
+                    "section": "Ind AS 109",
+                    "reference": "107.22B, 107.22A",
+                    "question": "To meet the risk management strategy disclosure requirement, has the entity described the hedging instruments used, how the economic relationship was determined for effectiveness, the hedge ratio established, and sources of hedge ineffectiveness?"
+                },
+                {
+                    "id": 33,
+                    "section": "Ind AS 109",
+                    "reference": "107.22C, 107.22A-107.22B",
+                    "question": "When a specific risk component is designated as a hedged item, has the entity provided qualitative or quantitative information on how it was determined and its relationship to the item in its entirety?"
+                },
+                {
+                    "id": 34,
+                    "section": "Ind AS 109",
+                    "reference": "107.23A, 107.23B, 107.23C",
+                    "question": "Unless exempted, has the entity provided quantitative disclosure by risk category to evaluate hedging instrument terms and conditions, including timing profile of nominal amounts and average price/rate?"
+                },
+                {
+                    "id": 35,
+                    "section": "Ind AS 109",
+                    "reference": "107.23C, 107.23A, 107.23B",
+                    "question": "If exempt from 107.23A/B due to dynamic hedging relationships, has the entity disclosed its ultimate risk management strategy, how it applies hedge accounting, and the frequency of discontinuing and restarting hedging relationships?"
+                },
+                {
+                    "id": 36,
+                    "section": "Ind AS 109",
+                    "reference": "107.23D",
+                    "question": "Has the entity disclosed by risk category a description of the expected sources of hedge ineffectiveness during the hedging relationship's term?"
+                },
+                {
+                    "id": 37,
+                    "section": "Ind AS 109",
+                    "reference": "107.23E",
+                    "question": "If other sources of hedge ineffectiveness emerge, has the entity disclosed those sources by risk category and explained the resulting ineffectiveness?"
+                },
+                {
+                    "id": 38,
+                    "section": "Ind AS 109",
+                    "reference": "107.23F",
+                    "question": "For cash flow hedges, has the entity described any forecast transaction for which hedge accounting was used in a previous period but is no longer expected to occur?"
+                },
+                {
+                    "id": 39,
+                    "section": "Ind AS 109",
+                    "reference": "107.24A",
+                    "question": "Has the entity provided tabular disclosure, separately by risk category and hedge type (fair value, cash flow, net investment in foreign operation), of the carrying amount and balance sheet line item of hedging instruments, the change in fair value used for ineffectiveness, and nominal amounts?"
+                },
+                {
+                    "id": 40,
+                    "section": "Ind AS 109",
+                    "reference": "107.24B, 109.6.5.10, 109.6.5.11(c), 109.6.5.11, 109.6.5.13(a)",
+                    "question": "Has the entity provided tabular disclosure, separately by risk category and hedge type, of amounts related to hedged items, including carrying amount, fair value hedge adjustments, line item, change in value for ineffectiveness, and balances in cash flow hedge/foreign currency translation reserves?"
+                },
+                {
+                    "id": 41,
+                    "section": "Ind AS 109",
+                    "reference": "107.24C, Ind AS 1, 109.6.6.4",
+                    "question": "Has the entity provided tabular disclosure, separately by risk category and hedge type, of hedge ineffectiveness recognized in P&L (for fair value hedges), and for cash flow/net investment hedges, OCI gains/losses, P&L ineffectiveness, reclassification adjustments from reserves to P&L, and net position hedging gains/losses?"
+                },
+                {
+                    "id": 42,
+                    "section": "Ind AS 109",
+                    "reference": "107.24D, 107.23C",
+                    "question": "If the volume of hedging relationships applying the 107.23C exemption is unrepresentative of normal volumes, has the entity disclosed this fact and the reason?"
+                },
+                {
+                    "id": 43,
+                    "section": "Ind AS 109",
+                    "reference": "107.24E, Ind AS 1, 107.24C(b)(i), 107.24C(b)(iv), 109.6.5.11(d)(i), 109.6.5.11(d)(iii), 109.6.5.15, 109.6.5.16",
+                    "question": "Has the entity provided a reconciliation of each equity component and OCI analysis, differentiating amounts related to specific hedging items (e.g., time value of options, forward elements, foreign currency basis spreads), as applicable?"
+                },
+                {
+                    "id": 44,
+                    "section": "Ind AS 109",
+                    "reference": "107.24F, 107.24E",
+                    "question": "Has the entity disclosed the information required in paragraph 107.24E separately by risk category, with disaggregation in notes if appropriate?"
+                },
+                {
+                    "id": 45,
+                    "section": "Ind AS 109",
+                    "reference": "107.24G, 109.6.7.1, 109.6.7.4, Ind AS 1",
+                    "question": "If a financial instrument is designated FVTPL using a credit derivative, has the entity disclosed a reconciliation of nominal amount and fair value of credit derivatives, the gain/loss recognized on FVTPL designation, and details on discontinuation of FVTPL measurement?"
+                },
+                {
+                    "id": 46,
+                    "section": "Ind AS 109",
+                    "reference": "107.24H, 109.6.8.4-109.6.8.12",
+                    "question": "For hedging relationships applying interest rate benchmark reform exceptions, has the entity disclosed significant interest rate benchmarks, extent of affected risk exposure, transition management, significant assumptions/judgments, and nominal amounts of hedging instruments?"
+                },
+                {
+                    "id": 47,
+                    "section": "Ind AS 109",
+                    "reference": "107.24I",
+                    "question": "Has the entity disclosed information related to interest rate benchmark reform to understand its effect on financial instruments and risk management strategy, including the nature/extent of risks and transition progress/management?"
+                },
+                {
+                    "id": 48,
+                    "section": "Ind AS 109",
+                    "reference": "107.24J, 107.24I, 107.22A",
+                    "question": "To meet the objectives of paragraph 107.24I, has the entity disclosed how it manages the transition to alternative benchmark rates, quantitative information on financial instruments yet to transition (disaggregated), and descriptions of changes in risk management strategy due to these risks?"
+                },
+                {
+                    "id": 49,
+                    "section": "Ind AS 109",
+                    "reference": "107.25, 107.29, 107.6",
+                    "question": "Except as stated in 107.29, has the entity disclosed the fair value for each class of financial assets and liabilities in a way that permits comparison with their carrying amount?"
+                },
+                {
+                    "id": 50,
+                    "section": "Ind AS 109",
+                    "reference": "107.26",
+                    "question": "When disclosing fair values, has the entity grouped financial assets and liabilities into classes and offset them only to the extent their carrying amounts are offset in the balance sheet?"
+                },
+                {
+                    "id": 51,
+                    "section": "Ind AS 109",
+                    "reference": "107.28, 107.29, 109.B5.1.2A, 109.B5.1.2A(b), 104",
+                    "question": "For financial instruments where no gain/loss is recognized at initial recognition because fair value is not from Level 1 input or observable market data, has the entity disclosed its accounting policy for recognizing the difference, the aggregate unrecognized difference, and reasons why the transaction price was not the best evidence of fair value?"
+                },
+                {
+                    "id": 52,
+                    "section": "Ind AS 109",
+                    "reference": "107.30, 104",
+                    "question": "For contracts with discretionary participation features where fair value cannot be reliably measured, has the entity disclosed this fact, a description of the instruments, market information, disposal intentions, and derecognition details if applicable?"
+                },
+                {
+                    "id": 53,
+                    "section": "Ind AS 109",
+                    "reference": "107.31-107.32A",
+                    "question": "Has the entity disclosed information enabling users to evaluate the nature and extent of risks (market, liquidity, credit) arising from financial instruments at the reporting period end, combining qualitative and quantitative disclosures?"
+                },
+                {
+                    "id": 54,
+                    "section": "Ind AS 109",
+                    "reference": "107.33",
+                    "question": "Has the entity provided qualitative disclosures for each risk type (credit, liquidity, market), including risk exposures and their origin, objectives/policies/processes for managing risk, and any changes from the previous period?"
+                },
+                {
+                    "id": 55,
+                    "section": "Ind AS 109",
+                    "reference": "107.34, 107.B8, 107.36-107.42, Ind AS 24",
+                    "question": "Has the entity provided quantitative disclosures for each risk type, including summary data based on internal information, additional disclosures from 107.36-42 (if not already provided), and concentrations of risk (description of determination, shared characteristics, and risk exposure amount)?"
+                },
+                {
+                    "id": 56,
+                    "section": "Ind AS 109",
+                    "reference": "107.35",
+                    "question": "If the quantitative risk data disclosed at period end is unrepresentative of the entity's exposure during the period, has the entity provided further representative information?"
+                },
+                {
+                    "id": 57,
+                    "section": "Ind AS 109",
+                    "reference": "107.35A, 107.35F-107.35N, 107.35J(a), 107.35K(b), 109.5.5.15",
+                    "question": "Are disclosures required by paragraphs 107.35F-107.35N provided for financial instruments applying Ind AS 109 impairment requirements, with specified considerations for trade/contract/lease receivables?"
+                },
+                {
+                    "id": 58,
+                    "section": "Ind AS 109",
+                    "reference": "107.35B",
+                    "question": "Has the entity disclosed information enabling users to understand the effect of credit risk on future cash flows, including credit risk management practices related to ECL, quantitative/qualitative information on ECL amounts/changes, and credit risk exposure (including concentrations)?"
+                },
+                {
+                    "id": 59,
+                    "section": "Ind AS 109",
+                    "reference": "107.35C",
+                    "question": "If credit risk information is presented elsewhere, is it incorporated by cross-reference to ensure completeness of financial statements?"
+                },
+                {
+                    "id": 60,
+                    "section": "Ind AS 109",
+                    "reference": "107.35E, 107.35F-107.35N, 107.35B",
+                    "question": "If disclosures required by 107.35F–107.35N are insufficient to meet the objectives of 107.35B, has the entity provided necessary additional information?"
+                },
+                {
+                    "id": 61,
+                    "section": "Ind AS 109",
+                    "reference": "107.35F, 109.5.5.10, 109.5.5.11, 109.5.5.12, 109.5.5.5, 109.5.5.3",
+                    "question": "Has the entity explained its credit risk management practices and their relation to ECL recognition/measurement, including how credit risk increase is determined, definitions of default, collective measurement grouping, credit-impaired assets determination, write-off policy, and application of modification requirements?"
+                },
+                {
+                    "id": 62,
+                    "section": "Ind AS 109",
+                    "reference": "107.35G, Section 5.5 of Ind AS 109",
+                    "question": "Has the entity disclosed the inputs, assumptions, and estimation techniques used for ECL measurement (including 12-month and lifetime ECL, significant credit risk increase, and credit-impaired assets), incorporation of forward-looking information, and changes in techniques/assumptions?"
+                },
+                {
+                    "id": 63,
+                    "section": "Ind AS 109",
+                    "reference": "107.35H, 109.5.5.15",
+                    "question": "Has the entity provided a tabular reconciliation of the loss allowance by class of financial instrument from opening to closing balance, separately showing changes for 12-month ECL, lifetime ECL (for various stages), and purchased/originated credit-impaired assets?"
+                },
+                {
+                    "id": 64,
+                    "section": "Ind AS 109",
+                    "reference": "107.35I, 107.35H(a)-(c)",
+                    "question": "Has the entity explained how significant changes in the gross carrying amount of financial instruments contributed to changes in the loss allowance for each class, with separate qualitative and quantitative information?"
+                },
+                {
+                    "id": 65,
+                    "section": "Ind AS 109",
+                    "reference": "107.35J",
+                    "question": "Has the entity disclosed the nature and effect of contractual cash flow modifications on financial assets not derecognized, including amortised cost before modification, net modification gain/loss for lifetime ECL assets, and gross carrying amount of such assets whose loss allowance reverted to 12-month ECL?"
+                },
+                {
+                    "id": 66,
+                    "section": "Ind AS 109",
+                    "reference": "107.35K, Ind AS 32",
+                    "question": "By class of financial instrument, has the entity disclosed information about collateral and other credit enhancements, including maximum credit risk exposure without collateral, a narrative description of collateral (nature, quality, significant changes), and quantitative information for credit-impaired assets?"
+                },
+                {
+                    "id": 67,
+                    "section": "Ind AS 109",
+                    "reference": "107.35L",
+                    "question": "Has the entity disclosed the contractual amount outstanding on financial assets that were written off during the period and are still subject to enforcement activity?"
+                },
+                {
+                    "id": 68,
+                    "section": "Ind AS 109",
+                    "reference": "107.35M, 107.35N, 109.5.5.15, 109.B5.5.35",
+                    "question": "Has the entity disclosed the gross carrying amount of financial assets and credit risk exposure on loan commitments and financial guarantee contracts, by credit risk rating grades, separately for 12-month ECL, lifetime ECL (including different stages), and purchased/originated credit-impaired financial instruments?"
+                },
+                {
+                    "id": 69,
+                    "section": "Ind AS 109",
+                    "reference": "107.36, Ind AS 107, Ind AS 109, Ind AS 32",
+                    "question": "For financial instruments within Ind AS 107 scope but not applying Ind AS 109 impairment requirements, has the entity disclosed its maximum exposure to credit risk without collateral and a description/financial effect of collateral/credit enhancements?"
+                },
+                {
+                    "id": 70,
+                    "section": "Ind AS 109",
+                    "reference": "107.38",
+                    "question": "For assets obtained during the period by taking possession of collateral or calling on credit enhancements, has the entity disclosed their nature and carrying amount, and policies for disposal or operational use if not readily convertible to cash?"
+                },
+                {
+                    "id": 71,
+                    "section": "Ind AS 109",
+                    "reference": "107.39",
+                    "question": "Has the entity disclosed liquidity risk information for financial instruments, including a maturity analysis for non-derivative and derivative financial liabilities showing remaining contractual maturities, and a description of how liquidity risk is managed?"
+                },
+                {
+                    "id": 72,
+                    "section": "Ind AS 109",
+                    "reference": "107.40, 107.41",
+                    "question": "If a sensitivity analysis (as per 107.41) is not prepared, has the entity disclosed a market risk sensitivity analysis showing P&L/equity effects from reasonably possible risk variable changes, methods/assumptions used, and changes from the prior period?"
+                },
+                {
+                    "id": 73,
+                    "section": "Ind AS 109",
+                    "reference": "107.41",
+                    "question": "If a sensitivity analysis reflecting interdependencies (e.g., Value-at-Risk) is prepared and used for financial risk management, has the entity explained the method, main parameters/assumptions, objectives, and limitations?"
+                },
+                {
+                    "id": 74,
+                    "section": "Ind AS 109",
+                    "reference": "107.42, 107.40, 107.41",
+                    "question": "If the entity believes sensitivity analyses disclosed under 107.40 or 107.41 are unrepresentative of a financial instrument's inherent risk, has it disclosed this fact and the reason?"
+                },
+                {
+                    "id": 75,
+                    "section": "Ind AS 109",
+                    "reference": "107.42A, 107.42B-107.42H, Ind AS 109",
+                    "question": "Are disclosures required by paragraphs 107.42B-107.42H for all transferred financial assets not derecognized and for any continuing involvement, presented in a single note?"
+                },
+                {
+                    "id": 76,
+                    "section": "Ind AS 109",
+                    "reference": "107.42B",
+                    "question": "Has the entity disclosed information enabling users to understand the relationship between transferred financial assets not derecognized and associated liabilities, and to evaluate the nature and risks of its continuing involvement in derecognized financial assets?"
+                },
+                {
+                    "id": 77,
+                    "section": "Ind AS 109",
+                    "reference": "107.42D, 107.42B(a), 109.3.2.6(c)(ii), 109.3.2.16",
+                    "question": "For transferred financial assets not derecognized in their entirety, has the entity disclosed at each reporting date: their nature, risks/rewards, relationship with associated liabilities, fair value schedule when recourse is only to transferred assets, and carrying amounts of assets/liabilities (for full or continuing involvement)?"
+                },
+                {
+                    "id": 78,
+                    "section": "Ind AS 109",
+                    "reference": "107.42E, 107.42F, 109.3.2.6(a), 109.3.2.6(c)(i)",
+                    "question": "For derecognized transferred financial assets with continuing involvement, has the entity disclosed: carrying amounts of assets/liabilities representing continuing involvement, their fair value, maximum exposure to loss, undiscounted cash outflows for repurchase, maturity analysis of outflows, and supporting qualitative information?"
+                },
+                {
+                    "id": 79,
+                    "section": "Ind AS 109",
+                    "reference": "107.42G",
+                    "question": "For each type of continuing involvement, has the entity disclosed for each P&L period: gain/loss at asset transfer date, income/expenses from continuing involvement, and details of concentrated transfer activity during the period (if applicable)?"
+                },
+                {
+                    "id": 80,
+                    "section": "Ind AS 109",
+                    "reference": "107.42H, 107.42B",
+                    "question": "Has the entity disclosed any additional information it considers necessary to meet the objectives of paragraph 107.42B?"
+                },
+                {
+                    "id": 81,
+                    "section": "Ind AS 109 (Transition)",
+                    "reference": "109.7.2.34",
+                    "question": "In the reporting period including the initial application date of Prepayment Features with Negative Compensation amendments, has the entity disclosed for affected financial instruments: their previous/new measurement categories and carrying amounts, carrying amount of previously designated FVTPL instruments no longer designated, and reasons for designation/de-designation?"
+                }
+            ]
+        }
+    ]
+}

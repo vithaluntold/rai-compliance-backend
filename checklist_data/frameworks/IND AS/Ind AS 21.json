@@ -1,0 +1,55 @@
+﻿{
+    "title": "The Effects of Changes in Foreign Exchange Rates (Ind AS 21) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 21",
+            "title": "The Effects of Changes in Foreign Exchange Rates",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 21.",
+            "items": [
+                {
+                    "id": "211",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.52(a)",
+                    "question": "Has the entity disclosed **exchange differences recognised in profit or loss**, except for those arising on financial instruments measured at fair value through profit or loss in accordance with Ind AS 109?"
+                },
+                {
+                    "id": "212",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.52(b)",
+                    "question": "Has the entity disclosed **net exchange differences recognised in other comprehensive income and accumulated in a separate component of equity**, along with a reconciliation of such exchange differences at the beginning and end of the period?"
+                },
+                {
+                    "id": "213",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.53",
+                    "question": "If the presentation currency is different from the functional currency, has the entity **stated that fact together with disclosure of the functional currency and the reason for using a different presentation currency**?"
+                },
+                {
+                    "id": "214",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.54",
+                    "question": "Has the entity disclosed any **change in the functional currency** of either the reporting entity or a significant foreign operation, along with the **reason for the change in functional currency and the date of change in functional currency**?"
+                },
+                {
+                    "id": "215",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.57(a)",
+                    "question": "If financial statements or other financial information are presented in a currency different from the functional currency or presentation currency, and the requirements of paragraph 21.55 are not met, has the information been **clearly identified as supplementary information** to distinguish it from Ind AS compliant information?"
+                },
+                {
+                    "id": "216",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.57(b)",
+                    "question": "If financial statements or other financial information are presented in a currency different from the functional currency or presentation currency, and the requirements of paragraph 21.55 are not met, has the entity **disclosed the currency in which the supplementary information is displayed**?"
+                },
+                {
+                    "id": "217",
+                    "section": "Ind AS 21",
+                    "reference": "Ind AS 21.57(c)",
+                    "question": "If financial statements or other financial information are presented in a currency different from the functional currency or presentation currency, and the requirements of paragraph 21.55 are not met, has the entity **disclosed its functional currency and the method of translation used to determine the supplementary information**?"
+                }
+            ]
+        }
+    ]
+}

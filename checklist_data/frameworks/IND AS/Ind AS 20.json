@@ -1,0 +1,37 @@
+﻿{
+    "title": "Government Grants and Government Assistance (Ind AS 20) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 20",
+            "title": "Accounting for Government Grants and Disclosure of Government Assistance",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 20.",
+            "items": [
+                {
+                    "id": "201",
+                    "section": "Ind AS 20",
+                    "reference": "Ind AS 20.29",
+                    "question": "Are grants related to income presented as part of profit or loss, either separately or under a general heading such as 'Other income', or alternatively, deducted in reporting the related expense?"
+                },
+                {
+                    "id": "202",
+                    "section": "Ind AS 20",
+                    "reference": "Ind AS 20.39(a)",
+                    "question": "Has the entity disclosed the accounting policy adopted for government grants, including the methods of presentation adopted in the financial statements?"
+                },
+                {
+                    "id": "203",
+                    "section": "Ind AS 20",
+                    "reference": "Ind AS 20.39(b)",
+                    "question": "Has the entity disclosed the nature and extent of government grants recognised in the financial statements and an indication of other forms of government assistance from which the entity has directly benefited?"
+                },
+                {
+                    "id": "204",
+                    "section": "Ind AS 20",
+                    "reference": "Ind AS 20.39(c)",
+                    "question": "Has the entity disclosed any unfulfilled conditions and other contingencies attaching to government assistance that has been recognised?"
+                }
+            ]
+        }
+    ]
+}

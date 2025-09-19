@@ -1,0 +1,55 @@
+﻿{
+    "title": "Accounting Policies, Changes in Accounting Estimates and Errors (Ind AS 8) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 8",
+            "title": "Accounting Policies, Changes in Accounting Estimates and Errors",
+            "description": "Checklist for presentation and disclosure requirements related to accounting policies, changes in accounting estimates, and errors under Ind AS 8. This standard specifies criteria for selecting, applying, and changing accounting policies, as well as the accounting treatment and disclosure of changes in accounting estimates and corrections of errors.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 8",
+                    "reference": "8.28",
+                    "question": "Whether the entity has disclosed the following when the initial application of an Ind AS has an effect on the current period or any prior period, would have such an effect except that it is impracticable to determine the amount of the adjustment, or might have an effect on future periods: a) the title of the Ind AS; b) when applicable, that the change in accounting policy is made in accordance with its transitional provisions; c) the nature of the change in accounting policy; d) when applicable, a description of the transitional provisions; e) when applicable, the transitional provisions that might have an effect on future periods; f) for the current period and each prior period presented, to the extent practicable, the amount of the adjustment for each financial statement line item affected and, if Ind AS 33 applies, for basic and diluted earnings per share; g) the amount of the adjustment relating to periods before those presented, to the extent practicable; and h) if retrospective application required by paragraph 19(a) or (b) is impracticable for a particular prior period, or for periods before those presented, the circumstances that led to the existence of that condition and a description of how and from when the change in accounting policy has been applied?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 8",
+                    "reference": "8.29",
+                    "question": "Whether the entity has disclosed the following when a voluntary change in accounting policy has an effect on the current period or any prior period, would have an effect on that period except that it is impracticable to determine the amount of the adjustment, or might have an effect on future periods: a) the nature of the change in accounting policy; b) the reasons why applying the new accounting policy provides reliable and more relevant information; c) for the current period and each prior period presented, to the extent practicable, the amount of the adjustment for each financial statement line item affected and, if Ind AS 33 applies, for basic and diluted earnings per share; d) the amount of the adjustment relating to periods before those presented, to the extent practicable; and e) if retrospective application is impracticable for a particular prior period, or for periods before those presented, the circumstances that led to the existence of that condition and a description of how and from when the change in accounting policy has been applied?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 8",
+                    "reference": "8.30",
+                    "question": "Whether the entity has disclosed the fact and known or reasonably estimable information relevant to assessing the possible impact that application of a new Ind AS (that has been issued but is not yet effective) will have on its financial statements in the period of initial application?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 8",
+                    "reference": "8.31",
+                    "question": "Whether the entity has disclosed, in complying with paragraph 8.30, the following: a) the title of the new Ind AS; b) the nature of the impending change or changes in accounting policy; c) the date by which application of the Ind AS is required; d) the date as at which it plans to apply the Ind AS initially; and e) either a discussion of the impact that initial application of the Ind AS is expected to have on the entity’s financial statements, or a statement to that effect if the impact is not known or reasonably estimable?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 8",
+                    "reference": "8.39",
+                    "question": "Whether the entity has disclosed the nature and amount of a change in an accounting estimate that has an effect in the current period or is expected to have an effect in future periods, except for the disclosure of the effect on future periods when it is impracticable to estimate that effect?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 8",
+                    "reference": "8.40",
+                    "question": "Whether the entity has disclosed the fact that the amount of the effect in future periods is not disclosed because estimating it is impracticable?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 8",
+                    "reference": "8.49",
+                    "question": "Whether the entity has disclosed the following information to comply with paragraph 8.42 regarding prior period errors: a) the nature of the prior period error; b) for each prior period presented, to the extent practicable, the amount of the correction for each financial statement line item affected and, if Ind AS 33 applies, for basic and diluted earnings per share; c) the amount of the correction at the beginning of the earliest prior period presented; and d) if retrospective restatement is impracticable for a particular prior period, the circumstances that led to the existence of that condition and a description of how and from when the error has been corrected?"
+                }
+            ]
+        }
+    ]
+}

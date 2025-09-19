@@ -1,0 +1,55 @@
+﻿{
+    "title": "Events after the Reporting Period (Ind AS 10) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 10",
+            "title": "Events after the Reporting Period",
+            "description": "Checklist for presentation and disclosure requirements related to events after the reporting period under Ind AS 10. This standard prescribes when an entity should adjust its financial statements for events after the reporting period, and the disclosures an entity should give about such events.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 10",
+                    "reference": "10.13, Ind AS 1",
+                    "question": "Whether dividends declared after the reporting period but before the financial statements are approved for issue are disclosed in the notes in accordance with Ind AS 1, Presentation of Financial Statements, as no obligation exists at that time?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 10",
+                    "reference": "10.17",
+                    "question": "Whether the entity has disclosed the date when the financial statements were approved for issue and who gave that approval, and if the entity’s owners or others have the power to amend the financial statements after issue, whether such fact has been disclosed?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 10",
+                    "reference": "10.19",
+                    "question": "Whether disclosures relating to conditions that existed at the end of the reporting period, for which information was received after the reporting period, are updated in the light of new information?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 10",
+                    "reference": "10.21",
+                    "question": "Whether, for each material category of non-adjusting events after the reporting period, the nature of the event and an estimate of its financial effect (or a statement that such an estimate cannot be made) have been disclosed?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 10",
+                    "reference": "10.A15",
+                    "question": "Whether the entity has presented the difference described in paragraph 10.A14 as a separate line item in profit or loss?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 10",
+                    "reference": "10.A16",
+                    "question": "Whether the entity has disclosed the carrying amount of the dividend payable at the beginning and end of the period, and the increase or decrease in the carrying amount recognised in the period as a result of a change in the fair value of the assets to be distributed, if applicable?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 10",
+                    "reference": "10.A17, 113.93(b), 113.93(d), 113.93(g), 113.93(i), 113.99",
+                    "question": "If a dividend to distribute a non-cash asset is declared after the reporting period but before financial statements are approved for issue, whether the nature of the asset, its carrying amount at the end of the reporting period, its fair value (if different from carrying amount), and information about the measurement method (required by Ind AS 113 paragraphs) have been disclosed?"
+                }
+            ]
+        }
+    ]
+}
