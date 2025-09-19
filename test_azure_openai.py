@@ -13,11 +13,11 @@ AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
 AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
 
-print(f"Testing Azure OpenAI Configuration:")
-print(f"Endpoint: {AZURE_OPENAI_ENDPOINT}")
-print(f"Deployment: {AZURE_OPENAI_DEPLOYMENT_NAME}")
-print(f"API Version: {AZURE_OPENAI_API_VERSION}")
-print(f"API Key: {'***' + str(AZURE_OPENAI_API_KEY)[-4:] if AZURE_OPENAI_API_KEY else 'NOT SET'}")
+print("Testing Azure OpenAI Configuration:")
+print("Endpoint: {AZURE_OPENAI_ENDPOINT}")
+print("Deployment: {AZURE_OPENAI_DEPLOYMENT_NAME}")
+print("API Version: {AZURE_OPENAI_API_VERSION}")
+print("API Key: {'***' + str(AZURE_OPENAI_API_KEY)[-4:] if AZURE_OPENAI_API_KEY else 'NOT SET'}")
 
 try:
     client = AzureOpenAI(
@@ -25,7 +25,7 @@ try:
         azure_endpoint=AZURE_OPENAI_ENDPOINT,
         api_version=AZURE_OPENAI_API_VERSION
     )
-    
+
     # Simple test call
     response = client.chat.completions.create(
         model=AZURE_OPENAI_DEPLOYMENT_NAME,
@@ -35,11 +35,11 @@ try:
         ],
         max_tokens=10
     )
-    
+
     print("\n✅ SUCCESS: Azure OpenAI API is working!")
-    print(f"Response: {response.choices[0].message.content}")
-    
+    print("Response: {response.choices[0].message.content}")
+
 except Exception as e:
-    print(f"\n❌ ERROR: Azure OpenAI API failed")
-    print(f"Error details: {str(e)}")
-    print(f"Error type: {type(e).__name__}")
+    print("\n❌ ERROR: Azure OpenAI API failed")
+    print("Error details: {str(e)}")
+    print("Error type: {type(e).__name__}")

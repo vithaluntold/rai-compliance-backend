@@ -68,8 +68,8 @@ try:
     logger.info("FAISS CPU support enabled")
 except ImportError:
     logger.warning("FAISS not available, falling back to numpy")
-except Exception as e:
-    logger.error(f"Error initializing FAISS: {str(e)}")
+except Exception:
+    logger.error("Error initializing FAISS")
 
 # Use the provided Azure OpenAI embedding endpoint and key
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
@@ -104,7 +104,7 @@ class VectorStore:
         self.export_dir.mkdir(parents=True, exist_ok=True)
         self.dimension = 3072  # text-embedding-3-large dimension
         self.executor = ThreadPoolExecutor(max_workers=NUM_WORKERS)
-        logger.info(f"VectorStore (Azure) initialized with {NUM_WORKERS} workers")
+        logger.info("VectorStore (Azure) initialized with {NUM_WORKERS} workers")
 
     def _process_chunk(
         self, chunk: Dict[str, Any]
@@ -117,11 +117,10 @@ class VectorStore:
                 )
                 embedding = np.array(response.data[0].embedding, dtype=np.float32)
                 return embedding, chunk
-            except Exception as e:
+            except Exception:
                 if attempt == MAX_RETRIES - 1:
                     logger.error(
-                        f"Failed to process chunk after {MAX_RETRIES} attempts: "
-                        f"{str(e)}"
+                        f"Failed to process chunk after {MAX_RETRIES} attempts"
                     )
                     return None
                 time.sleep(1)  # Wait before retry
@@ -131,7 +130,7 @@ class VectorStore:
     ) -> bool:
         """Create an index for a document using parallel processing."""
         try:
-            logger.info(f"Starting parallel index creation for document {document_id}")
+            logger.info("Starting parallel index creation for document {document_id}")
             embeddings = []
             valid_chunks = []
             loop = asyncio.get_running_loop()
@@ -153,12 +152,12 @@ class VectorStore:
             dimension = embeddings_array.shape[1]
             index = faiss.IndexFlatL2(dimension)
             index.add(embeddings_array)  # type: ignore[call-arg]
-            index_path = self.index_dir / f"{document_id}_index.faiss"
-            chunks_path = self.index_dir / f"{document_id}_chunks.json"
+            index_path = self.index_dir / "{document_id}_index.faiss"
+            chunks_path = self.index_dir / "{document_id}_chunks.json"
             try:
                 faiss.write_index(index, str(index_path))
-            except Exception as save_error:
-                logger.error(f"Error saving index: {str(save_error)}")
+            except Exception:
+                logger.error("Error saving index")
                 raise
             chunks_with_timestamp = [
                 {**chunk, "processed_at": datetime.now().isoformat()}
@@ -167,10 +166,10 @@ class VectorStore:
             with open(chunks_path, "w", encoding="utf-8") as f:
                 json.dump(chunks_with_timestamp, f, ensure_ascii=False, indent=2)
             self.index_cache[document_id] = (index, valid_chunks)
-            logger.info(f"Index created successfully for document {document_id}")
+            logger.info("Index created successfully for document {document_id}")
             return True
-        except Exception as e:
-            logger.error(f"Error creating index: {str(e)}")
+        except Exception:
+            logger.error("Error creating index")
             logger.error(traceback.format_exc())
             return False
 
@@ -179,11 +178,11 @@ class VectorStore:
     ) -> Optional[Tuple[faiss.Index, List[Dict[str, Any]]]]:
         """Load a saved index and its chunks."""
         try:
-            index_path = self.index_dir / f"{document_id}_index.faiss"
-            chunks_path = self.index_dir / f"{document_id}_chunks.json"
+            index_path = self.index_dir / "{document_id}_index.faiss"
+            chunks_path = self.index_dir / "{document_id}_chunks.json"
 
             if not index_path.exists() or not chunks_path.exists():
-                logger.warning(f"Index files not found for document {document_id}")
+                logger.warning("Index files not found for document {document_id}")
                 return None
 
             # Load FAISS index
@@ -195,14 +194,14 @@ class VectorStore:
 
             return index, chunks
 
-        except Exception as e:
-            logger.error(f"Error loading index for document {document_id}: {str(e)}")
+        except Exception:
+            logger.error(f"Error loading index for document {document_id}")
             return None
 
     def index_exists(self, document_id: str) -> bool:
         """Check if an index exists for a document."""
-        index_path = self.index_dir / f"{document_id}_index.faiss"
-        chunks_path = self.index_dir / f"{document_id}_chunks.json"
+        index_path = self.index_dir / "{document_id}_index.faiss"
+        chunks_path = self.index_dir / "{document_id}_chunks.json"
         return index_path.exists() and chunks_path.exists()
 
     def search(
@@ -214,7 +213,7 @@ class VectorStore:
             if document_id not in self.index_cache:
                 loaded = self.load_index(document_id)
                 if not loaded:
-                    logger.warning(f"Index files not found for document {document_id}")
+                    logger.warning("Index files not found for document {document_id}")
                     return []
                 self.index_cache[document_id] = loaded
 
@@ -229,7 +228,9 @@ class VectorStore:
             )
 
             # Search the index
-            distances, indices = index.search(query_embedding, top_k)  # type: ignore[call-arg]
+            distances, indices = index.search(
+                query_embedding, top_k
+            )  # type: ignore[call-arg]
 
             # Get the matching chunks with page information
             results = []
@@ -242,7 +243,9 @@ class VectorStore:
                             "score": float(
                                 1.0 / (1.0 + distance)
                             ),  # Convert distance to similarity score
-                            "page_number": chunk.get("page_no", chunk.get("page", 0)),  # Extract page number
+                            "page_number": chunk.get(
+                                "page_no", chunk.get("page", 0)
+                            ),  # Extract page number
                             "chunk_index": chunk.get("chunk_index", idx),
                             "chunk_type": chunk.get("chunk_type", "content"),
                             "metadata": chunk.get("metadata", {}),
@@ -252,26 +255,26 @@ class VectorStore:
             return results
 
         except Exception as e:
-            logger.error(f"Error during vector search: {str(e)}")
+            logger.error("Error during vector search: {str(e)}")
             logger.error(traceback.format_exc())
             return []
 
     def delete_index(self, document_id: str) -> None:
         """Delete index files for a document."""
-        index_path = self.index_dir / f"{document_id}_index.faiss"
-        chunks_path = self.index_dir / f"{document_id}_chunks.pkl"
-        embeddings_path = self.index_dir / f"{document_id}_embeddings.npy"
-        export_path = self.export_dir / f"{document_id}_dataset.json"
+        index_path = self.index_dir / "{document_id}_index.faiss"
+        chunks_path = self.index_dir / "{document_id}_chunks.pkl"
+        embeddings_path = self.index_dir / "{document_id}_embeddings.npy"
+        export_path = self.export_dir / "{document_id}_dataset.json"
 
         for path in [index_path, chunks_path, embeddings_path, export_path]:
             if path.exists():
                 try:
                     path.unlink()
-                    logger.info(f"Deleted {path}")
+                    logger.info("Deleted {path}")
                 except Exception as e:
-                    logger.error(f"Error deleting {path}: {str(e)}")
+                    logger.error("Error deleting {path}: {str(e)}")
 
-        logger.info(f"Deleted index for document {document_id}")
+        logger.info("Deleted index for document {document_id}")
 
     def get_chunks(self, document_id: str) -> list:
         """Return all chunks for a given document_id from cache or file."""
@@ -280,11 +283,11 @@ class VectorStore:
             _, chunks = self.index_cache[document_id]
             return chunks
         # Try loading from file
-        chunks_path = self.index_dir / f"{document_id}_chunks.json"
+        chunks_path = self.index_dir / "{document_id}_chunks.json"
         if chunks_path.exists():
             with open(chunks_path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        logger.warning(f"No chunks found for document_id: {document_id}")
+        logger.warning("No chunks found for document_id: {document_id}")
         return []
 
 
