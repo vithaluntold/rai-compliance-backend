@@ -9,6 +9,7 @@ high accuracy and completeness.
 import logging
 import re
 from dataclasses import dataclass
+from typing import List, Optional, Dict, Any
 
 import country_converter as coco  # type: ignore
 import pycountry  # type: ignore
@@ -41,7 +42,7 @@ class GeographicalDetectionService:
 
     def _initialize_geographical_data(self):
         """Initialize comprehensive geographical data including countries,
-        regions, and territories.""f"
+        regions, and territories."""
 
         # Standard countries from pycountry
         self.countries = {}
@@ -113,7 +114,7 @@ class GeographicalDetectionService:
                     "Tunisia",
                     "United Arab Emirates",
                     "Yemen",
-                ],},
+                ]},
             "apacff": {"name": "Asia-Pacific",
                 "countries": [
                     "Australia",
@@ -141,7 +142,7 @@ class GeographicalDetectionService:
                     "Taiwan",
                     "Thailand",
                     "Vietnam",
-                ],},
+                ]},
             "euff": {"name": "European Union",
                 "countries": [
                     "Austria",
@@ -171,7 +172,7 @@ class GeographicalDetectionService:
                     "Slovenia",
                     "Spain",
                     "Sweden",
-                ],},
+                ]},
             "europeff": {"name": "Europe",
                 "countries": [
                     "Albania",
@@ -217,9 +218,9 @@ class GeographicalDetectionService:
                     "Ukraine",
                     "United Kingdom",
                     "Vatican City",
-                ],},
+                ]},
             "naftaff": {"name": "North American Free Trade Agreement",
-                "countries": ["United States", "Canada", "Mexico"],},
+                "countries": ["United States", "Canada", "Mexico"]},
             "gccff": {"name": "Gulf Cooperation Council",
                 "countries": [
                     "Bahrain",
@@ -228,7 +229,7 @@ class GeographicalDetectionService:
                     "Qatar",
                     "Saudi Arabia",
                     "United Arab Emirates",
-                ],},
+                ]},
             "aseanff": {"name": "Association of Southeast Asian Nations",
                 "countries": [
                     "Brunei",
@@ -241,7 +242,7 @@ class GeographicalDetectionService:
                     "Singapore",
                     "Thailand",
                     "Vietnam",
-                ],},
+                ]}
         }
 
         # Common geographical keywords to enhance detection
@@ -516,7 +517,7 @@ class GeographicalDetectionService:
     def _remove_duplicates(
         self, entities: List[GeographicalEntity]
     ) -> List[GeographicalEntity]:
-        """Remove duplicate entities, keeping the one with highest confidence.""f"
+        """Remove duplicate entities, keeping the one with highest confidence."""
         seen = {}
         for entity in entities:
             key = (entity.name.lower(), entity.type)
@@ -582,10 +583,8 @@ class GeographicalDetectionService:
             region_info = f" ({entity.region})" if entity.region else ""
 
             formatted_parts.append(
-                ff"{
-                    entity.name}{region_info} [{entity.type.upper()}, {confidence_level} confidence: "
-                ff"accuracy={
-                    entity.accuracy:.2f}, completeness={entity.completeness:.2f}]"
+                f"{entity.name}{region_info} [{entity.type.upper()}, {confidence_level} confidence: "
+                f"accuracy={entity.accuracy:.2f}, completeness={entity.completeness:.2f}]"
             )
 
         return "; ".join(formatted_parts)
