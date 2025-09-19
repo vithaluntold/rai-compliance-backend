@@ -799,6 +799,61 @@ async def get_frameworks_debug():
     except Exception as e:
         return {"error": f"Debug endpoint failed: {str(e)}"}
 
+@router.get("/checklist-debug/{framework}/{standard}", response_model=None)
+async def get_checklist_debug(framework: str, standard: str):
+    """Debug endpoint to check checklist loading for specific framework/standard"""
+    try:
+        from pathlib import Path
+        
+        result = {
+            "framework": framework,
+            "standard": standard,
+            "is_available": False,
+            "checklist_loaded": False,
+            "checklist_path_checked": [],
+            "checklist_sections": 0,
+            "checklist_total_items": 0,
+            "error": None
+        }
+        
+        # Check availability
+        try:
+            result["is_available"] = is_standard_available(framework, standard)
+        except Exception as e:
+            result["error"] = f"is_standard_available failed: {str(e)}"
+            
+        # Check checklist loading
+        try:
+            checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
+            
+            # Test possible paths
+            possible_paths = [
+                checklist_base / framework / f"{standard}.json",
+                checklist_base / "IFRS" / f"{standard}.json",
+                checklist_base / framework / standard / "checklist.json"
+            ]
+            
+            for path in possible_paths:
+                path_info = {
+                    "path": str(path),
+                    "exists": path.exists(),
+                    "is_file": path.is_file() if path.exists() else False
+                }
+                result["checklist_path_checked"].append(path_info)
+                
+            checklist = load_checklist(framework, standard)
+            if checklist:
+                result["checklist_loaded"] = True
+                result["checklist_sections"] = len(checklist.get('sections', []))
+                result["checklist_total_items"] = sum(len(section.get('items', [])) for section in checklist.get('sections', []))
+                
+        except Exception as e:
+            result["error"] = f"checklist loading failed: {str(e)}"
+            
+        return result
+    except Exception as e:
+        return {"error": f"Debug endpoint failed: {str(e)}"}
+
 @router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
@@ -1385,8 +1440,12 @@ async def get_framework_checklist(
 ) -> Union[Dict[str, Any], JSONResponse]:
     """Get the checklist for a specific framework and standard."""
     try:
+        # Debug logging
+        logger.info(f"Checklist request: framework={framework}, standard={standard}")
+        
         # Check if standard is available
         if not is_standard_available(framework, standard):
+            logger.warning(f"Standard not available: {framework}/{standard}")
             return JSONResponse(
                 status_code=404,
                 content={
@@ -1398,7 +1457,16 @@ async def get_framework_checklist(
                 },
             )
 
+        logger.info(f"Loading checklist for {framework}/{standard}")
         checklist = load_checklist(framework, standard)
+        
+        if checklist:
+            sections_count = len(checklist.get('sections', []))
+            total_items = sum(len(section.get('items', [])) for section in checklist.get('sections', []))
+            logger.info(f"Checklist loaded: {sections_count} sections, {total_items} total items")
+        else:
+            logger.warning(f"Empty checklist returned for {framework}/{standard}")
+            
         return JSONResponse(status_code=200, content=checklist)
     except FileNotFoundError as e:
         logger.error(f"Checklist not found: {str(e)}")
