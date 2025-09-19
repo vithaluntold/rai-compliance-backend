@@ -128,7 +128,7 @@ def analyze_compliance(text: str, framework: str = "IFRS") -> Dict:
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "RAi Compliance Engine API - Fully Functional", "status": "running"}
+    return {"message": "RAi Compliance Engine API - Fully Functional v2", "status": "running", "timestamp": datetime.now().isoformat()}
 
 # Health endpoint  
 @app.get("/api/v1/health")
