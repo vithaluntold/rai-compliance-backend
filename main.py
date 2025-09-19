@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import PyPDF2
-# Force deployment trigger - PyCryptodome support added
+# Force deployment trigger - PyCryptodome support added + hardcoded frameworks endpoint removed + Azure deployment name fixed
 from io import BytesIO
 
 # Initialize FastAPI app
