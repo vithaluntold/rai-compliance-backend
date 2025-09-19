@@ -585,8 +585,9 @@ class AIService:
                             'evidence_source', 'Unknown')}"
                 )
             else:
-                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
-                logger.info("Using standard vector search evidence")
+                # Intelligently combine chunks while respecting size limits
+                context = self._combine_chunks_with_limit(relevant_chunks, max_length=3000)
+                logger.info(f"Using standard vector search evidence (combined length: {len(context)} chars)")
 
             # Construct the prompt for the AI using the prompts library
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
@@ -600,7 +601,7 @@ class AIService:
                     # RATE LIMITING REMOVED - Process all 217 questions without limits
                     # check_rate_limit_with_backoff(tokens=estimated_tokens)
 
-                    # Get AI response
+                    # Get AI response - ADD MAX_TOKENS FOR TESTING
                     response = self.openai_client.chat.completions.create(
                         model=self.deployment_name,
                         messages=[
@@ -610,6 +611,7 @@ class AIService:
                             },
                             {"role": "user", "content": prompt},
                         ],
+                        max_tokens=1000,  # ADD MAX_TOKENS LIMIT FOR TESTING
                     )
 
                     # If we get here, the API call was successful
@@ -1193,10 +1195,10 @@ class AIService:
                     document_id, question_text, reference, vector_index_exists
                 )
 
-                # Use JSON response format for checklist items
+                # Use JSON response format for checklist items - TEMPORARILY DISABLED FOR TESTING
                 response = self.openai_client.chat.completions.create(
                     model=self.deployment_name,
-                    response_format={"type": "json_object"},
+                    # response_format={"type": "json_object"},  # TEMPORARILY COMMENTED OUT
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt},
