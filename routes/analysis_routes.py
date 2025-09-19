@@ -3263,6 +3263,15 @@ async def process_compliance_analysis(
     performance_tracker = None  # Initialize to avoid NameError in exception handler
 
     try:
+        # CRITICAL: Limit text content to 8000 characters to prevent Azure OpenAI API 500 errors
+        MAX_TEXT_LENGTH = 8000
+        if len(text) > MAX_TEXT_LENGTH:
+            original_length = len(text)
+            text = text[:MAX_TEXT_LENGTH]
+            logger.warning(f"🔥 TEXT TRUNCATED: Original length {original_length} → Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
+        else:
+            logger.info(f"📝 Text length: {len(text)} characters (within limit)")
+
         # Clear any previously processed questions for this document
         from services.ai import clear_document_questions
 

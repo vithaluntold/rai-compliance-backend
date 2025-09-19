@@ -282,6 +282,11 @@ class AIPrompts:
         enhanced_evidence: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Generate the complete compliance analysis prompt with dynamic quality adaptation."""
+        # Limit context to 8000 characters to prevent Azure OpenAI API overload
+        if len(context) > 8000:
+            context = context[:8000]
+            print(f"[WARNING] Context truncated from {len(context)} to 8000 characters to prevent API overload")
+        
         # Assess context quality for dynamic prompt assembly
         context_quality = cls._assess_context_quality(context, enhanced_evidence)
 
