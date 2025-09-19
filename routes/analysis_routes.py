@@ -757,7 +757,6 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         logger.error(f"Error getting frameworks: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
-
 @router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
