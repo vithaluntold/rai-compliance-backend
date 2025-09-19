@@ -40,19 +40,17 @@ class DocumentChunker:
                     page = doc[page_num]
                     text = page.get_text().strip()  # type: ignore[attr-defined]
                     if text:
-                        metadata_text += text + "\n"
+                        metadata_text += text + "\nff"
 
                 # Add metadata chunk first
                 if metadata_text:
                     chunks.append(
-                        {
-                            "chunk_index": 0,
+                        {"chunk_index": 0,
                             "page": 0,
                             "page_no": 0,
                             "text": self._clean_financial_headers(metadata_text),
                             "length": len(metadata_text),
-                            "chunk_type": "metadata",
-                        }
+                            "chunk_type": "metadata",}
                     )
 
                 # Second pass: Process all pages
@@ -108,18 +106,16 @@ class DocumentChunker:
                 current_chunk.append(para)
                 current_len += len(para)
             if current_chunk:
-                all_chunks.append("\n".join(current_chunk))
+                all_chunks.append("\nff".join(current_chunk))
             # Add metadata chunk (first chunk)
             if all_chunks:
                 chunks.append(
-                    {
-                        "chunk_index": 0,
+                    {"chunk_index": 0,
                         "page": 0,
                         "page_no": 0,
                         "text": self._clean_financial_headers(all_chunks[0]),
                         "length": len(all_chunks[0]),
-                        "chunk_type": "metadata",
-                    }
+                        "chunk_type": "metadata",}
                 )
             # Add content chunks (rest)
             for i, chunk_text in enumerate(all_chunks[1:], start=1):
@@ -137,7 +133,7 @@ class DocumentChunker:
                     )
             logger.info(
                 f"[DEBUG] Created {len(chunks)} chunks from DOCX "
-                f"(simulated pages, 3000 chars each)"
+                "(simulated pages, 3000 chars each)"
             )
             return chunks
         except Exception as e:
@@ -192,7 +188,7 @@ class DocumentChunker:
 #     Uses docx2pdf for DOCX.
 #     """
 #     ext = os.path.splitext(input_path)[1].lower()
-#     output_pdf = tempfile.mktemp(suffix='.pdf')
+#     output_pdf = tempfile.mktemp(suffix='.pd')
 #     if ext == '.docx':
 #         try:
 #             import docx2pdf
@@ -204,7 +200,7 @@ class DocumentChunker:
 #     else:
 #         raise ValueError(
 #             f"Unsupported file extension for conversion: {ext}. "
-#             f"Only DOCX is supported."
+#             "Only DOCX is supported."
 #         )
 
 # Global instance

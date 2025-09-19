@@ -12,7 +12,6 @@ from typing import Any, Dict, List, Tuple, Union
 from services.geographical_service import GeographicalDetectionService
 from services.vector_store import get_vector_store
 from services.ai import get_ai_service
-from services.ai_prompts import AIPrompts
 from config.extraction_config import get_config
 
 logger = logging.getLogger(__name__)
@@ -37,8 +36,8 @@ class SmartMetadataExtractor:
         self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
     ) -> Dict[str, Any]:
         """Extract metadata using 3-tier strategy"""
-        logger.info(f"🚀 Starting SMART metadata extraction for document {document_id}")
-        logger.info(f"🔍 Processing {len(chunks)} chunks with smart extractor")
+        logger.info("🚀 Starting SMART metadata extraction for document {document_id}")
+        logger.info("🔍 Processing {len(chunks)} chunks with smart extractor")
 
         # Combine all chunks for pattern analysis - extract text from chunk dictionaries
         if chunks and isinstance(chunks[0], dict):
@@ -50,12 +49,12 @@ class SmartMetadataExtractor:
         else:
             # Chunks are strings (fallback)
             full_text = " ".join([str(chunk) for chunk in chunks])
-        logger.info(f"📄 Combined text length: {len(full_text)} characters")
+        logger.info("📄 Combined text length: {len(full_text)} characters")
 
         # Tier 1: Pattern-based extraction
         logger.info("⚡ Tier 1: Pattern-based extraction")
         pattern_results = await self._extract_with_patterns(full_text)
-        logger.info(f"✅ Pattern results: {pattern_results}")
+        logger.info("✅ Pattern results: {pattern_results}")
 
         # Tier 2: Semantic search enhancement
         logger.info("🔍 Tier 2: Semantic search enhancement")
@@ -69,8 +68,8 @@ class SmartMetadataExtractor:
             [full_text], semantic_results
         )
 
-        logger.info(f"🎯 Optimized extraction completed for document {document_id}")
-        logger.info(f"📊 Final results: {final_results}")
+        logger.info("🎯 Optimized extraction completed for document {document_id}")
+        logger.info("📊 Final results: {final_results}")
         return final_results
 
     async def _extract_with_patterns(self, text: str) -> Dict[str, Any]:
@@ -96,7 +95,7 @@ class SmartMetadataExtractor:
         business_nature, business_context = await self._extract_with_keyword_semantic_ai(
             text, "nature_of_business", ["principal activities", "business", "engaged", "development", "management", "services", "operations", "construction", "leasing", "investment", "real estate", "hotels", "schools", "marinas", "restaurants", "beach clubs", "golf courses", "Group is", "company"]
         )
-        
+
         # Fallback pattern-based approach if AI fails
         if not business_nature:
             # Look for detailed business descriptions in the text
@@ -105,21 +104,21 @@ class SmartMetadataExtractor:
                 r"principal activities[^.]+(?:development|construction|leasing|management|investment)[^.]*\.",
                 r"business[^.]+(?:development|construction|leasing|management|real estate)[^.]*\."
             ]
-            
+
             for pattern in business_patterns:
                 matches = re.findall(pattern, text, re.IGNORECASE | re.DOTALL)
                 if matches:
                     business_nature = matches[0].strip()
                     business_context = "Pattern matched from document content"
-                    logger.info(f"🏢 Pattern-based business extraction found: {business_nature[:100]}...")
+                    logger.info("🏢 Pattern-based business extraction found: {business_nature[:100]}...")
                     break
-            
+
             # Simple fallback if patterns don't work
             if not business_nature:
                 if "real estate" in text.lower() and "development" in text.lower():
                     business_nature = "The Group is engaged in real estate development, construction, leasing, and management activities"
                     business_context = "Inferred from document content"
-        
+
         if business_nature:
             results["nature_of_business"]["value"] = business_nature
             results["nature_of_business"]["confidence"] = 0.9
@@ -129,24 +128,24 @@ class SmartMetadataExtractor:
         demographics, demo_context = await self._extract_with_keyword_semantic_ai(
             text, "operational_demographics", ["operations", "subsidiaries", "countries", "geography", "locations", "jurisdictions", "UAE", "Egypt", "England", "Wales", "United Arab Emirates", "incorporated", "Dubai", "Abu Dhabi", "presence", "offices"]
         )
-        
+
         # Fallback pattern-based approach if AI fails or incomplete
         if not demographics or len(demographics.split(',')) < 2:  # Use fallback if we found fewer than 2 countries
             # Precise country detection - only extract countries that actually exist in text
             countries_found = []
-            
+
             # More precise country patterns that require full context
             country_checks = [
                 # UAE variations
                 (r'\b(United Arab Emirates)\b', "United Arab Emirates"),
                 (r'\bUAE\b(?!\s*\w)', "United Arab Emirates"),  # UAE not followed by other letters
-                
+
                 # Egypt
                 (r'\bEgypt\b', "Egypt"),
-                
+
                 # England and Wales (common in legal documents)
                 (r'\b(England and Wales)\b', "England and Wales"),
-                
+
                 # Only check for other countries if there's clear evidence
                 (r'\b(United States of America)\b', "United States"),
                 (r'\bUSA\b(?!\s*\w)', "United States"),
@@ -164,27 +163,27 @@ class SmartMetadataExtractor:
                 (r'\bKuwait\b', "Kuwait"),
                 (r'\bOman\b', "Oman")
             ]
-            
+
             # Only add countries that have clear evidence in the text
             for pattern, country_name in country_checks:
                 if re.search(pattern, text, re.IGNORECASE):
                     # Additional validation - make sure it's in a meaningful context
-                    context_match = re.search(rf'.{{0,50}}{pattern}.{{0,50}}', text, re.IGNORECASE)
+                    context_match = re.search(r'.{{0,50}}{pattern}.{{0,50}}', text, re.IGNORECASE)
                     if context_match:
                         context = context_match.group(0).lower()
                         # Skip if it appears to be in unrelated context
                         if not any(skip_word in context for skip_word in ['example', 'sample', 'template', 'format']):
                             if country_name not in countries_found:
                                 countries_found.append(country_name)
-                                logger.info(f"📍 Found country: {country_name} in context: {context[:100]}...")
-            
+                                logger.info("📍 Found country: {country_name} in context: {context[:100]}...")
+
             if countries_found:
                 fallback_demographics = ", ".join(countries_found)
                 if not demographics or len(countries_found) > len(demographics.split(',')):  # Use fallback if we found more countries
                     demographics = fallback_demographics
                     demo_context = "Pattern matched from document content"
-                    logger.info(f"📍 Pattern-based demographics extraction found: {demographics}")
-        
+                    logger.info("📍 Pattern-based demographics extraction found: {demographics}")
+
         if demographics:
             results["operational_demographics"]["value"] = demographics
             results["operational_demographics"]["confidence"] = 0.9
@@ -199,7 +198,7 @@ class SmartMetadataExtractor:
             fs_type = "Standalone"
         elif "separate" in text.lower() and "financial statements" in text.lower():
             fs_type = "Separate"
-        
+
         results["financial_statements_type"]["value"] = fs_type
         results["financial_statements_type"]["confidence"] = 0.9
         results["financial_statements_type"]["context"] = "Pattern matched from document content"
@@ -222,14 +221,14 @@ class SmartMetadataExtractor:
             line = line.strip()
             if len(line) < 5 or len(line) > 100:
                 continue
-            
+
             # Simple direct extraction - look for standalone company names
             if "ALDAR PROPERTIES PJSC" in line.upper():
                 # Extract just the company name, not surrounding text
                 # Use regex to find the exact company name and clean it
                 company_pattern = r'(?:.*?)([A-Z][A-Za-z\s]*ALDAR\s+PROPERTIES\s+PJSC)(?:.*?)'
                 match = re.search(company_pattern, line, re.IGNORECASE)
-                
+
                 if match:
                     potential_company = match.group(1).strip()
                     # Clean up the extracted name - remove common prefixes
@@ -238,15 +237,15 @@ class SmartMetadataExtractor:
                     potential_company = re.sub(r'^\s*financial\s+statements?\s+of\s+', '', potential_company, flags=re.IGNORECASE)
                     potential_company = re.sub(r'^\s*consolidated\s+', '', potential_company, flags=re.IGNORECASE)
                     potential_company = re.sub(r'^\s*audited\s+', '', potential_company, flags=re.IGNORECASE)
-                    
+
                     # Format properly
                     if potential_company.upper().strip() == "ALDAR PROPERTIES PJSC":
                         best_match = "ALDAR Properties PJSC"
                         best_confidence = 0.95
                         best_context = line.strip()
-                        logger.info(f"🏢 Found clean company name: {best_match}")
+                        logger.info("🏢 Found clean company name: {best_match}")
                         break
-            
+
             # Look for other PJSC companies if ALDAR not found
             if not best_match:
                 # Look for PJSC patterns in headers
@@ -254,19 +253,19 @@ class SmartMetadataExtractor:
                     r'([A-Z][A-Za-z\s]+\s+PJSC)(?=\s|$|\.)',  # Company PJSC pattern
                     r'([A-Z][A-Za-z\s]+\s+(?:LLC|Ltd|Limited|Corporation|Inc))(?=\s|$|\.)'  # Other entities
                 ]
-                
+
                 for pattern in header_patterns:
                     matches = re.findall(pattern, line, re.IGNORECASE)
                     for match in matches:
                         cleaned_match = re.sub(r'\s+', ' ', match.strip())
-                        
+
                         # Clean up common prefixes that get captured
                         cleaned_match = re.sub(r'^.*?(statements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = re.sub(r'^.*?(financial\s+statements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = re.sub(r'^.*?(consolidated\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = re.sub(r'^.*?(audited\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = cleaned_match.strip()
-                        
+
                         # Skip obvious non-company names and context words
                         if (len(cleaned_match) > 100 or len(cleaned_match) < 5 or
                             'plots of land' in cleaned_match.lower() or
@@ -278,10 +277,10 @@ class SmartMetadataExtractor:
                             cleaned_match.lower().startswith('consolidated ') or
                             cleaned_match.lower().startswith('audited ')):
                             continue
-                    
+
                         # Higher confidence for PJSC and Properties patterns
                         confidence = 0.95 if 'PJSC' in cleaned_match else 0.8
-                        
+
                         if confidence > best_confidence:
                             best_match = cleaned_match
                             best_confidence = confidence
@@ -293,13 +292,13 @@ class SmartMetadataExtractor:
                 sentence = sentence.strip()
                 if len(sentence) < 20:
                     continue
-                
+
                 # Look for company patterns in sentences
                 for pattern in self.company_patterns:
                     matches = re.findall(pattern, sentence, re.IGNORECASE)
                     for match in matches:
                         cleaned_match = re.sub(r'\s+', ' ', match.strip())
-                        
+
                         # Clean up common prefixes and suffixes that get captured incorrectly
                         original_match = cleaned_match
                         cleaned_match = re.sub(r'^.*?(\bstatements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
@@ -308,14 +307,14 @@ class SmartMetadataExtractor:
                         cleaned_match = re.sub(r'^.*?(\baudited\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = re.sub(r'^.*?(\breports?\s+and\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = cleaned_match.strip()
-                        
+
                         # If we cleaned too much, try to extract just the company name part
                         if not cleaned_match and "ALDAR PROPERTIES PJSC" in original_match.upper():
                             # Extract the company name specifically
                             company_match = re.search(r'(ALDAR\s+PROPERTIES\s+PJSC)', original_match, re.IGNORECASE)
                             if company_match:
                                 cleaned_match = "ALDAR Properties PJSC"
-                        
+
                         # Skip obviously wrong matches
                         if (len(cleaned_match) < 5 or len(cleaned_match) > 100 or
                             'plots of land' in cleaned_match.lower() or
@@ -326,23 +325,23 @@ class SmartMetadataExtractor:
                             'report' in cleaned_match.lower() or
                             len(cleaned_match.split()) > 8):
                             continue
-                        
+
                         # Calculate confidence
                         confidence = 0.6  # Base confidence
-                        
+
                         # Higher confidence for business entity indicators
                         if re.search(r'\b(Properties|Holdings|Group|Bank|Company|PJSC|PLC)\b', cleaned_match, re.IGNORECASE):
                             confidence = 0.8
-                        
+
                         # Prefer main entity over subsidiaries
                         if 'Properties' in cleaned_match and 'PJSC' in cleaned_match:
                             confidence = 0.9
-                        
+
                         if confidence > best_confidence:
                             best_match = cleaned_match
                             best_confidence = confidence
                             best_context = sentence.strip()
-                            logger.info(f"🏢 Pattern-based company extraction found: {best_match}")
+                            logger.info("🏢 Pattern-based company extraction found: {best_match}")
 
         return best_match, best_confidence, best_context
 
@@ -366,14 +365,14 @@ class SmartMetadataExtractor:
             for sentence in sentences:
                 sentence_lower = sentence.lower()
                 sentence_matches = 0
-                
+
                 for keyword in keywords:
                     if keyword in sentence_lower:
                         matches += 1
                         sentence_matches += 1
                         # Weight longer keywords higher
                         score += len(keyword.split())
-                
+
                 # If this sentence has matches, include it in context
                 if sentence_matches > 0:
                     context_sentences.append(sentence.strip())
@@ -425,8 +424,8 @@ class SmartMetadataExtractor:
 
             for entity in geographical_entities:
                 # Focus on countries with high confidence
-                if (entity.type == 'country' and 
-                    entity.confidence > 0.7 and 
+                if (entity.type == 'country' and
+                    entity.confidence > 0.7 and
                     entity.confidence > best_confidence):
                     best_entity = entity
                     best_confidence = entity.confidence
@@ -435,33 +434,33 @@ class SmartMetadataExtractor:
                 # Extract context around the geographical mention
                 context = self._extract_geographical_context(text, best_entity.name)
                 # Return only the best match
-                region_info = f" ({best_entity.region})" if best_entity.region else ""
-                formatted_info = f"{best_entity.name}{region_info}"
+                region_info = " ({best_entity.region})" if best_entity.region else ""
+                formatted_info = "{best_entity.name}{region_info}"
                 return formatted_info, min(best_confidence, 0.95), context
             else:
                 # Fallback: return the highest confidence entity of any type
                 best_entity = max(geographical_entities, key=lambda x: x.confidence)
                 if best_entity.confidence > 0.5:
                     context = self._extract_geographical_context(text, best_entity.name)
-                    region_info = f" ({best_entity.region})" if best_entity.region else ""
-                    formatted_info = f"{best_entity.name}{region_info}"
+                    region_info = " ({best_entity.region})" if best_entity.region else ""
+                    formatted_info = "{best_entity.name}{region_info}"
                     return formatted_info, min(best_entity.confidence, 0.85), context
                 else:
                     return "", 0.0, ""
 
         except Exception as e:
-            logger.error(f"Error in geographical extraction: {str(e)}")
+            logger.error("Error in geographical extraction: {str(e)}")
             return "", 0.0, ""
 
     def _extract_geographical_context(self, text: str, entity_name: str) -> str:
         """Extract context around geographical entity mentions"""
         sentences = re.split(r'[.!?]+', text)
         context_sentences = []
-        
+
         for sentence in sentences:
             if entity_name.lower() in sentence.lower():
                 context_sentences.append(sentence.strip())
-        
+
         return '. '.join(context_sentences[:2]) if context_sentences else ""
 
     async def _extract_with_keyword_semantic_ai(self, text: str, field_name: str, keywords: List[str]) -> Tuple[str, str]:
@@ -471,30 +470,30 @@ class SmartMetadataExtractor:
         try:
             # Step 1: Identify keyword matches and extract full sentences
             relevant_sentences = self._find_sentences_with_keywords(text, keywords)
-            
+
             if not relevant_sentences:
-                logger.warning(f"No sentences found with keywords for {field_name}")
+                logger.warning("No sentences found with keywords for {field_name}")
                 return "", ""
-            
+
             # Step 2: Semantic search to find most relevant chunks
             if hasattr(self, 'vector_store') and self.vector_store:
                 semantic_chunks = await self._semantic_search_for_field(field_name, relevant_sentences, text)
                 if semantic_chunks:
                     relevant_sentences.extend(semantic_chunks)
-            
+
             # Step 3: Create chunks from relevant sentences (up to 8000 characters)
             context_text = '. '.join(relevant_sentences)
-            
+
             # Truncate to 8000 characters if needed
             if len(context_text) > 8000:
                 context_text = context_text[:8000] + "..."
-                logger.info(f"Truncated context for {field_name} to 8000 characters (was {len('. '.join(relevant_sentences))} chars)")
+                logger.info("Truncated context for {field_name} to 8000 characters (was {len('. '.join(relevant_sentences))} chars)")
             else:
-                logger.info(f"Context for {field_name}: {len(context_text)} characters from {len(relevant_sentences)} sentences")
-            
+                logger.info("Context for {field_name}: {len(context_text)} characters from {len(relevant_sentences)} sentences")
+
             # DEBUG: Log the context being sent to AI
-            logger.info(f"🔍 DEBUG - Context for {field_name}:\n{context_text[:500]}..." if len(context_text) > 500 else f"🔍 DEBUG - Context for {field_name}:\n{context_text}")
-            
+            logger.info("🔍 DEBUG - Context for {field_name}:\n{context_text[:500]}..." if len(context_text) > 500 else "🔍 DEBUG - Context for {field_name}:\n{context_text}")
+
             # Step 4: Create field-specific AI prompts with context
             if field_name == "nature_of_business":
                 prompt = self._create_enhanced_business_prompt(context_text)
@@ -504,7 +503,7 @@ class SmartMetadataExtractor:
                 prompt = self._create_enhanced_fs_type_prompt(context_text)
             else:
                 return "", ""
-            
+
             # Step 5: Get AI response
             response = self.ai_service.openai_client.chat.completions.create(
                 model=self.ai_service.deployment_name,
@@ -514,83 +513,83 @@ class SmartMetadataExtractor:
                 ],
                 max_completion_tokens=800  # Only parameter supported by new model
             )
-            
+
             content = response.choices[0].message.content
-            logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else f"🤖 AI Response for {field_name}: {content}")
+            logger.info("🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else "🤖 AI Response for {field_name}: {content}")
             return content.strip() if content else "", context_text[:500]
-            
+
         except Exception as e:
-            logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {str(e)}")
+            logger.error("Error in keyword→semantic→AI extraction for {field_name}: {str(e)}")
             return "", ""
-    
+
     def _find_sentences_with_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """Find ALL complete sentences containing any of the keywords"""
         sentences = re.split(r'[.!?]+', text)
         relevant_sentences = []
-        
+
         for sentence in sentences:
             sentence = sentence.strip()
             if len(sentence) < 10:  # Skip very short sentences (reduced from 20)
                 continue
-                
+
             sentence_lower = sentence.lower()
             for keyword in keywords:
                 if keyword.lower() in sentence_lower:
                     relevant_sentences.append(sentence)
-                    logger.debug(f"Found keyword '{keyword}' in: {sentence[:100]}...")
+                    logger.debug("Found keyword '{keyword}' in: {sentence[:100]}...")
                     break  # Avoid duplicate sentences
-        
-        logger.info(f"Found {len(relevant_sentences)} sentences with keywords: {keywords}")
+
+        logger.info("Found {len(relevant_sentences)} sentences with keywords: {keywords}")
         return relevant_sentences
-    
+
     async def _semantic_search_for_field(self, field_name: str, existing_sentences: List[str], text: str) -> List[str]:
         """Use semantic search to find additional relevant content"""
         try:
             if not text:
                 logger.warning("No text available for semantic search")
                 return []
-                
+
             # Define search queries for each field
             search_queries = {
                 "nature_of_business": "business activities operations services development construction management industry sector",
                 "operational_demographics": "countries operations geography locations subsidiaries jurisdictions offices presence",
                 "financial_statements_type": "consolidated standalone separate individual financial statements accounts"
             }
-            
+
             query = search_queries.get(field_name, "")
             if not query:
                 return []
-            
+
             # Split text into sentences
             all_sentences = re.split(r'[.!?]+', text)
             all_sentences = [s.strip() for s in all_sentences if len(s.strip()) > 10]
-            
+
             if not all_sentences:
                 return []
-            
+
             # Find sentences not already in existing_sentences
             existing_lower = [s.lower() for s in existing_sentences]
             new_sentences = []
-            
+
             for sentence in all_sentences:
                 sentence_lower = sentence.lower()
                 # Check if not already included
-                if not any(existing.lower() in sentence_lower or sentence_lower in existing.lower() 
+                if not any(existing.lower() in sentence_lower or sentence_lower in existing.lower()
                           for existing in existing_lower):
                     # Check if contains relevant terms
                     for term in query.split():
                         if term.lower() in sentence_lower:
                             new_sentences.append(sentence)
-                            logger.debug(f"Semantic search found: {sentence[:100]}...")
+                            logger.debug("Semantic search found: {sentence[:100]}...")
                             break
-            
-            logger.info(f"Semantic search found {len(new_sentences)} additional sentences for {field_name}")
+
+            logger.info("Semantic search found {len(new_sentences)} additional sentences for {field_name}")
             return new_sentences[:10]  # Limit to top 10 additional sentences
-            
+
         except Exception as e:
-            logger.error(f"Error in semantic search for {field_name}: {str(e)}")
+            logger.error("Error in semantic search for {field_name}: {str(e)}")
             return []
-    
+
     def _create_enhanced_business_prompt(self, context: str) -> Dict[str, str]:
         """Create enhanced business nature prompt exactly matching user requirements"""
         return {
@@ -612,7 +611,7 @@ class SmartMetadataExtractor:
                 "Return the complete business description:"
             )
         }
-    
+
     def _create_enhanced_demographics_prompt(self, context: str) -> Dict[str, str]:
         """Create enhanced demographics prompt for precise country extraction"""
         return {
@@ -633,7 +632,7 @@ class SmartMetadataExtractor:
                 "Return only the countries explicitly mentioned in the text:"
             )
         }
-    
+
     def _create_enhanced_fs_type_prompt(self, context: str) -> Dict[str, str]:
         """Create enhanced financial statements type prompt"""
         return {
@@ -690,7 +689,7 @@ class SmartMetadataExtractor:
                             enhanced_results[field_name]["extraction_method"] = "semantic"
 
                 except Exception as e:
-                    logger.error(f"Error in semantic search for {field_name}: {str(e)}")
+                    logger.error("Error in semantic search for {field_name}: {str(e)}")
 
         return enhanced_results
 
@@ -719,7 +718,7 @@ class SmartMetadataExtractor:
             return chunks
 
         except Exception as e:
-            logger.error(f"Error searching relevant chunks: {str(e)}")
+            logger.error("Error searching relevant chunks: {str(e)}")
             return []
 
     async def _validate_with_ai(self, chunks: List[str], semantic_results: Dict[str, Any]) -> Dict[str, Any]:
@@ -741,7 +740,7 @@ class SmartMetadataExtractor:
                         final_results[field_name]["extraction_method"] = "ai_validation"
 
                 except Exception as e:
-                    logger.error(f"Error in AI validation for {field_name}: {str(e)}")
+                    logger.error("Error in AI validation for {field_name}: {str(e)}")
 
         # Add optimization metrics
         final_results["optimization_metrics"] = {
@@ -759,7 +758,7 @@ class SmartMetadataExtractor:
         try:
             # Get all extracted contexts for better AI understanding
             combined_text = " ".join(chunks)
-            
+
             # Create enhanced prompts based on field type
             if field_name == "company_name":
                 prompt = self._create_company_name_prompt_with_context(combined_text)
@@ -784,7 +783,7 @@ class SmartMetadataExtractor:
             return content.strip() if content else ""
 
         except Exception as e:
-            logger.error(f"Error in AI field extraction for {field_name}: {str(e)}")
+            logger.error("Error in AI field extraction for {field_name}: {str(e)}")
             return ""
 
     def _create_company_name_prompt_with_context(self, text: str) -> Dict[str, str]:

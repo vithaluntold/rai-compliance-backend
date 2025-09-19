@@ -13,7 +13,7 @@ services:
       - key: AZURE_OPENAI_DEPLOYMENT_NAME
         value: model-router
       - key: AZURE_OPENAI_API_VERSION
-        value: 2024-02-15-preview
+        value: 2024-12-01-preview
       - key: AZURE_OPENAI_EMBEDDING_DEPLOYMENT
         value: text-embedding-ada-002
       - key: AZURE_OPENAI_EMBEDDING_API_VERSION

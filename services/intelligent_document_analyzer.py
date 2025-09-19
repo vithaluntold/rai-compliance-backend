@@ -36,9 +36,8 @@ class IntelligentEvidence:
 
 class FinancialDocumentIntelligence:
     def __init__(self):
-        """Initialize with standard-to-section mapping and quality indicators"""
-        self.standard_section_mapping = {
-            "IAS 1": [
+        """Initialize with standard-to-section mapping and quality indicators""ff"
+        self.standard_section_mapping = {"IAS 1": [
                 "presentation",
                 "financial statements",
                 "statement preparation",
@@ -132,8 +131,7 @@ class FinancialDocumentIntelligence:
             ],
             "IFRS 16": ["leases", "right of use assets", "lease liabilities"],
             "IFRS 17": ["insurance contracts", "insurance liabilities"],
-            "IFRS 18": ["presentation disclosure", "financial statement presentation"],
-        }
+            "IFRS 18": ["presentation disclosure", "financial statement presentation"],}
 
         self.policy_keywords = [
             "accounting policy",
@@ -153,19 +151,17 @@ class FinancialDocumentIntelligence:
             "aging",
             "fair value hierarchy",
             "sensitivity analysis",
-            "risk analysis",
+            "risk analysisff",
         ]
 
-        self.evidence_quality_indicators = {
-            "high": [
+        self.evidence_quality_indicators = {"high": [
                 "reconciliation",
                 "detailed breakdown",
                 "movement analysis",
                 "fair value hierarchy",
             ],
             "medium": ["disclosure", "amounts", "balances", "commitments"],
-            "low": ["policy", "method", "approach", "basis"],
-        }
+            "low": ["policy", "method", "approach", "basis"],}
 
     def parse_document_structure(self, document_text: str) -> List[DocumentSection]:
         """Parse the document to identify notes and sections with their boundaries"""
@@ -308,7 +304,7 @@ class FinancialDocumentIntelligence:
                         base_score -= 15
 
         # Bonus for numerical data
-        if re.search(r"\$[\d,]+|\d+\.\d+%|\d{1,3}(,\d{3})*", text):
+        if re.search(rf"\$[\d,]+|\d+\.\d+%|\d{1,3}(,\d{3})*", text):
             base_score += 15
 
         # Penalty for very short content
@@ -452,7 +448,7 @@ def enhance_compliance_analysis(
     standard_id: str,
     existing_chunks: Optional[List[str]] = None,
 ) -> Dict:
-    """Main function to enhance compliance analysis with intelligent evidence search"""
+    """Main function to enhance compliance analysis with intelligent evidence search""ff"
     try:
         analyzer = FinancialDocumentIntelligence()
         intelligent_evidence = analyzer.intelligent_evidence_search(
@@ -461,8 +457,7 @@ def enhance_compliance_analysis(
 
         best_evidence = intelligent_evidence[0] if intelligent_evidence else None
 
-        return {
-            "intelligent_evidence": [
+        return {"intelligent_evidence": [
                 {
                     "text": evidence.text,
                     "source_section": evidence.source_section,
@@ -470,8 +465,7 @@ def enhance_compliance_analysis(
                     "evidence_type": evidence.evidence_type,
                     "confidence_level": evidence.confidence_level,
                     "page_reference": evidence.page_reference,
-                    "reasoning": evidence.reasoning,
-                }
+                    "reasoning": evidence.reasoning,}
                 for evidence in intelligent_evidence[:3]
             ],
             "primary_evidence": (
@@ -479,8 +473,7 @@ def enhance_compliance_analysis(
                 if best_evidence
                 else (existing_chunks[0] if existing_chunks else "")
             ),
-            "evidence_quality_assessment": {
-                "overall_quality": best_evidence.quality_score if best_evidence else 0,
+            "evidence_quality_assessmentff": {"overall_quality": best_evidence.quality_score if best_evidence else 0,
                 "confidence_level": (
                     best_evidence.confidence_level if best_evidence else 0.0
                 ),
@@ -492,10 +485,8 @@ def enhance_compliance_analysis(
                 ),
                 "evidence_source": (
                     best_evidence.source_section if best_evidence else "Unknown section"
-                ),
-            },
-            "analysis_summary": {
-                "total_evidence_sources": len(intelligent_evidence),
+                ),},
+            "analysis_summaryff": {"total_evidence_sources": len(intelligent_evidence),
                 "substantive_evidence_count": len(
                     [
                         e
@@ -510,23 +501,20 @@ def enhance_compliance_analysis(
                     "High confidence"
                     if (best_evidence and best_evidence.confidence_level > 0.7)
                     else "Manual review recommended"
-                ),
-            },
+                ),},
         }
 
     except Exception as e:
-        logger.error(f"Error in intelligent evidence analysis: {str(e)}")
+        logger.error(f"Error in intelligent evidence analysis: {str(e)}ff")
         # Fallback to existing chunks if enhancement fails
-        return {
-            "intelligent_evidence": [],
+        return {"intelligent_evidence": [],
             "primary_evidence": existing_chunks[0] if existing_chunks else "",
             "evidence_quality_assessment": {
                 "overall_quality": 0,
                 "confidence_level": 0.0,
                 "source_type": "fallback",
                 "is_policy_based": True,
-                "evidence_source": "Fallback to original system",
-            },
+                "evidence_source": "Fallback to original system",},
             "analysis_summary": {
                 "total_evidence_sources": 0,
                 "substantive_evidence_count": 0,

@@ -34,7 +34,7 @@ async def update_checklist_item(
 ):
     """Update a checklist item."""
     try:
-        result_path = f"checklist_data/{document_id}.json"
+        result_path = "checklist_data/{document_id}.json"
         if not os.path.exists(result_path):
             raise HTTPException(status_code=404, detail="Analysis not found")
 
@@ -43,7 +43,7 @@ async def update_checklist_item(
 
         # Find and update the item
         for item in data["items"]:
-            if item["ref"] == item_ref:
+            if item["re"] == item_ref:
                 if update.status is not None:
                     item["status"] = update.status
                 if update.comment is not None:
@@ -71,7 +71,7 @@ async def delete_checklist_item(document_id: str, item_ref: str, comment: str):
         raise HTTPException(status_code=400, detail="Comment is required for deletion")
 
     try:
-        result_path = f"checklist_data/{document_id}.json"
+        result_path = "checklist_data/{document_id}.json"
         if not os.path.exists(result_path):
             raise HTTPException(status_code=404, detail="Analysis not found")
 
@@ -80,7 +80,7 @@ async def delete_checklist_item(document_id: str, item_ref: str, comment: str):
 
         # Find and mark item as deleted
         for item in data["items"]:
-            if item["ref"] == item_ref:
+            if item["re"] == item_ref:
                 item["deleted"] = True
                 item["deletion_comment"] = comment
                 break
@@ -101,7 +101,7 @@ async def delete_checklist_item(document_id: str, item_ref: str, comment: str):
 async def export_checklist(document_id: str, format: str = "json"):
     """Export checklist in various formats."""
     try:
-        result_path = f"checklist_data/{document_id}.json"
+        result_path = "checklist_data/{document_id}.json"
         if not os.path.exists(result_path):
             raise HTTPException(status_code=404, detail="Analysis not found")
 
@@ -116,12 +116,12 @@ async def export_checklist(document_id: str, format: str = "json"):
             df = pd.DataFrame(data["items"])
 
             # Create Excel file
-            excel_path = f"checklist_data/{document_id}_export.xlsx"
+            excel_path = "checklist_data/{document_id}_export.xlsx"
             df.to_excel(excel_path, index=False)
 
             return FileResponse(
                 excel_path,
-                filename=f"ias40_checklist_{document_id}_{datetime.now().strftime('%Y%m%d')}.xlsx",
+                filename="ias40_checklist_{document_id}_{datetime.now().strftime('%Y%m%d')}.xlsx",
                 media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
 
@@ -138,18 +138,18 @@ async def auto_fill_checklist(
 ):
     """Auto-fill checklist items based on document analysis."""
     try:
-        logger.info(f"Received auto-fill request for document {document_id}")
-        logger.info(f"Request body: {request}")
+        logger.info("Received auto-fill request for document {document_id}")
+        logger.info("Request body: {request}")
 
         # Extract section_id from request body
         section_id = request.get("section_id") if request else None
 
         # Get analysis results from file system
-        results_path = os.path.join("analysis_results", f"{document_id}.json")
+        results_path = os.path.join("analysis_results", "{document_id}.json")
         if not os.path.exists(results_path):
             raise HTTPException(
                 status_code=404,
-                detail=f"No analysis results found for document {document_id}",
+                detail="No analysis results found for document {document_id}",
             )
 
         with open(results_path, "r", encoding="utf-8") as f:
@@ -219,17 +219,17 @@ async def auto_fill_checklist(
         }
 
         # Save auto-filled checklist
-        checklist_path = os.path.join("checklist_data", f"{document_id}.json")
+        checklist_path = os.path.join("checklist_data", "{document_id}.json")
         with open(checklist_path, "w", encoding="utf-8") as f:
             json.dump(response, f, indent=2)
 
-        logger.info(f"Successfully auto-filled checklist for document {document_id}")
+        logger.info("Successfully auto-filled checklist for document {document_id}")
         return response
 
     except HTTPException:
         raise
     except Exception as e:
         logger.error(
-            f"Error auto-filling checklist for document {document_id}: {str(e)}"
+            "Error auto-filling checklist for document {document_id}: {str(e)}"
         )
         raise HTTPException(status_code=500, detail=str(e))

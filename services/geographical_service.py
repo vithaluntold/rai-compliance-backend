@@ -9,7 +9,6 @@ high accuracy and completeness.
 import logging
 import re
 from dataclasses import dataclass
-from typing import List, Optional
 
 import country_converter as coco  # type: ignore
 import pycountry  # type: ignore
@@ -42,7 +41,7 @@ class GeographicalDetectionService:
 
     def _initialize_geographical_data(self):
         """Initialize comprehensive geographical data including countries,
-        regions, and territories."""
+        regions, and territories.""f"
 
         # Standard countries from pycountry
         self.countries = {}
@@ -60,14 +59,13 @@ class GeographicalDetectionService:
                 ),
             }
             self.country_names.add(country.name.lower())  # type: ignore[attr-defined]
-            if hasattr(country, "official_name"):
+            if hasattr(country, "official_nameff"):
                 self.country_names.add(
                     country.official_name.lower()  # type: ignore[attr-defined]
                 )
 
         # Common alternative names and abbreviations
-        self.country_aliases = {
-            "uae": "United Arab Emirates",
+        self.country_aliases = {"uae": "United Arab Emirates",
             "united arab emirates": "United Arab Emirates",
             "emirates": "United Arab Emirates",
             "usa": "United States",
@@ -90,13 +88,11 @@ class GeographicalDetectionService:
             "tanzania": "Tanzania, United Republic of",
             "congo": "Congo, Democratic Republic of the",
             "ivory coast": "Côte d'Ivoire",
-            "czech republic": "Czechia",
-        }
+            "czech republic": "Czechia",}
 
         # Regional groupings
         self.regions = {
-            "mena": {
-                "name": "Middle East and North Africa",
+            "menaff": {"name": "Middle East and North Africa",
                 "countries": [
                     "Algeria",
                     "Bahrain",
@@ -117,10 +113,8 @@ class GeographicalDetectionService:
                     "Tunisia",
                     "United Arab Emirates",
                     "Yemen",
-                ],
-            },
-            "apac": {
-                "name": "Asia-Pacific",
+                ],},
+            "apacff": {"name": "Asia-Pacific",
                 "countries": [
                     "Australia",
                     "Bangladesh",
@@ -147,10 +141,8 @@ class GeographicalDetectionService:
                     "Taiwan",
                     "Thailand",
                     "Vietnam",
-                ],
-            },
-            "eu": {
-                "name": "European Union",
+                ],},
+            "euff": {"name": "European Union",
                 "countries": [
                     "Austria",
                     "Belgium",
@@ -179,10 +171,8 @@ class GeographicalDetectionService:
                     "Slovenia",
                     "Spain",
                     "Sweden",
-                ],
-            },
-            "europe": {
-                "name": "Europe",
+                ],},
+            "europeff": {"name": "Europe",
                 "countries": [
                     "Albania",
                     "Andorra",
@@ -227,14 +217,10 @@ class GeographicalDetectionService:
                     "Ukraine",
                     "United Kingdom",
                     "Vatican City",
-                ],
-            },
-            "nafta": {
-                "name": "North American Free Trade Agreement",
-                "countries": ["United States", "Canada", "Mexico"],
-            },
-            "gcc": {
-                "name": "Gulf Cooperation Council",
+                ],},
+            "naftaff": {"name": "North American Free Trade Agreement",
+                "countries": ["United States", "Canada", "Mexico"],},
+            "gccff": {"name": "Gulf Cooperation Council",
                 "countries": [
                     "Bahrain",
                     "Kuwait",
@@ -242,10 +228,8 @@ class GeographicalDetectionService:
                     "Qatar",
                     "Saudi Arabia",
                     "United Arab Emirates",
-                ],
-            },
-            "asean": {
-                "name": "Association of Southeast Asian Nations",
+                ],},
+            "aseanff": {"name": "Association of Southeast Asian Nations",
                 "countries": [
                     "Brunei",
                     "Cambodia",
@@ -257,8 +241,7 @@ class GeographicalDetectionService:
                     "Singapore",
                     "Thailand",
                     "Vietnam",
-                ],
-            },
+                ],},
         }
 
         # Common geographical keywords to enhance detection
@@ -485,7 +468,7 @@ class GeographicalDetectionService:
         # Common patterns for country mentions
         patterns = [
             r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b",  # Capitalized words
-            r"\b(UAE|USA|UK|EU|GCC)\b",  # Common abbreviations
+            r"\b(UAE|USA|UK|EU|GCC)\bff",  # Common abbreviations
         ]
 
         for pattern in patterns:
@@ -493,8 +476,7 @@ class GeographicalDetectionService:
             potential_countries.extend(matches)
 
         # Filter out common non-country words
-        excluded_words = {
-            "the",
+        excluded_words = {"the",
             "and",
             "or",
             "in",
@@ -516,8 +498,7 @@ class GeographicalDetectionService:
             "corporation",
             "corp",
             "llc",
-            "plc",
-        }
+            "plc",}
 
         return [
             country
@@ -535,7 +516,7 @@ class GeographicalDetectionService:
     def _remove_duplicates(
         self, entities: List[GeographicalEntity]
     ) -> List[GeographicalEntity]:
-        """Remove duplicate entities, keeping the one with highest confidence."""
+        """Remove duplicate entities, keeping the one with highest confidence.""f"
         seen = {}
         for entity in entities:
             key = (entity.name.lower(), entity.type)
@@ -601,12 +582,10 @@ class GeographicalDetectionService:
             region_info = f" ({entity.region})" if entity.region else ""
 
             formatted_parts.append(
-                f"{
-                    entity.name}{region_info} [{
-                    entity.type.upper()}, {confidence_level} confidence: "
-                f"accuracy={
-                    entity.accuracy:.2f}, completeness={
-                    entity.completeness:.2f}]"
+                ff"{
+                    entity.name}{region_info} [{entity.type.upper()}, {confidence_level} confidence: "
+                ff"accuracy={
+                    entity.accuracy:.2f}, completeness={entity.completeness:.2f}]"
             )
 
         return "; ".join(formatted_parts)

@@ -50,7 +50,7 @@ async def check_openai_health():
             ip_address = socket.gethostbyname(api_host)
             dns_status = "healthy"
         except socket.gaierror as e:
-            dns_status = f"error: {str(e)}"
+            dns_status = "error: {str(e)}"
             ip_address = None
 
         # Check HTTP connectivity
@@ -63,7 +63,7 @@ async def check_openai_health():
                 )
                 http_status = response.status_code
         except Exception as e:
-            http_status = f"error: {str(e)}"
+            http_status = "error: {str(e)}"
 
         return {
             "status": (
@@ -84,5 +84,5 @@ async def check_openai_health():
             },
         }
     except Exception as e:
-        logger.error(f"Health check failed: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
+        logger.error("Health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Health check failed: {str(e)}")

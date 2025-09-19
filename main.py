@@ -1,10 +1,7 @@
-import os
-import uuid
-import json
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict
 
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import PyPDF2
@@ -26,7 +23,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://raicastingengine.vercel.app",
-        "https://raicastingengine-*.vercel.app", 
+        "https://raicastingengine-*.vercel.app",
         "https://raicomplianceengine.vercel.app",
         "https://raicomplianceengine-*.vercel.app",
         "https://raicomplianceengine-diwpsmm8t-vithal-finacegroups-projects.vercel.app",
@@ -52,12 +49,14 @@ documents_db: Dict[str, Dict] = {}
 sessions_db: Dict[str, Dict] = {}
 analysis_results_db: Dict[str, Dict] = {}
 
+
 # Pydantic models
 class DocumentMetadata(BaseModel):
     company_name: str = ""
     nature_of_business: str = ""
     operational_demographics: str = ""
     financial_statements_type: str = ""
+
 
 # Helper functions
 def extract_text_from_pdf(file_content: bytes) -> str:
@@ -72,25 +71,29 @@ def extract_text_from_pdf(file_content: bytes) -> str:
         error_message = str(e)
         if "PyCryptodome" in error_message or "AES" in error_message:
             raise HTTPException(
-                status_code=400, 
-                detail=f"PDF encryption error: This PDF is encrypted and requires PyCryptodome for processing. Please ensure the server has the latest dependencies installed, or try uploading an unencrypted PDF. Original error: {error_message}"
+                status_code=400,
+                detail="PDF encryption error: This PDF is encrypted and requires PyCryptodome for processing. Please ensure the server has the latest dependencies installed, or try uploading an unencrypted PDF. Original error: {error_message}"
             )
         else:
-            raise HTTPException(status_code=400, detail=f"Error extracting PDF text: {error_message}")
+            raise HTTPException(
+                status_code=400,
+                detail="Error extracting PDF text: {error_message}"
+            )
+
 
 def analyze_compliance(text: str, framework: str = "IFRS") -> Dict:
     """Real compliance analysis based on text content"""
     word_count = len(text.split())
-    
+
     # Basic compliance indicators
     compliance_keywords = [
         "balance sheet", "income statement", "cash flow", "equity",
         "assets", "liabilities", "revenue", "expenses", "depreciation"
     ]
-    
+
     found_keywords = [kw for kw in compliance_keywords if kw.lower() in text.lower()]
     compliance_score = (len(found_keywords) / len(compliance_keywords)) * 100
-    
+
     # Determine compliance status
     if compliance_score >= 80:
         status = "COMPLIANT"
@@ -98,7 +101,7 @@ def analyze_compliance(text: str, framework: str = "IFRS") -> Dict:
         status = "PARTIALLY_COMPLIANT"
     else:
         status = "NON_COMPLIANT"
-    
+
     return {
         "overall_score": compliance_score,
         "compliance_status": status,
@@ -128,12 +131,18 @@ def analyze_compliance(text: str, framework: str = "IFRS") -> Dict:
         ]
     }
 
+
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "RAi Compliance Engine API - Fully Functional v2", "status": "running", "timestamp": datetime.now().isoformat()}
+    return {
+        "message": "RAi Compliance Engine API - Fully Functional v2",
+        "status": "running",
+        "timestamp": datetime.now().isoformat()
+    }
 
-# Health endpoint  
+
+# Health endpoint
 @app.get("/api/v1/health")
 async def health_check():
     return {
@@ -148,6 +157,7 @@ async def health_check():
         }
     }
 
+
 # Debug endpoint to check file structure on deployed server
 @app.get("/api/v1/debug/files")
 async def debug_files():
@@ -160,19 +170,19 @@ async def debug_files():
             "frameworks_dir_exists": False,
             "frameworks_dir_contents": []
         }
-        
+
         checklist_path = Path.cwd() / "checklist_data"
         result["checklist_data_exists"] = checklist_path.exists()
-        
+
         if checklist_path.exists():
             result["checklist_data_contents"] = [item.name for item in checklist_path.iterdir()]
-            
+
             frameworks_path = checklist_path / "frameworks"
             result["frameworks_dir_exists"] = frameworks_path.exists()
-            
+
             if frameworks_path.exists():
                 result["frameworks_dir_contents"] = [item.name for item in frameworks_path.iterdir()]
-        
+
         return result
     except Exception as e:
         return {"error": str(e)}

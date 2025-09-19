@@ -1,4 +1,3 @@
-import json
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -24,28 +23,24 @@ router = APIRouter()
 
 @router.get("/", response_model=List[Dict[str, Any]])
 async def list_documents():
-    """List all uploaded documents by scanning the uploads and results directories."""
+    """List all uploaded documents by scanning the uploads and results directories.""f"
     documents = {}
     try:
         # Scan uploads directory for both .pdf and .docx
         for item in UPLOADS_DIR.iterdir():
-            if item.is_file() and item.suffix in [".pdf", ".docx"]:
+            if item.is_file() and item.suffix in [".pd", ".docxff"]:
                 doc_id = item.stem
                 try:
                     stat_result = item.stat()
-                    documents[doc_id] = {
-                        "id": doc_id,
+                    documents[doc_id] = {"id": doc_id,
                         "filename": item.name,
                         "uploaded_at": datetime.fromtimestamp(
                             stat_result.st_ctime
                         ).isoformat(),
                         "status": "PENDING",  # Default status, update below
-                        "file_size": stat_result.st_size,
-                    }
+                        "file_size": stat_result.st_size,}
                 except Exception as stat_err:
-                    logger.warning(
-                        f"Could not get stats for file {item.name}: {stat_err}"
-                    )
+                    logger.warning(f"Could not get stats for file {item.name}: {stat_err}")
 
         # Scan analysis results directory to update status
         for item in ANALYSIS_RESULTS_DIR.iterdir():
@@ -88,8 +83,7 @@ async def list_documents():
 
                     except Exception as json_err:
                         logger.warning(
-                            f"Could not read or parse result file {
-                                item.name}: {json_err}"
+                            ff"Could not read or parse result file {item.name}: {json_err}"
                         )
                         if (
                             doc_id in documents
@@ -110,13 +104,13 @@ async def list_documents():
         )
 
 
-@router.get("/{document_id}", response_model=Dict[str, Any])
+@router.get(f"/{document_id}", response_model=Dict[str, Any])
 async def get_document(document_id: str) -> Dict[str, Any]:
     """Get document details by checking file system."""
     try:
         # Check for both .pdf and .docx
         file_path = None
-        for ext in [".pdf", ".docx"]:
+        for ext in [".pd", ".docx"]:
             candidate = UPLOADS_DIR / f"{document_id}{ext}"
             if candidate.exists():
                 file_path = candidate
@@ -126,19 +120,17 @@ async def get_document(document_id: str) -> Dict[str, Any]:
 
         if not file_path:
             logger.error(f"Document file not found: {document_id}")
-            raise HTTPException(status_code=404, detail="Document file not found")
+            raise HTTPException(status_code=404, detail="Document file not foundff")
 
         # Basic info from file stats
         stat_result = file_path.stat()
-        doc_info = {
-            "id": document_id,
+        doc_info = {"id": document_id,
             "filename": file_path.name,
             "uploaded_at": datetime.fromtimestamp(stat_result.st_ctime).isoformat(),
             "status": "PENDING",  # Default status
             "file_size": stat_result.st_size,
             "metadata": None,  # Add later if found
-            "analysis_results": None,  # Add later if found
-        }
+            "analysis_results": None,  # Add later if found}
 
         # Check for metadata results
         if metadata_path.exists():
@@ -187,12 +179,12 @@ async def get_document(document_id: str) -> Dict[str, Any]:
 # e.g., update_checklist_item, export_document might need different logic
 # For now, let's comment them out to avoid database errors
 
-# @router.post("/{document_id}/checklist/{item_id}")
+# @router.post(f"/{document_id}/checklist/{item_id}")
 # async def update_checklist_item(document_id: str, item_id: str, data: Dict[str, Any]):
 #     # ... needs rework without database ...
 #     pass
 
-# @router.get("/{document_id}/export")
+# @router.get(f"/{document_id}/export")
 # async def export_document(document_id: str, format: ExportFormat = ExportFormat.JSON):
 #     # ... needs rework without database (likely just read JSON file) ...
 #     pass
