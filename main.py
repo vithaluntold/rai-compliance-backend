@@ -57,7 +57,14 @@ def extract_text_from_pdf(file_content: bytes) -> str:
             text += page.extract_text() + "\n"
         return text
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error extracting PDF text: {str(e)}")
+        error_message = str(e)
+        if "PyCryptodome" in error_message or "AES" in error_message:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"PDF encryption error: This PDF is encrypted and requires PyCryptodome for processing. Please ensure the server has the latest dependencies installed, or try uploading an unencrypted PDF. Original error: {error_message}"
+            )
+        else:
+            raise HTTPException(status_code=400, detail=f"Error extracting PDF text: {error_message}")
 
 def analyze_compliance(text: str, framework: str = "IFRS") -> Dict:
     """Real compliance analysis based on text content"""
