@@ -757,6 +757,38 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         logger.error(f"Error getting frameworks: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
+@router.get("/frameworks-debug", response_model=None)
+async def get_frameworks_debug():
+    """Debug endpoint to check frameworks loading issues"""
+    try:
+        from pathlib import Path
+        import os
+        
+        result = {
+            "raw_frameworks_count": 0,
+            "checklist_base_exists": False,
+            "checklist_base_path": "",
+            "framework_dirs": [],
+            "error": None
+        }
+        
+        try:
+            frameworks_data = get_available_frameworks()
+            result["raw_frameworks_count"] = len(frameworks_data.get("frameworks", []))
+        except Exception as e:
+            result["error"] = f"get_available_frameworks failed: {str(e)}"
+            
+        checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
+        result["checklist_base_path"] = str(checklist_base)
+        result["checklist_base_exists"] = checklist_base.exists()
+        
+        if checklist_base.exists():
+            result["framework_dirs"] = [item.name for item in checklist_base.iterdir() if item.is_dir()]
+            
+        return result
+    except Exception as e:
+        return {"error": f"Debug endpoint failed: {str(e)}"}
+
 @router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
