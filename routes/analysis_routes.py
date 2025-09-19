@@ -2999,7 +2999,19 @@ async def _process_standards_sequentially(
 
             # Get checklist to determine total questions
             checklist_data = load_checklist(framework, standard)
-            total_questions = len(checklist_data)
+            
+            # CRITICAL FIX: Count actual questions/items, not top-level object length
+            total_questions = 0
+            if checklist_data and isinstance(checklist_data, dict):
+                for section in checklist_data.get("sections", []):
+                    total_questions += len(section.get("items", []))
+            
+            logger.info(f"🔍 Checklist loaded for {standard}: {total_questions} total questions")
+            
+            if total_questions == 0:
+                logger.error(f"❌ No questions found in checklist for {framework}/{standard}")
+                failed_standards.append(standard)
+                continue
 
             # Start tracking this standard
             if progress_tracker:
@@ -3035,6 +3047,16 @@ async def _process_standards_sequentially(
             save_analysis_results(document_id, results)
 
             checklist = load_checklist(framework, standard)
+            
+            # Debug checklist loading
+            if not checklist:
+                logger.error(f"❌ Failed to load checklist for {framework}/{standard}")
+                failed_standards.append(standard)
+                continue
+                
+            checklist_sections = checklist.get("sections", [])
+            checklist_items_count = sum(len(section.get("items", [])) for section in checklist_sections)
+            logger.info(f"📋 Loaded checklist: {len(checklist_sections)} sections, {checklist_items_count} items")
 
             # Set progress tracker for question-level tracking
             ai_svc.progress_tracker = progress_tracker
@@ -3063,6 +3085,14 @@ async def _process_standards_sequentially(
                         )
                     )
                 standard_sections = await asyncio.gather(*section_tasks)
+
+            # Debug processing results
+            logger.info(f"📊 Processing result for {standard}: {len(standard_sections) if standard_sections else 0} sections returned")
+            if standard_sections:
+                total_processed_items = sum(len(section.get("items", [])) for section in standard_sections)
+                logger.info(f"📊 Total processed items for {standard}: {total_processed_items}")
+            else:
+                logger.warning(f"⚠️ No sections returned for {standard}")
 
             # Add metadata to identify which standard these sections belong to
             for section in standard_sections:
