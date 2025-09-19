@@ -758,15 +758,6 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 
-@router.get("/frameworks-debug", response_model=None)
-async def get_frameworks_debug() -> Union[Dict[str, Any], JSONResponse]:
-    """Debug endpoint to test frameworks loading"""
-    try:
-        return {"status": "debug working", "message": "Simple debug endpoint"}
-    except Exception as e:
-        return {"error": str(e)}
-
-
 @router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
