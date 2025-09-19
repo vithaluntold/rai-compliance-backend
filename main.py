@@ -344,6 +344,30 @@ async def get_compliance_checklist():
         ]
     }
 
+@app.get("/api/v1/health")
+async def health_check():
+    """Health check endpoint with PyCryptodome verification"""
+    try:
+        from Crypto.Cipher import AES
+        crypto_status = "✅ PyCryptodome available"
+        crypto_version = "Available"
+        try:
+            import Crypto
+            crypto_version = Crypto.__version__
+        except:
+            pass
+    except ImportError:
+        crypto_status = "❌ PyCryptodome missing"
+        crypto_version = "Not installed"
+    
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "pycryptodome": crypto_status,
+        "crypto_version": crypto_version,
+        "deployment_time": "Latest push"
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
