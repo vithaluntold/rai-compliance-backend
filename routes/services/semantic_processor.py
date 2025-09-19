@@ -37,7 +37,7 @@ def create_semantic_segments(text: str) -> List[str]:
 def prioritize_questions_by_content(
     questions: List[str], segments: List[str]
 ) -> Dict[str, float]:
-    """Prioritize questions based on content relevance""f"
+    """Prioritize questions based on content relevance"""
     priorities: Dict[str, float] = {}
 
     # Simple keyword-based prioritization

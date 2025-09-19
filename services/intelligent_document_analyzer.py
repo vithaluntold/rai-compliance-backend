@@ -36,7 +36,7 @@ class IntelligentEvidence:
 
 class FinancialDocumentIntelligence:
     def __init__(self):
-        """Initialize with standard-to-section mapping and quality indicators""ff"
+        """Initialize with standard-to-section mapping and quality indicators"""
         self.standard_section_mapping = {"IAS 1": [
                 "presentation",
                 "financial statements",
@@ -151,7 +151,7 @@ class FinancialDocumentIntelligence:
             "aging",
             "fair value hierarchy",
             "sensitivity analysis",
-            "risk analysisff",
+            "risk analysis",
         ]
 
         self.evidence_quality_indicators = {"high": [
@@ -448,7 +448,7 @@ def enhance_compliance_analysis(
     standard_id: str,
     existing_chunks: Optional[List[str]] = None,
 ) -> Dict:
-    """Main function to enhance compliance analysis with intelligent evidence search""ff"
+    """Main function to enhance compliance analysis with intelligent evidence search"""
     try:
         analyzer = FinancialDocumentIntelligence()
         intelligent_evidence = analyzer.intelligent_evidence_search(
@@ -473,7 +473,7 @@ def enhance_compliance_analysis(
                 if best_evidence
                 else (existing_chunks[0] if existing_chunks else "")
             ),
-            "evidence_quality_assessmentff": {"overall_quality": best_evidence.quality_score if best_evidence else 0,
+            "evidence_quality_assessment": {"overall_quality": best_evidence.quality_score if best_evidence else 0,
                 "confidence_level": (
                     best_evidence.confidence_level if best_evidence else 0.0
                 ),
@@ -486,7 +486,7 @@ def enhance_compliance_analysis(
                 "evidence_source": (
                     best_evidence.source_section if best_evidence else "Unknown section"
                 ),},
-            "analysis_summaryff": {"total_evidence_sources": len(intelligent_evidence),
+            "analysis_summary": {"total_evidence_sources": len(intelligent_evidence),
                 "substantive_evidence_count": len(
                     [
                         e
@@ -505,7 +505,7 @@ def enhance_compliance_analysis(
         }
 
     except Exception as e:
-        logger.error(f"Error in intelligent evidence analysis: {str(e)}ff")
+        logger.error(f"Error in intelligent evidence analysis: {str(e)}")
         # Fallback to existing chunks if enhancement fails
         return {"intelligent_evidence": [],
             "primary_evidence": existing_chunks[0] if existing_chunks else "",

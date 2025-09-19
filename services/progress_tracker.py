@@ -1,8 +1,9 @@
 """
-Real-time progress tracking utility for compliance analysis.
+Real-time progress tracking utility for compliance analysis        result["questions_progress"] = {k: v.to_dict() for         result["standards_progress"] = {k: v.to_dict() for k, v in (self.standards_progress or {}).items()}, v in (self.questions_progress or {}).items()}
 Tracks questions answered, elapsed time, and current status.
 """
 
+import json
 import logging
 import time
 from dataclasses import asdict, dataclass
@@ -36,7 +37,7 @@ class StandardProgress:
     total_questions: int
     completed_questions: int
     current_question: Optional[str] = None
-    status: str = "pendingf"  # pending, processing, completed, failed
+    status: str = "pending"  # pending, processing, completed, failed
     start_time: Optional[float] = None
     end_time: Optional[float] = None
     questions_progress: Optional[Dict[str, QuestionProgress]] = None
@@ -80,7 +81,7 @@ class AnalysisProgress:
     overall_start_time: Optional[float] = None
     overall_end_time: Optional[float] = None
     status: str = "pending"  # pending, processing, completed, failed
-    processing_mode: str = "smartf"  # processing mode: smart, zap, comparison
+    processing_mode: str = "smart"  # processing mode: smart, zap, comparison
 
     def __post_init__(self):
         if self.standards_progress is None:
@@ -127,7 +128,7 @@ class AnalysisProgress:
 
 
 class ProgressTracker:
-    """Thread-safe progress tracker for compliance analysis""f"
+    """Thread-safe progress tracker for compliance analysis"""
 
     def __init__(self, analysis_results_dir: Path):
         self.analysis_results_dir = analysis_results_dir
@@ -167,7 +168,7 @@ class ProgressTracker:
             self._active_analyses[document_id] = progress
             self._save_progress(document_id, progress)
             logger.info(
-                ff"Started progress tracking for {document_id} with {len(standards)} standards"
+                f"Started progress tracking for {document_id} with {len(standards)} standards"
             )
 
     def start_standard(
@@ -199,7 +200,7 @@ class ProgressTracker:
     def initialize_questions(
         self, document_id: str, standard_id: str, questions_data: List[Dict]
     ) -> None:
-        """Initialize question tracking for a standard""f"
+        """Initialize question tracking for a standard"""
         with self.lock:
             if document_id not in self._active_analyses:
                 return
@@ -426,12 +427,12 @@ class ProgressTracker:
             if not progress_file.exists():
                 return None
 
-            with open(progress_file, "rf") as f:
+            with open(progress_file, "r") as f:
                 data = json.load(f)
 
             # Reconstruct AnalysisProgress object
             standards_progress = {}
-            for std_id, std_data in data.get("standards_progressf", {}).items():
+            for std_id, std_data in data.get("standards_progress", {}).items():
                 standards_progress[std_id] = StandardProgress(**std_data)
 
             data["standards_progress"] = standards_progress
