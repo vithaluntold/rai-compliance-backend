@@ -1,3 +1,4 @@
+import json
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -23,12 +24,12 @@ router = APIRouter()
 
 @router.get("/", response_model=List[Dict[str, Any]])
 async def list_documents():
-    """List all uploaded documents by scanning the uploads and results directories.""f"
+    """List all uploaded documents by scanning the uploads and results directories."""
     documents = {}
     try:
         # Scan uploads directory for both .pdf and .docx
         for item in UPLOADS_DIR.iterdir():
-            if item.is_file() and item.suffix in [".pd", ".docxff"]:
+            if item.is_file() and item.suffix in [".pdf", ".docx"]:
                 doc_id = item.stem
                 try:
                     stat_result = item.stat()
@@ -83,7 +84,7 @@ async def list_documents():
 
                     except Exception as json_err:
                         logger.warning(
-                            ff"Could not read or parse result file {item.name}: {json_err}"
+                            f"Could not read or parse result file {item.name}: {json_err}"
                         )
                         if (
                             doc_id in documents
@@ -104,13 +105,13 @@ async def list_documents():
         )
 
 
-@router.get(f"/{document_id}", response_model=Dict[str, Any])
+@router.get("/{document_id}", response_model=Dict[str, Any])
 async def get_document(document_id: str) -> Dict[str, Any]:
     """Get document details by checking file system."""
     try:
         # Check for both .pdf and .docx
         file_path = None
-        for ext in [".pd", ".docx"]:
+        for ext in [".pdf", ".docx"]:
             candidate = UPLOADS_DIR / f"{document_id}{ext}"
             if candidate.exists():
                 file_path = candidate
@@ -130,7 +131,8 @@ async def get_document(document_id: str) -> Dict[str, Any]:
             "status": "PENDING",  # Default status
             "file_size": stat_result.st_size,
             "metadata": None,  # Add later if found
-            "analysis_results": None,  # Add later if found}
+            "analysis_results": None  # Add later if found
+        }
 
         # Check for metadata results
         if metadata_path.exists():
