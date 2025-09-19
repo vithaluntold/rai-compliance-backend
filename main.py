@@ -27,6 +27,9 @@ app.add_middleware(
     allow_origins=[
         "https://raicastingengine.vercel.app",
         "https://raicastingengine-*.vercel.app", 
+        "https://raicomplianceengine.vercel.app",
+        "https://raicomplianceengine-*.vercel.app",
+        "https://raicomplianceengine-diwpsmm8t-vithal-finacegroups-projects.vercel.app",
         "https://complianceengine.vercel.app",
         "https://complianceengine-*.vercel.app",
         "https://compliance-engine.vercel.app",

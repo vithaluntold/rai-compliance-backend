@@ -729,31 +729,6 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
     filtered to only those with checklist files present.
     """
     try:
-        # TEMPORARY: Return hardcoded frameworks to test deployment
-        # This will be reverted once we confirm deployment is working
-        return {
-            "frameworks": [
-                {
-                    "id": "IFRS",
-                    "name": "International Financial Reporting Standards",
-                    "description": "International accounting standards for public companies",
-                    "standards": [
-                        {
-                            "id": "IAS 1",
-                            "name": "Presentation of Financial Statements",
-                            "description": "Requirements for presentation of financial statements"
-                        },
-                        {
-                            "id": "IAS 40",
-                            "name": "Investment Property",
-                            "description": "Accounting for investment property"
-                        }
-                    ]
-                }
-            ]
-        }
-        
-        # Original code (commented out temporarily):
         # Load frameworks from frameworks.json
         frameworks_data = get_available_frameworks()
         filtered_frameworks = []
