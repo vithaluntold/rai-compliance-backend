@@ -3263,8 +3263,8 @@ async def process_compliance_analysis(
     performance_tracker = None  # Initialize to avoid NameError in exception handler
 
     try:
-        # CRITICAL: Limit text content to 8000 characters to prevent Azure OpenAI API 500 errors
-        MAX_TEXT_LENGTH = 8000
+        # CRITICAL: Limit text content to 4000 characters to prevent Azure OpenAI API 500 errors
+        MAX_TEXT_LENGTH = 4000
         if len(text) > MAX_TEXT_LENGTH:
             original_length = len(text)
             text = text[:MAX_TEXT_LENGTH]
