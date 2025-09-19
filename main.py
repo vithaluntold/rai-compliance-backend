@@ -12,7 +12,7 @@ import PyPDF2
 from io import BytesIO
 
 # Import routers
-from routes import analysis_router
+from routes import analysis_router, documents_router, sessions_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -40,7 +40,9 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
+app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"])
+app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
+app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
 
 # Global storage for documents and sessions
 documents_db: Dict[str, Dict] = {}
