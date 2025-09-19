@@ -13,7 +13,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import faiss  # Import FAISS at the module level
 import numpy as np
+from dotenv import load_dotenv  # type: ignore
 from openai import AzureOpenAI
+
+load_dotenv()  # Load environment variables from .env file
 
 logger = logging.getLogger(__name__)
 
