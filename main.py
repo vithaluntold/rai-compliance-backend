@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import PyPDF2
 from io import BytesIO
-# PyCryptodome should now be available - deployment verification
+# Force deployment trigger - PyCryptodome support added + hardcoded frameworks endpoint removed + Azure deployment name fixed + MANUAL DEPLOY TRIGGER
 
 # Import proper AI extraction system
 from services.document_chunker import DocumentChunker
