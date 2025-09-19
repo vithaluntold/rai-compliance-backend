@@ -733,9 +733,19 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         frameworks_data = get_available_frameworks()
         filtered_frameworks = []
         checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
+        
+        # Debug logging
+        logger.info(f"Frameworks loaded: {len(frameworks_data.get('frameworks', []))}")
+        logger.info(f"Checklist base path: {checklist_base}")
+        logger.info(f"Checklist base exists: {checklist_base.exists()}")
+        if checklist_base.exists():
+            dirs = [item.name for item in checklist_base.iterdir() if item.is_dir()]
+            logger.info(f"Framework directories found: {dirs}")
+        
         for fw in frameworks_data.get("frameworks", []):
             fw_id = fw["id"]
             fw_dir = checklist_base / fw_id
+            logger.info(f"Checking framework {fw_id}: {fw_dir} exists={fw_dir.exists()}")
             if not fw_dir.exists() or not fw_dir.is_dir():
                 continue  # Skip frameworks with no directory
             filtered_standards = []
