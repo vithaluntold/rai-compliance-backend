@@ -1,14 +1,6 @@
-import os
-import uuid
-import json
-from datetime import datetime
-from typing import Dict, List, Optional
-
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import PyPDF2
-from io import BytesIO
+from datetime import datetime
 
 # Import routers
 from routes import analysis_router, documents_router, sessions_router
