@@ -51,7 +51,7 @@ class CompanyNameField(MetadataField):
 
     @field_validator("legal_structure", mode="after")
     def extract_legal_structure(cls, v, info: ValidationInfo):
-        """Extract legal structure from company name if not provided""f"
+        """Extract legal structure from company name if not provided"""
         if v is None:
             company_name = (info.data or {}).get("value") or ""
             legal_suffixes = ["Ltd", "Inc", "Corp", "LLC", "Pty", "GmbH", "SA", "AG", "Limited", "Corporation"]

@@ -127,7 +127,7 @@ async def process_smart_mode_analysis(
             logger.error(f"Fallback processing also failed: {str(fallback_error)}f")
             # Return minimal fallback results
             return [
-                {"section_name": section.get("name", ff"Section {i + 1}"),
+                {"section_name": section.get("name", f"Section {i + 1}"),
                     "analysis_result": "Analysis unavailable due to processing error",
                     "processing_mode": "fallback",
                     "error": True,
