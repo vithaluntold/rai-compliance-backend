@@ -511,13 +511,8 @@ class AIService:
                 check_circuit_breaker()
             except CircuitBreakerOpenError as e:
                 logger.error(f"Circuit breaker is open: {str(e)}")
-                return {
-                    "status": "N/A",
-                    "confidence": 0.0,
-                    "explanation": f"Analysis temporarily unavailable: {str(e)}",
-                    "evidence": "Circuit breaker open due to repeated failures.",
-                    "suggestion": "Please wait and retry the analysis later.",
-                }
+                # CHANGED: Re-raise the exception instead of returning fallback
+                raise RuntimeError(f"AI analysis failed: {str(e)}")
 
             # Get relevant chunks using vector search (existing method)
             vs_svc = get_vector_store()
@@ -529,45 +524,13 @@ class AIService:
                 query=question, document_id=self.current_document_id, top_k=3
             )
 
-            # Enhanced: Use intelligent document analyzer if we have full document
-            # text and standard ID
+            # REMOVED: Intelligent document analyzer fallback - AI only mode
             enhanced_evidence = None
-            if (
-                chunk and len(chunk) > 1000 and standard_id
-            ):  # Check if we have substantial document content
-                try:
-                    logger.info(
-                        f"Using intelligent document analyzer for {standard_id}"
-                    )
-                    enhanced_analysis = enhance_compliance_analysis(
-                        compliance_question=question,
-                        document_text=chunk,  # This should be the full document text
-                        standard_id=standard_id,
-                        existing_chunks=(
-                            [chunk_data["text"] for chunk_data in relevant_chunks]
-                            if relevant_chunks
-                            else []
-                        ),
-                    )
-                    enhanced_evidence = enhanced_analysis
-                    logger.info(
-                        f"Intelligent analysis completed with quality score: {
-                            enhanced_analysis.get(
-                                'evidence_quality_assessment', {}).get(
-                                'overall_quality', 0)}"
-                    )
-                except Exception as e:
-                    logger.warning(
-                        f"Intelligent document analysis failed, falling back to standard method: {
-                            str(e)}"
-                    )
-                    enhanced_evidence = None
 
-            if not relevant_chunks and not enhanced_evidence:
+            if not relevant_chunks:
                 logger.warning(f"No relevant chunks found for question: {question}")
-                return {
-                    "status": "N/A",
-                    "confidence": 0.0,
+                # CHANGED: Fail instead of continuing without evidence
+                raise RuntimeError(f"No evidence found for question: {question}")
                     "explanation": "No relevant content found in the document",
                     "evidence": "",
                     "suggestion": "Add a clear statement in the financial statement disclosures addressing this requirement.",
@@ -636,13 +599,8 @@ class AIService:
                             logger.error(
                                 "Max API retries exceeded due to rate limiting"
                             )
-                            return {
-                                "status": "N/A",
-                                "confidence": 0.0,
-                                "explanation": "Analysis could not be completed due to persistent API rate limits.",
-                                "evidence": "Multiple rate limit errors occurred.",
-                                "suggestion": "Please retry the analysis later when API rate limits reset.",
-                            }
+                            # CHANGED: Raise exception instead of returning fallback
+                            raise RuntimeError("AI analysis failed due to persistent rate limits")
 
                     elif "timeout" in error_message or "connection" in error_message:
                         record_failure()
@@ -658,25 +616,15 @@ class AIService:
                             logger.error(
                                 "Max API retries exceeded due to connection issues"
                             )
-                            return {
-                                "status": "N/A",
-                                "confidence": 0.0,
-                                "explanation": f"Analysis failed due to connection issues: {str(api_error)}",
-                                "evidence": "Connection error occurred.",
-                                "suggestion": "Please check network connectivity and retry the analysis.",
-                            }
+                            # CHANGED: Raise exception instead of returning fallback
+                            raise RuntimeError(f"AI analysis failed due to connection issues: {str(api_error)}")
 
                     else:
                         # Other API error - don't retry
                         record_failure()
                         logger.error(f"Non-retryable API error: {str(api_error)}")
-                        return {
-                            "status": "N/A",
-                            "confidence": 0.0,
-                            "explanation": f"Analysis failed due to API error: {str(api_error)}",
-                            "evidence": "API error occurred.",
-                            "suggestion": "Please retry the analysis or check system logs for details.",
-                        }
+                        # CHANGED: Raise exception instead of returning fallback
+                        raise RuntimeError(f"AI analysis failed: {str(api_error)}")
             else:
                 # This should not happen due to the break statement, but just in case
                 logger.error("Unexpected exit from retry loop")
