@@ -358,32 +358,6 @@ async def get_analysis_status(document_id: str):
         "progress": 100 if doc["analysis_status"] == "COMPLETED" else 0
     }
 
-@app.get("/api/v1/analysis/frameworks")
-async def get_frameworks():
-    """Get available compliance frameworks"""
-    return {
-        "frameworks": [
-            {
-                "id": "IFRS",
-                "name": "International Financial Reporting Standards",
-                "description": "Global accounting standards",
-                "standards": ["IAS 1", "IAS 2", "IFRS 9", "IFRS 15", "IFRS 16"]
-            },
-            {
-                "id": "GAAP",
-                "name": "Generally Accepted Accounting Principles",
-                "description": "US accounting standards",
-                "standards": ["ASC 606", "ASC 842", "ASC 326"]
-            },
-            {
-                "id": "SOX",
-                "name": "Sarbanes-Oxley Act",
-                "description": "US regulatory compliance",
-                "standards": ["Section 302", "Section 404", "Section 906"]
-            }
-        ]
-    }
-
 @app.post("/api/v1/analysis/documents/{document_id}/select-framework")
 async def select_framework(document_id: str, framework: dict):
     """Select compliance framework for analysis"""
