@@ -145,6 +145,35 @@ async def health_check():
         }
     }
 
+# Debug endpoint to check file structure on deployed server
+@app.get("/api/v1/debug/files")
+async def debug_files():
+    from pathlib import Path
+    try:
+        result = {
+            "current_dir": str(Path.cwd()),
+            "checklist_data_exists": False,
+            "checklist_data_contents": [],
+            "frameworks_dir_exists": False,
+            "frameworks_dir_contents": []
+        }
+        
+        checklist_path = Path.cwd() / "checklist_data"
+        result["checklist_data_exists"] = checklist_path.exists()
+        
+        if checklist_path.exists():
+            result["checklist_data_contents"] = [item.name for item in checklist_path.iterdir()]
+            
+            frameworks_path = checklist_path / "frameworks"
+            result["frameworks_dir_exists"] = frameworks_path.exists()
+            
+            if frameworks_path.exists():
+                result["frameworks_dir_contents"] = [item.name for item in frameworks_path.iterdir()]
+        
+        return result
+    except Exception as e:
+        return {"error": str(e)}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
