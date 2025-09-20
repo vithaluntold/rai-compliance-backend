@@ -615,7 +615,7 @@ async def upload_document(
             return JSONResponse(status_code=429, content=response)
 
         # Validate file type
-        allowed_exts = [".pd", ".docx"]
+        allowed_exts = [".pdf", ".docx"]
         if file.filename is None:
             response = {
                 "status": "error",
