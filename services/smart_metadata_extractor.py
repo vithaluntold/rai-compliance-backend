@@ -766,6 +766,9 @@ class SmartMetadataExtractor:
             "version": "4bb9380_fix_deployed"
         }
 
+        # Ensure all results are JSON serializable (defensive programming)
+        final_results = self._ensure_serializable(final_results)
+
         return final_results
 
     async def _ai_extract_field(self, field_name: str, chunks: List[str]) -> str:
@@ -877,3 +880,18 @@ class SmartMetadataExtractor:
                     token_count += 1200  # Estimate for AI call (1000 input + 200 output)
 
         return token_count
+
+    def _ensure_serializable(self, obj: Any) -> Any:
+        """Ensure all objects in results are JSON serializable."""
+        from services.geographical_service import GeographicalEntity
+        
+        if isinstance(obj, GeographicalEntity):
+            return obj.to_dict()
+        elif isinstance(obj, set):
+            return list(obj)
+        elif isinstance(obj, dict):
+            return {key: self._ensure_serializable(value) for key, value in obj.items()}
+        elif isinstance(obj, (list, tuple)):
+            return [self._ensure_serializable(item) for item in obj]
+        else:
+            return obj

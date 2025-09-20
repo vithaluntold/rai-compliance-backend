@@ -8,26 +8,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from fastapi import (
-    APIRouter,
-    BackgroundTasks,
-    Depends,
-    File,
-    Form,
-    HTTPException,
-    Request,
-    UploadFile,
-)
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from services.ai import AIService, get_ai_service
-from services.ai_prompts import AIPrompts
-from services.checklist_utils import (
-    get_available_frameworks,
-    is_standard_available,
-    load_checklist,
-)
+from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
 from services.document_chunker import document_chunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
@@ -103,7 +89,7 @@ class PerformanceTracker:
 try:
     from docx import Document as DocxDocument
 except ImportError:
-    logger.warning("python-docx not installed, DOCX support disabled")
+    logger.warning("python - docx not installed, DOCX support disabled")
     DocxDocument = None
 
 # Configure logging
@@ -121,7 +107,7 @@ CHECKLIST_DATA_DIR = BACKEND_DIR / "checklist_data"
 # Create directories
 for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR]:
     directory.mkdir(parents=True, exist_ok=True)
-    logger.info(f"Directory created/verified: {directory}")
+    logger.info(f"Directory created / verified: {directory}")
 
 router = APIRouter()
 
@@ -135,37 +121,64 @@ AZURE_OPENAI_API_KEY = os.getenv(
 )
 AZURE_OPENAI_ENDPOINT = os.getenv(
     "AZURE_OPENAI_ENDPOINT",
-    "https://vitha-maxu94mf-eastus2.cognitiveservices.azure.com/",
+    "https://vitha - maxu94mf - eastus2.cognitiveservices.azure.com/",
 )
-AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
-AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model - router")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025 - 01 - 01 - preview")
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv(
-    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002"
+    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text - embedding - ada - 002"
 )
 AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
-    "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023-05-15"
+    "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023 - 05 - 15"
 )
-
 
 # Initialize smart metadata extractor
 smart_metadata_extractor = SmartMetadataExtractor()
 
 
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
-    """Save analysis results to JSON file."""
+    """Save analysis results to JSON file with defensive GeographicalEntity serialization."""
     try:
+        # Import GeographicalEntity for type checking
+        from services.geographical_service import GeographicalEntity
+        
+        # Create a deep copy and ensure all GeographicalEntity objects are converted to dicts
+        serializable_results = _ensure_json_serializable(results)
+        
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
+            json.dump(serializable_results, f, indent=2, ensure_ascii=False)
         logger.info(f"Saved analysis results for document {document_id}")
-    except Exception as e:
-        logger.error(f"Error saving analysis results: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error saving analysis results: {str(_e)}")
         raise
 
 
+def _ensure_json_serializable(obj: Any) -> Any:
+    """Recursively ensure all objects are JSON serializable, converting GeographicalEntity objects to dicts."""
+    from services.geographical_service import GeographicalEntity
+    
+    if isinstance(obj, GeographicalEntity):
+        # Convert GeographicalEntity to dictionary
+        return obj.to_dict()
+    elif isinstance(obj, set):
+        # Convert sets to lists for JSON serialization
+        return list(obj)
+    elif isinstance(obj, dict):
+        # Recursively process dictionary values
+        return {key: _ensure_json_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        # Recursively process list/tuple items
+        return [_ensure_json_serializable(item) for item in obj]
+    else:
+        # Return as-is for JSON-serializable types
+        return obj
+
 # Utility to get the file path for a document_id, regardless of extension
+
+
 def get_document_file_path(document_id: str) -> Optional[Path]:
-    for ext in [".pdf", ".docx"]:
+    for ext in [".pd", ".docx"]:
         candidate = UPLOADS_DIR / f"{document_id}{ext}"
         if candidate.exists():
             return candidate
@@ -199,7 +212,7 @@ def _check_processing_locks(document_id: str) -> bool:
         return True
     if metadata_lock_file.exists():
         logger.info(
-            f"[PATCH] Metadata extraction already completed for "
+            "[PATCH] Metadata extraction already completed for "
             f"{document_id}, skipping duplicate trigger."
         )
         return True
@@ -234,7 +247,7 @@ def _process_document_chunks(document_id: str) -> list:
         raise ValueError("No file found for document_id")
 
     ext = file_path.suffix.lower()
-    if ext == ".pdf":
+    if ext == ".pd":
         chunks = document_chunker.chunk_pdf(str(file_path), document_id)
     elif ext == ".docx":
         chunks = document_chunker.chunk_docx(str(file_path), document_id)
@@ -265,12 +278,12 @@ async def _create_vector_index(document_id: str, chunks: list) -> None:
 async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
     """Extract metadata from document chunks using optimized smart extraction."""
     logger.info(f"🚀 Starting OPTIMIZED metadata extraction for document {document_id}")
-    logger.info(f"🔍 Using SmartMetadataExtractor - this should be DIFFERENT from old extraction!")
-    
+    logger.info("🔍 Using SmartMetadataExtractor - this should be DIFFERENT from old extraction!")
+
     # Use smart metadata extractor for 80% token reduction
     metadata_result = await smart_metadata_extractor.extract_metadata_optimized(document_id, chunks)
     logger.info(f"✅ Smart metadata extraction completed for document {document_id}")
-    logger.info(f"💰 Token usage: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N/A')}")
+    logger.info(f"💰 Token usage: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N / A')}")
     return metadata_result
 
 
@@ -294,34 +307,34 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                     "confidence_level": _get_confidence_level(value.get("confidence", 0.0)),
                     "presentation": _format_field_presentation(field, value)
                 }
-                
+
                 # Special handling for operational_demographics to extract geography
                 if field == "operational_demographics":
-                    # Extract geography-specific information for result page
+                    # Extract geography - specific information for result page
                     geography_parts = []
-                    
+
                     # Add primary location if available
                     if value.get("primary_location"):
                         geography_parts.append(value["primary_location"])
-                    
+
                     # Add regions detected
                     if value.get("regions_detected") and isinstance(value["regions_detected"], list):
                         geography_parts.extend(value["regions_detected"])
-                    
+
                     # Add geographical entities
                     if value.get("geographical_entities") and isinstance(value["geographical_entities"], list):
                         for entity in value["geographical_entities"]:
                             if isinstance(entity, dict):
                                 location_name = (
-                                    entity.get("name") or 
-                                    entity.get("location") or 
-                                    entity.get("place") or 
-                                    entity.get("country") or 
+                                    entity.get("name") or
+                                    entity.get("location") or
+                                    entity.get("place") or
+                                    entity.get("country") or
                                     entity.get("region")
                                 )
                                 if location_name and location_name not in geography_parts:
                                     geography_parts.append(str(location_name))
-                    
+
                     # Create geography_of_operations field
                     if geography_parts:
                         # Remove duplicates while preserving order
@@ -333,9 +346,9 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                         geography_value = ", ".join(unique_parts)
                     else:
                         geography_value = value.get("value", "Geographic operations not specified")
-                    
+
                     transformed_field["geography_of_operations"] = geography_value
-                
+
                 transformed_metadata[field] = transformed_field
             else:
                 # Handle legacy string format
@@ -347,25 +360,26 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                     "confidence_level": "High",
                     "presentation": str(value) if value else "Not specified"
                 }
-                
+
                 # Add geography field for legacy format too
                 if field == "operational_demographics":
-                    transformed_metadata[field]["geography_of_operations"] = str(value) if value else "Geographic operations not specified"
+                    transformed_metadata[field]["geography_of_operations"] = str(
+                        value) if value else "Geographic operations not specified"
         else:
             # Provide default structure for missing fields
             default_field = {
-                "value": "", 
+                "value": "",
                 "confidence": 0.0,
                 "extraction_method": "none",
                 "context": "",
                 "confidence_level": "None",
                 "presentation": "Not specified"
             }
-            
+
             # Add geography field for operational demographics
             if field == "operational_demographics":
                 default_field["geography_of_operations"] = "Geographic operations not specified"
-            
+
             transformed_metadata[field] = default_field
 
     # Copy optimization metrics and other fields
@@ -380,7 +394,7 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
 
 
 def _get_confidence_level(confidence: float) -> str:
-    """Convert confidence score to human-readable level."""
+    """Convert confidence score to human - readable level."""
     if confidence >= 0.9:
         return "Very High"
     elif confidence >= 0.7:
@@ -396,13 +410,13 @@ def _get_confidence_level(confidence: float) -> str:
 def _format_field_presentation(field_name: str, field_data: dict) -> str:
     """Format field data for enhanced presentation."""
     value = field_data.get("value", "")
-    confidence = field_data.get("confidence", 0.0)
+    field_data.get("confidence", 0.0)
     context = field_data.get("context", "")
-    method = field_data.get("extraction_method", "")
-    
+    field_data.get("extraction_method", "")
+
     if not value:
         return "Not specified"
-    
+
     # Create formatted presentation based on field type
     if field_name == "operational_demographics" and context:
         # For demographics, show value with context
@@ -427,17 +441,17 @@ def _create_extraction_summary(metadata: dict) -> dict:
             "high_confidence_fields": 0
         }
     }
-    
+
     metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
     total_confidence = 0.0
     extracted_fields = 0
     high_confidence_count = 0
-    
+
     for field in metadata_fields:
         if field in metadata and isinstance(metadata[field], dict):
             field_data = metadata[field]
             confidence = field_data.get("confidence", 0.0)
-            
+
             # Add to extraction table
             summary["extraction_table"].append({
                 "field": field.replace("_", " ").title(),
@@ -447,19 +461,20 @@ def _create_extraction_summary(metadata: dict) -> dict:
                 "method": field_data.get("extraction_method", "unknown"),
                 "has_context": bool(field_data.get("context", ""))
             })
-            
+
             # Update metrics
             if confidence > 0:
                 total_confidence += confidence
                 extracted_fields += 1
                 if confidence >= 0.7:
                     high_confidence_count += 1
-    
+
     # Calculate summary metrics
-    summary["confidence_metrics"]["average_confidence"] = total_confidence / extracted_fields if extracted_fields > 0 else 0.0
+    summary["confidence_metrics"]["average_confidence"] = total_confidence / \
+        extracted_fields if extracted_fields > 0 else 0.0
     summary["confidence_metrics"]["total_fields_extracted"] = extracted_fields
     summary["confidence_metrics"]["high_confidence_fields"] = high_confidence_count
-    
+
     return summary
 
 
@@ -487,7 +502,7 @@ def _finalize_processing_results(document_id: str, metadata_result: dict) -> dic
 
 
 def _cleanup_uploaded_file(document_id: str) -> None:
-    """Auto-delete uploaded file after vectorization and chunking."""
+    """Auto - delete uploaded file after vectorization and chunking."""
     file_path = get_document_file_path(document_id)
     try:
         if file_path and file_path.exists():
@@ -562,9 +577,9 @@ async def process_upload_tasks(
 
         logger.info(f"Metadata extraction completed for document {document_id}")
 
-    except Exception as e:
+    except Exception as _e:
         # Handle error
-        _handle_processing_error(document_id, e)
+        _handle_processing_error(document_id, _e)
 
         # Remove processing lock file if it exists
         if processing_lock_file.exists():
@@ -600,7 +615,7 @@ async def upload_document(
             return JSONResponse(status_code=429, content=response)
 
         # Validate file type
-        allowed_exts = [".pdf", ".docx"]
+        allowed_exts = [".pd", ".docx"]
         if file.filename is None:
             response = {
                 "status": "error",
@@ -625,8 +640,8 @@ async def upload_document(
         # Read file content
         try:
             content = await file.read()
-        except Exception as e:
-            logger.error(f"Error reading file content: {str(e)}")
+        except Exception as _e:
+            logger.error(f"Error reading file content: {str(_e)}")
             response = {
                 "status": "error",
                 "error": "File processing failed",
@@ -645,8 +660,8 @@ async def upload_document(
             with open(upload_path, "wb") as f:
                 f.write(content)
             logger.info(f"Saved uploaded file to: {upload_path}")
-        except Exception as e:
-            logger.error(f"Error saving uploaded file: {str(e)}")
+        except Exception as _e:
+            logger.error(f"Error saving uploaded file: {str(_e)}")
             response = {
                 "status": "error",
                 "error": "File save failed",
@@ -684,8 +699,8 @@ async def upload_document(
             }
             logger.info(f"Returning success response: {json.dumps(response)}")
             return response
-        except Exception as e:
-            logger.error(f"Error starting background processing: {str(e)}")
+        except Exception as _e:
+            logger.error(f"Error starting background processing: {str(_e)}")
             response = {
                 "status": "error",
                 "error": "Processing failed",
@@ -696,13 +711,13 @@ async def upload_document(
             )
             return response
 
-    except Exception as e:
-        logger.error(f"Error processing document upload: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error processing document upload: {str(_e)}")
         logger.error(traceback.format_exc())
         response = {
             "status": "error",
             "error": "Upload failed",
-            "message": f"Error processing document: {str(e)}",
+            "message": f"Error processing document: {str(_e)}",
         }
         logger.info(f"Returning response for general error: {json.dumps(response)}")
         return response
@@ -714,11 +729,11 @@ async def get_checklist() -> JSONResponse:
     try:
         checklist = load_checklist()
         return JSONResponse(status_code=200, content=checklist)
-    except Exception as e:
-        logger.error(f"Error loading checklist: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error loading checklist: {str(_e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load checklist", "message": str(e)},
+            content={"error": "Failed to load checklist", "message": str(_e)},
         )
 
 
@@ -733,7 +748,7 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         frameworks_data = get_available_frameworks()
         filtered_frameworks = []
         checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
-        
+
         # Debug logging
         logger.info(f"Frameworks loaded: {len(frameworks_data.get('frameworks', []))}")
         logger.info(f"Checklist base path: {checklist_base}")
@@ -741,7 +756,7 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         if checklist_base.exists():
             dirs = [item.name for item in checklist_base.iterdir() if item.is_dir()]
             logger.info(f"Framework directories found: {dirs}")
-        
+
         for fw in frameworks_data.get("frameworks", []):
             fw_id = fw["id"]
             fw_dir = checklist_base / fw_id
@@ -763,17 +778,17 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
                 fw_copy["standards"] = filtered_standards
                 filtered_frameworks.append(fw_copy)
         return {"frameworks": filtered_frameworks}
-    except Exception as e:
-        logger.error(f"Error getting frameworks: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error getting frameworks: {str(_e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
-@router.get("/frameworks-debug", response_model=None)
+
+@router.get("/frameworks - debug", response_model=None)
 async def get_frameworks_debug():
     """Debug endpoint to check frameworks loading issues"""
     try:
         from pathlib import Path
-        import os
-        
+
         result = {
             "raw_frameworks_count": 0,
             "checklist_base_exists": False,
@@ -781,30 +796,31 @@ async def get_frameworks_debug():
             "framework_dirs": [],
             "error": None
         }
-        
+
         try:
             frameworks_data = get_available_frameworks()
             result["raw_frameworks_count"] = len(frameworks_data.get("frameworks", []))
-        except Exception as e:
-            result["error"] = f"get_available_frameworks failed: {str(e)}"
-            
+        except Exception as _e:
+            result["error"] = f"get_available_frameworks failed: {str(_e)}"
+
         checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
         result["checklist_base_path"] = str(checklist_base)
         result["checklist_base_exists"] = checklist_base.exists()
-        
+
         if checklist_base.exists():
             result["framework_dirs"] = [item.name for item in checklist_base.iterdir() if item.is_dir()]
-            
-        return result
-    except Exception as e:
-        return {"error": f"Debug endpoint failed: {str(e)}"}
 
-@router.get("/checklist-debug/{framework}/{standard}", response_model=None)
+        return result
+    except Exception:
+        return {"error": "Debug endpoint failed"}
+
+
+@router.get("/checklist - debug/{framework}/{standard}", response_model=None)
 async def get_checklist_debug(framework: str, standard: str):
-    """Debug endpoint to check checklist loading for specific framework/standard"""
+    """Debug endpoint to check checklist loading for specific framework / standard"""
     try:
         from pathlib import Path
-        
+
         result = {
             "framework": framework,
             "standard": standard,
@@ -815,24 +831,24 @@ async def get_checklist_debug(framework: str, standard: str):
             "checklist_total_items": 0,
             "error": None
         }
-        
+
         # Check availability
         try:
             result["is_available"] = is_standard_available(framework, standard)
-        except Exception as e:
-            result["error"] = f"is_standard_available failed: {str(e)}"
-            
+        except Exception as _e:
+            result["error"] = f"is_standard_available failed: {str(_e)}"
+
         # Check checklist loading
         try:
             checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
-            
+
             # Test possible paths
             possible_paths = [
                 checklist_base / framework / f"{standard}.json",
                 checklist_base / "IFRS" / f"{standard}.json",
                 checklist_base / framework / standard / "checklist.json"
             ]
-            
+
             for path in possible_paths:
                 path_info = {
                     "path": str(path),
@@ -840,29 +856,31 @@ async def get_checklist_debug(framework: str, standard: str):
                     "is_file": path.is_file() if path.exists() else False
                 }
                 result["checklist_path_checked"].append(path_info)
-                
+
             checklist = load_checklist(framework, standard)
             if checklist:
                 result["checklist_loaded"] = True
                 result["checklist_sections"] = len(checklist.get('sections', []))
-                result["checklist_total_items"] = sum(len(section.get('items', [])) for section in checklist.get('sections', []))
-                
-        except Exception as e:
-            result["error"] = f"checklist loading failed: {str(e)}"
-            
-        return result
-    except Exception as e:
-        return {"error": f"Debug endpoint failed: {str(e)}"}
+                result["checklist_total_items"] = sum(len(section.get('items', []))
+                                                      for section in checklist.get('sections', []))
 
-@router.post("/suggest-standards", response_model=None)
+        except Exception as _e:
+            result["error"] = f"checklist loading failed: {str(_e)}"
+
+        return result
+    except Exception:
+        return {"error": "Debug endpoint failed"}
+
+
+@router.post("/suggest - standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
     Suggest relevant accounting standards based on company metadata and selected framework.
-    
+
     Expected request body:
     {
         "framework": "IFRS",
-        "company_name": "ALDAR Properties PJSC", 
+        "company_name": "ALDAR Properties PJSC",
         "nature_of_business": "Real estate development...",
         "operational_demographics": "United Arab Emirates, Egypt",
         "financial_statements_type": "Consolidated"
@@ -870,19 +888,19 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
     """
     try:
         # Validate required fields
-        required_fields = ["framework", "company_name", "nature_of_business", 
-                          "operational_demographics", "financial_statements_type"]
-        
+        required_fields = ["framework", "company_name", "nature_of_business",
+                           "operational_demographics", "financial_statements_type"]
+
         for field in required_fields:
             if field not in request:
                 raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
-        
+
         framework = request["framework"]
-        company_name = request["company_name"] 
+        company_name = request["company_name"]
         nature_of_business = request["nature_of_business"]
         operational_demographics = request["operational_demographics"]
         financial_statements_type = request["financial_statements_type"]
-        
+
         # Get available standards for the framework
         frameworks_data = get_available_frameworks()
         framework_data = None
@@ -890,30 +908,29 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             if fw["id"] == framework:
                 framework_data = fw
                 break
-        
+
         if not framework_data:
             raise HTTPException(status_code=400, detail=f"Framework '{framework}' not found")
-        
+
         # Extract available standard IDs and names
         available_standards = []
         standards_map = {}  # Map ID to name for lookup
         for std in framework_data.get("standards", []):
             available_standards.append(std["id"])
             standards_map[std["id"]] = std.get("name", std["id"])
-        
+
         if not available_standards:
             raise HTTPException(status_code=400, detail=f"No standards available for framework '{framework}'")
-        
+
         # Create AI prompt for standards suggestion
         # Create the prompt directly since there's an issue with the AIPrompts method
         available_standards_list = "\\n".join([f"- {std} ({standards_map[std]})" for std in available_standards])
-        
+
         system_prompt = (
             "You are a financial standards recommendation AI. You MUST respond with valid JSON only - no text before or after the JSON.\\n\\n"
             "Your task: Analyze company profiles and return JSON with recommended accounting standards.\\n\\n"
-            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters)."
-        )
-        
+            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters).")
+
         user_prompt = (
             f"Company: {company_name}\\n"
             f"Business: {nature_of_business}\\n"
@@ -922,9 +939,9 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             f"Statement Type: {financial_statements_type}\\n\\n"
             f"Available Standards: {available_standards_list}\\n\\n"
             "INSTRUCTIONS:\\n"
-            "1. Analyze the company profile and suggest 6-10 most relevant standards\\n"
+            "1. Analyze the company profile and suggest 6 - 10 most relevant standards\\n"
             "2. Include core universal standards (IAS 1, IAS 7) that apply to all companies\\n"
-            "3. Add industry-specific standards based on business nature\\n"
+            "3. Add industry - specific standards based on business nature\\n"
             "4. Use EXACT standard IDs from Available Standards list\\n"
             "5. Include the full standard title in your response\\n"
             "6. Keep reasoning brief and specific (max 80 characters per reason)\\n\\n"
@@ -938,15 +955,15 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             '  "business_context": "Brief analysis summary"\\n'
             "}"
         )
-        
+
         prompt_data = {
             "system": system_prompt,
             "user": user_prompt
         }
-        
+
         # Call AI service to get suggestions
         ai_service = get_ai_service()
-        
+
         # Use the OpenAI client directly for this simple call
         response = ai_service.openai_client.chat.completions.create(
             model=ai_service.deployment_name,
@@ -956,31 +973,31 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             ],
             max_completion_tokens=8000  # Much higher token limit to prevent truncation
         )
-        
+
         ai_response = response.choices[0].message.content
-        
+
         # Parse AI response - ensure it's not None
         if not ai_response:
             raise HTTPException(status_code=500, detail="AI response is empty")
-        
+
         logger.info(f"Raw AI response: {ai_response}")
-        
+
         # Clean the response - remove any markdown code blocks
         cleaned_response = ai_response.strip()
         if cleaned_response.startswith("```json"):
             cleaned_response = cleaned_response.replace("```json", "").replace("```", "").strip()
         elif cleaned_response.startswith("```"):
             cleaned_response = cleaned_response.replace("```", "").strip()
-            
+
         logger.info(f"Cleaned AI response: {cleaned_response}")
-        
+
         # Parse JSON - no fallback, just fail if it doesn't work
         suggestions_data = json.loads(cleaned_response)
-        
+
         # Validate the response structure
         if "suggested_standards" not in suggestions_data:
             raise HTTPException(status_code=500, detail="AI response missing 'suggested_standards' field")
-        
+
         # Filter suggestions to only include available standards and add titles if missing
         valid_suggestions = []
         for suggestion in suggestions_data["suggested_standards"]:
@@ -988,7 +1005,7 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             if standard_id in available_standards:
                 # Ensure we have a title - use AI provided title or lookup from standards_map
                 standard_title = suggestion.get("standard_title") or standards_map.get(standard_id, standard_id)
-                
+
                 valid_suggestion = {
                     "standard_id": standard_id,
                     "standard_title": standard_title,
@@ -996,7 +1013,7 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
                     "reasoning": suggestion.get("reasoning", "Recommended for your business profile")
                 }
                 valid_suggestions.append(valid_suggestion)
-        
+
         result = {
             "framework": framework,
             "metadata_used": {
@@ -1011,15 +1028,15 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             "total_available_standards": len(available_standards),
             "suggestions_count": len(valid_suggestions)
         }
-        
+
         logger.info(f"Generated {len(valid_suggestions)} accounting standards suggestions for {framework} framework")
         return result
-        
+
     except HTTPException:
         raise
-    except Exception as e:
-        logger.error(f"Error suggesting accounting standards: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error suggesting accounting standards: {str(_e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
 
 @router.get("/progress/{document_id}", response_model=None)
@@ -1027,7 +1044,7 @@ async def get_analysis_progress(
     document_id: str,
 ) -> Union[Dict[str, Any], JSONResponse]:
     """
-    Get real-time analysis progress for a document including question counts and elapsed time.
+    Get real - time analysis progress for a document including question counts and elapsed time.
     """
     try:
         # FIRST: Check if analysis is completed (highest priority)
@@ -1151,7 +1168,7 @@ async def get_analysis_progress(
 
                 # Add individual question progress with tick marks
                 if std_progress.questions_progress:
-                    for q_id, q_progress in std_progress.questions_progress.items():
+                    for _q_id, q_progress in std_progress.questions_progress.items():
                         question_detail = {
                             "id": q_progress.question_id,
                             "section": q_progress.section,
@@ -1188,12 +1205,12 @@ async def get_analysis_progress(
 
         return response_data
 
-    except Exception as e:
-        logger.error(f"Error getting analysis progress for {document_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error getting analysis progress for {document_id}: {str(_e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
 
-@router.get("/rate-limit-status", response_model=None)
+@router.get("/rate - limit - status", response_model=None)
 async def get_rate_limit_status() -> Dict[str, Any]:
     """
     Get current rate limiting status and system health metrics.
@@ -1248,13 +1265,13 @@ async def get_rate_limit_status() -> Dict[str, Any]:
             },
         }
 
-    except Exception as e:
-        logger.error(f"Error getting rate limit status: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error getting rate limit status: {str(_e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
 
 def _format_elapsed_time(seconds: float) -> str:
-    """Format elapsed time in a human-readable format"""
+    """Format elapsed time in a human - readable format"""
     if seconds < 60:
         return f"{int(seconds)}s"
     elif seconds < 3600:
@@ -1304,7 +1321,7 @@ def _validate_standards_available(
             content={
                 "error": "Standard(s) not available",
                 "detail": (
-                    f"The following standard(s) are not available for "
+                    "The following standard(s) are not available for "
                     f"framework {framework}: "
                     f"{', '.join(unavailable_standards)}"
                 ),
@@ -1340,31 +1357,31 @@ def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
 
 def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
     """Extract text from PDF or DOCX file."""
-    if file_path.suffix.lower() == ".pdf":
+    if file_path.suffix.lower() == ".pd":
         # Use PyMuPDF (fitz) instead of document_extractor for consistency
         try:
             import fitz
             text = ""
             with fitz.open(str(file_path)) as doc:
                 for page in doc:
-                    page_text = page.get_text()  # type: ignore[attr-defined]
+                    page_text = page.get_text()  # type: ignore[attr - defined]
                     if page_text:
                         text += page_text + "\n"
             return text.strip()
-        except Exception as e:
-            logger.error(f"Error extracting text from PDF: {str(e)}")
+        except Exception as _e:
+            logger.error(f"Error extracting text from PDF: {str(_e)}")
             return JSONResponse(
                 status_code=500,
-                content={"error": "PDF text extraction failed", "detail": str(e)}
+                content={"error": "PDF text extraction failed", "detail": str(_e)}
             )
     elif file_path.suffix.lower() == ".docx":
         if DocxDocument is None:
-            logger.error("DOCX support not available (python-docx not installed)")
+            logger.error("DOCX support not available (python - docx not installed)")
             return JSONResponse(
                 status_code=400,
                 content={
                     "error": "DOCX support not available",
-                    "detail": "python-docx package is not installed",
+                    "detail": "python - docx package is not installed",
                 },
             )
         text = "\n".join(
@@ -1386,7 +1403,7 @@ def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from chunk data."""
     chunks_path = Path("vector_indices") / f"{document_id}_chunks.json"
     if chunks_path.exists():
-        with open(chunks_path, "r", encoding="utf-8") as f:
+        with open(chunks_path, "r", encoding="utf - 8") as f:
             chunks = json.load(f)
         text = "\n".join(chunk["text"] for chunk in chunks if "text" in chunk)
         return text
@@ -1442,7 +1459,7 @@ async def get_framework_checklist(
     try:
         # Debug logging
         logger.info(f"Checklist request: framework={framework}, standard={standard}")
-        
+
         # Check if standard is available
         if not is_standard_available(framework, standard):
             logger.warning(f"Standard not available: {framework}/{standard}")
@@ -1459,41 +1476,41 @@ async def get_framework_checklist(
 
         logger.info(f"Loading checklist for {framework}/{standard}")
         checklist = load_checklist(framework, standard)
-        
+
         if checklist:
             sections_count = len(checklist.get('sections', []))
             total_items = sum(len(section.get('items', [])) for section in checklist.get('sections', []))
             logger.info(f"Checklist loaded: {sections_count} sections, {total_items} total items")
         else:
             logger.warning(f"Empty checklist returned for {framework}/{standard}")
-            
+
         return JSONResponse(status_code=200, content=checklist)
-    except FileNotFoundError as e:
-        logger.error(f"Checklist not found: {str(e)}")
+    except FileNotFoundError as _e:
+        logger.error(f"Checklist not found: {str(_e)}")
         return JSONResponse(
-            status_code=404, content={"error": "Checklist not found", "message": str(e)}
+            status_code=404, content={"error": "Checklist not found", "message": str(_e)}
         )
-    except Exception as e:
-        logger.error(f"Error loading checklist: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error loading checklist: {str(_e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load checklist", "message": str(e)},
+            content={"error": "Failed to load checklist", "message": str(_e)},
         )
 
 
-@router.get("/metadata/fields")
+@router.get("/metadata / fields")
 async def get_metadata_fields() -> JSONResponse:
     """Get the metadata extraction fields."""
     try:
         metadata_path = os.path.join(CHECKLIST_DATA_DIR, "company_metadata.json")
-        with open(metadata_path, "r", encoding="utf-8") as f:
+        with open(metadata_path, "r", encoding="utf - 8") as f:
             metadata = json.load(f)
         return JSONResponse(status_code=200, content=metadata["metadata_fields"])
-    except Exception as e:
-        logger.error(f"Error loading metadata fields: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error loading metadata fields: {str(_e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load metadata fields", "message": str(e)},
+            content={"error": "Failed to load metadata fields", "message": str(_e)},
         )
 
 
@@ -1508,7 +1525,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
         logger.info(f"🔍 Results path: {results_path}")
         if os.path.exists(results_path):
             # Read results
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
             # Check for errors
             if "error" in results:
@@ -1566,13 +1583,13 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             "metadata": {},
             "message": "Document uploaded, analysis not started yet",
         }
-    except Exception as e:
-        logger.error(f"Error getting document status: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error getting document status: {str(_e)}")
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "message": f"Failed to get document status: {str(e)}",
+                "message": f"Failed to get document status: {str(_e)}",
             },
         )
 
@@ -1589,7 +1606,7 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
                 "message": "No results found for the specified document",
             }
 
-        with open(results_path, "r", encoding="utf-8") as f:
+        with open(results_path, "r", encoding="utf - 8") as f:
             results = json.load(f)
 
         # Ensure consistent response structure
@@ -1604,13 +1621,13 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
                 else "Document analysis in progress"
             ),
         }
-    except Exception as e:
-        logger.error(f"Error retrieving document results: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error retrieving document results: {str(_e)}")
         logger.error(traceback.format_exc())
         return {
             "status": "error",
             "document_id": document_id,
-            "message": f"Error retrieving document results: {str(e)}",
+            "message": f"Error retrieving document results: {str(_e)}",
         }
 
 
@@ -1636,7 +1653,7 @@ async def update_compliance_item(
             )
 
         # Read current results
-        with open(results_path, "r", encoding="utf-8") as f:
+        with open(results_path, "r", encoding="utf - 8") as f:
             results = json.load(f)
 
         # Update the specific item
@@ -1667,14 +1684,14 @@ async def update_compliance_item(
         return JSONResponse(
             status_code=200, content={"message": "Item updated successfully"}
         )
-    except Exception as e:
-        logger.error(f"Error updating compliance item: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error updating compliance item: {str(_e)}")
         logger.error(traceback.format_exc())
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Update failed",
-                "message": f"Error updating compliance item: {str(e)}",
+                "message": f"Error updating compliance item: {str(_e)}",
             },
         )
 
@@ -1699,7 +1716,7 @@ class ComplianceAnalysisRequest(BaseModel):
     comparison_config: Optional[Dict[str, Any]] = None
 
 
-@router.post("/documents/{document_id}/select-framework", response_model=None)
+@router.post("/documents/{document_id}/select - framework", response_model=None)
 async def select_framework(
     document_id: str,
     request: FrameworkSelectionRequest,
@@ -1731,7 +1748,7 @@ async def select_framework(
 
         # Read and update analysis results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        with open(results_path, "r", encoding="utf-8") as f:
+        with open(results_path, "r", encoding="utf - 8") as f:
             results = json.load(f)
 
         # Update results with framework selection
@@ -1791,18 +1808,19 @@ async def select_framework(
                 "for all selected standards"
             ),
         }
-    except Exception as e:
-        logger.error(f"Error selecting framework: {str(e)}", exc_info=True)
+    except Exception as _e:
+        logger.error(f"Error selecting framework: {str(_e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error selecting framework: {str(e)}",
+                "detail": f"Error selecting framework: {str(_e)}",
             },
         )
 
-
 # Add an alias endpoint for framework selection to match the frontend call
+
+
 @router.post("/documents/{document_id}/framework")
 async def select_framework_alias(
     document_id: str,
@@ -1817,7 +1835,7 @@ async def select_framework_alias(
     return await select_framework(document_id, request, background_tasks, ai_svc)
 
 
-@router.post("/documents/{document_id}/select-processing-mode")
+@router.post("/documents/{document_id}/select - processing - mode")
 async def select_processing_mode(
     document_id: str,
     request: ProcessingModeRequest,
@@ -1847,7 +1865,7 @@ async def select_processing_mode(
         # Load existing results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return JSONResponse(
@@ -1875,7 +1893,7 @@ async def select_processing_mode(
             )
 
             # Save updated results
-            with open(results_path, "w", encoding="utf-8") as f:
+            with open(results_path, "w", encoding="utf - 8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
             # Start metadata extraction in background
@@ -1888,7 +1906,7 @@ async def select_processing_mode(
             mode_descriptions = {
                 "zap": "Lightning fast analysis with 16 parallel workers",
                 "smart": (
-                    "AI-powered intelligent semantic processing with cost "
+                    "AI - powered intelligent semantic processing with cost "
                     "optimization"
                 ),
                 "comparison": "Performance benchmark running both Zap and Smart modes",
@@ -1913,13 +1931,13 @@ async def select_processing_mode(
             )
 
             # Save updated results
-            with open(results_path, "w", encoding="utf-8") as f:
+            with open(results_path, "w", encoding="utf - 8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
             mode_descriptions = {
                 "zap": "Lightning fast analysis with 16 parallel workers",
                 "smart": (
-                    "AI-powered intelligent semantic processing with cost "
+                    "AI - powered intelligent semantic processing with cost "
                     "optimization"
                 ),
                 "comparison": "Performance benchmark running both Zap and Smart modes",
@@ -1936,18 +1954,18 @@ async def select_processing_mode(
                 ),
             }
 
-    except Exception as e:
-        logger.error(f"Error selecting processing mode: {str(e)}", exc_info=True)
+    except Exception as _e:
+        logger.error(f"Error selecting processing mode: {str(_e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error selecting processing mode: {str(e)}",
+                "detail": f"Error selecting processing mode: {str(_e)}",
             },
         )
 
 
-@router.post("/documents/{document_id}/start-compliance")
+@router.post("/documents/{document_id}/start - compliance")
 async def start_compliance_analysis(
     document_id: str,
     request: ComplianceAnalysisRequest,
@@ -1967,7 +1985,7 @@ async def start_compliance_analysis(
         # Load existing results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return JSONResponse(
@@ -2034,13 +2052,13 @@ async def start_compliance_analysis(
             "message": f"Compliance analysis started with {processing_mode} mode",
         }
 
-    except Exception as e:
-        logger.error(f"Error starting compliance analysis: {str(e)}", exc_info=True)
+    except Exception as _e:
+        logger.error(f"Error starting compliance analysis: {str(_e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error starting compliance analysis: {str(e)}",
+                "detail": f"Error starting compliance analysis: {str(_e)}",
             },
         )
 
@@ -2075,7 +2093,7 @@ async def _run_smart_mode_comparison(
         # Load Smart Mode results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_smart_comparison.json"
         try:
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
         except FileNotFoundError:
             results = {"sections": []}
@@ -2091,8 +2109,8 @@ async def _run_smart_mode_comparison(
 
         return metrics, results
 
-    except Exception as e:
-        logger.error(f"Smart mode failed in comparison: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Smart mode failed in comparison: {str(_e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -2101,7 +2119,7 @@ async def _run_smart_mode_comparison(
             "questions_processed": 0,
             "success": False,
             "sections_analyzed": 0,
-            "error": str(e),
+            "error": str(_e),
         }
         results = {"sections": []}
 
@@ -2138,7 +2156,7 @@ async def _run_zap_mode_comparison(
         # Load Zap Mode results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_zap_comparison.json"
         try:
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
         except FileNotFoundError:
             results = {"sections": []}
@@ -2154,8 +2172,8 @@ async def _run_zap_mode_comparison(
 
         return metrics, results
 
-    except Exception as e:
-        logger.error(f"Zap mode failed in comparison: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Zap mode failed in comparison: {str(_e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -2164,7 +2182,7 @@ async def _run_zap_mode_comparison(
             "questions_processed": 0,
             "success": False,
             "sections_analyzed": 0,
-            "error": str(e),
+            "error": str(_e),
         }
         results = {"sections": []}
 
@@ -2312,7 +2330,7 @@ async def process_compliance_comparison(
 
         # Save initial progress
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        with open(results_path, "w", encoding="utf-8") as f:
+        with open(results_path, "w", encoding="utf - 8") as f:
             json.dump(initial_results, f, indent=2, ensure_ascii=False)
 
         # Run both modes and gather results
@@ -2356,7 +2374,7 @@ async def process_compliance_comparison(
         )
 
         # Save final results
-        with open(results_path, "w", encoding="utf-8") as f:
+        with open(results_path, "w", encoding="utf - 8") as f:
             json.dump(final_results, f, indent=2, ensure_ascii=False)
 
         logger.info(
@@ -2364,22 +2382,22 @@ async def process_compliance_comparison(
             f"{recommendation} mode recommended"
         )
 
-    except Exception as e:
-        logger.error(f"Error in comparison analysis: {str(e)}", exc_info=True)
+    except Exception as _e:
+        logger.error(f"Error in comparison analysis: {str(_e)}", exc_info=True)
         # Update results with error
         try:
             results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
             error_results = {
                 "document_id": document_id,
                 "status": "FAILED",
-                "error": str(e),
+                "error": str(_e),
             }
-            with open(results_path, "w", encoding="utf-8") as f:
+            with open(results_path, "w", encoding="utf - 8") as f:
                 json.dump(error_results, f, indent=2, ensure_ascii=False)
-        except Exception as save_error:
+        except Exception as _save_error:
             # Failed to save error state - log but continue
             logger.error(
-                f"Failed to save error state for {document_id}: {str(save_error)}"
+                f"Failed to save error state for {document_id}: {str(_save_error)}"
             )
 
 
@@ -2425,7 +2443,7 @@ async def process_smart_mode_analysis(
     Smart Mode features:
     - Semantic content analysis for better accuracy
     - Question prioritization based on document content
-    - Cost-optimized AI processing
+    - Cost - optimized AI processing
     - Enhanced context understanding
     """
     logger.info(f"Starting Smart Mode analysis for standard {standard}")
@@ -2434,11 +2452,11 @@ async def process_smart_mode_analysis(
     # Preprocess checklist to add standard numbers to questions
     processed_checklist = _preprocess_checklist_with_standard_numbers(checklist)
 
-    # Set progress tracker for question-level tracking
+    # Set progress tracker for question - level tracking
     if progress_tracker:
         ai_svc.progress_tracker = progress_tracker
 
-        # Initialize question-level tracking for Smart Mode
+        # Initialize question - level tracking for Smart Mode
         all_questions_data = []
         for section in processed_checklist.get("sections", []):
             for item in section.get("items", []):
@@ -2472,7 +2490,7 @@ async def process_smart_mode_analysis(
         text_segments = _create_semantic_segments(text)
         logger.info(f"Smart Mode: Created {len(text_segments)} semantic segments")
 
-        # Step 3: Question-content mapping for optimal processing
+        # Step 3: Question - content mapping for optimal processing
         question_priorities = _prioritize_questions_by_content(
             all_questions, text_segments
         )
@@ -2538,8 +2556,8 @@ async def process_smart_mode_analysis(
 
         return processed_sections
 
-    except Exception as e:
-        logger.error(f"Smart Mode analysis failed for {standard}: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Smart Mode analysis failed for {standard}: {str(_e)}")
         # Fallback to standard processing
         logger.info("Falling back to standard processing mode")
         try:
@@ -2598,7 +2616,7 @@ def _prioritize_questions_by_content(
     """Prioritize questions based on content relevance"""
     priorities = {}
 
-    # Simple keyword-based prioritization
+    # Simple keyword - based prioritization
     for question in questions:
         question_lower = question.lower()
         total_relevance = 0
@@ -2645,7 +2663,7 @@ def _find_relevant_segments(
 
     # Sort by score and take top segments
     segment_scores.sort(reverse=True)
-    for score, _, segment in segment_scores[:max_segments]:
+    for _score, _, segment in segment_scores[:max_segments]:
         relevant_segments.append(segment)
 
     return relevant_segments
@@ -2693,8 +2711,8 @@ def _preprocess_checklist_with_standard_numbers(
                     item["question"] = f"{section_standard}: {question}"
 
         return processed_checklist
-    except Exception as e:
-        logger.error(f"Error preprocessing checklist with standard numbers: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Error preprocessing checklist with standard numbers: {str(_e)}")
         return checklist  # Return original on error
 
 
@@ -2727,7 +2745,7 @@ async def process_zap_mode_analysis(
     Zap Mode features:
     - 16 parallel workers for maximum throughput
     - Direct processing without semantic optimization
-    - Speed-first approach with acceptable accuracy trade-offs
+    - Speed - first approach with acceptable accuracy trade - offs
     - Minimal context processing for fastest results
     """
     logger.info(f"Starting Zap Mode analysis for standard {standard}")
@@ -2736,11 +2754,11 @@ async def process_zap_mode_analysis(
     # Preprocess checklist to add standard numbers to questions
     processed_checklist = _preprocess_checklist_with_standard_numbers(checklist)
 
-    # Set progress tracker for question-level tracking
+    # Set progress tracker for question - level tracking
     if progress_tracker:
         ai_svc.progress_tracker = progress_tracker
 
-        # Initialize question-level tracking for Zap Mode
+        # Initialize question - level tracking for Zap Mode
         all_questions_data = []
         for section in processed_checklist.get("sections", []):
             for item in section.get("items", []):
@@ -2785,8 +2803,8 @@ async def process_zap_mode_analysis(
                     )
                     return result
 
-                except Exception as e:
-                    error_str = str(e).lower()
+                except Exception as _e:
+                    error_str = str(_e).lower()
                     if (
                         "rate limit" in error_str or "429" in error_str
                     ) and attempt < max_retries - 1:
@@ -2801,8 +2819,8 @@ async def process_zap_mode_analysis(
                         # Log error and return error result instead of failing
                         # completely
                         logger.error(
-                            f"Zap Mode worker failed after "
-                            f"{attempt + 1} attempts: {str(e)}"
+                            "Zap Mode worker failed after "
+                            f"{attempt + 1} attempts: {str(_e)}"
                         )
                         current_task = asyncio.current_task()
                         return {
@@ -2810,7 +2828,7 @@ async def process_zap_mode_analysis(
                             "section": section.get("section", "unknown"),
                             "title": section.get("title", ""),
                             "items": [],
-                            "error": str(e),
+                            "error": str(_e),
                             "worker_id": (
                                 current_task.get_name() if current_task else "unknown"
                             ),
@@ -2882,8 +2900,8 @@ async def process_zap_mode_analysis(
 
         return valid_sections
 
-    except Exception as e:
-        logger.error(f"Zap Mode analysis failed for {standard}: {str(e)}")
+    except Exception as _e:
+        logger.error(f"Zap Mode analysis failed for {standard}: {str(_e)}")
         # Fallback to standard processing
         logger.info("Falling back to standard processing mode")
         section_tasks = []
@@ -2910,7 +2928,7 @@ async def _initialize_analysis_tracking(
 
     results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
     try:
-        with open(results_path, "r", encoding="utf-8") as f:
+        with open(results_path, "r", encoding="utf - 8") as f:
             results: dict = json.load(f)
     except (json.JSONDecodeError, FileNotFoundError):
         results: dict = {
@@ -2969,11 +2987,11 @@ async def _process_standards_sequentially(
 ) -> tuple[list, list]:
     """
     Process each standard sequentially and return all sections and failed standards.
-    CRITICAL: This function MUST only process the user-selected standards.
+    CRITICAL: This function MUST only process the user - selected standards.
     """
-    # STRICT VALIDATION: Ensure we only process user-selected standards
+    # STRICT VALIDATION: Ensure we only process user - selected standards
     logger.info(f"🔒 STRICT STANDARDS VALIDATION for document {document_id}")
-    logger.info(f"🔒 Processing EXACTLY these user-selected standards: {standards}")
+    logger.info(f"🔒 Processing EXACTLY these user - selected standards: {standards}")
     logger.info(
         "🔒 Will NOT process any other standards regardless of document content"
     )
@@ -2990,7 +3008,7 @@ async def _process_standards_sequentially(
         try:
             logger.info(
                 f"🎯 PROCESSING STANDARD {
-                    i + 1}/{total_standards}: {standard} (USER-SELECTED ONLY)"
+                    i + 1}/{total_standards}: {standard} (USER - SELECTED ONLY)"
             )
             logger.info(
                 f"🎯 Document {document_id} - Current: {standard}, "
@@ -2999,15 +3017,15 @@ async def _process_standards_sequentially(
 
             # Get checklist to determine total questions
             checklist_data = load_checklist(framework, standard)
-            
-            # CRITICAL FIX: Count actual questions/items, not top-level object length
+
+            # CRITICAL FIX: Count actual questions / items, not top - level object length
             total_questions = 0
             if checklist_data and isinstance(checklist_data, dict):
                 for section in checklist_data.get("sections", []):
                     total_questions += len(section.get("items", []))
-            
+
             logger.info(f"🔍 Checklist loaded for {standard}: {total_questions} total questions")
-            
+
             if total_questions == 0:
                 logger.error(f"❌ No questions found in checklist for {framework}/{standard}")
                 failed_standards.append(standard)
@@ -3017,7 +3035,7 @@ async def _process_standards_sequentially(
             if progress_tracker:
                 progress_tracker.start_standard(document_id, standard, total_questions)
 
-                # Initialize question-level tracking
+                # Initialize question - level tracking
                 all_questions_data = []
                 for section in checklist_data.get("sections", []):
                     for item in section.get("items", []):
@@ -3047,18 +3065,18 @@ async def _process_standards_sequentially(
             save_analysis_results(document_id, results)
 
             checklist = load_checklist(framework, standard)
-            
+
             # Debug checklist loading
             if not checklist:
                 logger.error(f"❌ Failed to load checklist for {framework}/{standard}")
                 failed_standards.append(standard)
                 continue
-                
+
             checklist_sections = checklist.get("sections", [])
             checklist_items_count = sum(len(section.get("items", [])) for section in checklist_sections)
             logger.info(f"📋 Loaded checklist: {len(checklist_sections)} sections, {checklist_items_count} items")
 
-            # Set progress tracker for question-level tracking
+            # Set progress tracker for question - level tracking
             ai_svc.progress_tracker = progress_tracker
 
             # Choose processing approach based on mode
@@ -3068,7 +3086,7 @@ async def _process_standards_sequentially(
                     checklist, text, document_id, ai_svc, standard, progress_tracker
                 )
             elif processing_mode == "zap":
-                # Zap Mode: High-speed processing with 16 concurrent workers
+                # Zap Mode: High - speed processing with 16 concurrent workers
                 standard_sections = await process_zap_mode_analysis(
                     checklist, text, document_id, ai_svc, standard, progress_tracker
                 )
@@ -3087,7 +3105,9 @@ async def _process_standards_sequentially(
                 standard_sections = await asyncio.gather(*section_tasks)
 
             # Debug processing results
-            logger.info(f"📊 Processing result for {standard}: {len(standard_sections) if standard_sections else 0} sections returned")
+            logger.info(
+                f"📊 Processing result for {standard}: {
+                    len(standard_sections) if standard_sections else 0} sections returned")
             if standard_sections:
                 total_processed_items = sum(len(section.get("items", [])) for section in standard_sections)
                 logger.info(f"📊 Total processed items for {standard}: {total_processed_items}")
@@ -3121,11 +3141,11 @@ async def _process_standards_sequentially(
             logger.info(
                 f"Added {len(standard_sections)} sections for standard {standard}"
             )
-        except Exception as e:
+        except Exception as _e:
             logger.error(
-                f"Error processing standard {standard}: {str(e)}", exc_info=True
+                f"Error processing standard {standard}: {str(_e)}", exc_info=True
             )
-            failed_standards.append({"standard": standard, "error": str(e)})
+            failed_standards.append({"standard": standard, "error": str(_e)})
 
         save_analysis_results(
             document_id, {**results, "sections": all_sections}
@@ -3146,7 +3166,7 @@ def _handle_analysis_completion(
     """Handle the completion of analysis and build final results."""
     # Update the results with the compiled data
     results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-    with open(results_path, "r", encoding="utf-8") as f:
+    with open(results_path, "r", encoding="utf - 8") as f:
         results = json.load(f)
 
     if len(failed_standards) == len(standards):
@@ -3165,7 +3185,7 @@ def _handle_analysis_completion(
         results["failed_standards"] = failed_standards
         results["completed_at"] = datetime.now().isoformat()
         results["message"] = (
-            f"Compliance analysis completed with errors for "
+            "Compliance analysis completed with errors for "
             f"{len(failed_standards)} of {len(standards)} standards"
         )
         completion_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.completed"
@@ -3219,7 +3239,7 @@ def _handle_analysis_error(
     try:
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf-8") as f:
+            with open(results_path, "r", encoding="utf - 8") as f:
                 results = json.load(f)
         except (json.JSONDecodeError, FileNotFoundError):
             results = {
@@ -3268,7 +3288,8 @@ async def process_compliance_analysis(
         if len(text) > MAX_TEXT_LENGTH:
             original_length = len(text)
             text = text[:MAX_TEXT_LENGTH]
-            logger.warning(f"🔥 TEXT TRUNCATED: Original length {original_length} → Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
+            logger.warning(
+                f"🔥 TEXT TRUNCATED: Original length {original_length} → Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
         else:
             logger.info(f"📝 Text length: {len(text)} characters (within limit)")
 
@@ -3280,7 +3301,7 @@ async def process_compliance_analysis(
         # CRITICAL: Log exactly which standards the user selected for compliance
         # analysis
         logger.info(f"🎯 COMPLIANCE ANALYSIS STARTING for document {document_id}")
-        logger.info(f"🎯 USER-SELECTED STANDARDS ONLY: {standards}")
+        logger.info(f"🎯 USER - SELECTED STANDARDS ONLY: {standards}")
         logger.info(f"🎯 Framework: {framework}, Processing Mode: {processing_mode}")
         logger.info(f"🎯 Total standards to analyze: {len(standards)}")
 
@@ -3338,11 +3359,11 @@ async def process_compliance_analysis(
             processing_lock_file.unlink()
         logger.info(f"Completed compliance analysis process for document {document_id}")
 
-    except Exception as e:
+    except Exception as _e:
         # Mark progress as failed
         from services.progress_tracker import get_progress_tracker
 
         progress_tracker = get_progress_tracker()
-        progress_tracker.fail_analysis(document_id, str(e))
+        progress_tracker.fail_analysis(document_id, str(_e))
 
-        _handle_analysis_error(document_id, e, performance_tracker, processing_mode)
+        _handle_analysis_error(document_id, _e, performance_tracker, processing_mode)
