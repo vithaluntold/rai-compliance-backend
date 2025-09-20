@@ -759,10 +759,10 @@ class SmartMetadataExtractor:
         # Add optimization metrics
         final_results["optimization_metrics"] = {
             "tokens_used": self._estimate_tokens_used(semantic_results),
-            "extraction_methods_used": list({
+            "extraction_methods_used": list(set([
                 result["extraction_method"] for result in semantic_results.values()
                 if isinstance(result, dict) and "extraction_method" in result
-            })
+            ]))
         }
 
         return final_results
