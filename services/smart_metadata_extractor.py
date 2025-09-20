@@ -756,13 +756,14 @@ class SmartMetadataExtractor:
                 except Exception as _e:
                     logger.error("Error in AI validation for {field_name}: {str(_e)}")
 
-        # Add optimization metrics
+        # Add optimization metrics - VERSION 4bb9380
         final_results["optimization_metrics"] = {
             "tokens_used": self._estimate_tokens_used(semantic_results),
             "extraction_methods_used": list(set([
                 result["extraction_method"] for result in semantic_results.values()
                 if isinstance(result, dict) and "extraction_method" in result
-            ]))
+            ])),
+            "version": "4bb9380_fix_deployed"
         }
 
         return final_results
