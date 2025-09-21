@@ -7,7 +7,7 @@ import logging
 import re
 from typing import Dict, List, Tuple, Optional, Any
 import json
-import nltk
+import spacy
 from textblob import TextBlob
 import sys
 import os
@@ -25,13 +25,12 @@ class ContextualContentCategorizer:
     def __init__(self):
         # Load our existing categorization data
         self.load_categorization_system()
-        # Download required NLTK data
+        # Load spaCy model
         try:
-            nltk.download('punkt', quiet=True)
-            nltk.download('stopwords', quiet=True)
-            nltk.download('averaged_perceptron_tagger', quiet=True)
-        except:
-            pass  # Continue if download fails
+            self.nlp = spacy.load("en_core_web_sm")
+        except OSError:
+            logger.error("spaCy English model not found. Please install with: python -m spacy download en_core_web_sm")
+            raise
         self.statement_recognizer = FinancialStatementRecognizer()
         
     def load_categorization_system(self):

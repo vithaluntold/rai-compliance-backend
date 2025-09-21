@@ -10,22 +10,8 @@ import re
 from pathlib import Path
 from typing import Dict, List, Tuple
 import pandas as pd
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 from collections import Counter
 import spacy
-
-# Download required NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
 
 # Load spaCy model
 try:
