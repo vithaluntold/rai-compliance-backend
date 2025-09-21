@@ -19,9 +19,9 @@ tiktoken>=0.5.0
 aiofiles>=23.0.0
 httpx>=0.25.0
 
-# NLP dependencies for smart categorization - using compatible versions for Python 3.13
-spacy==3.8.2
-en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0.tar.gz
+# NLP dependencies for smart categorization - Python 3.11 optimized with guaranteed wheels
+spacy==3.7.2
+en-core-web-sm==3.7.1
 
 # Geographical detection dependencies
 country_converter>=1.2.0
