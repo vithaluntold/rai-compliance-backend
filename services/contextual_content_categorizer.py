@@ -7,7 +7,8 @@ import logging
 import re
 from typing import Dict, List, Tuple, Optional, Any
 import json
-import spacy
+import nltk
+from textblob import TextBlob
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -24,7 +25,13 @@ class ContextualContentCategorizer:
     def __init__(self):
         # Load our existing categorization data
         self.load_categorization_system()
-        self.nlp = spacy.load("en_core_web_sm")
+        # Download required NLTK data
+        try:
+            nltk.download('punkt', quiet=True)
+            nltk.download('stopwords', quiet=True)
+            nltk.download('averaged_perceptron_tagger', quiet=True)
+        except:
+            pass  # Continue if download fails
         self.statement_recognizer = FinancialStatementRecognizer()
         
     def load_categorization_system(self):
