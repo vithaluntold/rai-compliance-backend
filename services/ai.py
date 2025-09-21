@@ -30,8 +30,8 @@ vector_store = None
 ai_service = None
 
 # Global settings for parallel processing
-NUM_WORKERS = 4  # Reduced for 512MB Render instance - was min(32, (os.cpu_count() or 1) * 4)
-CHUNK_SIZE = 50  # Increased from 10 - process more questions per batch for efficiency
+NUM_WORKERS = 1  # Reduced from 4 for 512MB Render instance to prevent memory pressure
+CHUNK_SIZE = 10  # Reduced from 50 to prevent overwhelming Azure OpenAI S0 tier
 
 # Azure OpenAI configuration
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
@@ -51,7 +51,7 @@ TOKENS_PER_MINUTE = 40_000  # Conservative limit for S0 tier
 MAX_RETRIES = 3
 EXPONENTIAL_BACKOFF_BASE = 2
 CIRCUIT_BREAKER_THRESHOLD = (
-    10  # Number of consecutive failures before circuit breaker opens
+    20  # Increased from 10 - Number of consecutive failures before circuit breaker opens
 )
 
 _rate_lock = threading.Lock()
@@ -141,6 +141,18 @@ def get_rate_limit_status() -> Dict[str, Any]:
     """Get current rate limiting status for monitoring"""
     now = time.time()
     window_elapsed = now - _window_start
+    
+    # Calculate circuit breaker retry timing
+    circuit_breaker_status = "closed"
+    retry_after_seconds = 0
+    
+    if _circuit_breaker_open:
+        time_since_opened = now - _circuit_breaker_opened_at
+        if time_since_opened < 300:  # 5 minutes
+            circuit_breaker_status = "open"
+            retry_after_seconds = int(300 - time_since_opened)
+        else:
+            circuit_breaker_status = "half-open"
 
     return {
         "requests_used": _request_count,
@@ -151,6 +163,12 @@ def get_rate_limit_status() -> Dict[str, Any]:
         "window_remaining": max(0, 60 - window_elapsed),
         "consecutive_failures": _consecutive_failures,
         "circuit_breaker_open": _circuit_breaker_open,
+        "circuit_breaker": {
+            "status": circuit_breaker_status,
+            "failure_count": _consecutive_failures,
+            "last_failure_time": datetime.fromtimestamp(_circuit_breaker_opened_at).isoformat() if _circuit_breaker_opened_at > 0 else None,
+            "retry_after_seconds": retry_after_seconds
+        },
         "processed_questions_count": sum(
             len(doc_questions) for doc_questions in _processed_questions.values()
         ),
@@ -191,6 +209,17 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             _request_count = 0
             _token_count = 0
             elapsed = 0
+
+        # Monitor rate limit usage and alert at 80% capacity
+        request_usage_pct = (_request_count / REQUESTS_PER_MINUTE) * 100
+        token_usage_pct = (_token_count / TOKENS_PER_MINUTE) * 100
+        
+        if request_usage_pct >= 80 or token_usage_pct >= 80:
+            logger.warning(
+                f"Rate limit usage high: {request_usage_pct:.1f}% requests "
+                f"({_request_count}/{REQUESTS_PER_MINUTE}), "
+                f"{token_usage_pct:.1f}% tokens ({_token_count}/{TOKENS_PER_MINUTE})"
+            )
 
         # Check if we would exceed limits
         if (
@@ -546,6 +575,15 @@ class AIService:
             max_api_retries = 3
             for api_retry in range(max_api_retries):
                 try:
+                    # Progressive delay to reduce rate limiting pressure
+                    if api_retry > 0:
+                        delay = 3 * (api_retry ** 2)  # 3s, 12s, 27s progressive backoff
+                        logger.info(f"API retry {api_retry}: waiting {delay}s before retry")
+                        time.sleep(delay)
+                    else:
+                        # Add 2-second delay between requests to space them out
+                        time.sleep(2)
+                    
                     # RATE LIMITING REMOVED - Process all 217 questions without limits
                     # check_rate_limit_with_backoff(tokens=estimated_tokens)
 
