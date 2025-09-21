@@ -8,7 +8,6 @@ import re
 from typing import Dict, List, Tuple, Optional, Any
 import json
 import spacy
-from textblob import TextBlob
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
