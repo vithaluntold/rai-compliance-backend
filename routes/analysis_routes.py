@@ -1966,8 +1966,7 @@ async def select_processing_mode(
             # Metadata already extracted, ready for framework selection
             results["status"] = "awaiting_framework_selection"
             results["message"] = (
-                f"Processing mode '{
-                    request.processing_mode}' selected, ready for framework selection"
+                f"Processing mode '{request.processing_mode}' selected, ready for framework selection"
             )
 
             # Save updated results
@@ -2575,12 +2574,7 @@ async def process_smart_mode_analysis(
                 progress_tracker.update_question_progress(
                     document_id,
                     standard,
-                    f"Processing section {
-                        section_idx + 1}/{
-                        len(
-                            processed_checklist.get(
-                                'sections',
-                                []))}",
+                    f"Processing section {section_idx + 1}/{len(processed_checklist.get('sections', []))}",
                     completed_questions,
                 )
 
@@ -2850,8 +2844,7 @@ async def process_zap_mode_analysis(
                     ) and attempt < max_retries - 1:
                         # Simple retry without staggered backoff - just power through
                         logger.warning(
-                            f"Zap Mode worker error, retrying immediately (attempt {
-                                attempt + 1}/{max_retries})"
+                            f"Zap Mode worker error, retrying immediately (attempt {attempt + 1}/{max_retries})"
                         )
                         await asyncio.sleep(0.1)  # Minimal delay
                         continue
@@ -3047,8 +3040,7 @@ async def _process_standards_sequentially(
     for i, standard in enumerate(standards):
         try:
             logger.info(
-                f"🎯 PROCESSING STANDARD {
-                    i + 1}/{total_standards}: {standard} (USER - SELECTED ONLY)"
+                f"🎯 PROCESSING STANDARD {i + 1}/{total_standards}: {standard} (USER-SELECTED ONLY)"
             )
             logger.info(
                 f"🎯 Document {document_id} - Current: {standard}, "
@@ -3146,8 +3138,8 @@ async def _process_standards_sequentially(
 
             # Debug processing results
             logger.info(
-                f"📊 Processing result for {standard}: {
-                    len(standard_sections) if standard_sections else 0} sections returned")
+                f"📊 Processing result for {standard}: {len(standard_sections) if standard_sections else 0} sections returned"
+            )
             if standard_sections:
                 total_processed_items = sum(len(section.get("items", [])) for section in standard_sections)
                 logger.info(f"📊 Total processed items for {standard}: {total_processed_items}")
