@@ -488,24 +488,18 @@ class AIService:
     ) -> dict:
         """
         Analyze a chunk of annual report content against a compliance checklist question.
-        Enhanced with intelligent document analysis, rate limiting, and duplicate prevention.
-        Returns a JSON response with:
-          - status: "YES", "NO", or "N/A"
-          - confidence: float between 0 and 1
-          - explanation: str explaining the analysis
-          - evidence: str containing relevant text from the document
-          - suggestion: str containing suggestion when status is "NO"
+        Enhanced with smart categorization and intelligent document analysis.
         """
         try:
             # Ensure document_id is set
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. Cannot perform vector search."
+                    "analyze_chunk called with no current_document_id set. Cannot perform smart search."
                 )
                 return {
                     "status": "Error",
                     "confidence": 0.0,
-                    "explanation": "No document ID provided for vector search.",
+                    "explanation": "No document ID provided for smart search.",
                     "evidence": "",
                     "suggestion": "Check backend logic to ensure document_id is always set.",
                 }
@@ -528,48 +522,59 @@ class AIService:
                 check_circuit_breaker()
             except CircuitBreakerOpenError as e:
                 logger.error(f"Circuit breaker is open: {str(e)}")
-                # CHANGED: Re-raise the exception instead of returning fallback
                 raise RuntimeError(f"AI analysis failed: {str(e)}")
 
-            # Get relevant chunks using vector search (existing method)
-            vs_svc = get_vector_store()
-            if not vs_svc:
-                raise ValueError("Vector store service not initialized")
-
-            # Search for relevant chunks using the question
-            relevant_chunks = vs_svc.search(
-                query=question, document_id=self.current_document_id, top_k=3
-            )
-
-            # REMOVED: Intelligent document analyzer fallback - AI only mode
-            enhanced_evidence = None
-
-            if not relevant_chunks:
-                logger.warning(f"No relevant chunks found for question: {question}")
-                # CHANGED: Fail instead of continuing without evidence
-                raise RuntimeError(f"No evidence found for question: {question}")
-
-            # Use enhanced evidence if available, otherwise fall back to original chunks
-            if enhanced_evidence and enhanced_evidence.get("primary_evidence"):
-                context = enhanced_evidence["primary_evidence"]
-                evidence_quality = enhanced_evidence.get(
-                    "evidence_quality_assessment", {}
+            # STRICT: Use smart categorization ONLY - no fallbacks
+            logger.info(f"🧠 AI STEP 1: Starting smart categorization for question: {question[:50]}...")
+            try:
+                from services.intelligent_chunk_accumulator import (
+                    IntelligentChunkAccumulator, 
+                    CategoryAwareContentStorage
                 )
-                logger.info(
-                    f"Using enhanced evidence from: {evidence_quality.get('evidence_source', 'Unknown')}"
+                
+                # Initialize smart accumulator
+                logger.info(f"🔧 AI STEP 2: Initializing smart categorization components for document {self.current_document_id}")
+                storage = CategoryAwareContentStorage()
+                accumulator = IntelligentChunkAccumulator(storage)
+                logger.info(f"✅ AI STEP 2 COMPLETE: Smart categorization components initialized")
+                
+                # Get categorized content - strict mode
+                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content (max length: 800)")
+                smart_result = accumulator.accumulate_relevant_content(
+                    question, self.current_document_id, max_content_length=800
                 )
-            else:
-                # Combine chunks into context text
-                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
-                # Truncate if too long to prevent API errors
-                if len(context) > 3000:
-                    context = context[:3000] + "\n[Context truncated due to length...]"
-                logger.info(f"Using standard vector search evidence (combined length: {len(context)} chars)")
+                
+                if smart_result['total_pieces'] == 0:
+                    logger.error(f"❌ AI STEP 3 FAILED: No relevant content found for question: {question}")
+                    raise RuntimeError(f"Smart categorization failed: No relevant categorized content found for question. Document may not be properly processed with smart categorization.")
+                
+                enhanced_evidence = smart_result['content']
+                citations_info = smart_result['citations']
+                logger.info(f"✅ AI STEP 3 COMPLETE: Found {smart_result['total_pieces']} relevant pieces with {smart_result['confidence']:.2f} confidence")
+                logger.info(f"📄 Content summary: {len(enhanced_evidence)} chars, {len(citations_info)} citations")
+                
+            except ImportError as import_error:
+                logger.error(f"❌ AI STEP 2 FAILED: Smart categorization system unavailable: {import_error}")
+                raise RuntimeError(f"Smart categorization system is not available. Required modules missing: {str(import_error)}")
+            except Exception as smart_error:
+                logger.error(f"❌ AI STEP 3 FAILED: Smart categorization error: {smart_error}")
+                raise RuntimeError(f"Smart categorization failed: {str(smart_error)}")
+
+            if not enhanced_evidence:
+                logger.error("❌ CONTENT RETRIEVAL FAILED: No evidence generated from smart categorization")
+                raise RuntimeError("Smart categorization failed to generate usable evidence for analysis")
+
+            # Use smart categorization results ONLY
+            logger.info(f"📝 AI STEP 4: Preparing context for AI analysis")
+            context = enhanced_evidence
+            logger.info(f"✅ AI STEP 4 COMPLETE: Context prepared ({len(context)} chars)")
 
             # Construct the prompt for the AI using the prompts library
+            logger.info(f"🤖 AI STEP 5: Constructing AI prompt for compliance analysis")
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
                 question=question, context=context, enhanced_evidence=enhanced_evidence
             )
+            logger.info(f"✅ AI STEP 5 COMPLETE: AI prompt constructed ({len(prompt)} chars)")
 
             # Enhanced rate limiting with retries and circuit breaker
             max_api_retries = 3
@@ -855,36 +860,8 @@ class AIService:
                     ),
                 }
 
-            # Add page number information from vector search results
-            if relevant_chunks:
-                page_numbers = []
-                document_sources = []
-                document_extracts = []
-                for chunk in relevant_chunks:
-                    if chunk.get("page_number") and chunk["page_number"] > 0:
-                        page_numbers.append(chunk["page_number"])
-                    if chunk.get("chunk_index") is not None:
-                        document_sources.append({
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "chunk_type": chunk.get("chunk_type", "text")
-                        })
-                    # Include document extracts with page references
-                    if chunk.get("text"):
-                        extract_text = chunk["text"][:500] + "..." if len(chunk["text"]) > 500 else chunk["text"]
-                        document_extracts.append({
-                            "text": extract_text,
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "relevance_score": chunk.get("score", 0.0)
-                        })
-
-                if page_numbers:
-                    result["source_pages"] = sorted(list(set(page_numbers)))
-                if document_sources:
-                    result["document_sources"] = document_sources
-                if document_extracts:
-                    result["document_extracts"] = document_extracts
+            # Smart categorization mode doesn't use vector search, so no page information available
+            # Page numbers will come from smart document integration instead
 
             # Log the processed result
             logger.info("✅ PROCESSED RESULT:")

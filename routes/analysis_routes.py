@@ -638,10 +638,12 @@ async def upload_document(
             return response
 
         # Read file content
+        logger.info(f"📖 UPLOAD STEP 1: Reading uploaded file content ({file.filename})")
         try:
             content = await file.read()
+            logger.info(f"✅ UPLOAD STEP 1 COMPLETE: File content read ({len(content)} bytes)")
         except Exception as _e:
-            logger.error(f"Error reading file content: {str(_e)}")
+            logger.error(f"❌ UPLOAD STEP 1 FAILED: Error reading file content: {str(_e)}")
             response = {
                 "status": "error",
                 "error": "File processing failed",
@@ -650,30 +652,30 @@ async def upload_document(
             return response
 
         # Generate unique document ID
+        logger.info(f"🆔 UPLOAD STEP 2: Generating document ID")
         document_id = generate_document_id()
-        logger.info(f"Processing document upload with ID: {document_id}")
+        logger.info(f"✅ UPLOAD STEP 2 COMPLETE: Document ID generated: {document_id}")
 
         # Save uploaded file with original extension
+        logger.info(f"💾 UPLOAD STEP 3: Saving uploaded file to disk")
         upload_ext = f".{ext}"
         upload_path = UPLOADS_DIR / f"{document_id}{upload_ext}"
         try:
             with open(upload_path, "wb") as f:
                 f.write(content)
-            logger.info(f"Saved uploaded file to: {upload_path}")
+            logger.info(f"✅ UPLOAD STEP 3 COMPLETE: File saved to {upload_path}")
         except Exception as _e:
-            logger.error(f"Error saving uploaded file: {str(_e)}")
+            logger.error(f"❌ UPLOAD STEP 3 FAILED: Error saving uploaded file: {str(_e)}")
             response = {
                 "status": "error",
                 "error": "File save failed",
                 "message": "Failed to save uploaded file",
             }
-            logger.info(
-                f"Returning response for file save error: {json.dumps(response)}"
-            )
+            logger.error(f"🚫 UPLOAD FAILED: File save error response: {json.dumps(response)}")
             return response
 
         # Log the processing mode
-        logger.info(f"Upload received with processing mode: {processing_mode}")
+        logger.info(f"⚙️  Processing mode validation: {processing_mode}")
 
         # Validate processing mode
         valid_modes = ["zap", "smart", "comparison"]
@@ -683,33 +685,51 @@ async def upload_document(
             )
             processing_mode = "smart"
 
-        # No need to chunk here, just start background processing
+        logger.info(f"📤 UPLOAD STEP 4: Starting background processing for document {document_id}")
+        # STRICT MODE: Smart categorization ONLY - no fallbacks
         try:
+            logger.info(f"🔧 UPLOAD STEP 5: Importing smart processing system")
+            # Import smart processing - fail if not available
+            from services.smart_document_integration import process_upload_tasks_smart
+            logger.info(f"✅ UPLOAD STEP 5 COMPLETE: Smart processing system imported successfully")
+            
+            logger.info(f"🚀 UPLOAD STEP 6: Starting smart categorization background task")
+            # Use ONLY smart processing - no fallback options
             background_tasks.add_task(
-                process_upload_tasks,
+                process_upload_tasks_smart,
                 document_id,
                 ai_svc,
                 "",  # text parameter
                 processing_mode,
             )
+            
             response = {
                 "status": "processing",
                 "document_id": document_id,
-                "processing_mode": processing_mode,
-                "message": f"Document uploaded with {processing_mode} mode, processing started",
+                "processing_mode": "smart_categorization_strict",
+                "message": f"Document uploaded with STRICT smart categorization mode - SUCCESS or FAILURE only",
             }
-            logger.info(f"Returning success response: {json.dumps(response)}")
+            logger.info(f"✅ UPLOAD STEP 6 COMPLETE: Background task started for document {document_id}")
+            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Smart categorization initiated for {document_id}")
+            logger.info(f"📋 Response: {json.dumps(response)}")
             return response
-        except Exception as _e:
-            logger.error(f"Error starting background processing: {str(_e)}")
+        except ImportError as import_error:
+            logger.error(f"❌ UPLOAD STEP 5 FAILED: Smart categorization system unavailable: {import_error}")
             response = {
                 "status": "error",
-                "error": "Processing failed",
-                "message": "Failed to start document processing",
+                "error": "Smart categorization system unavailable",
+                "message": f"STRICT MODE: Smart categorization system is required but unavailable: {str(import_error)}",
             }
-            logger.info(
-                f"Returning response for processing error: {json.dumps(response)}"
-            )
+            logger.error(f"🚫 UPLOAD FAILED: Returning STRICT MODE failure response: {json.dumps(response)}")
+            return response
+        except Exception as _e:
+            logger.error(f"❌ UPLOAD STEP 6 FAILED: Smart processing failed to start: {str(_e)}")
+            response = {
+                "status": "error",
+                "error": "Smart processing failed",
+                "message": f"STRICT MODE: Smart categorization failed to start - no fallback available: {str(_e)}",
+            }
+            logger.error(f"Returning STRICT MODE error response: {json.dumps(response)}")
             return response
 
     except Exception as _e:
@@ -1549,12 +1569,22 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 status = "PROCESSING"
             metadata_extraction = results.get("metadata_extraction", "PENDING")
             compliance_analysis = results.get("compliance_analysis", "PENDING")
+            
+            # Include smart categorization metadata if available
+            smart_categorization = results.get("smart_categorization", {})
+            
             return {
                 "document_id": document_id,
                 "status": status,
                 "metadata_extraction": metadata_extraction,
                 "compliance_analysis": compliance_analysis,
                 "processing_mode": results.get("processing_mode", "smart"),
+                "smart_categorization": {
+                    "total_categories": smart_categorization.get("total_categories", 0),
+                    "content_chunks": smart_categorization.get("content_chunks", 0),
+                    "categorization_complete": smart_categorization.get("categorization_complete", False),
+                    "categories_found": smart_categorization.get("categories_found", [])
+                },
                 "metadata": results.get("metadata", {}),
                 "sections": results.get("sections", []),
                 "progress": results.get("progress", {}),

@@ -46,6 +46,20 @@ app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"]
 app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
 app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
 
+# Initialize smart categorization database on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database and services on startup - STRICT MODE"""
+    try:
+        from services.intelligent_chunk_accumulator import CategoryAwareContentStorage
+        storage = CategoryAwareContentStorage()
+        print("✅ CategoryAwareContentStorage database initialized successfully")
+        print("🎯 STRICT MODE: Smart categorization system fully operational")
+    except Exception as e:
+        print(f"❌ CRITICAL ERROR: Smart categorization system failed to initialize: {str(e)}")
+        print("🚫 STRICT MODE: System will not operate without smart categorization")
+        raise RuntimeError(f"Smart categorization system initialization failed: {str(e)}")
+
 # Global storage for documents and sessions
 documents_db: Dict[str, Dict] = {}
 sessions_db: Dict[str, Dict] = {}
