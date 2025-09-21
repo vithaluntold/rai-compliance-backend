@@ -138,14 +138,14 @@ async def auto_fill_checklist(
 ):
     """Auto-fill checklist items based on document analysis."""
     try:
-        logger.info("Received auto-fill request for document {document_id}")
-        logger.info("Request body: {request}")
+        logger.info(f"Received auto-fill request for document {document_id}")
+        logger.info(f"Request body: {request}")
 
         # Extract section_id from request body
         section_id = request.get("section_id") if request else None
 
         # Get analysis results from file system
-        results_path = os.path.join("analysis_results", "{document_id}.json")
+        results_path = os.path.join("analysis_results", f"{document_id}.json")
         if not os.path.exists(results_path):
             raise HTTPException(
                 status_code=404,
@@ -219,11 +219,11 @@ async def auto_fill_checklist(
         }
 
         # Save auto-filled checklist
-        checklist_path = os.path.join("checklist_data", "{document_id}.json")
+        checklist_path = os.path.join("checklist_data", f"{document_id}.json")
         with open(checklist_path, "w", encoding="utf-8") as f:
             json.dump(response, f, indent=2)
 
-        logger.info("Successfully auto-filled checklist for document {document_id}")
+        logger.info(f"Successfully auto-filled checklist for document {document_id}")
         return response
 
     except HTTPException:

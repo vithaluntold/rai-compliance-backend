@@ -351,7 +351,7 @@ class ResultPageAttributeTracer:
         with open(output_file, 'w') as f:
             json.dump(trace_data, f, indent=2, default=str)
 
-        logger.info("Trace data exported to {output_file}")
+        logger.info(f"Trace data exported to {output_file}")
 
 
 # Example usage function

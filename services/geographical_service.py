@@ -469,7 +469,7 @@ class GeographicalDetectionService:
         # Common patterns for country mentions
         patterns = [
             r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b",  # Capitalized words
-            r"\b(UAE|USA|UK|EU|GCC)\bff",  # Common abbreviations
+            r"\b(UAE|USA|UK|EU|GCC)\b",  # Common abbreviations
         ]
 
         for pattern in patterns:

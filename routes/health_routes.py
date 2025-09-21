@@ -84,5 +84,5 @@ async def check_openai_health():
             },
         }
     except Exception as e:
-        logger.error("Health check failed: {str(e)}")
-        raise HTTPException(status_code=500, detail="Health check failed: {str(e)}")
+        logger.error(f"Health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")

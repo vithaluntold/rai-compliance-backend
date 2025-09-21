@@ -1195,11 +1195,11 @@ class AIService:
                 and original_title
                 and not original_title.startswith(section_name)
             ):
-                full_title = "{section_name} - {original_title}"
+                full_title = f"{section_name} - {original_title}"
             else:
                 full_title = original_title or section_name
             items = section.get("items", [])
-            logger.info("Processing section {section_name} with {len(items)} items")
+            logger.info(f"Processing section {section_name} with {len(items)} items")
             processed_items = []
             for i in range(0, len(items), CHUNK_SIZE):
                 batch = items[i : i + CHUNK_SIZE]
@@ -1235,7 +1235,7 @@ class AIService:
                     item = batch[idx]
                     if isinstance(result, Exception):
                         logger.error(
-                            "Error processing item {item.get('id')}: {str(result)}"
+                            f"Error processing item {item.get('id')}: {str(result)}"
                         )
                         # Mark question as failed in progress tracker
                         if hasattr(self, "progress_tracker") and self.progress_tracker:

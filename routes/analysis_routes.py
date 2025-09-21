@@ -687,9 +687,10 @@ async def upload_document(
         try:
             background_tasks.add_task(
                 process_upload_tasks,
-                document_id=document_id,
-                ai_svc=ai_svc,
-                processing_mode=processing_mode,
+                document_id,
+                ai_svc,
+                "",  # text parameter
+                processing_mode,
             )
             response = {
                 "status": "processing",
@@ -815,7 +816,7 @@ async def get_frameworks_debug():
         return {"error": "Debug endpoint failed"}
 
 
-@router.get("/checklist - debug/{framework}/{standard}", response_model=None)
+@router.get("/checklist-debug/{framework}/{standard}", response_model=None)
 async def get_checklist_debug(framework: str, standard: str):
     """Debug endpoint to check checklist loading for specific framework / standard"""
     try:
@@ -1403,7 +1404,7 @@ def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from chunk data."""
     chunks_path = Path("vector_indices") / f"{document_id}_chunks.json"
     if chunks_path.exists():
-        with open(chunks_path, "r", encoding="utf - 8") as f:
+        with open(chunks_path, "r", encoding="utf-8") as f:
             chunks = json.load(f)
         text = "\n".join(chunk["text"] for chunk in chunks if "text" in chunk)
         return text
@@ -1498,12 +1499,12 @@ async def get_framework_checklist(
         )
 
 
-@router.get("/metadata / fields")
+@router.get("/metadata/fields")
 async def get_metadata_fields() -> JSONResponse:
     """Get the metadata extraction fields."""
     try:
         metadata_path = os.path.join(CHECKLIST_DATA_DIR, "company_metadata.json")
-        with open(metadata_path, "r", encoding="utf - 8") as f:
+        with open(metadata_path, "r", encoding="utf-8") as f:
             metadata = json.load(f)
         return JSONResponse(status_code=200, content=metadata["metadata_fields"])
     except Exception as _e:
@@ -1525,7 +1526,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
         logger.info(f"🔍 Results path: {results_path}")
         if os.path.exists(results_path):
             # Read results
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
             # Check for errors
             if "error" in results:
@@ -1606,7 +1607,7 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
                 "message": "No results found for the specified document",
             }
 
-        with open(results_path, "r", encoding="utf - 8") as f:
+        with open(results_path, "r", encoding="utf-8") as f:
             results = json.load(f)
 
         # Ensure consistent response structure
@@ -1653,7 +1654,7 @@ async def update_compliance_item(
             )
 
         # Read current results
-        with open(results_path, "r", encoding="utf - 8") as f:
+        with open(results_path, "r", encoding="utf-8") as f:
             results = json.load(f)
 
         # Update the specific item
@@ -1716,7 +1717,7 @@ class ComplianceAnalysisRequest(BaseModel):
     comparison_config: Optional[Dict[str, Any]] = None
 
 
-@router.post("/documents/{document_id}/select - framework", response_model=None)
+@router.post("/documents/{document_id}/select-framework", response_model=None)
 async def select_framework(
     document_id: str,
     request: FrameworkSelectionRequest,
@@ -1748,7 +1749,7 @@ async def select_framework(
 
         # Read and update analysis results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        with open(results_path, "r", encoding="utf - 8") as f:
+        with open(results_path, "r", encoding="utf-8") as f:
             results = json.load(f)
 
         # Update results with framework selection
@@ -1835,7 +1836,7 @@ async def select_framework_alias(
     return await select_framework(document_id, request, background_tasks, ai_svc)
 
 
-@router.post("/documents/{document_id}/select - processing - mode")
+@router.post("/documents/{document_id}/select-processing-mode")
 async def select_processing_mode(
     document_id: str,
     request: ProcessingModeRequest,
@@ -1865,7 +1866,7 @@ async def select_processing_mode(
         # Load existing results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return JSONResponse(
@@ -1893,14 +1894,18 @@ async def select_processing_mode(
             )
 
             # Save updated results
-            with open(results_path, "w", encoding="utf - 8") as f:
+            with open(results_path, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
             # Start metadata extraction in background
             background_tasks = BackgroundTasks()
             ai_svc = get_ai_service()
             background_tasks.add_task(
-                process_upload_tasks, document_id=document_id, ai_svc=ai_svc
+                process_upload_tasks, 
+                document_id,
+                ai_svc,
+                "",  # text parameter
+                request.processing_mode,
             )
 
             mode_descriptions = {
@@ -1931,7 +1936,7 @@ async def select_processing_mode(
             )
 
             # Save updated results
-            with open(results_path, "w", encoding="utf - 8") as f:
+            with open(results_path, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 
             mode_descriptions = {
@@ -1965,7 +1970,7 @@ async def select_processing_mode(
         )
 
 
-@router.post("/documents/{document_id}/start - compliance")
+@router.post("/documents/{document_id}/start-compliance")
 async def start_compliance_analysis(
     document_id: str,
     request: ComplianceAnalysisRequest,
@@ -1985,7 +1990,7 @@ async def start_compliance_analysis(
         # Load existing results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             return JSONResponse(
@@ -2093,7 +2098,7 @@ async def _run_smart_mode_comparison(
         # Load Smart Mode results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_smart_comparison.json"
         try:
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
         except FileNotFoundError:
             results = {"sections": []}
@@ -2156,7 +2161,7 @@ async def _run_zap_mode_comparison(
         # Load Zap Mode results
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_zap_comparison.json"
         try:
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
         except FileNotFoundError:
             results = {"sections": []}
@@ -2330,7 +2335,7 @@ async def process_compliance_comparison(
 
         # Save initial progress
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        with open(results_path, "w", encoding="utf - 8") as f:
+        with open(results_path, "w", encoding="utf-8") as f:
             json.dump(initial_results, f, indent=2, ensure_ascii=False)
 
         # Run both modes and gather results
@@ -2374,7 +2379,7 @@ async def process_compliance_comparison(
         )
 
         # Save final results
-        with open(results_path, "w", encoding="utf - 8") as f:
+        with open(results_path, "w", encoding="utf-8") as f:
             json.dump(final_results, f, indent=2, ensure_ascii=False)
 
         logger.info(
@@ -2392,7 +2397,7 @@ async def process_compliance_comparison(
                 "status": "FAILED",
                 "error": str(_e),
             }
-            with open(results_path, "w", encoding="utf - 8") as f:
+            with open(results_path, "w", encoding="utf-8") as f:
                 json.dump(error_results, f, indent=2, ensure_ascii=False)
         except Exception as _save_error:
             # Failed to save error state - log but continue
@@ -2928,7 +2933,7 @@ async def _initialize_analysis_tracking(
 
     results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
     try:
-        with open(results_path, "r", encoding="utf - 8") as f:
+        with open(results_path, "r", encoding="utf-8") as f:
             results: dict = json.load(f)
     except (json.JSONDecodeError, FileNotFoundError):
         results: dict = {
@@ -3166,7 +3171,7 @@ def _handle_analysis_completion(
     """Handle the completion of analysis and build final results."""
     # Update the results with the compiled data
     results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-    with open(results_path, "r", encoding="utf - 8") as f:
+    with open(results_path, "r", encoding="utf-8") as f:
         results = json.load(f)
 
     if len(failed_standards) == len(standards):
@@ -3239,7 +3244,7 @@ def _handle_analysis_error(
     try:
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         try:
-            with open(results_path, "r", encoding="utf - 8") as f:
+            with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
         except (json.JSONDecodeError, FileNotFoundError):
             results = {

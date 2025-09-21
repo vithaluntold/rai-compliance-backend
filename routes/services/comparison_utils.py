@@ -27,7 +27,7 @@ async def run_smart_mode_comparison(
     ANALYSIS_RESULTS_DIR: Path,
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Run Smart Mode analysis and return metrics and results."""
-    logger.info("Running Smart Mode for comparison - document {document_id}")
+    logger.info(f"Running Smart Mode for comparison - document {document_id}")
     start_time = time.time()
 
     try:
@@ -64,7 +64,7 @@ async def run_smart_mode_comparison(
         return metrics, results
 
     except Exception as e:
-        logger.error("Smart mode failed in comparison: {str(e)}")
+        logger.error(f"Smart mode failed in comparison: {str(e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -92,7 +92,7 @@ async def run_zap_mode_comparison(
     ANALYSIS_RESULTS_DIR: Path,
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Run Zap Mode analysis and return metrics and results."""
-    logger.info("Running Zap Mode for comparison - document {document_id}")
+    logger.info(f"Running Zap Mode for comparison - document {document_id}")
     start_time = time.time()
 
     try:
@@ -129,7 +129,7 @@ async def run_zap_mode_comparison(
         return metrics, results
 
     except Exception as e:
-        logger.error("Zap mode failed in comparison: {str(e)}")
+        logger.error(f"Zap mode failed in comparison: {str(e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -268,7 +268,7 @@ async def process_compliance_comparison(
     Executes both modes sequentially and compares their performance metrics.
     """
     try:
-        logger.info("Starting comparison mode analysis for document {document_id}")
+        logger.info(f"Starting comparison mode analysis for document {document_id}")
 
         # Initialize base results
         initial_results = {
@@ -343,7 +343,7 @@ async def process_compliance_comparison(
         )
 
     except Exception as e:
-        logger.error("Error in comparison analysis: {str(e)}", exc_info=True)
+        logger.error(f"Error in comparison analysis: {str(e)}", exc_info=True)
         # Update results with error
         try:
             results_path = ANALYSIS_RESULTS_DIR / "{document_id}.json"

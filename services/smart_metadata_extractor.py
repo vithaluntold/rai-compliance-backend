@@ -36,8 +36,8 @@ class SmartMetadataExtractor:
         self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
     ) -> Dict[str, Any]:
         """Extract metadata using 3 - tier strategy"""
-        logger.info("🚀 Starting SMART metadata extraction for document {document_id}")
-        logger.info("🔍 Processing {len(chunks)} chunks with smart extractor")
+        logger.info(f"🚀 Starting SMART metadata extraction for document {document_id}")
+        logger.info(f"🔍 Processing {len(chunks)} chunks with smart extractor")
 
         # Combine all chunks for pattern analysis - extract text from chunk dictionaries
         if chunks and isinstance(chunks[0], dict):
@@ -49,12 +49,12 @@ class SmartMetadataExtractor:
         else:
             # Chunks are strings (fallback)
             full_text = " ".join([str(chunk) for chunk in chunks])
-        logger.info("📄 Combined text length: {len(full_text)} characters")
+        logger.info(f"📄 Combined text length: {len(full_text)} characters")
 
         # Tier 1: Pattern - based extraction
         logger.info("⚡ Tier 1: Pattern - based extraction")
         pattern_results = await self._extract_with_patterns(full_text)
-        logger.info("✅ Pattern results: {pattern_results}")
+        logger.info(f"✅ Pattern results: {pattern_results}")
 
         # Tier 2: Semantic search enhancement
         logger.info("🔍 Tier 2: Semantic search enhancement")
@@ -68,8 +68,8 @@ class SmartMetadataExtractor:
             [full_text], semantic_results
         )
 
-        logger.info("🎯 Optimized extraction completed for document {document_id}")
-        logger.info("📊 Final results: {final_results}")
+        logger.info(f"🎯 Optimized extraction completed for document {document_id}")
+        logger.info(f"📊 Final results: {final_results}")
         return final_results
 
     async def _extract_with_patterns(self, text: str) -> Dict[str, Any]:
@@ -110,7 +110,7 @@ class SmartMetadataExtractor:
                 if matches:
                     business_nature = matches[0].strip()
                     business_context = "Pattern matched from document content"
-                    logger.info("🏢 Pattern - based business extraction found: {business_nature[:100]}...")
+                    logger.info(f"🏢 Pattern - based business extraction found: {business_nature[:100]}...")
                     break
 
             # Simple fallback if patterns don't work
@@ -168,14 +168,14 @@ class SmartMetadataExtractor:
             for pattern, country_name in country_checks:
                 if re.search(pattern, text, re.IGNORECASE):
                     # Additional validation - make sure it's in a meaningful context
-                    context_match = re.search(r'.{{0, 50}}{pattern}.{{0, 50}}', text, re.IGNORECASE)
+                    context_match = re.search(rf'.{{0,50}}{re.escape(pattern)}.{{0,50}}', text, re.IGNORECASE)
                     if context_match:
                         context = context_match.group(0).lower()
                         # Skip if it appears to be in unrelated context
                         if not any(skip_word in context for skip_word in ['example', 'sample', 'template', 'format']):
                             if country_name not in countries_found:
                                 countries_found.append(country_name)
-                                logger.info("📍 Found country: {country_name} in context: {context[:100]}...")
+                                logger.info(f"📍 Found country: {country_name} in context: {context[:100]}...")
 
             if countries_found:
                 fallback_demographics = ", ".join(countries_found)
@@ -183,7 +183,7 @@ class SmartMetadataExtractor:
                         demographics.split(', ')):  # Use fallback if we found more countries
                     demographics = fallback_demographics
                     demo_context = "Pattern matched from document content"
-                    logger.info("📍 Pattern - based demographics extraction found: {demographics}")
+                    logger.info(f"📍 Pattern - based demographics extraction found: {demographics}")
 
         if demographics:
             results["operational_demographics"]["value"] = demographics
@@ -247,7 +247,7 @@ class SmartMetadataExtractor:
                         best_match = "ALDAR Properties PJSC"
                         best_confidence = 0.95
                         best_context = line.strip()
-                        logger.info("🏢 Found clean company name: {best_match}")
+                        logger.info(f"🏢 Found clean company name: {best_match}")
                         break
 
             # Look for other PJSC companies if ALDAR not found
@@ -350,7 +350,7 @@ class SmartMetadataExtractor:
                             best_match = cleaned_match
                             best_confidence = confidence
                             best_context = sentence.strip()
-                            logger.info("🏢 Pattern - based company extraction found: {best_match}")
+                            logger.info(f"🏢 Pattern - based company extraction found: {best_match}")
 
         return best_match, best_confidence, best_context
 
@@ -443,22 +443,22 @@ class SmartMetadataExtractor:
                 # Extract context around the geographical mention
                 context = self._extract_geographical_context(text, best_entity.name)
                 # Return only the best match
-                " ({best_entity.region})" if best_entity.region else ""
-                formatted_info = "{best_entity.name}{region_info}"
+                region_info = f" ({best_entity.region})" if best_entity.region else ""
+                formatted_info = f"{best_entity.name}{region_info}"
                 return formatted_info, min(best_confidence, 0.95), context
             else:
                 # Fallback: return the highest confidence entity of any type
                 best_entity = max(geographical_entities, key=lambda x: x.confidence)
                 if best_entity.confidence > 0.5:
                     context = self._extract_geographical_context(text, best_entity.name)
-                    " ({best_entity.region})" if best_entity.region else ""
-                    formatted_info = "{best_entity.name}{region_info}"
+                    region_info = f" ({best_entity.region})" if best_entity.region else ""
+                    formatted_info = f"{best_entity.name}{region_info}"
                     return formatted_info, min(best_entity.confidence, 0.85), context
                 else:
                     return "", 0.0, ""
 
         except Exception as _e:
-            logger.error("Error in geographical extraction: {str(_e)}")
+            logger.error(f"Error in geographical extraction: {str(_e)}")
             return "", 0.0, ""
 
     def _extract_geographical_context(self, text: str, entity_name: str) -> str:
@@ -482,7 +482,7 @@ class SmartMetadataExtractor:
             relevant_sentences = self._find_sentences_with_keywords(text, keywords)
 
             if not relevant_sentences:
-                logger.warning("No sentences found with keywords for {field_name}")
+                logger.warning(f"No sentences found with keywords for {field_name}")
                 return "", ""
 
             # Step 2: Semantic search to find most relevant chunks
@@ -498,14 +498,14 @@ class SmartMetadataExtractor:
             if len(context_text) > 8000:
                 context_text = context_text[:8000] + "..."
                 logger.info(
-                    "Truncated context for {field_name} to 8000 characters (was {len('. '.join(relevant_sentences))} chars)")
+                    f"Truncated context for {field_name} to 8000 characters (was {len('. '.join(relevant_sentences))} chars)")
             else:
                 logger.info(
-                    "Context for {field_name}: {len(context_text)} characters from {len(relevant_sentences)} sentences")
+                    f"Context for {field_name}: {len(context_text)} characters from {len(relevant_sentences)} sentences")
 
             # DEBUG: Log the context being sent to AI
-            logger.info("🔍 DEBUG - Context for {field_name}:\n{context_text[:500]}..." if len(
-                context_text) > 500 else "🔍 DEBUG - Context for {field_name}:\n{context_text}")
+            logger.info(f"🔍 DEBUG - Context for {field_name}:\n{context_text[:500]}..." if len(
+                context_text) > 500 else f"🔍 DEBUG - Context for {field_name}:\n{context_text}")
 
             # Step 4: Create field - specific AI prompts with context
             if field_name == "nature_of_business":
@@ -528,12 +528,12 @@ class SmartMetadataExtractor:
             )
 
             content = response.choices[0].message.content
-            logger.info("🤖 AI Response for {field_name}: {content[:200]}..." if content and len(
-                content) > 200 else "🤖 AI Response for {field_name}: {content}")
+            logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(
+                content) > 200 else f"🤖 AI Response for {field_name}: {content}")
             return content.strip() if content else "", context_text[:500]
 
         except Exception as _e:
-            logger.error("Error in keyword→semantic→AI extraction for {field_name}: {str(_e)}")
+            logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {str(_e)}")
             return "", ""
 
     def _find_sentences_with_keywords(self, text: str, keywords: List[str]) -> List[str]:
@@ -550,10 +550,10 @@ class SmartMetadataExtractor:
             for keyword in keywords:
                 if keyword.lower() in sentence_lower:
                     relevant_sentences.append(sentence)
-                    logger.debug("Found keyword '{keyword}' in: {sentence[:100]}...")
+                    logger.debug(f"Found keyword '{keyword}' in: {sentence[:100]}...")
                     break  # Avoid duplicate sentences
 
-        logger.info("Found {len(relevant_sentences)} sentences with keywords: {keywords}")
+        logger.info(f"Found {len(relevant_sentences)} sentences with keywords: {keywords}")
         return relevant_sentences
 
     async def _semantic_search_for_field(self, field_name: str, existing_sentences: List[str], text: str) -> List[str]:
@@ -593,14 +593,14 @@ class SmartMetadataExtractor:
                     for term in query.split():
                         if term.lower() in sentence_lower:
                             new_sentences.append(sentence)
-                            logger.debug("Semantic search found: {sentence[:100]}...")
+                            logger.debug(f"Semantic search found: {sentence[:100]}...")
                             break
 
-            logger.info("Semantic search found {len(new_sentences)} additional sentences for {field_name}")
+            logger.info(f"Semantic search found {len(new_sentences)} additional sentences for {field_name}")
             return new_sentences[:10]  # Limit to top 10 additional sentences
 
         except Exception as _e:
-            logger.error("Error in semantic search for {field_name}: {str(_e)}")
+            logger.error(f"Error in semantic search for {field_name}: {str(_e)}")
             return []
 
     def _create_enhanced_business_prompt(self, context: str) -> Dict[str, str]:
@@ -703,7 +703,7 @@ class SmartMetadataExtractor:
                             enhanced_results[field_name]["extraction_method"] = "semantic"
 
                 except Exception as _e:
-                    logger.error("Error in semantic search for {field_name}: {str(_e)}")
+                    logger.error(f"Error in semantic search for {field_name}: {str(_e)}")
 
         return enhanced_results
 
@@ -732,7 +732,7 @@ class SmartMetadataExtractor:
             return chunks
 
         except Exception as _e:
-            logger.error("Error searching relevant chunks: {str(_e)}")
+            logger.error(f"Error searching relevant chunks: {str(_e)}")
             return []
 
     async def _validate_with_ai(self, chunks: List[str], semantic_results: Dict[str, Any]) -> Dict[str, Any]:
@@ -754,7 +754,7 @@ class SmartMetadataExtractor:
                         final_results[field_name]["extraction_method"] = "ai_validation"
 
                 except Exception as _e:
-                    logger.error("Error in AI validation for {field_name}: {str(_e)}")
+                    logger.error(f"Error in AI validation for {field_name}: {str(_e)}")
 
         # Add optimization metrics - VERSION 4bb9380
         final_results["optimization_metrics"] = {
@@ -801,7 +801,7 @@ class SmartMetadataExtractor:
             return content.strip() if content else ""
 
         except Exception as _e:
-            logger.error("Error in AI field extraction for {field_name}: {str(_e)}")
+            logger.error(f"Error in AI field extraction for {field_name}: {str(_e)}")
             return ""
 
     def _create_company_name_prompt_with_context(self, text: str) -> Dict[str, str]:
