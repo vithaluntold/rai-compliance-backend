@@ -1632,6 +1632,12 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
         }
 
 
+@router.get("/documents/{document_id}/extract")
+async def get_document_extract(document_id: str) -> Dict[str, Any]:
+    """Get the extracted metadata from document analysis. Alias for /results endpoint."""
+    return await get_document_results(document_id)
+
+
 class ChecklistItemUpdate(BaseModel):
     status: str
     comments: Optional[str] = None
