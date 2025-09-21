@@ -873,7 +873,7 @@ async def get_checklist_debug(framework: str, standard: str):
         return {"error": "Debug endpoint failed"}
 
 
-@router.post("/suggest - standards", response_model=None)
+@router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
     Suggest relevant accounting standards based on company metadata and selected framework.
