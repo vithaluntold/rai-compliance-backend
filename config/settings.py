@@ -45,7 +45,7 @@ LOG_FILE = LOG_DIR / "app.log"
 
 # Document Processing
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
-ALLOWED_EXTENSIONS = {".pd"}
+ALLOWED_EXTENSIONS = {".pdf", ".docx"}
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 

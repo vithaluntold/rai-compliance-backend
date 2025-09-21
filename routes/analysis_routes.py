@@ -178,7 +178,7 @@ def _ensure_json_serializable(obj: Any) -> Any:
 
 
 def get_document_file_path(document_id: str) -> Optional[Path]:
-    for ext in [".pd", ".docx"]:
+    for ext in [".pdf", ".docx"]:
         candidate = UPLOADS_DIR / f"{document_id}{ext}"
         if candidate.exists():
             return candidate
@@ -247,7 +247,7 @@ def _process_document_chunks(document_id: str) -> list:
         raise ValueError("No file found for document_id")
 
     ext = file_path.suffix.lower()
-    if ext == ".pd":
+    if ext == ".pdf":
         chunks = document_chunker.chunk_pdf(str(file_path), document_id)
     elif ext == ".docx":
         chunks = document_chunker.chunk_docx(str(file_path), document_id)
@@ -1358,7 +1358,7 @@ def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
 
 def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
     """Extract text from PDF or DOCX file."""
-    if file_path.suffix.lower() == ".pd":
+    if file_path.suffix.lower() == ".pdf":
         # Use PyMuPDF (fitz) instead of document_extractor for consistency
         try:
             import fitz
