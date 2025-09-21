@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from services.contextual_content_categorizer import ContextualContentCategorizer
 from services.intelligent_chunk_accumulator import CategoryAwareContentStorage, IntelligentChunkAccumulator
+from services.smart_metadata_extractor import SmartMetadataExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -28,34 +29,41 @@ class CompleteDocumentProcessor:
         self.categorizer = ContextualContentCategorizer()
         self.storage = CategoryAwareContentStorage()
         self.accumulator = IntelligentChunkAccumulator(self.storage)
+        self.metadata_extractor = SmartMetadataExtractor()
         
     def process_document(self, pdf_path: str, document_id: str) -> Dict[str, Any]:
         """
         Complete document processing pipeline
         
-        Phase 1: Tag everything with Category → Topic → Requirement Type
-        Phase 2: Store with preserved page/paragraph/cross-reference metadata  
-        Phase 3: Ready for intelligent accumulation
+        Phase 1: Smart Metadata Extraction (Company Info, Financial Statements)
+        Phase 2: Contextual Categorization with Extended Context
+        Phase 3: Store with preserved page/paragraph/cross-reference metadata
         """
         logger.info(f"🚀 DOCUMENT PROCESSOR STEP 1: Starting complete document processing for: {pdf_path}")
         
         try:
-            # Phase 1: Contextual Categorization with Extended Context
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 2: Starting Phase 1 - Contextual categorization")
-            print("Phase 1: Categorizing content with extended context...")
+            # Phase 1: Smart Metadata Extraction
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 2: Starting Phase 1 - Smart metadata extraction")
+            print("Phase 1: Extracting company information and financial statement metadata...")
+            metadata_result = self.metadata_extractor.extract_metadata(pdf_path)
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Metadata extracted - Company: {metadata_result.get('company_name', 'Unknown')}")
+            
+            # Phase 2: Contextual Categorization with Extended Context
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 3: Starting Phase 2 - Contextual categorization")
+            print("Phase 2: Categorizing content with extended context...")
             categorized_content = self.categorizer.categorize_document_content(pdf_path)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Categorized {len(categorized_content)} content pieces")
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 3 COMPLETE: Categorized {len(categorized_content)} content pieces")
             
-            # Phase 2: Store with Category Tags and Citation Metadata
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 3: Starting Phase 2 - Storage with category tags")
-            print("Phase 2: Storing categorized content with citation metadata...")
+            # Phase 3: Store with Category Tags and Citation Metadata
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 4: Starting Phase 3 - Storage with category tags")
+            print("Phase 3: Storing categorized content with citation metadata...")
             self.storage.store_categorized_content(categorized_content, document_id)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 3 COMPLETE: Content stored with category-aware metadata")
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 4 COMPLETE: Content stored with category-aware metadata")
             
-            # Generate processing summary
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 4: Generating processing summary")
-            summary = self._generate_processing_summary(categorized_content, document_id)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 4 COMPLETE: Summary generated with {summary.get('total_content_pieces', 0)} pieces")
+            # Generate processing summary with metadata
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 5: Generating processing summary")
+            summary = self._generate_processing_summary(categorized_content, document_id, metadata_result)
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 5 COMPLETE: Summary generated with {summary.get('total_content_pieces', 0)} pieces")
             
             logger.info(f"✅ DOCUMENT PROCESSOR COMPLETE: All phases successful for document {document_id}")
             return summary
@@ -104,9 +112,10 @@ class CompleteDocumentProcessor:
     def _generate_processing_summary(
         self, 
         categorized_content: List[Dict[str, Any]], 
-        document_id: str
+        document_id: str,
+        metadata_result: Dict[str, Any] = None
     ) -> Dict[str, Any]:
-        """Generate summary of document processing results"""
+        """Generate summary of document processing results with metadata"""
         
         # Category distribution
         categories = {}
@@ -126,7 +135,8 @@ class CompleteDocumentProcessor:
         total_cross_refs = sum(len(piece['cross_references']) for piece in categorized_content)
         total_note_refs = sum(len(piece['note_numbers']) for piece in categorized_content)
         
-        return {
+        # Include extracted metadata
+        summary = {
             'status': 'success',
             'document_id': document_id,
             'total_content_pieces': len(categorized_content),
@@ -140,6 +150,12 @@ class CompleteDocumentProcessor:
             },
             'avg_confidence': sum(piece['confidence'] for piece in categorized_content) / len(categorized_content)
         }
+        
+        # Add extracted metadata if available
+        if metadata_result:
+            summary['extracted_metadata'] = metadata_result
+            
+        return summary
     
     def _format_compliance_answer(
         self, 

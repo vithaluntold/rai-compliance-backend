@@ -338,6 +338,9 @@ class IntelligentChunkAccumulator:
         Retrieve content that matches question categories from storage
         """
         with sqlite3.connect(self.storage.db_path) as conn:
+            # Enable row factory for dict-like access
+            conn.row_factory = sqlite3.Row
+            
             # Primary match: exact category and topic
             primary_query = """
                 SELECT * FROM categorized_content 
