@@ -1925,8 +1925,7 @@ async def select_processing_mode(
             results["status"] = "PROCESSING"
             results["metadata_extraction"] = "PROCESSING"
             results["message"] = (
-                f"Processing mode '{
-                    request.processing_mode}' selected, starting metadata extraction"
+                f"Processing mode '{request.processing_mode}' selected, starting metadata extraction"
             )
 
             # Save updated results
