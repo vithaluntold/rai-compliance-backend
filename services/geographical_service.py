@@ -60,7 +60,7 @@ class GeographicalDetectionService:
                 ),
             }
             self.country_names.add(country.name.lower())  # type: ignore[attr-defined]
-            if hasattr(country, "official_nameff"):
+            if hasattr(country, "official_name"):
                 self.country_names.add(
                     country.official_name.lower()  # type: ignore[attr-defined]
                 )
@@ -93,7 +93,7 @@ class GeographicalDetectionService:
 
         # Regional groupings
         self.regions = {
-            "menaff": {"name": "Middle East and North Africa",
+            "mena": {"name": "Middle East and North Africa",
                 "countries": [
                     "Algeria",
                     "Bahrain",
@@ -115,7 +115,7 @@ class GeographicalDetectionService:
                     "United Arab Emirates",
                     "Yemen",
                 ]},
-            "apacff": {"name": "Asia-Pacific",
+            "apac": {"name": "Asia-Pacific",
                 "countries": [
                     "Australia",
                     "Bangladesh",
@@ -143,7 +143,7 @@ class GeographicalDetectionService:
                     "Thailand",
                     "Vietnam",
                 ]},
-            "euff": {"name": "European Union",
+            "eu": {"name": "European Union",
                 "countries": [
                     "Austria",
                     "Belgium",
@@ -173,7 +173,7 @@ class GeographicalDetectionService:
                     "Spain",
                     "Sweden",
                 ]},
-            "europeff": {"name": "Europe",
+            "europe": {"name": "Europe",
                 "countries": [
                     "Albania",
                     "Andorra",
@@ -219,9 +219,9 @@ class GeographicalDetectionService:
                     "United Kingdom",
                     "Vatican City",
                 ]},
-            "naftaff": {"name": "North American Free Trade Agreement",
+            "nafta": {"name": "North American Free Trade Agreement",
                 "countries": ["United States", "Canada", "Mexico"]},
-            "gccff": {"name": "Gulf Cooperation Council",
+            "gcc": {"name": "Gulf Cooperation Council",
                 "countries": [
                     "Bahrain",
                     "Kuwait",
@@ -230,7 +230,7 @@ class GeographicalDetectionService:
                     "Saudi Arabia",
                     "United Arab Emirates",
                 ]},
-            "aseanff": {"name": "Association of Southeast Asian Nations",
+            "asean": {"name": "Association of Southeast Asian Nations",
                 "countries": [
                     "Brunei",
                     "Cambodia",
