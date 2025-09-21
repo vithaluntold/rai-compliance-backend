@@ -49,7 +49,7 @@ def generate_session_id() -> str:
 
 def get_session_file_path(session_id: str) -> Path:
     """Get the file path for a session"""
-    return SESSIONS_DIR / "{session_id}.json"
+    return SESSIONS_DIR / f"{session_id}.json"
 
 def save_session_to_file(session_id: str, session_data: Dict[str, Any]) -> None:
     """Save session data to file"""
@@ -67,7 +67,7 @@ def load_session_from_file(session_id: str) -> Optional[Dict[str, Any]]:
         with open(session_file, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        print("Error loading session {session_id}: {e}")
+        print(f"Error loading session {session_id}: {e}")
         return None
 
 @router.post("/create", response_model=SessionResponse)

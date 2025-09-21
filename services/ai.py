@@ -530,8 +530,11 @@ class AIService:
                     f"Using enhanced evidence from: {evidence_quality.get('evidence_source', 'Unknown')}"
                 )
             else:
-                # Intelligently combine chunks while respecting size limits
-                context = self._combine_chunks_with_limit(relevant_chunks, max_length=3000)
+                # Combine chunks into context text
+                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
+                # Truncate if too long to prevent API errors
+                if len(context) > 3000:
+                    context = context[:3000] + "\n[Context truncated due to length...]"
                 logger.info(f"Using standard vector search evidence (combined length: {len(context)} chars)")
 
             # Construct the prompt for the AI using the prompts library
@@ -1324,6 +1327,42 @@ class AIService:
                     "error": str(e)
                 }
             }
+
+    def _combine_chunks_with_limit(self, chunks: List[str], max_tokens: int = 3000) -> str:
+        """
+        Combine text chunks while respecting token limits.
+        
+        Args:
+            chunks: List of text chunks to combine
+            max_tokens: Maximum token limit (approximate, using character count * 0.25)
+            
+        Returns:
+            Combined text within token limits
+        """
+        if not chunks:
+            return ""
+        
+        # Rough estimation: 1 token ≈ 4 characters
+        max_chars = max_tokens * 4
+        
+        combined = ""
+        current_length = 0
+        
+        for chunk in chunks:
+            chunk_length = len(chunk)
+            # Add separator if not first chunk
+            separator = "\n\n" if combined else ""
+            separator_length = len(separator)
+            
+            # Check if adding this chunk would exceed the limit
+            if current_length + separator_length + chunk_length > max_chars:
+                break
+                
+            combined += separator + chunk
+            current_length += separator_length + chunk_length
+        
+        logger.debug(f"Combined {len(chunks)} chunks into {current_length} characters (estimated {current_length // 4} tokens)")
+        return combined
 
 
 # Global AI service instance
