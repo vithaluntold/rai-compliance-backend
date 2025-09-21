@@ -31,7 +31,7 @@ class CompleteDocumentProcessor:
         self.accumulator = IntelligentChunkAccumulator(self.storage)
         self.metadata_extractor = SmartMetadataExtractor()
         
-    def process_document(self, pdf_path: str, document_id: str) -> Dict[str, Any]:
+    async def process_document(self, pdf_path: str, document_id: str) -> Dict[str, Any]:
         """
         Complete document processing pipeline
         
@@ -45,8 +45,8 @@ class CompleteDocumentProcessor:
             # Phase 1: Smart Metadata Extraction
             logger.info(f"🚀 DOCUMENT PROCESSOR STEP 2: Starting Phase 1 - Smart metadata extraction")
             print("Phase 1: Extracting company information and financial statement metadata...")
-            metadata_result = self.metadata_extractor.extract_metadata(pdf_path)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Metadata extracted - Company: {metadata_result.get('company_name', 'Unknown')}")
+            metadata_result = await self.metadata_extractor.extract_metadata_optimized(pdf_path, document_id)
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Metadata extracted - Company: {metadata_result.get('company_name', {}).get('value', 'Unknown')}")
             
             # Phase 2: Contextual Categorization with Extended Context
             logger.info(f"🚀 DOCUMENT PROCESSOR STEP 3: Starting Phase 2 - Contextual categorization")

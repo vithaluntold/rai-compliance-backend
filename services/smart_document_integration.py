@@ -66,7 +66,7 @@ async def process_upload_tasks_smart(
         logger.info(f"🧠 STEP 3: Starting smart categorization for {document_id}")
         processor = CompleteDocumentProcessor()
         
-        processing_result = processor.process_document(str(upload_path), document_id)
+        processing_result = await processor.process_document(str(upload_path), document_id)
         
         if processing_result['status'] != 'success':
             logger.error(f"❌ STEP 3 FAILED: Smart processing failed - {processing_result.get('message', 'Unknown error')}")
