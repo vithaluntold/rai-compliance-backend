@@ -121,15 +121,15 @@ AZURE_OPENAI_API_KEY = os.getenv(
 )
 AZURE_OPENAI_ENDPOINT = os.getenv(
     "AZURE_OPENAI_ENDPOINT",
-    "https://vitha - maxu94mf - eastus2.cognitiveservices.azure.com/",
+    "https://vitha-maxu94mf-eastus2.cognitiveservices.azure.com/",
 )
-AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model - router")
-AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025 - 01 - 01 - preview")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv(
-    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text - embedding - ada - 002"
+    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002"
 )
 AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
-    "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023 - 05 - 15"
+    "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023-05-15"
 )
 
 # Initialize smart metadata extractor
