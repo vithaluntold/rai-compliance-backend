@@ -31,6 +31,8 @@ app.add_middleware(
         "https://complianceengine-*.vercel.app",
         "https://compliance-engine.vercel.app",
         "https://compliance-engine-*.vercel.app",
+        "https://rai-compliance-frontend.onrender.com",
+        "https://rai-compliance-frontend-*.onrender.com",
         "http://localhost:3000",
         "*"
     ],

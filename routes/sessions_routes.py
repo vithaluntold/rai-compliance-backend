@@ -4,6 +4,7 @@ Handles creating, saving, loading, and managing analysis sessions
 """
 
 import json
+import uuid
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -45,7 +46,9 @@ SESSIONS_DIR.mkdir(exist_ok=True)
 
 def generate_session_id() -> str:
     """Generate a unique session ID"""
-    return "session_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{str(uuid.uuid4())[:8]}"
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    unique_id = str(uuid.uuid4())[:8]
+    return f"session_{timestamp}_{unique_id}"
 
 def get_session_file_path(session_id: str) -> Path:
     """Get the file path for a session"""
