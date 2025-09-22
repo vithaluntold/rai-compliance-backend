@@ -205,3 +205,11 @@ class DocumentChunker:
 
 # Global instance
 document_chunker = DocumentChunker(min_chunk_length=30)
+
+
+def extract_text_from_pdf(pdf_path: str) -> str:
+    """
+    Standalone function to extract raw text from PDF for metadata processing.
+    Uses the global document_chunker instance.
+    """
+    return document_chunker.extract_text_from_pdf(pdf_path)
