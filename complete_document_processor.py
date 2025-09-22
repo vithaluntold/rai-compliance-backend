@@ -35,35 +35,57 @@ class CompleteDocumentProcessor:
         """
         Complete document processing pipeline
         
-        Phase 1: Smart Metadata Extraction (Company Info, Financial Statements)
-        Phase 2: Contextual Categorization with Extended Context
-        Phase 3: Store with preserved page/paragraph/cross-reference metadata
+        Phase 1: Document Parsing and Chunking (Extract all content)
+        Phase 2: Smart Metadata Extraction (Company Info, Financial Statements)  
+        Phase 3: Contextual Categorization with Extended Context
+        Phase 4: Store with preserved page/paragraph/cross-reference metadata
         """
         logger.info(f"🚀 DOCUMENT PROCESSOR STEP 1: Starting complete document processing for: {pdf_path}")
         
         try:
-            # Phase 1: Smart Metadata Extraction
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 2: Starting Phase 1 - Smart metadata extraction")
-            print("Phase 1: Extracting company information and financial statement metadata...")
-            metadata_result = await self.metadata_extractor.extract_metadata_optimized(pdf_path, document_id)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Metadata extracted - Company: {metadata_result.get('company_name', {}).get('value', 'Unknown')}")
+            # Phase 1: Document Parsing and Chunking
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 2: Starting Phase 1 - Document parsing and chunking")
+            print("Phase 1: Parsing document and extracting all content...")
             
-            # Phase 2: Contextual Categorization with Extended Context
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 3: Starting Phase 2 - Contextual categorization")
-            print("Phase 2: Categorizing content with extended context...")
+            # Extract full text content from PDF
+            from services.document_chunker import extract_text_from_pdf
+            pdf_text = extract_text_from_pdf(pdf_path)
+            
+            if not pdf_text:
+                raise Exception("Failed to extract text content from PDF")
+                
+            logger.info(f"📄 Extracted {len(pdf_text)} characters from PDF")
+            
+            # Convert to chunks format for both metadata and categorization
+            text_chunks = [pdf_text]
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 2 COMPLETE: Document parsed - {len(pdf_text)} characters extracted")
+            
+            # Phase 2: Smart Metadata Extraction  
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 3: Starting Phase 2 - Smart metadata extraction")
+            print("Phase 2: Extracting company information and financial statement metadata...")
+            
+            # Call metadata extractor with the parsed content
+            metadata_result = await self.metadata_extractor.extract_metadata_optimized(document_id, text_chunks)
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 3 COMPLETE: Metadata extracted - Company: {metadata_result.get('company_name', {}).get('value', 'Unknown')}")
+            
+            # Phase 3: Contextual Categorization with Extended Context
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 4: Starting Phase 3 - Contextual categorization")
+            print("Phase 3: Categorizing content with extended context...")
+            
+            # Use the same PDF path for categorization (categorizer handles its own chunking for detailed analysis)
             categorized_content = self.categorizer.categorize_document_content(pdf_path)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 3 COMPLETE: Categorized {len(categorized_content)} content pieces")
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 4 COMPLETE: Categorized {len(categorized_content)} content pieces")
             
-            # Phase 3: Store with Category Tags and Citation Metadata
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 4: Starting Phase 3 - Storage with category tags")
-            print("Phase 3: Storing categorized content with citation metadata...")
+            # Phase 4: Store with Category Tags and Citation Metadata
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 5: Starting Phase 4 - Storage with category tags")
+            print("Phase 4: Storing categorized content with citation metadata...")
             self.storage.store_categorized_content(categorized_content, document_id)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 4 COMPLETE: Content stored with category-aware metadata")
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 5 COMPLETE: Content stored with category-aware metadata")
             
             # Generate processing summary with metadata
-            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 5: Generating processing summary")
+            logger.info(f"🚀 DOCUMENT PROCESSOR STEP 6: Generating processing summary")
             summary = self._generate_processing_summary(categorized_content, document_id, metadata_result)
-            logger.info(f"✅ DOCUMENT PROCESSOR STEP 5 COMPLETE: Summary generated with {summary.get('total_content_pieces', 0)} pieces")
+            logger.info(f"✅ DOCUMENT PROCESSOR STEP 6 COMPLETE: Summary generated with {summary.get('total_content_pieces', 0)} pieces")
             
             logger.info(f"✅ DOCUMENT PROCESSOR COMPLETE: All phases successful for document {document_id}")
             return summary

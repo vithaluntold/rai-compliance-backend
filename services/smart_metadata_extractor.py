@@ -809,17 +809,18 @@ class SmartMetadataExtractor:
         return {
             "system": (
                 "You are an expert at extracting company names from financial documents. "
-                "Your goal is to find the EXACT legal company name, not descriptions or activities. "
-                "Look for the official registered name that would appear on legal documents."
+                "ONLY extract the EXACT legal company name if it is EXPLICITLY stated. "
+                "If no clear company name is found, respond with 'Not found'."
             ),
             "user": (
                 f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
                 "EXTRACT THE EXACT COMPANY NAME:\n"
-                "- Look for the official legal entity name (usually in headers, titles, or signature sections)\n"
-                "- Include legal suffixes like PJSC, Ltd, LLC, Inc, Corporation\n"
-                "- Avoid descriptions like 'real estate company' or business activities\n"
-                "- If multiple companies mentioned, extract the main subject company\n\n"
-                "Return ONLY the exact company name, nothing else."
+                "- Look for the official legal entity name in headers, titles, or signature sections\n"
+                "- Include legal suffixes like PJSC, Ltd, LLC, Inc, Corporation if present\n"
+                "- ONLY extract names that are explicitly stated in the document\n"
+                "- DO NOT invent or assume any company names\n"
+                "- If no clear company name is found, respond with exactly: 'Not found'\n\n"
+                "Return ONLY the exact company name found in the document, or 'Not found'."
             )
         }
 
@@ -828,18 +829,18 @@ class SmartMetadataExtractor:
         return {
             "system": (
                 "You are an expert at analyzing business activities from financial documents. "
-                "Provide a DETAILED description of what the company actually does, not just a category. "
-                "Include specific products, services, and business operations."
+                "ONLY extract information that is EXPLICITLY stated in the document text provided. "
+                "If business activities are not clearly described, respond with 'Not found'."
             ),
             "user": (
                 f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
                 "EXTRACT DETAILED BUSINESS NATURE AND ACTIVITIES:\n"
-                "- Describe the main business activities and operations\n"
-                "- Include specific products or services offered\n"
-                "- Mention key business segments or divisions\n"
-                "- Include operational details like development, management, investment activities\n"
-                "- Be specific - instead of just 'Real Estate', describe what type of real estate activities\n\n"
-                "Provide a comprehensive description in 2 - 3 sentences that explains what this company actually does."
+                "- ONLY describe activities explicitly mentioned in the document\n"
+                "- Include specific products or services if stated\n"
+                "- Mention business segments if clearly described\n"
+                "- DO NOT invent or assume any business activities\n"
+                "- If no clear business description is found, respond with exactly: 'Not found'\n\n"
+                "Provide ONLY information found in the document, or 'Not found' if insufficient information."
             )
         }
 
@@ -848,19 +849,18 @@ class SmartMetadataExtractor:
         return {
             "system": (
                 "You are an expert at identifying operational geography from financial documents. "
-                "Find countries where the company has actual business operations, not just mentions. "
-                "Provide context about the nature of operations in each country."
+                "ONLY extract countries that are EXPLICITLY mentioned with operational context. "
+                "If no operational geography is clearly stated, respond with 'Not found'."
             ),
             "user": (
                 f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
                 "EXTRACT OPERATIONAL DEMOGRAPHICS WITH CONTEXT:\n"
-                "- Identify countries where the company has actual operations\n"
-                "- Look for subsidiary locations, revenue by geography, operational bases\n"
-                "- Include the context of operations (e.g., 'UAE: Real estate development and management')\n"
-                "- Exclude countries mentioned only for comparison or market reference\n"
-                "- Provide specific operational context for each country\n\n"
-                "Format: Country: [Operational Context]. Country: [Operational Context].\n"
-                "Example: 'United Arab Emirates: Primary real estate development and property management operations. Saudi Arabia: Investment property holdings and development projects.'"
+                "- ONLY identify countries explicitly mentioned in the document\n"
+                "- Look for actual subsidiary locations, revenue geography, operational bases\n"
+                "- Include context ONLY if explicitly stated in the document\n"
+                "- DO NOT invent or assume any countries or operations\n"
+                "- If no operational geography is found, respond with exactly: 'Not found'\n\n"
+                "Provide ONLY explicitly mentioned countries with their stated operational context, or 'Not found'."
             )
         }
 
