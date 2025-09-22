@@ -210,6 +210,21 @@ document_chunker = DocumentChunker(min_chunk_length=30)
 def extract_text_from_pdf(pdf_path: str) -> str:
     """
     Standalone function to extract raw text from PDF for metadata processing.
-    Uses the global document_chunker instance.
+    Uses the global document_chunker instance with fallback compatibility.
+    
+    Deployment: 2025-09-22 15:30 UTC - Added fallback for deployment sync issues
     """
-    return document_chunker.extract_text_from_pdf(pdf_path)
+    # Try to use the instance method if it exists
+    if hasattr(document_chunker, 'extract_text_from_pdf'):
+        return document_chunker.extract_text_from_pdf(pdf_path)
+    
+    # Fallback: use chunk_pdf and extract text from chunks
+    logger.info(f"[FALLBACK] Using chunk_pdf method to extract text from {pdf_path}")
+    chunks = document_chunker.chunk_pdf(pdf_path)
+    full_text = ""
+    for chunk in chunks:
+        if chunk.get('text'):
+            full_text += chunk['text'] + "\n"
+    
+    logger.info(f"[FALLBACK] Extracted {len(full_text)} characters using chunk_pdf fallback")
+    return full_text.strip()
