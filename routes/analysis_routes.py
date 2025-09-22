@@ -686,50 +686,48 @@ async def upload_document(
             processing_mode = "smart"
 
         logger.info(f"📤 UPLOAD STEP 4: Starting background processing for document {document_id}")
-        # STRICT MODE: Smart categorization ONLY - no fallbacks
+        # SIMPLE WORKFLOW: Data extraction ONLY - separate triggers for metadata/checklist
         try:
-            logger.info(f"🔧 UPLOAD STEP 5: Importing smart processing system")
-            # Import smart processing - fail if not available
-            from services.smart_document_integration import process_upload_tasks_smart
-            logger.info(f"✅ UPLOAD STEP 5 COMPLETE: Smart processing system imported successfully")
+            logger.info(f"🔧 UPLOAD STEP 5: Importing simple document processing system")
+            # Import simple processing - extracts data only
+            from services.simple_document_processing import process_upload_simple_extraction
+            logger.info(f"✅ UPLOAD STEP 5 COMPLETE: Simple processing system imported successfully")
             
-            logger.info(f"🚀 UPLOAD STEP 6: Starting smart categorization background task")
-            # Use ONLY smart processing - no fallback options
+            logger.info(f"🚀 UPLOAD STEP 6: Starting simple data extraction background task")
+            # Use simple processing - data extraction only
             background_tasks.add_task(
-                process_upload_tasks_smart,
+                process_upload_simple_extraction,
                 document_id,
-                ai_svc,
-                "",  # text parameter
-                processing_mode,
+                str(upload_path)
             )
             
             response = {
                 "status": "processing",
                 "document_id": document_id,
-                "processing_mode": "smart_categorization_strict",
-                "message": f"Document uploaded with STRICT smart categorization mode - SUCCESS or FAILURE only",
+                "processing_mode": "simple_data_extraction",
+                "message": f"Document uploaded - extracting data for staged processing workflow",
             }
             logger.info(f"✅ UPLOAD STEP 6 COMPLETE: Background task started for document {document_id}")
-            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Smart categorization initiated for {document_id}")
+            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Simple data extraction initiated for {document_id}")
             logger.info(f"📋 Response: {json.dumps(response)}")
             return response
         except ImportError as import_error:
-            logger.error(f"❌ UPLOAD STEP 5 FAILED: Smart categorization system unavailable: {import_error}")
+            logger.error(f"❌ UPLOAD STEP 5 FAILED: Simple processing system unavailable: {import_error}")
             response = {
                 "status": "error",
-                "error": "Smart categorization system unavailable",
-                "message": f"STRICT MODE: Smart categorization system is required but unavailable: {str(import_error)}",
+                "error": "Simple processing system unavailable",
+                "message": f"Data extraction system is required but unavailable: {str(import_error)}",
             }
-            logger.error(f"🚫 UPLOAD FAILED: Returning STRICT MODE failure response: {json.dumps(response)}")
+            logger.error(f"🚫 UPLOAD FAILED: Returning simple processing failure response: {json.dumps(response)}")
             return response
         except Exception as _e:
-            logger.error(f"❌ UPLOAD STEP 6 FAILED: Smart processing failed to start: {str(_e)}")
+            logger.error(f"❌ UPLOAD STEP 6 FAILED: Simple processing failed to start: {str(_e)}")
             response = {
                 "status": "error",
-                "error": "Smart processing failed",
-                "message": f"STRICT MODE: Smart categorization failed to start - no fallback available: {str(_e)}",
+                "error": "Simple processing failed",
+                "message": f"Data extraction failed to start: {str(_e)}",
             }
-            logger.error(f"Returning STRICT MODE error response: {json.dumps(response)}")
+            logger.error(f"Returning simple processing error response: {json.dumps(response)}")
             return response
 
     except Exception as _e:
@@ -2001,6 +1999,102 @@ async def select_processing_mode(
                 "error": "Server error",
                 "detail": f"Error selecting processing mode: {str(_e)}",
             },
+        )
+
+
+@router.post("/documents/{document_id}/start-metadata-extraction")
+async def start_metadata_extraction(
+    document_id: str,
+    background_tasks: BackgroundTasks
+) -> JSONResponse:
+    """
+    Trigger metadata extraction using pre-extracted document data.
+    This endpoint is called after upload completion to start metadata processing.
+    """
+    try:
+        logger.info(f"🧠 Starting metadata extraction for document {document_id}")
+        
+        # Import and trigger metadata extraction
+        from services.simple_document_processing import trigger_metadata_extraction
+        
+        # Run metadata extraction in background
+        background_tasks.add_task(trigger_metadata_extraction, document_id)
+        
+        response = {
+            "status": "processing",
+            "document_id": document_id,
+            "stage": "metadata_extraction",
+            "message": "Metadata extraction started using pre-extracted data"
+        }
+        
+        logger.info(f"✅ Metadata extraction background task started for {document_id}")
+        return JSONResponse(status_code=200, content=response)
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to start metadata extraction for {document_id}: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "error": "Failed to start metadata extraction",
+                "detail": str(e)
+            }
+        )
+
+
+@router.post("/documents/{document_id}/start-checklist-processing")
+async def start_checklist_processing(
+    document_id: str,
+    request: Dict[str, Any],
+    background_tasks: BackgroundTasks
+) -> JSONResponse:
+    """
+    Trigger checklist processing using pre-extracted document data.
+    This endpoint is called after user confirms framework and standards.
+    """
+    try:
+        framework = request.get("framework")
+        standards = request.get("standards", [])
+        
+        if not framework:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "status": "error",
+                    "error": "Framework required",
+                    "detail": "Framework must be specified for checklist processing"
+                }
+            )
+        
+        logger.info(f"📋 Starting checklist processing for document {document_id}, framework: {framework}")
+        
+        # Import and trigger checklist processing
+        from services.simple_document_processing import trigger_checklist_processing
+        
+        # Run checklist processing in background
+        background_tasks.add_task(trigger_checklist_processing, document_id, framework, standards)
+        
+        response = {
+            "status": "processing",
+            "document_id": document_id,
+            "stage": "checklist_processing",
+            "framework": framework,
+            "standards": standards,
+            "message": "Checklist processing started using pre-extracted data"
+        }
+        
+        logger.info(f"✅ Checklist processing background task started for {document_id}")
+        return JSONResponse(status_code=200, content=response)
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to start checklist processing for {document_id}: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "error": "Failed to start checklist processing",
+                "detail": str(e)
+            }
         )
 
 
