@@ -444,7 +444,12 @@ class DocumentChunker:
                     extractor.extract_metadata_optimized(document_id, [metadata_chunk])
                 )
                 
-                # Save metadata extraction results
+                # Save metadata using staged storage for isolation
+                from services.staged_storage import StagedStorageManager
+                storage_manager = StagedStorageManager()
+                storage_manager.save_metadata(document_id, metadata_result)
+                
+                # BACKWARD COMPATIBILITY: Also save to legacy location
                 from pathlib import Path
                 analysis_results_dir = Path("analysis_results")
                 analysis_results_dir.mkdir(exist_ok=True)

@@ -863,46 +863,58 @@ class AIService:
             # Smart categorization mode doesn't use vector search, so no page information available
             # Page numbers will come from smart document integration instead
 
-            # Log the processed result
-            logger.info("✅ PROCESSED RESULT:")
-            logger.info(f"   Status: {result.get('status', 'N/A')}")
-            logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
-            explanation_text = result.get('explanation', 'N/A')
-            logger.info(
-                f"   Explanation: {explanation_text[:150]}{'...' if len(str(explanation_text)) > 150 else ''}"
-            )
-            evidence_count = len(result.get('evidence', [])) if isinstance(result.get('evidence'), list) else 1
-            logger.info(f"   Evidence Count: {evidence_count}")
-            if result.get("content_analysis"):
-                content_analysis_text = result.get('content_analysis', 'N/A')
+            # SAFE FIX: Check if result is a dictionary before logging (prevents 'str' object errors)
+            if isinstance(result, dict):
+                # Log the processed result
+                logger.info("✅ PROCESSED RESULT:")
+                logger.info(f"   Status: {result.get('status', 'N/A')}")
+                logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
+                explanation_text = result.get('explanation', 'N/A')
                 logger.info(
-                    f"   Content Analysis: {content_analysis_text[:100]}"
-                    f"{'...' if len(str(content_analysis_text)) > 100 else ''}"
+                    f"   Explanation: {explanation_text[:150]}{'...' if len(str(explanation_text)) > 150 else ''}"
                 )
-            if result.get("disclosure_recommendations"):
-                logger.info(
-                    f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
-                )
-            if result.get("source_pages"):
-                logger.info(f"   Source Pages: {result.get('source_pages')}")
-            if result.get("document_sources"):
-                source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
-                logger.info(f"   Document Sources: {', '.join(source_info)}")
-            if result.get("document_extracts"):
-                extract_count = len(result.get('document_extracts', []))
-                avg_score = (
-                    sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count
-                    if extract_count > 0 else 0
-                )
-                logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
-            if result.get("status") == "NO" and result.get("suggestion"):
-                suggestion_text = result.get('suggestion', 'N/A')
-                logger.info(
-                    f"   Suggestion: {suggestion_text[:100]}{'...' if len(str(suggestion_text)) > 100 else ''}"
-                )
-            if enhanced_evidence:
-                quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
-                logger.info(f"   Enhanced Analysis: Quality Score {quality_score}/100")
+                evidence_count = len(result.get('evidence', [])) if isinstance(result.get('evidence'), list) else 1
+                logger.info(f"   Evidence Count: {evidence_count}")
+                if result.get("content_analysis"):
+                    content_analysis_text = result.get('content_analysis', 'N/A')
+                    logger.info(
+                        f"   Content Analysis: {content_analysis_text[:100]}"
+                        f"{'...' if len(str(content_analysis_text)) > 100 else ''}"
+                    )
+                if result.get("disclosure_recommendations"):
+                    logger.info(
+                        f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
+                    )
+                if result.get("source_pages"):
+                    logger.info(f"   Source Pages: {result.get('source_pages')}")
+                if result.get("document_sources"):
+                    source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
+                    logger.info(f"   Document Sources: {', '.join(source_info)}")
+            else:
+                # SAFE FIX: Log basic info if result is not a dict
+                logger.warning(f"⚠️ Result is not a dictionary (type: {type(result)}), basic logging only")
+                logger.info("✅ PROCESSED RESULT:")
+                logger.info(f"   Raw result: {str(result)[:200]}{'...' if len(str(result)) > 200 else ''}")
+            
+            # Continue with document extracts check (only if result is dict)
+            if isinstance(result, dict):
+                if result.get("document_extracts"):
+                    extract_count = len(result.get('document_extracts', []))
+                    avg_score = (
+                        sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count
+                        if extract_count > 0 else 0
+                    )
+                    logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
+                
+                if result.get("status") == "NO" and result.get("suggestion"):
+                    suggestion_text = result.get('suggestion', 'N/A')
+                    logger.info(
+                        f"   Suggestion: {suggestion_text[:100]}{'...' if len(str(suggestion_text)) > 100 else ''}"
+                    )
+                if enhanced_evidence:
+                    quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
+                    logger.info(f"   Enhanced Analysis: Quality Score {quality_score}/100")
+            
             logger.info("=" * 80)
 
             return result

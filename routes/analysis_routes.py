@@ -18,6 +18,7 @@ from services.ai import AIService, get_ai_service
 from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
 from services.document_chunker import document_chunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
+from services.staged_storage import staged_storage
 
 
 def generate_document_id() -> str:
@@ -1632,55 +1633,70 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             completion_flag_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.metadata_completed")
             if os.path.exists(completion_flag_path):
                 metadata_extraction = "COMPLETED"
-                # Load the actual metadata from the metadata file
-                metadata_file_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}_metadata.json")
-                if os.path.exists(metadata_file_path):
-                    try:
-                        with open(metadata_file_path, 'r', encoding='utf-8') as f:
-                            extracted_metadata = json.load(f)
-                        
-                        # Transform metadata to frontend format with proper field mapping
-                        frontend_metadata = {
-                            "company_name": "",
-                            "nature_of_business": "", 
-                            "operational_demographics": "",
-                            "financial_statements_type": ""
-                        }
-                        
-                        # Extract values from confidence structure and map to frontend fields
-                        for key, metadata_obj in extracted_metadata.items():
-                            if key == "optimization_metrics":
-                                continue  # Skip metrics
-                                
-                            if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
-                                value = metadata_obj['value']
-                            else:
-                                value = metadata_obj
+                
+                # Try to load metadata from staged storage first, fallback to legacy
+                from services.staged_storage import StagedStorageManager
+                storage_manager = StagedStorageManager()
+                staged_metadata = storage_manager.get_metadata(document_id)
+                
+                # Extract actual metadata from staged storage format
+                extracted_metadata = None
+                if staged_metadata:
+                    # Handle staged storage wrapper format
+                    extracted_metadata = staged_metadata.get('data', staged_metadata)
+                
+                if not extracted_metadata:
+                    # FALLBACK: Load from legacy location
+                    metadata_file_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}_metadata.json")
+                    if os.path.exists(metadata_file_path):
+                        try:
+                            with open(metadata_file_path, 'r', encoding='utf-8') as f:
+                                extracted_metadata = json.load(f)
+                        except Exception as e:
+                            logger.error(f"[POLLING FIX] Failed to load legacy metadata file: {e}")
+                
+                if extracted_metadata:
+                    # Transform metadata to frontend format with proper field mapping
+                    frontend_metadata = {
+                        "company_name": "",
+                        "nature_of_business": "", 
+                        "operational_demographics": "",
+                        "financial_statements_type": ""
+                    }
+                    
+                    # Extract values from confidence structure and map to frontend fields
+                    for key, metadata_obj in extracted_metadata.items():
+                        if key == "optimization_metrics":
+                            continue  # Skip metrics
                             
-                            # Map backend fields to frontend fields with fallbacks
-                            if key in ["company_name", "companyName"]:
-                                if value and value != "":
-                                    frontend_metadata["company_name"] = value
-                            elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
-                                if value and value != "":
-                                    frontend_metadata["nature_of_business"] = value
-                            elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
-                                if value and value != "":
-                                    frontend_metadata["operational_demographics"] = value
-                            elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
-                                if value and value != "":
-                                    frontend_metadata["financial_statements_type"] = value
-                        
-                        # Only update if we have actual extracted values
-                        has_extracted_data = any(v for v in frontend_metadata.values() if v)
-                        if has_extracted_data:
-                            results["metadata"] = frontend_metadata
-                            logger.info(f"[POLLING FIX] Successfully loaded metadata for {document_id}")
+                        if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
+                            value = metadata_obj['value']
                         else:
-                            logger.warning(f"[POLLING FIX] No valid metadata extracted for {document_id}")
-                            
-                    except Exception as e:
-                        logger.error(f"[POLLING FIX] Failed to load metadata file: {e}")
+                            value = metadata_obj
+                        
+                        # Map backend fields to frontend fields with fallbacks
+                        if key in ["company_name", "companyName"]:
+                            if value and value != "":
+                                frontend_metadata["company_name"] = value
+                        elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
+                            if value and value != "":
+                                frontend_metadata["nature_of_business"] = value
+                        elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
+                            if value and value != "":
+                                frontend_metadata["operational_demographics"] = value
+                        elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
+                            if value and value != "":
+                                frontend_metadata["financial_statements_type"] = value
+                    
+                    # Only update if we have actual extracted values
+                    has_extracted_data = any(v for v in frontend_metadata.values() if v)
+                    if has_extracted_data:
+                        results["metadata"] = frontend_metadata
+                        logger.info(f"[POLLING FIX] Successfully loaded metadata for {document_id}")
+                    else:
+                        logger.warning(f"[POLLING FIX] No valid metadata extracted for {document_id}")
+                else:
+                    logger.warning(f"[POLLING FIX] No metadata found for {document_id}")
                 
                 # Update the results file with the completed status
                 results["metadata_extraction"] = "COMPLETED"
@@ -2253,7 +2269,12 @@ async def start_metadata_extraction(
                 extractor = SmartMetadataExtractor()
                 metadata = await extractor.extract_metadata_optimized(document_id, chunks)
 
-                # Save results to CORRECT filename (consistent with document_chunker.py)
+                # Save metadata using staged storage for isolation
+                from services.staged_storage import StagedStorageManager
+                storage_manager = StagedStorageManager()
+                storage_manager.save_metadata(document_id, metadata)
+
+                # BACKWARD COMPATIBILITY: Also save to legacy location
                 metadata_file = f"analysis_results/{document_id}_metadata.json"
                 with open(metadata_file, 'w', encoding='utf-8') as f:
                     json.dump(metadata, f, indent=2, ensure_ascii=False)
