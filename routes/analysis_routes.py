@@ -1638,8 +1638,17 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                     try:
                         with open(metadata_file_path, 'r', encoding='utf-8') as f:
                             extracted_metadata = json.load(f)
-                        results["metadata"] = extracted_metadata
-                        logger.info(f"[POLLING FIX] Loaded extracted metadata for {document_id}")
+                        
+                        # Transform metadata to frontend format (extract values from confidence structure)
+                        frontend_metadata = {}
+                        for key, metadata_obj in extracted_metadata.items():
+                            if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
+                                frontend_metadata[key] = metadata_obj['value']
+                            else:
+                                frontend_metadata[key] = metadata_obj
+                        
+                        results["metadata"] = frontend_metadata
+                        logger.info(f"[POLLING FIX] Loaded and transformed extracted metadata for {document_id}: {frontend_metadata}")
                     except Exception as e:
                         logger.error(f"[POLLING FIX] Failed to load metadata file: {e}")
                 
