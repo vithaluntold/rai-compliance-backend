@@ -7,6 +7,8 @@ import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
+import random
+import string
 
 from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
@@ -16,7 +18,14 @@ from services.ai import AIService, get_ai_service
 from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
 from services.document_chunker import document_chunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
-from services.vector_store import generate_document_id, get_vector_store
+
+
+def generate_document_id() -> str:
+    """Generate a unique document ID without vector dependencies"""
+    timestamp = datetime.now().strftime("%d%m%Y")
+    random_part = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+    random_part2 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+    return f"RAI-{timestamp}-{random_part}-{random_part2}"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -103,9 +112,10 @@ BACKEND_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 UPLOADS_DIR = BACKEND_DIR / "uploads"
 ANALYSIS_RESULTS_DIR = BACKEND_DIR / "analysis_results"
 CHECKLIST_DATA_DIR = BACKEND_DIR / "checklist_data"
+VECTOR_INDICES_DIR = BACKEND_DIR / "vector_indices"
 
 # Create directories
-for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR]:
+for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR, VECTOR_INDICES_DIR]:
     directory.mkdir(parents=True, exist_ok=True)
     logger.info(f"Directory created / verified: {directory}")
 
@@ -139,12 +149,9 @@ smart_metadata_extractor = SmartMetadataExtractor()
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """Save analysis results to JSON file with defensive GeographicalEntity serialization."""
     try:
-        # Import GeographicalEntity for type checking
-        from services.geographical_service import GeographicalEntity
-        
         # Create a deep copy and ensure all GeographicalEntity objects are converted to dicts
         serializable_results = _ensure_json_serializable(results)
-        
+
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
             json.dump(serializable_results, f, indent=2, ensure_ascii=False)
@@ -157,7 +164,7 @@ def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
 def _ensure_json_serializable(obj: Any) -> Any:
     """Recursively ensure all objects are JSON serializable, converting GeographicalEntity objects to dicts."""
     from services.geographical_service import GeographicalEntity
-    
+
     if isinstance(obj, GeographicalEntity):
         # Convert GeographicalEntity to dictionary
         return obj.to_dict()
@@ -240,37 +247,57 @@ def _initialize_processing_results(
 
 def _process_document_chunks(document_id: str) -> list:
     """Process document chunks based on file type."""
-    logger.info(f"Starting document chunking for {document_id}")
+    logger.info(f"🚀 CHUNKING START: Starting document chunking for {document_id}")
     file_path = get_document_file_path(document_id)
     if not file_path:
-        logger.error(f"No file found for document_id: {document_id}")
+        logger.error(f"❌ CHUNKING ERROR: No file found for document_id: {document_id}")
         raise ValueError("No file found for document_id")
 
+    logger.info(f"📁 CHUNKING FILE: Found file at {file_path}")
     ext = file_path.suffix.lower()
+    logger.info(f"📄 CHUNKING EXT: File extension detected: {ext}")
+    
     if ext == ".pdf":
-        chunks = document_chunker.chunk_pdf(str(file_path), document_id)
+        logger.info(f"🔧 CHUNKING PDF: Calling document_chunker.chunk_pdf for {document_id}")
+        try:
+            chunks = document_chunker.chunk_pdf(str(file_path), document_id)
+            logger.info(f"✅ CHUNKING PDF SUCCESS: chunk_pdf returned {len(chunks) if chunks else 0} chunks")
+        except Exception as e:
+            logger.error(f"❌ CHUNKING PDF ERROR: chunk_pdf failed with error: {str(e)}")
+            logger.error(f"❌ CHUNKING PDF TRACEBACK: {traceback.format_exc()}")
+            raise
     elif ext == ".docx":
-        chunks = document_chunker.chunk_docx(str(file_path), document_id)
+        logger.info(f"🔧 CHUNKING DOCX: Calling document_chunker.chunk_docx for {document_id}")
+        try:
+            chunks = document_chunker.chunk_docx(str(file_path), document_id)
+            logger.info(f"✅ CHUNKING DOCX SUCCESS: chunk_docx returned {len(chunks) if chunks else 0} chunks")
+        except Exception as e:
+            logger.error(f"❌ CHUNKING DOCX ERROR: chunk_docx failed with error: {str(e)}")
+            logger.error(f"❌ CHUNKING DOCX TRACEBACK: {traceback.format_exc()}")
+            raise
     else:
+        logger.error(f"❌ CHUNKING ERROR: Unsupported file extension: {ext}")
         raise ValueError(f"Unsupported file extension: {ext}")
 
     if not chunks:
+        logger.error(f"❌ CHUNKING ERROR: No chunks generated from document {document_id}")
         raise ValueError("No chunks generated from document")
 
     logger.info(f"Generated {len(chunks)} chunks for document {document_id}")
     return chunks
 
 
-async def _create_vector_index(document_id: str, chunks: list) -> None:
-    """Index chunks in vector store."""
-    logger.info(f"Starting vector store indexing for document {document_id}")
-    vs_svc = get_vector_store()
-    if not vs_svc:
-        raise ValueError("Vector store service not initialized")
+def _save_chunks_directly(document_id: str, chunks: list) -> None:
+    """Save chunks directly to vector_indices directory without vector indexing."""
+    logger.info(f"Saving {len(chunks)} chunks for document {document_id}")
+    
+    # Save chunks to vector_indices directory for compatibility
+    chunks_file = VECTOR_INDICES_DIR / f"{document_id}_chunks.json"
+    with open(chunks_file, 'w', encoding='utf-8') as f:
+        json.dump(chunks, f, indent=2, ensure_ascii=False)
+    
+    logger.info(f"✅ Chunks saved to {chunks_file}")
 
-    index_created = await vs_svc.create_index(document_id, chunks)
-    if not index_created:
-        raise ValueError("Failed to create vector index")
 
     logger.info(f"Vector store indexing completed for document {document_id}")
 
@@ -552,17 +579,56 @@ async def process_upload_tasks(
         # Initialize processing with processing mode
         _initialize_processing_results(document_id, processing_mode)
 
-        # Process document chunks
+        # Create initial status file to indicate chunking has started
+        status_file = ANALYSIS_RESULTS_DIR / f"{document_id}_status.json"
+        initial_status = {
+            "document_id": document_id,
+            "chunking_status": "in_progress",
+            "metadata_extraction_status": "pending",
+            "chunking_started_at": datetime.now().isoformat()
+        }
+        with open(status_file, 'w', encoding='utf-8') as f:
+            json.dump(initial_status, f, indent=2, ensure_ascii=False)
+
+        # Process document chunks directly
         chunks = _process_document_chunks(document_id)
 
-        # Create vector index
-        await _create_vector_index(document_id, chunks)
+        # Update status to indicate chunking is complete and metadata extraction starting
+        chunking_complete_status = {
+            "document_id": document_id,
+            "chunking_status": "completed",
+            "metadata_extraction_status": "in_progress",
+            "chunking_started_at": initial_status["chunking_started_at"],
+            "chunking_completed_at": datetime.now().isoformat()
+        }
+        with open(status_file, 'w', encoding='utf-8') as f:
+            json.dump(chunking_complete_status, f, indent=2, ensure_ascii=False)
 
-        # Extract metadata
-        metadata_result = await _extract_document_metadata(document_id, chunks)
+        # Save chunks to analysis_results directory (no vector processing needed)
+        chunks_file = ANALYSIS_RESULTS_DIR / f"{document_id}_chunks.json"
+        with open(chunks_file, 'w', encoding='utf-8') as f:
+            json.dump(chunks, f, indent=2, ensure_ascii=False)
+        
+        logger.info(f"✅ Document chunking completed for {document_id}")
+        logger.info(f"📄 Saved {len(chunks)} chunks to {chunks_file}")
 
-        # Finalize results
-        _finalize_processing_results(document_id, metadata_result)
+        # Create basic results structure (metadata extraction will update this later)
+        basic_result = {
+            "status": "metadata_extraction_in_progress",
+            "document_id": document_id,
+            "chunks_count": len(chunks),
+            "processing_mode": processing_mode,
+            "completed_at": datetime.now().isoformat(),
+            "timestamp": datetime.now().isoformat(),
+            "metadata": {},
+            "sections": [],
+            "metadata_extraction": "IN_PROGRESS",
+            "compliance_analysis": "PENDING",
+            "message": "Document chunking completed. Metadata extraction in progress - poll /metadata-status for updates."
+        }
+
+        # Save results directly (skip finalize to avoid metadata transformation)
+        save_analysis_results(document_id, basic_result)
 
         # Create metadata completion lock file
         metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
@@ -652,12 +718,12 @@ async def upload_document(
             return response
 
         # Generate unique document ID
-        logger.info(f"🆔 UPLOAD STEP 2: Generating document ID")
+        logger.info("🆔 UPLOAD STEP 2: Generating document ID")
         document_id = generate_document_id()
         logger.info(f"✅ UPLOAD STEP 2 COMPLETE: Document ID generated: {document_id}")
 
         # Save uploaded file with original extension
-        logger.info(f"💾 UPLOAD STEP 3: Saving uploaded file to disk")
+        logger.info("💾 UPLOAD STEP 3: Saving uploaded file to disk")
         upload_ext = f".{ext}"
         upload_path = UPLOADS_DIR / f"{document_id}{upload_ext}"
         try:
@@ -686,48 +752,38 @@ async def upload_document(
             processing_mode = "smart"
 
         logger.info(f"📤 UPLOAD STEP 4: Starting background processing for document {document_id}")
-        # SIMPLE WORKFLOW: Data extraction ONLY - separate triggers for metadata/checklist
+        # FULL NLP WORKFLOW: Document chunking with intelligent categorization
         try:
-            logger.info(f"🔧 UPLOAD STEP 5: Importing simple document processing system")
-            # Import simple processing - extracts data only
-            from services.simple_document_processing import process_upload_simple_extraction
-            logger.info(f"✅ UPLOAD STEP 5 COMPLETE: Simple processing system imported successfully")
-            
-            logger.info(f"🚀 UPLOAD STEP 6: Starting simple data extraction background task")
-            # Use simple processing - data extraction only
+            logger.info("🔧 UPLOAD STEP 5: Importing full NLP document processing system")
+            # Import the complete NLP pipeline
             background_tasks.add_task(
-                process_upload_simple_extraction,
+                process_upload_tasks,
                 document_id,
-                str(upload_path)
+                ai_svc,
+                "",  # text parameter
+                processing_mode
             )
-            
+            logger.info("✅ UPLOAD STEP 5 COMPLETE: Full NLP processing system imported successfully")
+
             response = {
                 "status": "processing",
                 "document_id": document_id,
-                "processing_mode": "simple_data_extraction",
-                "message": f"Document uploaded - extracting data for staged processing workflow",
+                "processing_mode": processing_mode,
+                "message": "Document uploaded - processing with full NLP pipeline including "
+                          "chunking, categorization, and metadata extraction",
             }
-            logger.info(f"✅ UPLOAD STEP 6 COMPLETE: Background task started for document {document_id}")
-            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Simple data extraction initiated for {document_id}")
+            logger.info(f"✅ UPLOAD STEP 6 COMPLETE: Full NLP background task started for document {document_id}")
+            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Full NLP pipeline initiated for {document_id}")
             logger.info(f"📋 Response: {json.dumps(response)}")
             return response
-        except ImportError as import_error:
-            logger.error(f"❌ UPLOAD STEP 5 FAILED: Simple processing system unavailable: {import_error}")
-            response = {
-                "status": "error",
-                "error": "Simple processing system unavailable",
-                "message": f"Data extraction system is required but unavailable: {str(import_error)}",
-            }
-            logger.error(f"🚫 UPLOAD FAILED: Returning simple processing failure response: {json.dumps(response)}")
-            return response
         except Exception as _e:
-            logger.error(f"❌ UPLOAD STEP 6 FAILED: Simple processing failed to start: {str(_e)}")
+            logger.error(f"❌ UPLOAD STEP 5 FAILED: Full NLP processing failed to start: {str(_e)}")
             response = {
                 "status": "error",
-                "error": "Simple processing failed",
-                "message": f"Data extraction failed to start: {str(_e)}",
+                "error": "NLP processing failed",
+                "message": f"Full NLP pipeline failed to start: {str(_e)}",
             }
-            logger.error(f"Returning simple processing error response: {json.dumps(response)}")
+            logger.error(f"🚫 UPLOAD FAILED: Returning NLP processing failure response: {json.dumps(response)}")
             return response
 
     except Exception as _e:
@@ -946,9 +1002,11 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
         available_standards_list = "\\n".join([f"- {std} ({standards_map[std]})" for std in available_standards])
 
         system_prompt = (
-            "You are a financial standards recommendation AI. You MUST respond with valid JSON only - no text before or after the JSON.\\n\\n"
+            "You are a financial standards recommendation AI. You MUST respond with valid JSON only - "
+            "no text before or after the JSON.\\n\\n"
             "Your task: Analyze company profiles and return JSON with recommended accounting standards.\\n\\n"
-            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters).")
+            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. "
+            "No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters).")
 
         user_prompt = (
             f"Company: {company_name}\\n"
@@ -967,8 +1025,10 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             "Return JSON with this exact structure:\\n"
             "{\\n"
             '  "suggested_standards": [\\n'
-            '    {"standard_id": "IAS 1", "standard_title": "IAS 1 - Presentation of Financial Statements", "relevance_score": 0.95, "reasoning": "Financial statement presentation - mandatory"},\\n'
-            '    {"standard_id": "IAS 7", "standard_title": "IAS 7 - Statement of Cash Flows", "relevance_score": 0.95, "reasoning": "Cash flow statements - mandatory"}\\n'
+            '    {"standard_id": "IAS 1", "standard_title": "IAS 1 - Presentation of Financial Statements", '
+            '"relevance_score": 0.95, "reasoning": "Financial statement presentation - mandatory"},\\n'
+            '    {"standard_id": "IAS 7", "standard_title": "IAS 7 - Statement of Cash Flows", '
+            '"relevance_score": 0.95, "reasoning": "Cash flow statements - mandatory"}\\n'
             '  ],\\n'
             '  "priority_level": "high",\\n'
             '  "business_context": "Brief analysis summary"\\n'
@@ -1037,7 +1097,8 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             "framework": framework,
             "metadata_used": {
                 "company_name": company_name,
-                "nature_of_business": nature_of_business[:100] + "..." if len(nature_of_business) > 100 else nature_of_business,
+                "nature_of_business": (nature_of_business[:100] + "..."
+                                     if len(nature_of_business) > 100 else nature_of_business),
                 "operational_demographics": operational_demographics,
                 "financial_statements_type": financial_statements_type
             },
@@ -1420,7 +1481,7 @@ def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
 
 def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from chunk data."""
-    chunks_path = Path("vector_indices") / f"{document_id}_chunks.json"
+    chunks_path = ANALYSIS_RESULTS_DIR / f"{document_id}_chunks.json"
     if chunks_path.exists():
         with open(chunks_path, "r", encoding="utf-8") as f:
             chunks = json.load(f)
@@ -1567,10 +1628,10 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 status = "PROCESSING"
             metadata_extraction = results.get("metadata_extraction", "PENDING")
             compliance_analysis = results.get("compliance_analysis", "PENDING")
-            
+
             # Include smart categorization metadata if available
             smart_categorization = results.get("smart_categorization", {})
-            
+
             return {
                 "document_id": document_id,
                 "status": status,
@@ -1934,7 +1995,7 @@ async def select_processing_mode(
             background_tasks = BackgroundTasks()
             ai_svc = get_ai_service()
             background_tasks.add_task(
-                process_upload_tasks, 
+                process_upload_tasks,
                 document_id,
                 ai_svc,
                 "",  # text parameter
@@ -2002,6 +2063,99 @@ async def select_processing_mode(
         )
 
 
+@router.get("/documents/{document_id}/metadata-status")
+async def get_metadata_extraction_status(document_id: str) -> JSONResponse:
+    """
+    Get the current status of metadata extraction for a document.
+    Frontend should poll this endpoint after upload to check metadata extraction progress.
+    """
+    try:
+        # Check if status file exists
+        status_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
+        
+        if not status_file.exists():
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "status": "not_found",
+                    "message": f"No status information found for document {document_id}"
+                }
+            )
+        
+        # Read status file
+        with open(status_file, 'r', encoding='utf-8') as f:
+            status_data = json.load(f)
+        
+        # Check if metadata extraction is completed
+        metadata_completed_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
+        is_completed = metadata_completed_file.exists()
+        
+        return JSONResponse(
+            status_code=200,
+            content={
+                "status": "completed" if is_completed else status_data.get("status", "processing"),
+                "message": status_data.get("message", "Processing in progress"),
+                "metadata_extraction": "completed" if is_completed else "in_progress",
+                "document_id": document_id,
+                "last_updated": status_data.get("timestamp", "unknown")
+            }
+        )
+        
+    except Exception as e:
+        logger.error(f"Error getting metadata status for {document_id}: {str(e)}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": f"Error getting metadata status: {str(e)}"
+            }
+        )
+
+
+@router.get("/documents/{document_id}/metadata-results")
+async def get_metadata_extraction_results(document_id: str) -> JSONResponse:
+    """
+    Get the extracted metadata results for a document.
+    This endpoint returns the actual metadata extracted by smart_metadata_extractor.
+    """
+    try:
+        # Check if metadata file exists
+        metadata_file = ANALYSIS_RESULTS_DIR / f"{document_id}_metadata.json"
+        
+        if not metadata_file.exists():
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "status": "not_found",
+                    "message": f"No metadata extraction results found for document {document_id}"
+                }
+            )
+        
+        # Read metadata results
+        with open(metadata_file, 'r', encoding='utf-8') as f:
+            metadata_results = json.load(f)
+        
+        return JSONResponse(
+            status_code=200,
+            content={
+                "status": "success",
+                "document_id": document_id,
+                "metadata": metadata_results,
+                "extracted_at": metadata_results.get("extracted_at", "unknown")
+            }
+        )
+        
+    except Exception as e:
+        logger.error(f"Error getting metadata results for {document_id}: {str(e)}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": f"Error getting metadata results: {str(e)}"
+            }
+        )
+
+
 @router.post("/documents/{document_id}/start-metadata-extraction")
 async def start_metadata_extraction(
     document_id: str,
@@ -2013,23 +2167,59 @@ async def start_metadata_extraction(
     """
     try:
         logger.info(f"🧠 Starting metadata extraction for document {document_id}")
-        
+
         # Import and trigger metadata extraction
-        from services.simple_document_processing import trigger_metadata_extraction
-        
+        from services.smart_metadata_extractor import SmartMetadataExtractor
+        import asyncio
+        import json
+
+        async def run_metadata_extraction():
+            try:
+                # Load chunks from file
+                chunks_file = f"analysis_results/{document_id}_chunks.json"
+                if not os.path.exists(chunks_file):
+                    logger.error(f"Chunks file not found: {chunks_file}")
+                    return
+
+                with open(chunks_file, 'r', encoding='utf-8') as f:
+                    chunks = json.load(f)
+
+                # Run metadata extraction
+                extractor = SmartMetadataExtractor()
+                metadata = await extractor.extract_metadata_optimized(document_id, chunks)
+
+                # Save results
+                results_file = f"analysis_results/{document_id}.metadata_results.json"
+                with open(results_file, 'w', encoding='utf-8') as f:
+                    json.dump(metadata, f, indent=2, ensure_ascii=False)
+
+                # Mark as completed
+                completion_file = f"analysis_results/{document_id}.metadata_completed"
+                with open(completion_file, 'w') as f:
+                    f.write("completed")
+
+                logger.info(f"✅ Metadata extraction completed for {document_id}")
+
+            except Exception as e:
+                logger.error(f"❌ Metadata extraction failed for {document_id}: {e}")
+                # Mark as failed
+                error_file = f"analysis_results/{document_id}.metadata_error"
+                with open(error_file, 'w') as f:
+                    f.write(str(e))
+
         # Run metadata extraction in background
-        background_tasks.add_task(trigger_metadata_extraction, document_id)
-        
+        background_tasks.add_task(lambda: asyncio.run(run_metadata_extraction()))
+
         response = {
             "status": "processing",
             "document_id": document_id,
             "stage": "metadata_extraction",
             "message": "Metadata extraction started using pre-extracted data"
         }
-        
+
         logger.info(f"✅ Metadata extraction background task started for {document_id}")
         return JSONResponse(status_code=200, content=response)
-        
+
     except Exception as e:
         logger.error(f"❌ Failed to start metadata extraction for {document_id}: {e}")
         return JSONResponse(
@@ -2055,7 +2245,7 @@ async def start_checklist_processing(
     try:
         framework = request.get("framework")
         standards = request.get("standards", [])
-        
+
         if not framework:
             return JSONResponse(
                 status_code=400,
@@ -2065,15 +2255,15 @@ async def start_checklist_processing(
                     "detail": "Framework must be specified for checklist processing"
                 }
             )
-        
+
         logger.info(f"📋 Starting checklist processing for document {document_id}, framework: {framework}")
-        
+
         # Import and trigger checklist processing
         from services.simple_document_processing import trigger_checklist_processing
-        
+
         # Run checklist processing in background
         background_tasks.add_task(trigger_checklist_processing, document_id, framework, standards)
-        
+
         response = {
             "status": "processing",
             "document_id": document_id,
@@ -2082,10 +2272,10 @@ async def start_checklist_processing(
             "standards": standards,
             "message": "Checklist processing started using pre-extracted data"
         }
-        
+
         logger.info(f"✅ Checklist processing background task started for {document_id}")
         return JSONResponse(status_code=200, content=response)
-        
+
     except Exception as e:
         logger.error(f"❌ Failed to start checklist processing for {document_id}: {e}")
         return JSONResponse(
@@ -3232,7 +3422,8 @@ async def _process_standards_sequentially(
 
             # Debug processing results
             logger.info(
-                f"📊 Processing result for {standard}: {len(standard_sections) if standard_sections else 0} sections returned"
+                f"📊 Processing result for {standard}: "
+                f"{len(standard_sections) if standard_sections else 0} sections returned"
             )
             if standard_sections:
                 total_processed_items = sum(len(section.get("items", [])) for section in standard_sections)
@@ -3415,7 +3606,8 @@ async def process_compliance_analysis(
             original_length = len(text)
             text = text[:MAX_TEXT_LENGTH]
             logger.warning(
-                f"🔥 TEXT TRUNCATED: Original length {original_length} → Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
+                f"🔥 TEXT TRUNCATED: Original length {original_length} → "
+                f"Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
         else:
             logger.info(f"📝 Text length: {len(text)} characters (within limit)")
 

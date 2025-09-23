@@ -124,11 +124,11 @@ class CategoryAwareContentStorage:
     
     def store_categorized_content(self, categorized_content: List[Dict[str, Any]], document_id: str):
         """Store categorized content pieces in database"""
-        logger.info(f"🚀 STORAGE STEP 1: Starting storage of {len(categorized_content)} categorized content pieces for document {document_id}")
+        logger.info(f"STORAGE STEP 1: Starting storage of {len(categorized_content)} categorized content pieces for document {document_id}")
         
         try:
             with sqlite3.connect(self.db_path) as conn:
-                logger.info(f"🚀 STORAGE STEP 2: Database connection established, processing content pieces")
+                logger.info(f"STORAGE STEP 2: Database connection established, processing content pieces")
                 
                 stored_count = 0
                 for piece in categorized_content:
@@ -174,7 +174,7 @@ class CategoryAwareContentStorage:
                     if stored_count % 100 == 0:
                         logger.info(f"⏳ STORAGE PROGRESS: Stored {stored_count}/{len(categorized_content)} content pieces")
                 
-                logger.info(f"🚀 STORAGE STEP 3: Committing transaction to database")
+                logger.info(f"STORAGE STEP 3: Committing transaction to database")
                 conn.commit()
                 logger.info(f"✅ STORAGE COMPLETE: Successfully stored {len(categorized_content)} content pieces for document {document_id}")
                 
@@ -199,6 +199,183 @@ class IntelligentChunkAccumulator:
     def __init__(self, storage: CategoryAwareContentStorage):
         self.storage = storage
         self.load_question_categorizer()
+    
+    def create_contextual_chunks(
+        self, 
+        categorized_content: List[Dict[str, Any]], 
+        document_id: str
+    ) -> List[Dict[str, Any]]:
+        """
+        Create intelligent chunks from categorized content for document processing
+        This is called by DocumentChunker during initial document processing
+        """
+        logger.info(f"CHUNK CREATION: Creating intelligent chunks from {len(categorized_content)} categorized pieces for document {document_id}")
+        
+        try:
+            # Store categorized content in database for future retrieval
+            logger.info(f"CHUNK CREATION STEP 1: Storing categorized content in database")
+            self.storage.store_categorized_content(categorized_content, document_id)
+            
+            # Group content into logical chunks based on categories and topics
+            logger.info(f"CHUNK CREATION STEP 2: Grouping content into logical chunks")
+            grouped_chunks = self._group_content_into_chunks(categorized_content)
+            
+            # Convert to final chunk format
+            logger.info(f"CHUNK CREATION STEP 3: Converting to final chunk format")
+            final_chunks = self._convert_to_chunk_format(grouped_chunks, document_id)
+            
+            logger.info(f"✅ CHUNK CREATION COMPLETE: Created {len(final_chunks)} intelligent chunks from {len(categorized_content)} content pieces")
+            return final_chunks
+            
+        except Exception as e:
+            logger.error(f"❌ CHUNK CREATION FAILED: Error creating contextual chunks: {e}")
+            # Return basic chunks as fallback
+            return self._create_fallback_chunks(categorized_content, document_id)
+    
+    def _group_content_into_chunks(self, categorized_content: List[Dict[str, Any]]) -> List[List[Dict[str, Any]]]:
+        """
+        Group categorized content into logical chunks based on:
+        - Same category + topic
+        - Consecutive pages
+        - Maximum chunk size limits
+        """
+        if not categorized_content:
+            return []
+        
+        # Sort by page and paragraph for logical flow
+        sorted_content = sorted(categorized_content, key=lambda x: (x['page_num'], x['paragraph_num']))
+        
+        chunks = []
+        current_chunk = []
+        current_length = 0
+        max_chunk_length = 1500  # Maximum characters per chunk
+        
+        for piece in sorted_content:
+            piece_length = len(piece['content'])
+            
+            # Start new chunk if:
+            # 1. Current chunk would exceed max length
+            # 2. Category/topic changes significantly
+            # 3. Page gap is too large (more than 2 pages)
+            should_start_new = (
+                current_length + piece_length > max_chunk_length or
+                (current_chunk and self._should_separate_chunks(current_chunk[-1], piece)) or
+                (current_chunk and piece['page_num'] - current_chunk[-1]['page_num'] > 2)
+            )
+            
+            if should_start_new and current_chunk:
+                chunks.append(current_chunk)
+                current_chunk = []
+                current_length = 0
+            
+            current_chunk.append(piece)
+            current_length += piece_length
+        
+        # Add final chunk
+        if current_chunk:
+            chunks.append(current_chunk)
+        
+        logger.info(f"Grouped {len(categorized_content)} pieces into {len(chunks)} logical chunks")
+        return chunks
+    
+    def _should_separate_chunks(self, prev_piece: Dict[str, Any], current_piece: Dict[str, Any]) -> bool:
+        """Determine if two pieces should be in separate chunks"""
+        # Separate if category changes
+        if prev_piece['category'] != current_piece['category']:
+            return True
+        
+        # Separate if topic changes and we have enough content
+        if (prev_piece['topic'] != current_piece['topic'] and 
+            prev_piece['category'] != 'METADATA_EXTRACTION'):
+            return True
+        
+        # Separate if statement type changes significantly
+        if (prev_piece['primary_statement'] != current_piece['primary_statement'] and
+            prev_piece['primary_statement'] != 'UNKNOWN' and
+            current_piece['primary_statement'] != 'UNKNOWN'):
+            return True
+        
+        return False
+    
+    def _convert_to_chunk_format(self, grouped_chunks: List[List[Dict[str, Any]]], document_id: str) -> List[Dict[str, Any]]:
+        """Convert grouped content into final chunk format"""
+        final_chunks = []
+        
+        for chunk_idx, content_group in enumerate(grouped_chunks):
+            if not content_group:
+                continue
+            
+            # Combine content from all pieces in group
+            combined_content = []
+            all_cross_refs = []
+            all_note_numbers = []
+            all_table_refs = []
+            
+            # Aggregate metadata
+            page_nums = set()
+            categories = set()
+            topics = set()
+            statement_types = set()
+            
+            for piece in content_group:
+                combined_content.append(piece['content'])
+                all_cross_refs.extend(piece.get('cross_references', []))
+                all_note_numbers.extend(piece.get('note_numbers', []))
+                all_table_refs.extend(piece.get('table_references', []))
+                
+                page_nums.add(piece['page_num'])
+                categories.add(piece['category'])
+                topics.add(piece['topic'])
+                statement_types.add(piece['primary_statement'])
+            
+            # Determine chunk metadata
+            primary_category = max(categories, key=lambda cat: sum(1 for p in content_group if p['category'] == cat))
+            primary_topic = max(topics, key=lambda topic: sum(1 for p in content_group if p['topic'] == topic))
+            primary_statement = max(statement_types, key=lambda stmt: sum(1 for p in content_group if p['primary_statement'] == stmt))
+            
+            # Create final chunk
+            chunk_text = ' '.join(combined_content)
+            final_chunk = {
+                'chunk_index': chunk_idx + 1,  # Start from 1 (metadata is 0)
+                'page': min(page_nums),
+                'page_no': f"{min(page_nums)}-{max(page_nums)}" if len(page_nums) > 1 else str(min(page_nums)),
+                'text': chunk_text,
+                'length': len(chunk_text),
+                'chunk_type': 'intelligent',
+                'category': primary_category,
+                'topic': primary_topic,
+                'statement_type': primary_statement,
+                'cross_references': list(set(all_cross_refs)),
+                'note_numbers': list(set(all_note_numbers)),
+                'table_references': list(set(all_table_refs)),
+                'content_pieces': len(content_group),
+                'confidence': sum(p.get('confidence', 0) for p in content_group) / len(content_group)
+            }
+            
+            final_chunks.append(final_chunk)
+        
+        return final_chunks
+    
+    def _create_fallback_chunks(self, categorized_content: List[Dict[str, Any]], document_id: str) -> List[Dict[str, Any]]:
+        """Create basic chunks if intelligent chunking fails"""
+        logger.warning(f"Creating fallback chunks for {len(categorized_content)} content pieces")
+        
+        chunks = []
+        for idx, piece in enumerate(categorized_content[:20]):  # Limit to 20 pieces
+            chunk = {
+                'chunk_index': idx + 1,
+                'page': piece.get('page_num', 0),
+                'page_no': str(piece.get('page_num', 0)),
+                'text': piece.get('content', ''),
+                'length': len(piece.get('content', '')),
+                'chunk_type': 'fallback',
+                'category': piece.get('category', 'UNCATEGORIZED'),
+                'topic': piece.get('topic', 'GENERAL'),
+                'statement_type': piece.get('primary_statement', 'UNKNOWN')
+            }
+            chunks.append(chunk)
+        
+        return chunks
         
     def load_question_categorizer(self):
         """Load the existing question categorization system"""
@@ -220,28 +397,28 @@ class IntelligentChunkAccumulator:
         Accumulate only content that matches the question's categories
         Returns targeted content with preserved citation metadata
         """
-        logger.info(f"🚀 ACCUMULATOR STEP 1: Starting content accumulation for question: {question[:50]}...")
+        logger.info(f"ACCUMULATOR STEP 1: Starting content accumulation for question: {question[:50]}...")
         
         try:
             # Step 1: Classify the incoming question
-            logger.info(f"🚀 ACCUMULATOR STEP 2: Classifying incoming question")
+            logger.info(f"ACCUMULATOR STEP 2: Classifying incoming question")
             question_categories = self._classify_question(question)
             logger.info(f"✅ ACCUMULATOR STEP 2 COMPLETE: Question classified as Category: {question_categories['category']}, Topic: {question_categories['topic']}")
             
             # Step 2: Retrieve matching content from storage
-            logger.info(f"🚀 ACCUMULATOR STEP 3: Retrieving matching content from storage")
+            logger.info(f"ACCUMULATOR STEP 3: Retrieving matching content from storage")
             matching_content = self._retrieve_matching_content(document_id, question_categories)
             logger.info(f"✅ ACCUMULATOR STEP 3 COMPLETE: Found {len(matching_content)} matching content pieces")
             
             # Step 3: Rank and select best content pieces
-            logger.info(f"🚀 ACCUMULATOR STEP 4: Ranking and selecting best content pieces (max length: {max_content_length})")
+            logger.info(f"ACCUMULATOR STEP 4: Ranking and selecting best content pieces (max length: {max_content_length})")
             selected_content = self._rank_and_select_content(
                 matching_content, question, max_content_length
             )
             logger.info(f"✅ ACCUMULATOR STEP 4 COMPLETE: Selected {len(selected_content)} top-ranked content pieces")
             
             # Step 4: Accumulate into final chunk with citations
-            logger.info(f"🚀 ACCUMULATOR STEP 5: Accumulating final chunk with citations")
+            logger.info(f"ACCUMULATOR STEP 5: Accumulating final chunk with citations")
             accumulated_chunk = self._accumulate_into_chunk(selected_content, question_categories)
             logger.info(f"✅ ACCUMULATOR STEP 5 COMPLETE: Generated chunk with {len(accumulated_chunk['content'])} characters and {len(accumulated_chunk['citations'])} citations")
             

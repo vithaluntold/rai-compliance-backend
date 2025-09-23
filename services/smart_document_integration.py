@@ -32,7 +32,7 @@ async def process_upload_tasks_smart(
 ) -> None:
     """Smart document processing with categorization - replaces old workflow"""
     
-    logger.info(f"🚀 STEP 1: Starting smart processing workflow for document {document_id}")
+    logger.info(f"STEP 1: Starting smart processing workflow for document {document_id}")
     
     # Check for duplicate processing
     processing_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.processing"

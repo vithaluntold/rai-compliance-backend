@@ -6,16 +6,49 @@ import fitz  # PyMuPDF
 from docx import Document as DocxDocument
 
 from services.vector_store import generate_document_id
+from services.contextual_content_categorizer import ContextualContentCategorizer
+from services.intelligent_chunk_accumulator import IntelligentChunkAccumulator, CategoryAwareContentStorage
 
 logger = logging.getLogger(__name__)
 
 
 class DocumentChunker:
-    def __init__(self, min_chunk_length: int = 1):
+    def __init__(self, min_chunk_length: int = 30):
         self.min_chunk_length = min_chunk_length
         self.dynamic_headers: Set[str] = set()
+        
+        try:
+            logger.info(f"[INIT] Initializing ContextualContentCategorizer...")
+            self.categorizer = ContextualContentCategorizer()
+            logger.info(f"[INIT] ContextualContentCategorizer initialized successfully")
+        except Exception as e:
+            logger.error(f"[INIT] Failed to initialize ContextualContentCategorizer: {e}")
+            import traceback
+            logger.error(f"[INIT] Full traceback: {traceback.format_exc()}")
+            raise
+        
+        try:
+            logger.info(f"[INIT] Initializing CategoryAwareContentStorage...")
+            self.storage = CategoryAwareContentStorage()
+            logger.info(f"[INIT] CategoryAwareContentStorage initialized successfully")
+        except Exception as e:
+            logger.error(f"[INIT] Failed to initialize CategoryAwareContentStorage: {e}")
+            import traceback
+            logger.error(f"[INIT] Full traceback: {traceback.format_exc()}")
+            raise
+        
+        try:
+            logger.info(f"[INIT] Initializing IntelligentChunkAccumulator...")
+            self.accumulator = IntelligentChunkAccumulator(self.storage)
+            logger.info(f"[INIT] IntelligentChunkAccumulator initialized successfully")
+        except Exception as e:
+            logger.error(f"[INIT] Failed to initialize IntelligentChunkAccumulator: {e}")
+            import traceback
+            logger.error(f"[INIT] Full traceback: {traceback.format_exc()}")
+            raise
+        
         logger.info(
-            f"Initialized DocumentChunker with min_chunk_length={min_chunk_length}"
+            f"Initialized DocumentChunker with NLP categorization, min_chunk_length={min_chunk_length}"
         )
 
     def chunk_pdf(
@@ -25,61 +58,192 @@ class DocumentChunker:
         if document_id is None:
             document_id = generate_document_id()
 
-        logger.info(f"[DEBUG] Processing PDF: {pdf_path} with ID: {document_id}")
-        chunks = []
-
+        logger.info(f"[NLP] Processing PDF with contextual categorization: {pdf_path}")
+        
         try:
             with fitz.open(pdf_path) as doc:
                 total_pages = len(doc)
-
-                # First pass: Extract metadata from initial pages
-                metadata_text = ""
-                for page_num in range(
-                    min(5, total_pages)
-                ):  # Check first 5 pages for metadata
-                    page = doc[page_num]
-                    text = page.get_text().strip()  # type: ignore[attr-defined]
-                    if text:
-                        metadata_text += text + "\nff"
-
-                # Add metadata chunk first
-                if metadata_text:
-                    chunks.append(
-                        {"chunk_index": 0,
-                            "page": 0,
-                            "page_no": 0,
-                            "text": self._clean_financial_headers(metadata_text),
-                            "length": len(metadata_text),
-                            "chunk_type": "metadata",}
-                    )
-
-                # Second pass: Process all pages
+                
+                # Step 1: Create dedicated metadata chunk from first 8 pages
+                logger.info(f"[NLP] Step 1: Creating metadata chunk from first 8 pages")
+                metadata_chunk = self._create_metadata_chunk(doc, document_id)
+                logger.info(f"[NLP] Step 1 SUCCESS: Created metadata chunk with {len(metadata_chunk['text'])} characters")
+                
+                # TRIGGER METADATA EXTRACTION: Send to smart_metadata_extractor immediately
+                logger.info(f"[METADATA] Triggering smart metadata extraction for document {document_id}")
+                self._trigger_metadata_extraction(document_id, metadata_chunk)
+                
+                # Step 2: Extract all pages for NLP processing
+                logger.info(f"[NLP] Step 2: Extracting text from {total_pages} pages")
+                all_page_texts = []
                 for page_num in range(total_pages):
                     page = doc[page_num]
-                    text = page.get_text().strip()  # type: ignore[attr-defined]
-                    if not text:
-                        continue
+                    text = page.get_text().strip()
+                    if text:
+                        cleaned_text = self._clean_financial_headers(text)
+                        all_page_texts.append({
+                            'page_num': page_num,
+                            'text': cleaned_text,
+                            'length': len(cleaned_text)
+                        })
+                logger.info(f"[NLP] Step 2 SUCCESS: Extracted {len(all_page_texts)} pages with text")
 
-                    cleaned_text = self._clean_financial_headers(text)
-                    if len(cleaned_text) >= self.min_chunk_length:
-                        chunks.append(
-                            {
-                                "chunk_index": len(chunks),
-                                "page": page_num,
-                                "page_no": page_num,
-                                "text": cleaned_text,
-                                "length": len(cleaned_text),
-                                "chunk_type": "content",
-                            }
-                        )
+                # Step 3: Use ContextualContentCategorizer for intelligent classification
+                logger.info(f"[NLP] Step 3: Starting categorization with ContextualContentCategorizer")
+                try:
+                    categorized_content = self.categorizer.categorize_page_texts(all_page_texts, pdf_path)
+                    logger.info(f"[NLP] Step 3 SUCCESS: Categorizer returned {len(categorized_content)} categorized pieces")
+                except Exception as e:
+                    logger.error(f"[NLP] Step 3 FAILED: Categorization error: {e}")
+                    logger.error(f"[NLP] Step 3 FAILED: Categorizer type: {type(self.categorizer)}")
+                    logger.error(f"[NLP] Step 3 FAILED: Input data sample: {all_page_texts[0] if all_page_texts else 'No pages'}")
+                    import traceback
+                    logger.error(f"[NLP] Step 3 FAILED: Full traceback: {traceback.format_exc()}")
+                    raise
+                
+                # Step 4: Use IntelligentChunkAccumulator for smart chunking
+                logger.info(f"[NLP] Step 4: Starting intelligent chunking with IntelligentChunkAccumulator")
+                try:
+                    intelligent_chunks = self.accumulator.create_contextual_chunks(
+                        categorized_content, 
+                        document_id
+                    )
+                    logger.info(f"[NLP] Step 4 SUCCESS: Accumulator created {len(intelligent_chunks)} intelligent chunks")
+                except Exception as e:
+                    logger.error(f"[NLP] Step 4 FAILED: Accumulator error: {e}")
+                    logger.error(f"[NLP] Step 4 FAILED: Accumulator type: {type(self.accumulator)}")
+                    logger.error(f"[NLP] Step 4 FAILED: Input data count: {len(categorized_content) if 'categorized_content' in locals() else 'undefined'}")
+                    import traceback
+                    logger.error(f"[NLP] Step 4 FAILED: Full traceback: {traceback.format_exc()}")
+                    raise
 
-            logger.info(
-                f"[DEBUG] Created {len(chunks)} chunks from {total_pages} pages"
-            )
-            return chunks
+                # Step 5: Combine metadata chunk with intelligent chunks
+                logger.info(f"[NLP] Step 5: Combining metadata chunk with intelligent chunks")
+                all_chunks = [metadata_chunk] + intelligent_chunks
+                
+                logger.info(
+                    f"[NLP] SUCCESS: Created {len(all_chunks)} total chunks: 1 metadata + {len(intelligent_chunks)} intelligent chunks from {total_pages} pages"
+                )
+                return all_chunks
 
         except Exception as e:
-            logger.error(f"[ERROR] Failed to chunk PDF: {e}")
+            logger.error(f"[ERROR] NLP chunking failed with exception: {e}")
+            logger.error(f"[ERROR] Exception type: {type(e)}")
+            logger.error(f"[ERROR] PDF path: {pdf_path}")
+            logger.error(f"[ERROR] Document ID: {document_id}")
+            import traceback
+            logger.error(f"[ERROR] Full traceback: {traceback.format_exc()}")
+            # Fallback to basic chunking if NLP fails
+            return self._basic_fallback_chunking(pdf_path, document_id)
+
+    def _create_metadata_chunk(self, doc, document_id: str) -> Dict[str, Any]:
+        """
+        Create dedicated metadata chunk optimized for SmartMetadataExtractor.
+        Extracts content from first 8 pages focusing on:
+        - Company name (headers, titles, signatures)
+        - Nature of business (business description sections)
+        - Operational demographics (geographical references)
+        - Financial statements type (consolidated/standalone references)
+        """
+        logger.info("[METADATA] Creating metadata chunk optimized for SmartMetadataExtractor")
+        
+        # Extract first 8 pages (where metadata typically appears)
+        metadata_pages = min(8, len(doc))
+        metadata_text_parts = []
+        
+        for page_num in range(metadata_pages):
+            page = doc[page_num]
+            page_text = page.get_text().strip()
+            
+            if page_text:
+                # Preserve important metadata elements while cleaning
+                preserved_text = self._preserve_metadata_elements(page_text)
+                metadata_text_parts.append(preserved_text)
+        
+        # Combine metadata text with strategic spacing
+        full_metadata_text = "\n\n--- PAGE BREAK ---\n\n".join(metadata_text_parts)
+        
+        # Clean while preserving metadata indicators
+        cleaned_metadata = self._clean_metadata_text(full_metadata_text)
+        
+        metadata_chunk = {
+            "chunk_index": 0,
+            "page": 0,
+            "page_no": "0-7",  # Indicates multi-page metadata
+            "text": cleaned_metadata,
+            "length": len(cleaned_metadata),
+            "chunk_type": "metadata",
+            "category": "METADATA_EXTRACTION",
+            "optimization_target": "smart_metadata_extractor",
+            "content_focus": ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
+        }
+        
+        logger.info(f"[METADATA] Created metadata chunk: {len(cleaned_metadata)} chars from {metadata_pages} pages")
+        return metadata_chunk
+
+    def _preserve_metadata_elements(self, text: str) -> str:
+        """Preserve elements critical for metadata extraction"""
+        # Don't aggressively clean headers in metadata sections
+        # Company names often appear in headers/footers
+        
+        # Preserve company name patterns (PJSC, Ltd, LLC, etc.)
+        company_indicators = ['PJSC', 'PLC', 'LLC', 'Ltd', 'Limited', 'Corporation', 'Inc', 'Properties', 'Holdings', 'Group']
+        
+        # Preserve geographical references
+        geographical_indicators = ['UAE', 'Egypt', 'United Arab Emirates', 'England', 'Wales', 'Dubai', 'Abu Dhabi']
+        
+        # Preserve business activity keywords
+        business_indicators = ['engaged in', 'business', 'activities', 'operations', 'development', 'construction', 'leasing', 'management', 'real estate']
+        
+        # Preserve financial statement type indicators
+        fs_indicators = ['consolidated', 'standalone', 'separate', 'financial statements']
+        
+        # Keep text as-is for metadata extraction - minimal cleaning
+        return text.strip()
+
+    def _clean_metadata_text(self, text: str) -> str:
+        """Clean metadata text while preserving extraction targets"""
+        cleaned = text
+        
+        # Only remove obvious noise, preserve potential company/business info
+        # Remove page numbers but keep everything else
+        cleaned = re.sub(r'\bpage\s+\d+\s*(?:of\s+\d+)?\b', ' ', cleaned, flags=re.IGNORECASE)
+        
+        # Normalize excessive whitespace but preserve line breaks for context
+        cleaned = re.sub(r' +', ' ', cleaned)  # Multiple spaces to single
+        cleaned = re.sub(r'\n\s*\n\s*\n+', '\n\n', cleaned)  # Multiple newlines to double
+        
+        return cleaned.strip()
+
+    def _basic_fallback_chunking(self, pdf_path: str, document_id: str) -> List[Dict[str, Any]]:
+        """Fallback to basic chunking if NLP processing fails"""
+        logger.warning(f"[FALLBACK] Using basic chunking for {pdf_path}")
+        chunks = []
+        
+        try:
+            with fitz.open(pdf_path) as doc:
+                # Create metadata chunk even in fallback
+                metadata_chunk = self._create_metadata_chunk(doc, document_id)
+                chunks.append(metadata_chunk)
+                
+                # Create content chunks from remaining pages
+                for page_num in range(len(doc)):
+                    page = doc[page_num]
+                    text = page.get_text().strip()
+                    if text and len(text) >= self.min_chunk_length:
+                        cleaned_text = self._clean_financial_headers(text)
+                        chunks.append({
+                            "chunk_index": len(chunks),
+                            "page": page_num,
+                            "page_no": page_num,
+                            "text": cleaned_text,
+                            "length": len(cleaned_text),
+                            "chunk_type": "content",
+                            "category": "UNCATEGORIZED"
+                        })
+            return chunks
+        except Exception as e:
+            logger.error(f"[ERROR] Fallback chunking failed: {e}")
             return []
 
     def chunk_docx(
@@ -93,6 +257,7 @@ class DocumentChunker:
         try:
             doc = DocxDocument(docx_path)
             paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
+            
             # Group paragraphs into 'pages' of ~3000 characters
             PAGE_SIZE = 3000
             current_chunk: list[str] = []
@@ -106,34 +271,43 @@ class DocumentChunker:
                 current_chunk.append(para)
                 current_len += len(para)
             if current_chunk:
-                all_chunks.append("\nff".join(current_chunk))
-            # Add metadata chunk (first chunk)
+                all_chunks.append("\n".join(current_chunk))  # Fixed typo: "ff" to ""
+            
+            # Create metadata chunk from first 2-3 chunks (equivalent to ~8 pages)
+            metadata_chunks_count = 0
             if all_chunks:
-                chunks.append(
-                    {"chunk_index": 0,
-                        "page": 0,
-                        "page_no": 0,
-                        "text": self._clean_financial_headers(all_chunks[0]),
-                        "length": len(all_chunks[0]),
-                        "chunk_type": "metadata",}
-                )
-            # Add content chunks (rest)
-            for i, chunk_text in enumerate(all_chunks[1:], start=1):
+                metadata_chunks_count = min(3, len(all_chunks))
+                metadata_text = "\n\n--- SECTION BREAK ---\n\n".join(all_chunks[:metadata_chunks_count])
+                cleaned_metadata = self._clean_metadata_text(metadata_text)
+                
+                chunks.append({
+                    "chunk_index": 0,
+                    "page": 0,
+                    "page_no": f"0-{metadata_chunks_count-1}",
+                    "text": cleaned_metadata,
+                    "length": len(cleaned_metadata),
+                    "chunk_type": "metadata",
+                    "category": "METADATA_EXTRACTION",
+                    "optimization_target": "smart_metadata_extractor",
+                    "content_focus": ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
+                })
+                
+            # Add content chunks from remaining sections
+            for i, chunk_text in enumerate(all_chunks[metadata_chunks_count:], start=metadata_chunks_count):
                 cleaned_text = self._clean_financial_headers(chunk_text)
                 if len(cleaned_text) >= self.min_chunk_length:
-                    chunks.append(
-                        {
-                            "chunk_index": len(chunks),
-                            "page": i,
-                            "page_no": i,
-                            "text": cleaned_text,
-                            "length": len(cleaned_text),
-                            "chunk_type": "content",
-                        }
-                    )
+                    chunks.append({
+                        "chunk_index": len(chunks),
+                        "page": i,
+                        "page_no": i,
+                        "text": cleaned_text,
+                        "length": len(cleaned_text),
+                        "chunk_type": "content",
+                        "category": "CONTENT"
+                    })
+            
             logger.info(
-                f"[DEBUG] Created {len(chunks)} chunks from DOCX "
-                "(simulated pages, 3000 chars each)"
+                f"[DEBUG] Created {len(chunks)} chunks from DOCX: 1 metadata + {len(chunks)-1} content chunks"
             )
             return chunks
         except Exception as e:
@@ -202,6 +376,69 @@ class DocumentChunker:
 #             f"Unsupported file extension for conversion: {ext}. "
 #             "Only DOCX is supported."
 #         )
+
+    def _trigger_metadata_extraction(self, document_id: str, metadata_chunk: Dict[str, Any]) -> None:
+        """
+        Trigger smart metadata extraction in background.
+        This runs asynchronously after metadata chunk is created.
+        """
+        import threading
+        from services.smart_metadata_extractor import SmartMetadataExtractor
+        import asyncio
+        from datetime import datetime
+        
+        def run_metadata_extraction():
+            try:
+                logger.info(f"[METADATA] Starting background metadata extraction for {document_id}")
+                
+                # Create SmartMetadataExtractor instance
+                extractor = SmartMetadataExtractor()
+                
+                # Run extraction in new event loop (for background thread)
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                
+                # Extract metadata from the metadata chunk
+                metadata_result = loop.run_until_complete(
+                    extractor.extract_metadata_optimized(document_id, [metadata_chunk])
+                )
+                
+                # Save metadata extraction results
+                from pathlib import Path
+                analysis_results_dir = Path("analysis_results")
+                analysis_results_dir.mkdir(exist_ok=True)
+                
+                metadata_file = analysis_results_dir / f"{document_id}_metadata.json"
+                import json
+                with open(metadata_file, 'w', encoding='utf-8') as f:
+                    json.dump(metadata_result, f, indent=2, ensure_ascii=False)
+                
+                # Update status file to indicate metadata extraction is complete
+                status_file = analysis_results_dir / f"{document_id}_status.json"
+                status_data = {
+                    "document_id": document_id,
+                    "chunking_status": "completed",
+                    "metadata_extraction_status": "completed",
+                    "metadata_completed_at": datetime.now().isoformat(),
+                    "metadata_file": str(metadata_file)
+                }
+                with open(status_file, 'w', encoding='utf-8') as f:
+                    json.dump(status_data, f, indent=2, ensure_ascii=False)
+                
+                logger.info(f"[METADATA] Background metadata extraction completed for {document_id}")
+                logger.info(f"[METADATA] Results saved to {metadata_file}")
+                
+                loop.close()
+                
+            except Exception as e:
+                logger.error(f"[METADATA] Background metadata extraction failed for {document_id}: {e}")
+                import traceback
+                logger.error(f"[METADATA] Full traceback: {traceback.format_exc()}")
+        
+        # Start background thread for metadata extraction
+        metadata_thread = threading.Thread(target=run_metadata_extraction, daemon=True)
+        metadata_thread.start()
+        logger.info(f"[METADATA] Metadata extraction thread started for {document_id}")
 
 # Global instance
 document_chunker = DocumentChunker(min_chunk_length=30)

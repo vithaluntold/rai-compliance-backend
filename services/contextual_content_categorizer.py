@@ -24,12 +24,14 @@ class ContextualContentCategorizer:
     def __init__(self):
         # Load our existing categorization data
         self.load_categorization_system()
-        # Load spaCy model
+        # Load spaCy model (with fallback)
         try:
             self.nlp = spacy.load("en_core_web_sm")
-        except OSError:
-            logger.error("spaCy English model not found. Please install with: python -m spacy download en_core_web_sm")
-            raise
+            logger.info("✅ spaCy model loaded successfully")
+        except Exception as e:
+            logger.warning(f"⚠️ spaCy model failed to load: {e}. Using fallback categorization.")
+            self.nlp = None
+        
         self.statement_recognizer = FinancialStatementRecognizer()
         
     def load_categorization_system(self):
@@ -88,6 +90,44 @@ class ContextualContentCategorizer:
             logger.error(f"Error categorizing document: {e}")
             
         logger.info(f"Categorized {len(categorized_content)} content pieces")
+        return categorized_content
+    
+    def categorize_page_texts(self, page_texts: List[Dict[str, Any]], pdf_path: str = None) -> List[Dict[str, Any]]:
+        """
+        Categorize pre-parsed page texts from document chunker
+        
+        Args:
+            page_texts: List of dicts with 'page_num', 'text', 'length' keys
+            pdf_path: Optional PDF path for statement recognition
+            
+        Returns:
+            List of categorized content chunks
+        """
+        logger.info(f"Starting contextual categorization of {len(page_texts)} pre-parsed pages")
+        
+        # Try to recognize financial statements if PDF path provided
+        recognized_statements = {}
+        if pdf_path:
+            try:
+                recognized_statements = self.statement_recognizer.recognize_statements(pdf_path)
+            except Exception as e:
+                logger.warning(f"Could not recognize statements from PDF path {pdf_path}: {e}")
+        
+        categorized_content = []
+        
+        for page_data in page_texts:
+            page_num = page_data.get('page_num', 0)
+            text = page_data.get('text', '')
+            lines = text.split('\n')
+            
+            # Process each line with extended context
+            page_content = self._process_page_with_context(
+                lines, page_num, recognized_statements
+            )
+            
+            categorized_content.extend(page_content)
+                    
+        logger.info(f"Categorized {len(categorized_content)} content pieces from pre-parsed pages")
         return categorized_content
     
     def _process_page_with_context(

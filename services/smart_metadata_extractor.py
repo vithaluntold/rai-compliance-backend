@@ -22,7 +22,12 @@ class SmartMetadataExtractor:
 
     def __init__(self):
         self.geographical_service = GeographicalDetectionService()
-        self.vector_store = get_vector_store()
+        # Make vector store optional for pure NLP pipeline
+        try:
+            self.vector_store = get_vector_store()
+        except Exception as e:
+            logger.warning(f"Vector store not available: {e} - using pure NLP extraction only")
+            self.vector_store = None
         self.ai_service = get_ai_service()
         self.config = get_config()
 
@@ -36,7 +41,7 @@ class SmartMetadataExtractor:
         self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
     ) -> Dict[str, Any]:
         """Extract metadata using 3 - tier strategy"""
-        logger.info(f"🚀 Starting SMART metadata extraction for document {document_id}")
+        logger.info(f"Starting SMART metadata extraction for document {document_id}")
         logger.info(f"🔍 Processing {len(chunks)} chunks with smart extractor")
 
         # Combine all chunks for pattern analysis - extract text from chunk dictionaries
