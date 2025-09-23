@@ -628,12 +628,42 @@ async def process_upload_tasks(
             "message": "Document chunking completed. Metadata extraction in progress - poll /metadata-status for updates."
         }
 
-        # Save results directly (skip finalize to avoid metadata transformation)
+        # Save results with basic structure (metadata extraction will update this)
         save_analysis_results(document_id, basic_result)
 
-        # Create metadata completion lock file
-        metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
-        metadata_lock_file.touch()
+        # CRITICAL FIX: Actually extract metadata before marking as completed
+        logger.info(f"🚀 METADATA EXTRACTION: Starting for document {document_id}")
+        try:
+            # Run metadata extraction using smart extractor
+            metadata = await _extract_document_metadata(document_id, chunks)
+            
+            # Save metadata using staged storage for isolation
+            from services.staged_storage import StagedStorageManager
+            storage_manager = StagedStorageManager()
+            storage_manager.save_metadata(document_id, metadata)
+            
+            # Update the main results file with actual metadata
+            basic_result.update({
+                "metadata_extraction": "COMPLETED",
+                "metadata": _transform_metadata_for_frontend(metadata),
+                "message": "Document processing completed successfully"
+            })
+            save_analysis_results(document_id, basic_result)
+            
+            # NOW create metadata completion lock file (after actual extraction)
+            metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
+            metadata_lock_file.touch()
+            
+            logger.info(f"✅ METADATA EXTRACTION: Completed successfully for {document_id}")
+            
+        except Exception as metadata_error:
+            logger.error(f"❌ METADATA EXTRACTION: Failed for {document_id}: {metadata_error}")
+            # Update results with error status
+            basic_result.update({
+                "metadata_extraction": "FAILED",
+                "message": f"Metadata extraction failed: {str(metadata_error)}"
+            })
+            save_analysis_results(document_id, basic_result)
 
         # Remove processing lock file
         if processing_lock_file.exists():
@@ -766,9 +796,17 @@ async def upload_document(
             )
             logger.info("✅ UPLOAD STEP 5 COMPLETE: Full NLP processing system imported successfully")
 
+            # Generate session ID and format response for frontend compatibility
+            session_id = f"session_{document_id}"
+            document_name = file.filename if file.filename else "unknown.pdf"
+            file_type = ext
+            
             response = {
-                "status": "processing",
+                "session_id": session_id,
                 "document_id": document_id,
+                "status": "processing",
+                "document_name": document_name,
+                "file_type": file_type,
                 "processing_mode": processing_mode,
                 "message": "Document uploaded - processing with full NLP pipeline including "
                           "chunking, categorization, and metadata extraction",
