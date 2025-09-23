@@ -205,4 +205,5 @@ async def debug_files():
 
 if __name__ == "__main__":
     import uvicorn
+    # Force fresh deployment - smart categorization fix deployed
     uvicorn.run(app, host="0.0.0.0", port=8000)
