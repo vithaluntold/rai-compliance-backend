@@ -69,10 +69,6 @@ class DocumentChunker:
                 metadata_chunk = self._create_metadata_chunk(doc, document_id)
                 logger.info(f"[NLP] Step 1 SUCCESS: Created metadata chunk with {len(metadata_chunk['text'])} characters")
                 
-                # TRIGGER METADATA EXTRACTION: Send to smart_metadata_extractor immediately
-                logger.info(f"[METADATA] Triggering smart metadata extraction for document {document_id}")
-                self._trigger_metadata_extraction(document_id, metadata_chunk)
-                
                 # Step 2: Extract all pages for NLP processing
                 logger.info(f"[NLP] Step 2: Extracting text from {total_pages} pages")
                 all_page_texts = []
@@ -164,6 +160,10 @@ class DocumentChunker:
                     
                     all_chunks = [metadata_chunk] + basic_chunks
                     logger.info(f"[NLP] FALLBACK SUCCESS: Created {len(all_chunks)} total chunks: 1 metadata + {len(basic_chunks)} basic chunks from {total_pages} pages")
+                
+                # TRIGGER METADATA EXTRACTION: Send to smart_metadata_extractor after categorization complete
+                logger.info(f"[METADATA] Triggering smart metadata extraction for document {document_id}")
+                self._trigger_metadata_extraction(document_id, metadata_chunk, categorized_content, smart_categorization_success)
                 
                 return all_chunks
 
@@ -418,17 +418,17 @@ class DocumentChunker:
 #             "Only DOCX is supported."
 #         )
 
-    def _trigger_metadata_extraction(self, document_id: str, metadata_chunk: Dict[str, Any]) -> None:
+    def _trigger_metadata_extraction(self, document_id: str, metadata_chunk: Dict[str, Any], categorized_content=None, smart_categorization_success=False) -> None:
         """
         Trigger smart metadata extraction in background.
-        This runs asynchronously after metadata chunk is created.
+        This runs asynchronously after chunking and categorization is complete.
         """
         import threading
         from services.smart_metadata_extractor import SmartMetadataExtractor
         import asyncio
         from datetime import datetime
         
-        def run_metadata_extraction():
+        def run_metadata_extraction(cat_content=None, cat_success=False):
             try:
                 logger.info(f"[METADATA] Starting background metadata extraction for {document_id}")
                 
@@ -484,10 +484,10 @@ class DocumentChunker:
                     "metadata_completed_at": datetime.now().isoformat(),
                     "metadata_file": str(metadata_file),
                     "smart_categorization": {
-                        "total_categories": len(set(piece.get('category', 'UNKNOWN') for piece in categorized_content)) if categorized_content else 0,
-                        "content_chunks": len(categorized_content) if categorized_content else 0,
-                        "categorization_complete": smart_categorization_success,
-                        "categories_found": list(set(piece.get('category', 'UNKNOWN') for piece in categorized_content)) if categorized_content else []
+                        "total_categories": len(set(piece.get('category', 'UNKNOWN') for piece in cat_content)) if cat_content else 0,
+                        "content_chunks": len(cat_content) if cat_content else 0,
+                        "categorization_complete": cat_success,
+                        "categories_found": list(set(piece.get('category', 'UNKNOWN') for piece in cat_content)) if cat_content else []
                     }
                 })
                 
@@ -507,7 +507,11 @@ class DocumentChunker:
                 logger.error(f"[METADATA] Full traceback: {traceback.format_exc()}")
         
         # Start background thread for metadata extraction
-        metadata_thread = threading.Thread(target=run_metadata_extraction, daemon=True)
+        metadata_thread = threading.Thread(
+            target=run_metadata_extraction, 
+            args=(categorized_content, smart_categorization_success),
+            daemon=True
+        )
         metadata_thread.start()
         logger.info(f"[METADATA] Metadata extraction thread started for {document_id}")
 
