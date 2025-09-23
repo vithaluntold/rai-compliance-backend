@@ -413,6 +413,11 @@ class DocumentChunker:
                 with open(metadata_file, 'w', encoding='utf-8') as f:
                     json.dump(metadata_result, f, indent=2, ensure_ascii=False)
                 
+                # Create the metadata completion flag file for frontend polling
+                completion_flag_file = analysis_results_dir / f"{document_id}.metadata_completed"
+                with open(completion_flag_file, 'w', encoding='utf-8') as f:
+                    f.write(datetime.now().isoformat())
+                
                 # Update status file to indicate metadata extraction is complete
                 status_file = analysis_results_dir / f"{document_id}_status.json"
                 status_data = {
@@ -427,6 +432,7 @@ class DocumentChunker:
                 
                 logger.info(f"[METADATA] Background metadata extraction completed for {document_id}")
                 logger.info(f"[METADATA] Results saved to {metadata_file}")
+                logger.info(f"[METADATA] Completion flag created: {completion_flag_file}")
                 
                 loop.close()
                 

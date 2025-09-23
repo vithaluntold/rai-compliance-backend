@@ -1627,6 +1627,31 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             else:
                 status = "PROCESSING"
             metadata_extraction = results.get("metadata_extraction", "PENDING")
+            
+            # CRITICAL: Check for completion flag file to update metadata_extraction status
+            completion_flag_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.metadata_completed")
+            if os.path.exists(completion_flag_path):
+                metadata_extraction = "COMPLETED"
+                # Load the actual metadata from the metadata file
+                metadata_file_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}_metadata.json")
+                if os.path.exists(metadata_file_path):
+                    try:
+                        with open(metadata_file_path, 'r', encoding='utf-8') as f:
+                            extracted_metadata = json.load(f)
+                        results["metadata"] = extracted_metadata
+                        logger.info(f"[POLLING FIX] Loaded extracted metadata for {document_id}")
+                    except Exception as e:
+                        logger.error(f"[POLLING FIX] Failed to load metadata file: {e}")
+                
+                # Update the results file with the completed status
+                results["metadata_extraction"] = "COMPLETED"
+                try:
+                    with open(results_path, 'w', encoding='utf-8') as f:
+                        json.dump(results, f, indent=2, ensure_ascii=False)
+                    logger.info(f"[POLLING FIX] Updated results file for {document_id} - metadata_extraction: COMPLETED")
+                except Exception as e:
+                    logger.error(f"[POLLING FIX] Failed to update results file: {e}")
+            
             compliance_analysis = results.get("compliance_analysis", "PENDING")
 
             # Include smart categorization metadata if available
