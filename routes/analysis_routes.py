@@ -1639,16 +1639,46 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                         with open(metadata_file_path, 'r', encoding='utf-8') as f:
                             extracted_metadata = json.load(f)
                         
-                        # Transform metadata to frontend format (extract values from confidence structure)
-                        frontend_metadata = {}
-                        for key, metadata_obj in extracted_metadata.items():
-                            if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
-                                frontend_metadata[key] = metadata_obj['value']
-                            else:
-                                frontend_metadata[key] = metadata_obj
+                        # Transform metadata to frontend format with proper field mapping
+                        frontend_metadata = {
+                            "company_name": "",
+                            "nature_of_business": "", 
+                            "operational_demographics": "",
+                            "financial_statements_type": ""
+                        }
                         
-                        results["metadata"] = frontend_metadata
-                        logger.info(f"[POLLING FIX] Loaded and transformed extracted metadata for {document_id}: {frontend_metadata}")
+                        # Extract values from confidence structure and map to frontend fields
+                        for key, metadata_obj in extracted_metadata.items():
+                            if key == "optimization_metrics":
+                                continue  # Skip metrics
+                                
+                            if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
+                                value = metadata_obj['value']
+                            else:
+                                value = metadata_obj
+                            
+                            # Map backend fields to frontend fields with fallbacks
+                            if key in ["company_name", "companyName"]:
+                                if value and value != "":
+                                    frontend_metadata["company_name"] = value
+                            elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
+                                if value and value != "":
+                                    frontend_metadata["nature_of_business"] = value
+                            elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
+                                if value and value != "":
+                                    frontend_metadata["operational_demographics"] = value
+                            elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
+                                if value and value != "":
+                                    frontend_metadata["financial_statements_type"] = value
+                        
+                        # Only update if we have actual extracted values
+                        has_extracted_data = any(v for v in frontend_metadata.values() if v)
+                        if has_extracted_data:
+                            results["metadata"] = frontend_metadata
+                            logger.info(f"[POLLING FIX] Successfully loaded metadata for {document_id}")
+                        else:
+                            logger.warning(f"[POLLING FIX] No valid metadata extracted for {document_id}")
+                            
                     except Exception as e:
                         logger.error(f"[POLLING FIX] Failed to load metadata file: {e}")
                 
