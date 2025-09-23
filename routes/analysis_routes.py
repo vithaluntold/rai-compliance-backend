@@ -150,13 +150,31 @@ smart_metadata_extractor = SmartMetadataExtractor()
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """Save analysis results to JSON file with defensive GeographicalEntity serialization."""
     try:
+        # CRITICAL FIX: Check if compliance analysis is completed - don't overwrite completed results
+        completion_flag_file = ANALYSIS_RESULTS_DIR / f"{document_id}.completed"
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
+        
+        # If completion flag exists and we're trying to save incomplete results, preserve completed status
+        if completion_flag_file.exists() and results.get("status") != "COMPLETED":
+            logger.warning(f"RACE CONDITION PREVENTED: Not overwriting completed results for {document_id}")
+            # Try to load existing completed results
+            try:
+                if results_path.exists():
+                    with open(results_path, "r", encoding="utf-8") as f:
+                        existing_results = json.load(f)
+                    # Only update if existing results show completion
+                    if existing_results.get("status") == "COMPLETED":
+                        logger.info(f"Preserved completed results for {document_id}")
+                        return
+            except Exception as e:
+                logger.error(f"Failed to check existing results: {e}")
+
         # Create a deep copy and ensure all GeographicalEntity objects are converted to dicts
         serializable_results = _ensure_json_serializable(results)
 
-        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
             json.dump(serializable_results, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved analysis results for document {document_id}")
+        logger.info(f"Saved analysis results for document {document_id} (status: {results.get('status', 'unknown')})")
     except Exception as _e:
         logger.error(f"Error saving analysis results: {str(_e)}")
         raise
