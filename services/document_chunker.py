@@ -90,40 +90,81 @@ class DocumentChunker:
 
                 # Step 3: Use ContextualContentCategorizer for intelligent classification
                 logger.info(f"[NLP] Step 3: Starting categorization with ContextualContentCategorizer")
+                categorized_content = []
+                smart_categorization_success = False
+                
                 try:
                     categorized_content = self.categorizer.categorize_page_texts(all_page_texts, pdf_path)
                     logger.info(f"[NLP] Step 3 SUCCESS: Categorizer returned {len(categorized_content)} categorized pieces")
+                    smart_categorization_success = True
                 except Exception as e:
                     logger.error(f"[NLP] Step 3 FAILED: Categorization error: {e}")
                     logger.error(f"[NLP] Step 3 FAILED: Categorizer type: {type(self.categorizer)}")
                     logger.error(f"[NLP] Step 3 FAILED: Input data sample: {all_page_texts[0] if all_page_texts else 'No pages'}")
                     import traceback
                     logger.error(f"[NLP] Step 3 FAILED: Full traceback: {traceback.format_exc()}")
-                    raise
+                    logger.warning(f"[NLP] Step 3 FALLBACK: Will create basic chunks without smart categorization")
+                    # Don't raise - continue with fallback
                 
-                # Step 4: Use IntelligentChunkAccumulator for smart chunking
-                logger.info(f"[NLP] Step 4: Starting intelligent chunking with IntelligentChunkAccumulator")
-                try:
-                    intelligent_chunks = self.accumulator.create_contextual_chunks(
-                        categorized_content, 
-                        document_id
-                    )
-                    logger.info(f"[NLP] Step 4 SUCCESS: Accumulator created {len(intelligent_chunks)} intelligent chunks")
-                except Exception as e:
-                    logger.error(f"[NLP] Step 4 FAILED: Accumulator error: {e}")
-                    logger.error(f"[NLP] Step 4 FAILED: Accumulator type: {type(self.accumulator)}")
-                    logger.error(f"[NLP] Step 4 FAILED: Input data count: {len(categorized_content) if 'categorized_content' in locals() else 'undefined'}")
-                    import traceback
-                    logger.error(f"[NLP] Step 4 FAILED: Full traceback: {traceback.format_exc()}")
-                    raise
+                # Step 4: Use IntelligentChunkAccumulator for smart chunking (if categorization succeeded)
+                intelligent_chunks = []
+                if smart_categorization_success and categorized_content:
+                    logger.info(f"[NLP] Step 4: Starting intelligent chunking with IntelligentChunkAccumulator")
+                    try:
+                        intelligent_chunks = self.accumulator.create_contextual_chunks(
+                            categorized_content, 
+                            document_id
+                        )
+                        logger.info(f"[NLP] Step 4 SUCCESS: Accumulator created {len(intelligent_chunks)} intelligent chunks")
+                    except Exception as e:
+                        logger.error(f"[NLP] Step 4 FAILED: Accumulator error: {e}")
+                        logger.error(f"[NLP] Step 4 FAILED: Accumulator type: {type(self.accumulator)}")
+                        logger.error(f"[NLP] Step 4 FAILED: Input data count: {len(categorized_content)}")
+                        import traceback
+                        logger.error(f"[NLP] Step 4 FAILED: Full traceback: {traceback.format_exc()}")
+                        logger.warning(f"[NLP] Step 4 FALLBACK: Will create basic chunks without intelligent accumulation")
+                        intelligent_chunks = []
+                else:
+                    logger.warning(f"[NLP] Step 4 SKIPPED: No categorized content available for intelligent chunking")
 
-                # Step 5: Combine metadata chunk with intelligent chunks
+                # Step 5: Combine metadata chunk with intelligent chunks or create basic chunks as fallback
                 logger.info(f"[NLP] Step 5: Combining metadata chunk with intelligent chunks")
-                all_chunks = [metadata_chunk] + intelligent_chunks
                 
-                logger.info(
-                    f"[NLP] SUCCESS: Created {len(all_chunks)} total chunks: 1 metadata + {len(intelligent_chunks)} intelligent chunks from {total_pages} pages"
-                )
+                # Update metadata chunk with smart categorization status
+                metadata_chunk['smart_categorization_status'] = {
+                    'enabled': True,
+                    'categorization_success': smart_categorization_success,
+                    'categorized_pieces': len(categorized_content) if categorized_content else 0,
+                    'intelligent_chunks_created': len(intelligent_chunks) if intelligent_chunks else 0
+                }
+                
+                if intelligent_chunks:
+                    # Use intelligent chunks if available
+                    all_chunks = [metadata_chunk] + intelligent_chunks
+                    logger.info(f"[NLP] SUCCESS: Created {len(all_chunks)} total chunks: 1 metadata + {len(intelligent_chunks)} intelligent chunks from {total_pages} pages")
+                else:
+                    # Fallback: Create basic chunks from page texts when smart categorization fails
+                    logger.warning(f"[NLP] FALLBACK: Creating basic content chunks since smart categorization failed")
+                    basic_chunks = []
+                    for page_data in all_page_texts:
+                        page_num = page_data.get('page_num', 0)
+                        text = page_data.get('text', '')
+                        if text.strip():  # Only create chunks for non-empty pages
+                            basic_chunk = {
+                                'chunk_id': f"{document_id}_page_{page_num}",
+                                'content': text,
+                                'page_num': page_num,
+                                'length': len(text),
+                                'chunk_type': 'basic_content',
+                                'category': 'GENERAL',
+                                'topic': 'DOCUMENT_CONTENT',
+                                'relevance_score': 0.5  # Default relevance for basic chunks
+                            }
+                            basic_chunks.append(basic_chunk)
+                    
+                    all_chunks = [metadata_chunk] + basic_chunks
+                    logger.info(f"[NLP] FALLBACK SUCCESS: Created {len(all_chunks)} total chunks: 1 metadata + {len(basic_chunks)} basic chunks from {total_pages} pages")
+                
                 return all_chunks
 
         except Exception as e:
