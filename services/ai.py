@@ -373,6 +373,18 @@ class AIService:
                         result = self.analyze_chunk(
                             text, question["question"], standard
                         )
+                        
+                        # CRITICAL FIX: Ensure result is a dictionary before unpacking
+                        if not isinstance(result, dict):
+                            logger.error(f"❌ analyze_chunk returned non-dict: {type(result)} - {str(result)[:200]}")
+                            result = {
+                                "status": "N/A",
+                                "confidence": 0.0,
+                                "explanation": f"analyze_chunk returned invalid type: {type(result)}",
+                                "evidence": "",
+                                "suggestion": "Manual review required due to processing error.",
+                            }
+                        
                         model_results.append(
                             {
                                 "id": question["id"],
@@ -696,6 +708,18 @@ class AIService:
             try:
                 # First, try to parse as JSON directly
                 result = json.loads(content)
+                
+                # SAFETY CHECK: Ensure result is a dictionary
+                if not isinstance(result, dict):
+                    logger.error(f"❌ JSON parsing returned non-dict type: {type(result)}, content: {result}")
+                    result = {
+                        "status": "N/A",
+                        "confidence": 0.0,
+                        "explanation": f"Invalid response format received: {type(result)}",
+                        "evidence": "",
+                        "suggestion": "Consider adding explicit disclosure addressing this requirement.",
+                    }
+                    
             except json.JSONDecodeError:
                 # If that fails, try to extract JSON from the text
                 logger.warning(
