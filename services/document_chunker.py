@@ -478,11 +478,17 @@ class DocumentChunker:
                         "status": "PROCESSING"
                     }
                 
-                # Update with metadata extraction completion
+                # Update with metadata extraction completion and smart categorization status
                 results_data.update({
                     "metadata_extraction": "COMPLETED",
                     "metadata_completed_at": datetime.now().isoformat(),
-                    "metadata_file": str(metadata_file)
+                    "metadata_file": str(metadata_file),
+                    "smart_categorization": {
+                        "total_categories": len(set(piece.get('category', 'UNKNOWN') for piece in categorized_content)) if categorized_content else 0,
+                        "content_chunks": len(categorized_content) if categorized_content else 0,
+                        "categorization_complete": smart_categorization_success,
+                        "categories_found": list(set(piece.get('category', 'UNKNOWN') for piece in categorized_content)) if categorized_content else []
+                    }
                 })
                 
                 # Write back to main results file
