@@ -418,17 +418,35 @@ class DocumentChunker:
                 with open(completion_flag_file, 'w', encoding='utf-8') as f:
                     f.write(datetime.now().isoformat())
                 
-                # Update status file to indicate metadata extraction is complete
-                status_file = analysis_results_dir / f"{document_id}_status.json"
-                status_data = {
-                    "document_id": document_id,
-                    "chunking_status": "completed",
-                    "metadata_extraction_status": "completed",
+                # CRITICAL FIX: Update the MAIN results file that frontend polls (not _status.json)
+                main_results_file = analysis_results_dir / f"{document_id}.json"
+                
+                # Read existing results or create new structure
+                try:
+                    if main_results_file.exists():
+                        with open(main_results_file, 'r', encoding='utf-8') as f:
+                            results_data = json.load(f)
+                    else:
+                        results_data = {
+                            "document_id": document_id,
+                            "status": "PROCESSING"
+                        }
+                except Exception:
+                    results_data = {
+                        "document_id": document_id,
+                        "status": "PROCESSING"
+                    }
+                
+                # Update with metadata extraction completion
+                results_data.update({
+                    "metadata_extraction": "COMPLETED",
                     "metadata_completed_at": datetime.now().isoformat(),
                     "metadata_file": str(metadata_file)
-                }
-                with open(status_file, 'w', encoding='utf-8') as f:
-                    json.dump(status_data, f, indent=2, ensure_ascii=False)
+                })
+                
+                # Write back to main results file
+                with open(main_results_file, 'w', encoding='utf-8') as f:
+                    json.dump(results_data, f, indent=2, ensure_ascii=False)
                 
                 logger.info(f"[METADATA] Background metadata extraction completed for {document_id}")
                 logger.info(f"[METADATA] Results saved to {metadata_file}")
