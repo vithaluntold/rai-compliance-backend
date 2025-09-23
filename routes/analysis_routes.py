@@ -2234,6 +2234,7 @@ async def start_metadata_extraction(
 
         # Import and trigger metadata extraction
         from services.smart_metadata_extractor import SmartMetadataExtractor
+        from datetime import datetime
         import asyncio
         import json
 
@@ -2252,15 +2253,43 @@ async def start_metadata_extraction(
                 extractor = SmartMetadataExtractor()
                 metadata = await extractor.extract_metadata_optimized(document_id, chunks)
 
-                # Save results
-                results_file = f"analysis_results/{document_id}.metadata_results.json"
-                with open(results_file, 'w', encoding='utf-8') as f:
+                # Save results to CORRECT filename (consistent with document_chunker.py)
+                metadata_file = f"analysis_results/{document_id}_metadata.json"
+                with open(metadata_file, 'w', encoding='utf-8') as f:
                     json.dump(metadata, f, indent=2, ensure_ascii=False)
 
                 # Mark as completed
                 completion_file = f"analysis_results/{document_id}.metadata_completed"
                 with open(completion_file, 'w') as f:
                     f.write("completed")
+                
+                # CRITICAL: Update main results file (consistent with document_chunker.py fix)
+                main_results_file = f"analysis_results/{document_id}.json"
+                try:
+                    if os.path.exists(main_results_file):
+                        with open(main_results_file, 'r', encoding='utf-8') as f:
+                            results_data = json.load(f)
+                    else:
+                        results_data = {
+                            "document_id": document_id,
+                            "status": "PROCESSING"
+                        }
+                except Exception:
+                    results_data = {
+                        "document_id": document_id,
+                        "status": "PROCESSING"
+                    }
+                
+                # Update with metadata extraction completion
+                results_data.update({
+                    "metadata_extraction": "COMPLETED",
+                    "metadata_completed_at": datetime.now().isoformat(),
+                    "metadata_file": metadata_file
+                })
+                
+                # Write back to main results file
+                with open(main_results_file, 'w', encoding='utf-8') as f:
+                    json.dump(results_data, f, indent=2, ensure_ascii=False)
 
                 logger.info(f"✅ Metadata extraction completed for {document_id}")
 
