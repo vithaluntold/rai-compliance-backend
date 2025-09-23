@@ -391,7 +391,7 @@ class IntelligentChunkAccumulator:
         self, 
         question: str, 
         document_id: str,
-        max_content_length: int = 1000
+        max_content_length: int = 3000  # Increased from 1000 to 3000
     ) -> Dict[str, Any]:
         """
         Accumulate only content that matches the question's categories
@@ -609,6 +609,11 @@ class IntelligentChunkAccumulator:
                 total_length += content_length
             else:
                 break
+        
+        # If no content selected due to length constraints, select at least the top-ranked piece
+        if not selected and scored_pieces:
+            logger.warning(f"No content fit within {max_length} chars, selecting top-ranked piece")
+            selected.append(scored_pieces[0][1])
         
         return selected
     

@@ -539,9 +539,9 @@ class AIService:
                 logger.info(f"✅ AI STEP 2 COMPLETE: Smart categorization components initialized")
                 
                 # Get categorized content - strict mode
-                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content (max length: 800)")
+                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content (max length: 3000)")
                 smart_result = accumulator.accumulate_relevant_content(
-                    question, self.current_document_id, max_content_length=800
+                    question, self.current_document_id, max_content_length=3000
                 )
                 
                 if smart_result['total_pieces'] == 0:
