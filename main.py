@@ -41,10 +41,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"])
-app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
-app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
+# Include consolidated router (all endpoints are now in analysis_routes.py)
+app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
 
 # Include BULLETPROOF V2 routes
 from routes.bulletproof_routes import router_v2
