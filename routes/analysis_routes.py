@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 import random
 import string
-import psutil
 
 from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
@@ -4091,7 +4090,6 @@ async def detailed_health_check():
     """Detailed health check with system metrics"""
     from pathlib import Path
     import os
-    import psutil
     
     # Check critical directories
     critical_dirs = [
@@ -4108,17 +4106,14 @@ async def detailed_health_check():
             "writable": os.access(dir_path, os.W_OK) if dir_path.exists() else False
         }
     
-    # System metrics
-    memory = psutil.virtual_memory()
-    disk = psutil.disk_usage(str(BACKEND_DIR))
-    
+    # System metrics (simplified without psutil)
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
         "system": {
-            "memory_percent": memory.percent,
-            "disk_percent": (disk.used / disk.total) * 100,
-            "available_memory_gb": round(memory.available / (1024**3), 2)
+            "memory_percent": 0,  # Disabled - psutil not available
+            "disk_percent": 0,    # Disabled - psutil not available
+            "available_memory_gb": 0  # Disabled - psutil not available
         },
         "directories": dir_status,
         "services": {
