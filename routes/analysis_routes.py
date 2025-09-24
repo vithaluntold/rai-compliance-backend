@@ -905,15 +905,6 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
 
-@router.get("/analysis/frameworks", response_model=None)
-async def get_frameworks_analysis_alias() -> Union[Dict[str, Any], JSONResponse]:
-    """
-    Alias endpoint for /frameworks to support legacy frontend calls.
-    This endpoint provides the same functionality as /frameworks.
-    """
-    return await get_frameworks()
-
-
 @router.get("/frameworks - debug", response_model=None)
 async def get_frameworks_debug():
     """Debug endpoint to check frameworks loading issues"""
