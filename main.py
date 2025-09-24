@@ -44,9 +44,9 @@ app.add_middleware(
 # Include consolidated router (all endpoints are now in analysis_routes.py)
 app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
 
-# Include BULLETPROOF V2 routes
-from routes.bulletproof_routes import router_v2
-app.include_router(router_v2, prefix="/api/v1", tags=["bulletproof-v2"])
+# Include BULLETPROOF V2 routes - temporarily disabled due to dual_storage dependency
+# from routes.bulletproof_routes import router_v2  
+# app.include_router(router_v2, prefix="/api/v1", tags=["bulletproof-v2"])
 
 # Initialize smart categorization database on startup
 @app.on_event("startup")
@@ -58,15 +58,9 @@ async def startup_event():
         print("✅ CategoryAwareContentStorage database initialized successfully")
         print("🎯 STRICT MODE: Smart categorization system fully operational")
         
-        # Initialize BULLETPROOF V2 database system
-        from database.db_manager import initialize_database
-        from database.dual_storage import setup_legacy_compatibility
-        from routes.analysis_routes import save_analysis_results
-        
-        await initialize_database()
-        setup_legacy_compatibility(save_analysis_results)
-        print("🛡️ BULLETPROOF V2: Database system initialized - ZERO RACE CONDITIONS")
-        print("🔄 DUAL MODE: Legacy compatibility enabled for zero-disruption transition")
+        # Initialize simple file-based system
+        print("� SIMPLE MODE: File-based storage initialized")
+        print("✅ STABLE: Single storage system - no infinite loops")
         
     except Exception as e:
         print(f"❌ CRITICAL ERROR: System initialization failed: {str(e)}")

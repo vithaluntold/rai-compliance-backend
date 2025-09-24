@@ -149,111 +149,24 @@ smart_metadata_extractor = SmartMetadataExtractor()
 
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """
-    BULLETPROOF SAVE: Atomic database + file storage with zero race conditions.
-    
-    This function now uses dual-mode storage:
-    1. PRIMARY: Atomic database transaction (bulletproof)
-    2. BACKUP: Legacy file system (backward compatibility)
-    
-    ELIMINATES ALL RACE CONDITIONS with atomic transactions.
+    SIMPLE FILE SAVE: Direct file storage only, no dual storage complexity.
     """
     try:
-        logger.info(f"🛡️ BULLETPROOF SAVE: Starting atomic save for {document_id}")
-        
-        # Import bulletproof storage (lazy import to avoid circular dependencies)
-        import asyncio
-        from database.dual_storage import save_analysis_atomic
+        logger.info(f"� FILE SAVE: Starting save for {document_id}")
         
         # Create a deep copy and ensure all GeographicalEntity objects are converted to dicts
         serializable_results = _ensure_json_serializable(results)
         
-        # BULLETPROOF ATOMIC SAVE - handles both database and file storage
-        try:
-            # Try to get existing event loop, create new one if needed
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                # If loop is running, create a task for later execution
-                import threading
-                result_container = {}
-                
-                def run_atomic_save():
-                    new_loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(new_loop)
-                    try:
-                        new_loop.run_until_complete(save_analysis_atomic(document_id, serializable_results))
-                        result_container['success'] = True
-                    except Exception as e:
-                        result_container['error'] = str(e)
-                    finally:
-                        new_loop.close()
-                
-                thread = threading.Thread(target=run_atomic_save)
-                thread.start()
-                thread.join(timeout=30)  # 30 second timeout
-                
-                if 'success' in result_container:
-                    logger.info(f"✅ BULLETPROOF SAVE: Atomic save completed for {document_id} (status: {results.get('status', 'unknown')})")
-                elif 'error' in result_container:
-                    raise Exception(result_container['error'])
-                else:
-                    raise Exception("Atomic save timed out")
-            else:
-                # Loop exists but not running, safe to use
-                loop.run_until_complete(save_analysis_atomic(document_id, serializable_results))
-                logger.info(f"✅ BULLETPROOF SAVE: Atomic save completed for {document_id} (status: {results.get('status', 'unknown')})")
-        except RuntimeError:
-            # No event loop, create new one
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                loop.run_until_complete(save_analysis_atomic(document_id, serializable_results))
-                logger.info(f"✅ BULLETPROOF SAVE: Atomic save completed for {document_id} (status: {results.get('status', 'unknown')})")
-            finally:
-                loop.close()
-                    
-    except Exception as _e:
-        logger.error(f"❌ BULLETPROOF SAVE: Atomic save failed for {document_id}: {str(_e)}")
-        
-        # EMERGENCY FALLBACK: Use old file-only save if bulletproof fails
-        try:
-            logger.warning(f"🚨 FALLBACK: Using legacy file save for {document_id}")
-            _legacy_file_save(document_id, _ensure_json_serializable(results))
-            logger.info(f"✅ FALLBACK: Legacy file save completed for {document_id}")
-        except Exception as fallback_error:
-            logger.error(f"❌ FALLBACK: Even legacy save failed for {document_id}: {str(fallback_error)}")
-            raise fallback_error
-
-
-def _legacy_file_save(document_id: str, results: Dict[str, Any]) -> None:
-    """
-    LEGACY FILE SAVE: Original file-based save for emergency fallback only.
-    This is the old implementation kept for backward compatibility.
-    """
-    try:
-        # CRITICAL FIX: Check if compliance analysis is completed - don't overwrite completed results
-        completion_flag_file = ANALYSIS_RESULTS_DIR / f"{document_id}.completed"
+        # Simple file save
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         
-        # If completion flag exists and we're trying to save incomplete results, preserve completed status
-        if completion_flag_file.exists() and results.get("status") != "COMPLETED":
-            logger.warning(f"RACE CONDITION PREVENTED: Not overwriting completed results for {document_id}")
-            # Try to load existing completed results
-            try:
-                if results_path.exists():
-                    with open(results_path, "r", encoding="utf-8") as f:
-                        existing_results = json.load(f)
-                    # Only update if existing results show completion
-                    if existing_results.get("status") == "COMPLETED":
-                        logger.info(f"Preserved completed results for {document_id}")
-                        return
-            except Exception as e:
-                logger.error(f"Failed to check existing results: {e}")
-
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
-        logger.info(f"Legacy save completed for document {document_id} (status: {results.get('status', 'unknown')})")
-    except Exception as _e:
-        logger.error(f"Legacy save error: {str(_e)}")
+            json.dump(serializable_results, f, indent=2, ensure_ascii=False)
+            
+        logger.info(f"✅ FILE SAVE: Save completed for {document_id} (status: {results.get('status', 'unknown')})")
+        
+    except Exception as e:
+        logger.error(f"❌ FILE SAVE: Save failed for {document_id}: {str(e)}")
         raise
 
 
@@ -1740,45 +1653,8 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
     logger.info(f"�️ BULLETPROOF GET /documents/{document_id} - Starting bulletproof request")
     
     try:
-        # BULLETPROOF READ: Try database first, then files
-        from database.dual_storage import get_analysis_atomic
-        
-        result = await get_analysis_atomic(document_id)
-        
-        if result:
-            logger.info(f"✅ BULLETPROOF READ: Database success for {document_id}")
-            
-            # Build bulletproof response from database
-            response = {
-                "document_id": document_id,
-                "status": result.get("status", "PENDING"),
-                "metadata_extraction": result.get("metadata_extraction", "PENDING"),
-                "compliance_analysis": result.get("compliance_analysis", "PENDING"),
-                "processing_mode": result.get("processing_mode", "smart"),
-                "framework": result.get("framework"),
-                "standards": result.get("standards", []),
-                "metadata": result.get("metadata", {}),
-                "sections": result.get("sections", []),
-                "message": result.get("message", "Analysis in progress"),
-                "special_instructions": result.get("special_instructions", ""),
-                "extensive_search": result.get("extensive_search", False),
-                "performance_metrics": result.get("performance_metrics", {}),
-                "failed_standards": result.get("failed_standards", []),
-                "created_at": result.get("created_at"),
-                "updated_at": result.get("updated_at"),
-                "completed_at": result.get("completed_at"),
-                "bulletproof": True,  # Indicates bulletproof system was used
-                "data_source": "database_primary"
-            }
-            
-            # Add error information if present
-            if result.get("error_message"):
-                response["error"] = result["error_message"]
-            
-            return response
-        
-        # FALLBACK: Try legacy file system
-        logger.info(f"📁 FALLBACK: Trying legacy file system for {document_id}")
+        # SIMPLE FILE READ: Use legacy file system only
+        logger.info(f"📁 FILE READ: Using file system for {document_id}")
         return await _get_document_status_legacy(document_id)
         
     except Exception as e:
@@ -1977,21 +1853,31 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
     logger.info(f"🛡️ BULLETPROOF GET /documents/{document_id}/results - Starting bulletproof request")
     
     try:
-        # BULLETPROOF READ: Try database first, then files
-        from database.dual_storage import get_analysis_atomic
+        # SIMPLE FILE READ: Get results from file
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         
-        result = await get_analysis_atomic(document_id)
+        if not results_path.exists():
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "error": "Document not found",
+                    "message": f"No results found for document {document_id}",
+                    "document_id": document_id
+                }
+            )
         
-        if result:
-            logger.info(f"✅ BULLETPROOF READ: Database success for {document_id}")
+        with open(results_path, "r", encoding="utf-8") as f:
+            result = json.load(f)
             
-            # Build bulletproof response from database
-            return {
-                "status": result.get("status", "unknown"),
-                "document_id": document_id,
-                "metadata": result.get("metadata", {}),
-                "sections": result.get("sections", []),
-                "message": (
+        logger.info(f"✅ FILE READ: File success for {document_id}")
+        
+        # Build response from file data
+        return {
+            "status": result.get("status", "unknown"),
+            "document_id": document_id,
+            "metadata": result.get("metadata", {}),
+            "sections": result.get("sections", []),
+            "message": (
                     "Document analysis completed"
                     if result.get("status") == "completed"
                     else "Document analysis in progress"
@@ -2078,10 +1964,21 @@ async def update_compliance_item(
     logger.info(f"🛡️ BULLETPROOF PATCH /documents/{document_id}/items/{item_id} - Starting bulletproof update")
     
     try:
-        # BULLETPROOF READ: Get current results from database
-        from database.dual_storage import get_analysis_atomic, save_analysis_atomic
+        # SIMPLE FILE READ: Get current results from file
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         
-        results = await get_analysis_atomic(document_id)
+        if not results_path.exists():
+            return JSONResponse(
+                status_code=404,
+                content={
+                    "error": "Document not found",
+                    "message": f"No results found for document {document_id}",
+                    "document_id": document_id
+                }
+            )
+        
+        with open(results_path, "r", encoding="utf-8") as f:
+            results = json.load(f)
         
         if not results:
             # FALLBACK: Try legacy file system
@@ -2121,16 +2018,15 @@ async def update_compliance_item(
                 },
             )
 
-        # BULLETPROOF SAVE: Atomic save to database + file
-        logger.info(f"💾 BULLETPROOF SAVE: Saving updated compliance item for {document_id}")
-        await save_analysis_atomic(document_id, results)
+        # SIMPLE FILE SAVE: Save updated results to file
+        logger.info(f"💾 FILE SAVE: Saving updated compliance item for {document_id}")
+        save_analysis_results(document_id, results)
         
-        logger.info(f"✅ BULLETPROOF UPDATE: Successfully updated compliance item {item_id} for {document_id}")
+        logger.info(f"✅ FILE UPDATE: Successfully updated compliance item {item_id} for {document_id}")
         return JSONResponse(
             status_code=200, 
             content={
                 "message": "Item updated successfully",
-                "bulletproof": True,
                 "item_id": item_id,
                 "document_id": document_id
             }
