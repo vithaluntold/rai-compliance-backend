@@ -20,6 +20,9 @@ tiktoken>=0.5.0
 aiofiles>=23.0.0
 httpx>=0.25.0
 
+# BULLETPROOF DATABASE DEPENDENCIES
+aiosqlite>=0.19.0
+
 # NLP dependencies for smart categorization - Python 3.11 optimized with guaranteed wheels
 spacy==3.7.2
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl

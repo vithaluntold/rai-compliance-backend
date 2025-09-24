@@ -46,19 +46,34 @@ app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"]
 app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
 app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
 
+# Include BULLETPROOF V2 routes
+from routes.bulletproof_routes import router_v2
+app.include_router(router_v2, prefix="/api/v1", tags=["bulletproof-v2"])
+
 # Initialize smart categorization database on startup
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database and services on startup - STRICT MODE"""
+    """Initialize database and services on startup - STRICT MODE + BULLETPROOF V2"""
     try:
         from services.intelligent_chunk_accumulator import CategoryAwareContentStorage
         storage = CategoryAwareContentStorage()
         print("✅ CategoryAwareContentStorage database initialized successfully")
         print("🎯 STRICT MODE: Smart categorization system fully operational")
+        
+        # Initialize BULLETPROOF V2 database system
+        from database.db_manager import initialize_database
+        from database.dual_storage import setup_legacy_compatibility
+        from routes.analysis_routes import save_analysis_results
+        
+        await initialize_database()
+        setup_legacy_compatibility(save_analysis_results)
+        print("🛡️ BULLETPROOF V2: Database system initialized - ZERO RACE CONDITIONS")
+        print("🔄 DUAL MODE: Legacy compatibility enabled for zero-disruption transition")
+        
     except Exception as e:
-        print(f"❌ CRITICAL ERROR: Smart categorization system failed to initialize: {str(e)}")
-        print("🚫 STRICT MODE: System will not operate without smart categorization")
-        raise RuntimeError(f"Smart categorization system initialization failed: {str(e)}")
+        print(f"❌ CRITICAL ERROR: System initialization failed: {str(e)}")
+        print("🚫 STRICT MODE: System will not operate without full initialization")
+        raise RuntimeError(f"System initialization failed: {str(e)}")
 
 # Global storage for documents and sessions
 documents_db: Dict[str, Dict] = {}

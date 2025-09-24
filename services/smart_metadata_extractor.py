@@ -187,13 +187,13 @@ class SmartMetadataExtractor:
                 if not demographics or len(countries_found) > len(
                         demographics.split(', ')):  # Use fallback if we found more countries
                     demographics = fallback_demographics
-                    demo_context = "Pattern matched from document content"
-                    logger.info(f"📍 Pattern - based demographics extraction found: {demographics}")
+                    context_source = "Pattern matched from document content"
+                    logger.info(f"📍 Pattern-based demographics extraction found: {demographics}")
 
         if demographics:
             results["operational_demographics"]["value"] = demographics
             results["operational_demographics"]["confidence"] = 0.9
-            results["operational_demographics"]["context"] = demo_context
+            results["operational_demographics"]["context"] = context_source
 
         # Extract the 4th field - Financial Statements Type using simple pattern matching
         logger.info("📊 Extracting financial statements type using pattern matching")

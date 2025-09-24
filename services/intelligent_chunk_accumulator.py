@@ -688,7 +688,7 @@ def test_intelligent_accumulation():
         "Does the entity recognize impairment losses on financial instruments?"
     ]
     
-    document_id = "test_doc_001"
+    sample_document_id = "sample_doc_001"
     
     for i, question in enumerate(test_questions):
         print(f"\n--- Test Question {i+1} ---")
@@ -696,7 +696,7 @@ def test_intelligent_accumulation():
         
         try:
             # Accumulate relevant content
-            result = accumulator.accumulate_relevant_content(question, document_id, max_content_length=800)
+            result = accumulator.accumulate_relevant_content(question, sample_document_id, max_content_length=800)
             
             print(f"Category Match: {result['category_match']}")
             print(f"Total Pieces: {result['total_pieces']}")
