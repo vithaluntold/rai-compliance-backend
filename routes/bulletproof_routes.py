@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 router_v2 = APIRouter(prefix="/v2", tags=["bulletproof-analysis"])
 
 @router_v2.get("/documents/{document_id}", response_model=None)
-async def get_document_status_v2(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
+async def get_document_status_v2(document_id: str):
     """
     BULLETPROOF: Get document status from database with zero race conditions
     
@@ -98,7 +98,7 @@ async def get_document_status_v2(document_id: str) -> Union[Dict[str, Any], JSON
         )
 
 @router_v2.get("/documents/{document_id}/results", response_model=None)
-async def get_document_results_v2(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
+async def get_document_results_v2(document_id: str):
     """
     BULLETPROOF: Get document results from database with guaranteed consistency
     """
@@ -210,8 +210,8 @@ async def verify_data_consistency_v2(document_id: str) -> JSONResponse:
             }
         )
 
-@router_v2.get("/documents/{document_id}/progress")  
-async def get_analysis_progress_v2(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
+@router_v2.get("/documents/{document_id}/progress", response_model=None)  
+async def get_analysis_progress_v2(document_id: str):
     """
     BULLETPROOF: Get real-time analysis progress from database
     """
