@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import PyPDF2
-# Force deployment trigger - PyCryptodome support added + hardcoded frameworks endpoint removed + Azure deployment name fixed
+# Force deployment trigger - Framework selection fix deployment - September 24, 2025
 from io import BytesIO
 
 # Import consolidated router only
