@@ -134,8 +134,8 @@ class SmartMetadataExtractor:
             text, "operational_demographics", ["operations", "subsidiaries", "countries", "geography", "locations", "jurisdictions", "UAE", "Egypt", "England", "Wales", "United Arab Emirates", "incorporated", "Dubai", "Abu Dhabi", "presence", "offices"]
         )
 
-        # Initialize context_source to avoid UnboundLocalError
-        context_source = demo_context if demo_context else "AI extraction"
+        # Initialize context_source to avoid UnboundLocalError - ensure it's always defined
+        context_source = demo_context if demo_context else "AI extraction context"
 
         # Fallback pattern - based approach if AI fails or incomplete
         if not demographics or len(demographics.split(', ')) < 2:  # Use fallback if we found fewer than 2 countries
@@ -196,7 +196,12 @@ class SmartMetadataExtractor:
         if demographics:
             results["operational_demographics"]["value"] = demographics
             results["operational_demographics"]["confidence"] = 0.9
-            results["operational_demographics"]["context"] = context_source
+            # Ensure context_source is defined before assignment
+            if 'context_source' in locals():
+                results["operational_demographics"]["context"] = context_source
+            else:
+                logger.error("❌ context_source not defined, using fallback")
+                results["operational_demographics"]["context"] = "Fallback context due to error"
 
         # Extract the 4th field - Financial Statements Type using simple pattern matching
         logger.info("📊 Extracting financial statements type using pattern matching")
