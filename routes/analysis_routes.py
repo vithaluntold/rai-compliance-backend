@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
+# NO PSUTIL IMPORT - DEPLOYMENT FIX
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -126,13 +127,7 @@ for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR]:
 router = APIRouter()
 
 # Initialize services
-AZURE_OPENAI_API_KEY = os.getenv(
-    "AZURE_OPENAI_API_KEY",
-    (
-        "Dqlg5AKLmgh4d7riA5lcJc9NTygtQgTskHZ7UQ6ZFgm9m6cDoiNEJQQJ99BEACHYHv6XJ3w3"
-        "AAAAACOG1eeM"
-    ),
-)
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv(
     "AZURE_OPENAI_ENDPOINT",
     "https://vitha-maxu94mf-eastus2.cognitiveservices.azure.com/",

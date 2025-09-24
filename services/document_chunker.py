@@ -84,6 +84,27 @@ class DocumentChunker:
             logger.error(f"[ERROR] Failed to chunk PDF: {e}")
             return []
 
+    def extract_text_from_pdf(self, pdf_path: str) -> str:
+        """Extract raw text from PDF for metadata processing."""
+        logger.info(f"[DEBUG] Extracting text from PDF: {pdf_path}")
+        full_text = ""
+        
+        try:
+            with fitz.open(pdf_path) as doc:
+                for page_num in range(len(doc)):
+                    page = doc[page_num]
+                    text = page.get_text().strip()  # type: ignore[attr-defined]
+                    if text:
+                        cleaned_text = self._clean_financial_headers(text)
+                        full_text += cleaned_text + "\n"
+            
+            logger.info(f"[DEBUG] Extracted {len(full_text)} characters from PDF")
+            return full_text.strip()
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Failed to extract text from PDF: {e}")
+            return ""
+
     def chunk_docx(
         self, docx_path: str, document_id: Optional[str] = None
     ) -> List[Dict[str, Any]]:
@@ -209,3 +230,11 @@ class DocumentChunker:
 
 # Global instance
 document_chunker = DocumentChunker(min_chunk_length=30)
+
+
+def extract_text_from_pdf(pdf_path: str) -> str:
+    """
+    Standalone function to extract raw text from PDF for metadata processing.
+    Uses the global document_chunker instance.
+    """
+    return document_chunker.extract_text_from_pdf(pdf_path)

@@ -87,12 +87,9 @@ def load_checklist(
                             continue
 
                     if checklist:
+                        sections_count = len(checklist.get('sections', []))
                         logger.info(
-                            f"Successfully loaded checklist with {
-                                len(
-                                    checklist.get(
-                                        'sections',
-                                        []))} sections"
+                            f"Successfully loaded checklist with {sections_count} sections"
                         )
                         return checklist
                 except Exception as e:
@@ -260,8 +257,7 @@ def get_available_frameworks() -> dict:
                     continue
                 except Exception as e:
                     logger.warning(
-                        f"Error reading frameworks file with {encoding} encoding: {
-                            str(e)}"
+                        f"Error reading frameworks file with {encoding} encoding: {str(e)}"
                     )
                     continue
     except Exception as e:
@@ -293,10 +289,9 @@ def get_available_frameworks() -> dict:
         logger.warning(f"Invalid frameworks data structure in {frameworks_file}")
         return get_default_frameworks()
 
+    frameworks_count = len(frameworks_data['frameworks'])
     logger.info(
-        f"Successfully loaded frameworks data with {
-            len(
-                frameworks_data['frameworks'])} frameworks"
+        f"Successfully loaded frameworks data with {frameworks_count} frameworks"
     )
     # Remove filtering: return all frameworks as loaded
     return frameworks_data

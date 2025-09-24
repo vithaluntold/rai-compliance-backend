@@ -220,9 +220,7 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             sleep_time = max(backoff_time, remaining_window)
 
             logger.warning(
-                f"Rate limit would be exceeded. Backing off for {
-                    sleep_time:.2f} seconds (retry {
-                    retry_count + 1}/{MAX_RETRIES})"
+                f"Rate limit would be exceeded. Backing off for {sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
             )
             time.sleep(sleep_time)
 
@@ -325,8 +323,7 @@ class AIService:
                     "Invalid checklist format: 'sections' key must be a list"
                 )
             logger.info(
-                f"Loaded checklist with {
-                    len(sections)} sections for {framework}/{standard}"
+                f"Loaded checklist with {len(sections)} sections for {framework}/{standard}"
             )
             results = {
                 "document_id": document_id,
@@ -495,8 +492,7 @@ class AIService:
             # Check for duplicate questions
             if check_duplicate_question(question, self.current_document_id):
                 logger.warning(
-                    f"Skipping duplicate question for document {
-                        self.current_document_id}"
+                    f"Skipping duplicate question for document {self.current_document_id}"
                 )
                 return {
                     "status": "N/A",
@@ -550,16 +546,14 @@ class AIService:
                         ),
                     )
                     enhanced_evidence = enhanced_analysis
+                    quality_score = enhanced_analysis.get(
+                        'evidence_quality_assessment', {}).get('overall_quality', 0)
                     logger.info(
-                        f"Intelligent analysis completed with quality score: {
-                            enhanced_analysis.get(
-                                'evidence_quality_assessment', {}).get(
-                                'overall_quality', 0)}"
+                        f"Intelligent analysis completed with quality score: {quality_score}"
                     )
                 except Exception as e:
                     logger.warning(
-                        f"Intelligent document analysis failed, falling back to standard method: {
-                            str(e)}"
+                        f"Intelligent document analysis failed, falling back to standard method: {str(e)}"
                     )
                     enhanced_evidence = None
 
@@ -579,10 +573,9 @@ class AIService:
                 evidence_quality = enhanced_evidence.get(
                     "evidence_quality_assessment", {}
                 )
+                evidence_source = evidence_quality.get('evidence_source', 'Unknown')
                 logger.info(
-                    f"Using enhanced evidence from: {
-                        evidence_quality.get(
-                            'evidence_source', 'Unknown')}"
+                    f"Using enhanced evidence from: {evidence_source}"
                 )
             else:
                 context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
@@ -625,8 +618,7 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE ** (api_retry + 1)
                             logger.warning(
-                                f"Rate limit hit, retrying in {backoff_time} seconds (attempt {
-                                    api_retry + 1}/{max_api_retries})"
+                                f"Rate limit hit, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -647,8 +639,7 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE**api_retry
                             logger.warning(
-                                f"Connection error, retrying in {backoff_time} seconds (attempt {
-                                    api_retry + 1}/{max_api_retries})"
+                                f"Connection error, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -721,9 +712,7 @@ class AIService:
             except json.JSONDecodeError:
                 # If that fails, try to extract JSON from the text
                 logger.warning(
-                    f"Response is not valid JSON, attempting to extract structured data: {
-                        content[
-                            :100]}..."
+                    f"Response is not valid JSON, attempting to extract structured data: {content[:100]}..."
                 )
 
                 # Extract using regex-like approach for key fields
@@ -918,14 +907,10 @@ class AIService:
                                               'N/A')[:150]}{'...' if len(str(result.get('explanation',
                                                                                         ''))) > 150 else ''}"
             )
+            evidence = result.get('evidence', [])
+            evidence_count = len(evidence) if isinstance(evidence, list) else 1
             logger.info(
-                f"   Evidence Count: {
-                    len(
-                        result.get(
-                            'evidence',
-                            [])) if isinstance(
-                        result.get('evidence'),
-                        list) else 1}"
+                f"   Evidence Count: {evidence_count}"
             )
             if result.get("content_analysis"):
                 logger.info(
@@ -951,11 +936,9 @@ class AIService:
                                                                                            ''))) > 100 else ''}"
                 )
             if enhanced_evidence:
+                quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
                 logger.info(
-                    f"   Enhanced Analysis: Quality Score {
-                        result.get(
-                            'enhanced_analysis', {}).get(
-                            'evidence_quality_score', 0)}/100"
+                    f"   Enhanced Analysis: Quality Score {quality_score}/100"
                 )
             logger.info("=" * 80)
 
@@ -1319,10 +1302,9 @@ class AIService:
 
                     # Ensure result is a dictionary before unpacking
                     if not isinstance(result, dict):
+                        item_id = item.get('id')
                         logger.error(
-                            f"Invalid result type for item {
-                                item.get('id')}: {
-                                type(result)}"
+                            f"Invalid result type for item {item_id}: {type(result)}"
                         )
                         continue
 

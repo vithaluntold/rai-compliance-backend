@@ -1,9 +1,20 @@
-"""AUDRIC API Routes"""
+"""AUDRIC API Routes - Consolidated"""
 
-from routes.analysis_routes import router as analysis_router
-from routes.documents_routes import router as documents_router
-from routes.sessions_routes import router as sessions_router
+# Import the consolidated router that contains all endpoints
+from routes.analysis_routes import router as api_router
 
-# from routes.checklist_routes import router as checklist_router
+# Export all routers for compatibility
+analysis_router = api_router  # Main consolidated router
+documents_router = api_router  # Same router, different alias
+sessions_router = api_router   # Same router, different alias
+checklist_router = api_router  # Same router, different alias
+health_router = api_router     # Same router, different alias
 
-__all__ = ["analysis_router", "documents_router", "sessions_router"]  # , 'checklist_router']
+__all__ = [
+    "api_router", 
+    "analysis_router", 
+    "documents_router", 
+    "sessions_router",
+    "checklist_router",
+    "health_router"
+]

@@ -102,7 +102,7 @@ class VectorStore:
         self.index_dir.mkdir(parents=True, exist_ok=True)
         self.export_dir = Path("exported_dataset")
         self.export_dir.mkdir(parents=True, exist_ok=True)
-        self.dimension = 3072  # text-embedding-3-large dimension
+        self.dimension = 1536  # text-embedding-ada-002 dimension
         self.executor = ThreadPoolExecutor(max_workers=NUM_WORKERS)
         logger.info(f"VectorStore (Azure) initialized with {NUM_WORKERS} workers")
 
@@ -259,7 +259,7 @@ class VectorStore:
     def delete_index(self, document_id: str) -> None:
         """Delete index files for a document."""
         index_path = self.index_dir / f"{document_id}_index.faiss"
-        chunks_path = self.index_dir / f"{document_id}_chunks.pkl"
+        chunks_path = self.index_dir / f"{document_id}_chunks.json"
         embeddings_path = self.index_dir / f"{document_id}_embeddings.npy"
         export_path = self.export_dir / f"{document_id}_dataset.json"
 

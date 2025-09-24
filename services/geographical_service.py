@@ -601,12 +601,8 @@ class GeographicalDetectionService:
             region_info = f" ({entity.region})" if entity.region else ""
 
             formatted_parts.append(
-                f"{
-                    entity.name}{region_info} [{
-                    entity.type.upper()}, {confidence_level} confidence: "
-                f"accuracy={
-                    entity.accuracy:.2f}, completeness={
-                    entity.completeness:.2f}]"
+                f"{entity.name}{region_info} [{entity.type.upper()}, {confidence_level} confidence: "
+                f"accuracy={entity.accuracy:.2f}, completeness={entity.completeness:.2f}]"
             )
 
         return "; ".join(formatted_parts)

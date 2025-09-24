@@ -170,8 +170,7 @@ class ProgressTracker:
             self._active_analyses[document_id] = progress
             self._save_progress(document_id, progress)
             logger.info(
-                f"Started progress tracking for {document_id} with {
-                    len(standards)} standards"
+                f"Started progress tracking for {document_id} with {len(standards)} standards"
             )
 
     def start_standard(
