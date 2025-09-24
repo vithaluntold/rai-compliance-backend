@@ -8,8 +8,8 @@ import PyPDF2
 # Force deployment trigger - PyCryptodome support added + hardcoded frameworks endpoint removed + Azure deployment name fixed
 from io import BytesIO
 
-# Import routers
-from routes import analysis_router, documents_router, sessions_router
+# Import consolidated router only
+from routes.analysis_routes import router as analysis_router
 
 # Initialize FastAPI app
 app = FastAPI(
