@@ -44,9 +44,9 @@ app.add_middleware(
 # Include consolidated router (all endpoints are now in analysis_routes.py)
 app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
 
-# Include BULLETPROOF V2 routes - temporarily disabled due to FastAPI type issues
-# from routes.bulletproof_routes import router_v2
-# app.include_router(router_v2, prefix="/api/v1", tags=["bulletproof-v2"])
+# Include BULLETPROOF V2 routes
+from routes.bulletproof_routes import router_v2
+app.include_router(router_v2, prefix="/api/v1", tags=["bulletproof-v2"])
 
 # Initialize smart categorization database on startup
 @app.on_event("startup")
