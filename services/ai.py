@@ -867,26 +867,15 @@ class AIService:
                 )
 
             # Add enhanced evidence metadata if available
-            if enhanced_evidence:
+            # CRITICAL FIX: enhanced_evidence is a string, not a dict - skip metadata extraction
+            if enhanced_evidence and isinstance(enhanced_evidence, str):
                 result["enhanced_analysis"] = {
-                    "evidence_quality_score": enhanced_evidence.get("evidence_quality_assessment", {}).get(
-                        "overall_quality", 0
-                    ),
-                    "confidence_level": enhanced_evidence.get(
-                        "evidence_quality_assessment", {}
-                    ).get("confidence_level", 0.0),
-                    "source_type": enhanced_evidence.get(
-                        "evidence_quality_assessment", {}
-                    ).get("source_type", "unknown"),
-                    "is_policy_based": enhanced_evidence.get(
-                        "evidence_quality_assessment", {}
-                    ).get("is_policy_based", True),
-                    "evidence_source": enhanced_evidence.get(
-                        "evidence_quality_assessment", {}
-                    ).get("evidence_source", "Unknown"),
-                    "recommendation": enhanced_evidence.get("analysis_summary", {}).get(
-                        "recommendation", "Manual review recommended"
-                    ),
+                    "evidence_quality_score": 0.0,
+                    "confidence_level": 0.0,
+                    "source_type": "smart_categorization",
+                    "is_policy_based": True,
+                    "evidence_source": "Smart Categorization System",
+                    "recommendation": "Manual review recommended",
                 }
 
             # Smart categorization mode doesn't use vector search, so no page information available
