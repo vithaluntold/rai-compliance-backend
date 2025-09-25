@@ -4516,3 +4516,67 @@ async def debug_list_files():
         
     except Exception as e:
         return {"error": str(e), "cwd": os.getcwd()}
+
+
+@router.get("/debug/storage")
+async def debug_storage_check():
+    """
+    DEBUG ENDPOINT: Check storage directories and recent files
+    """
+    try:
+        import os
+        from pathlib import Path
+        import time
+        
+        cwd = os.getcwd()
+        
+        # Check analysis_results
+        analysis_dir = Path(cwd) / "analysis_results"
+        uploads_dir = Path(cwd) / "uploads"
+        
+        result = {
+            "working_directory": cwd,
+            "analysis_results": {
+                "path": str(analysis_dir),
+                "exists": analysis_dir.exists(),
+                "files": [],
+                "file_count": 0
+            },
+            "uploads": {
+                "path": str(uploads_dir), 
+                "exists": uploads_dir.exists(),
+                "files": [],
+                "file_count": 0
+            }
+        }
+        
+        # List analysis results files
+        if analysis_dir.exists():
+            files = list(analysis_dir.iterdir())
+            result["analysis_results"]["files"] = [
+                {
+                    "name": f.name,
+                    "size": f.stat().st_size if f.is_file() else 0,
+                    "modified": time.ctime(f.stat().st_mtime) if f.exists() else "unknown"
+                } 
+                for f in files if f.is_file()
+            ]
+            result["analysis_results"]["file_count"] = len(result["analysis_results"]["files"])
+        
+        # List uploads files
+        if uploads_dir.exists():
+            files = list(uploads_dir.iterdir())
+            result["uploads"]["files"] = [
+                {
+                    "name": f.name,
+                    "size": f.stat().st_size if f.is_file() else 0,
+                    "modified": time.ctime(f.stat().st_mtime) if f.exists() else "unknown"
+                }
+                for f in files if f.is_file()
+            ]
+            result["uploads"]["file_count"] = len(result["uploads"]["files"])
+            
+        return result
+        
+    except Exception as e:
+        return {"error": str(e), "working_directory": os.getcwd()}
