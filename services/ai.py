@@ -356,9 +356,9 @@ class AIService:
             }
             try:
                 model_section = next(
-                    (s for s in sections if s.get("section") == "model_choice"), None
+                    (s for s in sections if isinstance(s, dict) and s.get("section") == "model_choice"), None
                 )
-                if not model_section:
+                if not model_section or not isinstance(model_section, dict):
                     logger.info(
                         f"No model choice section found in {framework}/{standard} checklist, processing all sections"
                     )
@@ -367,6 +367,11 @@ class AIService:
                     model_questions = model_section.get("items", [])
                     model_results = []
                     for question in model_questions:
+                        # SAFETY: Skip if question is not a dict
+                        if not isinstance(question, dict):
+                            logger.warning(f"Skipping invalid question format: {question}")
+                            continue
+                            
                         self.current_document_id = (
                             document_id  # Ensure it's set before each call
                         )
@@ -387,8 +392,8 @@ class AIService:
                         
                         model_results.append(
                             {
-                                "id": question["id"],
-                                "question": question["question"],
+                                "id": question.get("id", "unknown"),
+                                "question": question.get("question", ""),
                                 "reference": question.get("reference", ""),
                                 **result,
                             }
@@ -985,6 +990,16 @@ class AIService:
                     "confidence": 0.0,
                     "adequacy": "Inadequate"
                 }
+            
+            # SAFETY: Validate question is a dict
+            if not isinstance(question, dict):
+                return {
+                    "status": "Error",
+                    "explanation": f"Invalid question format: expected dict, got {type(question)}",
+                    "evidence": "",
+                    "confidence": 0.0,
+                    "adequacy": "Inadequate"
+                }
 
             # Extract question text and reference
             question_text = question.get("question", "")
@@ -1069,6 +1084,16 @@ class AIService:
                 return {
                     "status": "Error",
                     "explanation": "Missing document ID or question",
+                    "evidence": "",
+                    "confidence": 0.0,
+                    "adequacy": "Inadequate"
+                }
+            
+            # SAFETY: Validate question is a dict (second instance)
+            if not isinstance(question, dict):
+                return {
+                    "status": "Error",
+                    "explanation": f"Invalid question format: expected dict, got {type(question)}",
                     "evidence": "",
                     "confidence": 0.0,
                     "adequacy": "Inadequate"
@@ -1176,10 +1201,10 @@ class AIService:
                     document_id, question_text, reference, vector_index_exists
                 )
 
-                # Use JSON response format for checklist items - TEMPORARILY DISABLED FOR TESTING
+                # Use JSON response format for checklist items
                 response = self.openai_client.chat.completions.create(
                     model=self.deployment_name,
-                    # response_format={"type": "json_object"},  # TEMPORARILY COMMENTED OUT
+                    response_format={"type": "json_object"},  # FIXED: Re-enabled JSON format
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt},
@@ -1187,19 +1212,27 @@ class AIService:
                     max_tokens=800,
                 )
 
-                # Parse JSON response
+                # Parse JSON response with proper error handling
                 content = response.choices[0].message.content
-                result = json.loads(content) if content else {}
+                try:
+                    result = json.loads(content) if content else {}
+                    # Ensure result is a dictionary
+                    if not isinstance(result, dict):
+                        logger.error(f"AI returned non-dict JSON: {type(result)}, content: {result}")
+                        result = {}
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to parse AI response as JSON: {content[:200]}... Error: {e}")
+                    result = {}
 
                 # Validate and sanitize result
                 if not result:
-                    raise ValueError("Empty response from AI")
+                    raise ValueError("Empty or invalid response from AI")
 
-                # Ensure required fields
-                result["status"] = result.get("status", "Not found")
-                result["explanation"] = result.get("explanation", "")
-                result["evidence"] = result.get("evidence", "")
-                result["confidence"] = float(result.get("confidence", 0.0))
+                # Ensure required fields with safe access
+                result["status"] = result.get("status", "Not found") if isinstance(result, dict) else "Not found"
+                result["explanation"] = result.get("explanation", "") if isinstance(result, dict) else ""
+                result["evidence"] = result.get("evidence", "") if isinstance(result, dict) else ""
+                result["confidence"] = float(result.get("confidence", 0.0)) if isinstance(result, dict) else 0.0
 
                 # Adjust confidence if no vector index
                 if not vector_index_exists and result["confidence"] > 0.5:
@@ -1236,6 +1269,16 @@ class AIService:
     ) -> Dict[str, Any]:
         """Process a single section of the checklist (async)."""
         try:
+            # SAFETY: Validate section is a dict
+            if not isinstance(section, dict):
+                logger.error(f"Invalid section format: expected dict, got {type(section)}")
+                return {
+                    "section": "unknown",
+                    "title": "Invalid Section",
+                    "items": [],
+                    "error": f"Invalid section format: {type(section)}"
+                }
+                
             if document_id:
                 self.current_document_id = (
                     document_id  # Ensure it's set for every section
@@ -1262,6 +1305,11 @@ class AIService:
                 # async_semaphore = get_async_rate_semaphore()
 
                 async def process_item_no_limits(item):
+                    # SAFETY: Skip if item is not a dict
+                    if not isinstance(item, dict):
+                        logger.warning(f"Skipping invalid item format: {item}")
+                        return None
+                        
                     # NO SEMAPHORE - Process immediately without rate limiting
                     # Mark question as processing in progress tracker
                     if hasattr(self, "progress_tracker") and self.progress_tracker:
@@ -1287,6 +1335,12 @@ class AIService:
                 batch_results = await asyncio.gather(*tasks, return_exceptions=True)
                 for idx, result in enumerate(batch_results):
                     item = batch[idx]
+                    
+                    # SAFETY: Skip if item is not a dict
+                    if not isinstance(item, dict):
+                        logger.warning(f"Skipping invalid item in batch: {item}")
+                        continue
+                        
                     if isinstance(result, Exception):
                         logger.error(
                             f"Error processing item {item.get('id')}: {str(result)}"
@@ -1300,6 +1354,10 @@ class AIService:
                             )
                         continue
 
+                    # Skip None results from invalid items
+                    if result is None:
+                        continue
+                        
                     # Ensure result is a dictionary before unpacking
                     if not isinstance(result, dict):
                         logger.error(
@@ -1312,7 +1370,7 @@ class AIService:
                         self.progress_tracker.mark_question_completed(
                             document_id,
                             standard_id or "unknown",
-                            item.get("id", "unknownf"),
+                            item.get("id", "unknown"),  # Fixed typo "unknownf" -> "unknown"
                         )
 
                     processed_items.append({
@@ -1327,12 +1385,15 @@ class AIService:
                 "items": processed_items
             }
         except Exception as e:
+            # SAFETY: Handle potentially corrupted section in exception
+            section_name = section.get('section', 'unknown') if isinstance(section, dict) else 'unknown'
+            section_title = section.get('title', '') if isinstance(section, dict) else ''
             logger.error(
-                f"Error processing section {section.get('section', 'unknown')}: {str(e)}"
+                f"Error processing section {section_name}: {str(e)}"
             )
             return {
-                "section": section.get("section", "unknown"),
-                "title": section.get("title", ""),
+                "section": section_name,
+                "title": section_title,
                 "items": [],
                 "error": str(e)
             }
@@ -1354,13 +1415,15 @@ class AIService:
                 framework=framework,
                 standard=standard,
             )
+            # SAFETY: Validate results before accessing
+            status = results.get("status", "error") if isinstance(results, dict) else "error"
             return {
                 "compliance_results": results,
                 "document_id": document_id,
                 "framework": framework,
                 "standard": standard,
                 "timestamp": datetime.now().isoformat(),
-                "status": results.get("status", "error")
+                "status": status
             }
         except Exception as e:
             logger.error(f"Error in analyze_compliance: {str(e)}", exc_info=True)
