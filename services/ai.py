@@ -294,6 +294,7 @@ class AIService:
         )
         self.current_document_id = None
         self.progress_tracker = None  # Will be set by analysis routes
+        self.custom_instructions = None  # Will be set by analysis routes for custom instructions
         self.executor = ThreadPoolExecutor(max_workers=NUM_WORKERS)
         logger.info(f"AIService (Azure) initialized with {NUM_WORKERS} workers")
         global vector_store
@@ -309,6 +310,7 @@ class AIService:
         text: Optional[str] = None,
         framework: Optional[str] = None,
         standard: Optional[str] = None,
+        custom_instructions: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Process a document for compliance analysis (async version).
@@ -376,7 +378,7 @@ class AIService:
                             document_id  # Ensure it's set before each call
                         )
                         result = self.analyze_chunk(
-                            text, question["question"], standard
+                            text, question["question"], standard, custom_instructions or self.custom_instructions
                         )
                         
                         # CRITICAL FIX: Ensure result is a dictionary before unpacking
@@ -501,7 +503,7 @@ class AIService:
         return "unknown"
 
     def analyze_chunk(
-        self, chunk: str, question: str, standard_id: Optional[str] = None
+        self, chunk: str, question: str, standard_id: Optional[str] = None, custom_instructions: Optional[str] = None
     ) -> dict:
         """
         Analyze a chunk of annual report content against a compliance checklist question.
@@ -589,9 +591,9 @@ class AIService:
             # Construct the prompt for the AI using the prompts library
             logger.info(f"🤖 AI STEP 5: Constructing AI prompt for compliance analysis")
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
-                question=question, context=context, enhanced_evidence=enhanced_evidence
+                question=question, context=context, enhanced_evidence=enhanced_evidence, custom_instructions=custom_instructions
             )
-            logger.info(f"✅ AI STEP 5 COMPLETE: AI prompt constructed ({len(prompt)} chars)")
+            logger.info(f"✅ AI STEP 5 COMPLETE: AI prompt constructed ({len(prompt)} chars){' with custom instructions' if custom_instructions else ''}")
 
             # Enhanced rate limiting with retries and circuit breaker
             max_api_retries = 3
@@ -1388,7 +1390,7 @@ class AIService:
             }
 
     async def analyze_compliance(
-        self, document_id: str, text: str, framework: str, standard: str
+        self, document_id: str, text: str, framework: str, standard: str, custom_instructions: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Analyze a document for compliance with a specified framework and standard (async).
@@ -1403,6 +1405,7 @@ class AIService:
                 text=text,
                 framework=framework,
                 standard=standard,
+                custom_instructions=custom_instructions,
             )
             # SAFETY: Validate results before accessing
             status = results.get("status", "error") if isinstance(results, dict) else "error"

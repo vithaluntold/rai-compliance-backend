@@ -32,6 +32,14 @@ def generate_document_id() -> str:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Try to use enhanced storage with PostgreSQL support, fallback to basic SQLite
+try:
+    from services.persistent_storage_enhanced import get_persistent_storage_manager
+    logger.info("✅ Using enhanced persistent storage with PostgreSQL support")
+except ImportError:
+    from services.persistent_storage import get_persistent_storage_manager
+    logger.info("📁 Using basic SQLite persistent storage")
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -809,6 +817,60 @@ async def upload_document(
             document_name = file.filename if file.filename else "unknown.pdf"
             file_type = ext
             
+            # Create enhanced session with file tracking
+            try:
+                now = datetime.now()
+                session_file_info = SessionFile(
+                    file_id=document_id,
+                    original_filename=document_name,
+                    file_size=len(content),
+                    upload_timestamp=now,
+                    file_type=file_type,
+                    storage_location="postgresql"
+                )
+                
+                enhanced_session = {
+                    "session_id": session_id,
+                    "title": f"Analysis of {document_name}",
+                    "description": f"Document analysis session for {document_name}",
+                    "created_at": now.isoformat(),
+                    "updated_at": now.isoformat(),
+                    "document_count": 1,
+                    "last_document_id": document_id,
+                    "status": "active",
+                    "owner": "current_user",
+                    "shared_with": [],
+                    "chat_state": {"documentId": document_id, "processingStatus": "processing"},
+                    "conversation_history": [
+                        {
+                            "message_id": f"msg_{now.strftime('%Y%m%d_%H%M%S')}_upload",
+                            "role": "system",
+                            "content": f"Document {document_name} uploaded and processing started",
+                            "timestamp": now.isoformat(),
+                            "message_type": "upload_notification",
+                            "metadata": {"document_id": document_id, "file_size": len(content)}
+                        }
+                    ],
+                    "user_choices": [],
+                    "ai_responses": [],
+                    "uploaded_files": [session_file_info.dict()],
+                    "documents": [],
+                    "analysis_context": {
+                        "accounting_standard": None,
+                        "custom_instructions": None,
+                        "selected_frameworks": [],
+                        "analysis_preferences": {"processing_mode": processing_mode}
+                    }
+                }
+                
+                # Save enhanced session
+                save_session_to_file(session_id, enhanced_session)
+                logger.info(f"✅ Enhanced session created: {session_id}")
+                
+            except Exception as session_error:
+                logger.warning(f"Failed to create enhanced session: {session_error}")
+                # Continue with upload even if session creation fails
+            
             response = {
                 "session_id": session_id,
                 "document_id": document_id,
@@ -1171,10 +1233,44 @@ async def get_analysis_progress(
     document_id: str,
 ) -> Union[Dict[str, Any], JSONResponse]:
     """
-    Get real - time analysis progress for a document including question counts and elapsed time.
+    Get real-time analysis progress for a document including question counts and elapsed time.
+    Now with persistent storage support for Render deployment.
     """
     try:
-        # FIRST: Check if analysis is completed (highest priority)
+        # Import persistent storage
+        from services.persistent_storage import get_persistent_storage_manager
+        storage_manager = get_persistent_storage_manager()
+        
+        # FIRST: Check if analysis is completed in persistent storage
+        logger.info(f"📊 Checking persistent storage for completed analysis: {document_id}")
+        persistent_results = await storage_manager.get_analysis_results(document_id)
+        
+        if persistent_results and persistent_results.get("status", "").lower() == "completed":
+            logger.info(f"✅ Analysis completed in persistent storage: {document_id}")
+            # Analysis is completed, cleanup any stale progress data
+            from services.progress_tracker import get_progress_tracker
+            tracker = get_progress_tracker()
+            tracker.cleanup_analysis(document_id)
+
+            return {
+                "document_id": document_id,
+                "status": "COMPLETED",
+                "overall_progress": {
+                    "percentage": 100.0,
+                    "elapsed_time_seconds": 0.0,
+                    "elapsed_time_formatted": "Complete",
+                    "completed_standards": 2,
+                    "total_standards": 2,
+                    "current_standard": "Analysis Complete",
+                },
+                "percentage": 100,  # For backwards compatibility
+                "currentStandard": "Analysis Complete",
+                "completedStandards": 2,
+                "totalStandards": 2,
+                "completed": True,
+            }
+        
+        # FALLBACK: Check filesystem for completion
         completed_file = (
             Path(__file__).parent.parent
             / "analysis_results"
@@ -1217,7 +1313,30 @@ async def get_analysis_progress(
         progress = tracker.get_progress(document_id)
 
         if not progress:
-            # Check if analysis is running by looking for lock file
+            # Check if analysis is running in persistent storage first
+            logger.info(f"🔍 Checking persistent storage for processing lock: {document_id}")
+            processing_lock = await storage_manager.get_processing_lock(document_id)
+            
+            if processing_lock:
+                logger.info(f"🔐 Found processing lock in persistent storage: {document_id}")
+                return {
+                    "document_id": document_id,
+                    "status": "PROCESSING",
+                    "overall_progress": {
+                        "percentage": 15.0,  # Default progress
+                        "elapsed_time_seconds": 60.0,
+                        "elapsed_time_formatted": "1m 0s",
+                        "completed_standards": 0,
+                        "total_standards": 2,
+                        "current_standard": "Analysis in progress...",
+                    },
+                    "percentage": 15,  # For backwards compatibility
+                    "currentStandard": "Analysis in progress...",
+                    "completedStandards": 0,
+                    "totalStandards": 2,
+                }
+            
+            # Fallback: Check filesystem for lock file
             processing_lock_file = (
                 Path(__file__).parent.parent
                 / "analysis_results"
@@ -1644,35 +1763,119 @@ async def get_metadata_fields() -> JSONResponse:
 @router.get("/documents/{document_id}", response_model=None)
 async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
     """
-    BULLETPROOF: Get document status with atomic data access and zero race conditions.
+    Get document status with persistent storage support for Render deployment.
     
-    This endpoint now uses dual-mode storage:
-    1. Try bulletproof database first (primary)
-    2. Fallback to legacy files if needed (compatibility)
+    This endpoint uses dual storage:
+    1. Try persistent database storage first (primary for Render)
+    2. Fallback to filesystem if database unavailable
     """
-    logger.info(f"�️ BULLETPROOF GET /documents/{document_id} - Starting bulletproof request")
+    logger.info(f"📊 GET /documents/{document_id} - Starting status check")
     
     try:
-        # SIMPLE FILE READ: Use legacy file system only
-        logger.info(f"📁 FILE READ: Using file system for {document_id}")
+        # Import persistent storage
+        from services.persistent_storage import get_persistent_storage_manager
+        storage_manager = get_persistent_storage_manager()
+        
+        # Try to get analysis results from persistent storage first
+        logger.info(f"🗄️ Checking persistent storage for results: {document_id}")
+        persistent_results = await storage_manager.get_analysis_results(document_id)
+        
+        if persistent_results:
+            logger.info(f"✅ Found results in persistent storage for {document_id}")
+            return _process_analysis_results(document_id, persistent_results)
+        
+        # Fallback to filesystem
+        logger.info(f"📁 Checking filesystem for results: {document_id}")
         return await _get_document_status_legacy(document_id)
         
     except Exception as e:
-        logger.error(f"❌ BULLETPROOF GET: Error for {document_id}: {str(e)}")
+        logger.error(f"❌ Error getting document status for {document_id}: {str(e)}")
         # Final fallback to legacy system
         try:
             return await _get_document_status_legacy(document_id)
         except Exception as fallback_error:
-            logger.error(f"❌ FALLBACK: Even legacy failed for {document_id}: {str(fallback_error)}")
+            logger.error(f"❌ FALLBACK: Legacy system failed for {document_id}: {str(fallback_error)}")
             return JSONResponse(
                 status_code=500,
                 content={
                     "error": "Server error",
                     "message": f"Failed to get document status: {str(e)}",
-                    "document_id": document_id,
-                    "bulletproof": False
+                    "document_id": document_id
                 }
             )
+
+
+def _process_analysis_results(document_id: str, results: dict) -> Dict[str, Any]:
+    """
+    Process analysis results from either persistent storage or filesystem.
+    Standardizes the response format regardless of storage source.
+    """
+    try:
+        # Check for errors in results
+        if "error" in results:
+            return {
+                "document_id": document_id,
+                "status": "FAILED",
+                "error": results.get("error", "Unknown error"),
+                "message": results.get("message", "Analysis failed"),
+                "metadata": results.get("metadata", {}),
+            }
+        
+        # Normalize status values
+        status = results.get("status", "PROCESSING")
+        if status == "awaiting_framework_selection":
+            status = "awaiting_framework_selection"
+        elif status.lower() == "completed":
+            status = "COMPLETED"
+        elif status.lower() == "failed" or status.lower() == "error":
+            status = "FAILED"
+        else:
+            status = "PROCESSING"
+        
+        metadata_extraction = results.get("metadata_extraction", "PENDING")
+        compliance_analysis = results.get("compliance_analysis", "PENDING")
+        
+        # Include smart categorization metadata if available
+        smart_categorization = results.get("smart_categorization", {})
+        
+        # Only return sections when compliance analysis is completed
+        sections_data = []
+        if compliance_analysis in ["COMPLETED", "COMPLETED_WITH_ERRORS"]:
+            sections_data = results.get("sections", [])
+            logger.info(f"Returning {len(sections_data)} sections for completed analysis {document_id}")
+        else:
+            logger.info(f"Compliance analysis not completed ({compliance_analysis}) - returning empty sections for {document_id}")
+        
+        return {
+            "document_id": document_id,
+            "status": status,
+            "metadata_extraction": metadata_extraction,
+            "compliance_analysis": compliance_analysis,
+            "processing_mode": results.get("processing_mode", "smart"),
+            "smart_categorization": {
+                "total_categories": smart_categorization.get("total_categories", 0),
+                "content_chunks": smart_categorization.get("content_chunks", 0),
+                "categorization_complete": smart_categorization.get("categorization_complete", False),
+                "categories_found": smart_categorization.get("categories_found", [])
+            },
+            "metadata": results.get("metadata", {}),
+            "sections": sections_data,
+            "progress": results.get("progress", {}),
+            "framework": results.get("framework"),
+            "standards": results.get("standards", []),
+            "specialInstructions": results.get("specialInstructions"),
+            "extensiveSearch": results.get("extensiveSearch", False),
+            "message": results.get("message", "Analysis in progress"),
+        }
+    except Exception as e:
+        logger.error(f"Error processing analysis results for {document_id}: {str(e)}")
+        return {
+            "document_id": document_id,
+            "status": "FAILED",
+            "error": "Processing error",
+            "message": f"Failed to process analysis results: {str(e)}",
+            "metadata": {},
+        }
 
 
 async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
@@ -2071,6 +2274,7 @@ class ProcessingModeRequest(BaseModel):
 class ComplianceAnalysisRequest(BaseModel):
     mode: str = "smart"  # "zap" | "smart" | "comparison"
     special_instructions: str = ""
+    custom_instructions: Optional[str] = ""  # User-provided analysis instructions
     comparison_config: Optional[Dict[str, Any]] = None
 
 
@@ -2641,25 +2845,29 @@ async def start_compliance_analysis(
 
         if processing_mode == "comparison":
             # For comparison mode, run both Smart and Zap modes
+            # Use custom_instructions if provided, otherwise fall back to special_instructions
+            instructions = request.custom_instructions or request.special_instructions
             background_tasks.add_task(
                 process_compliance_comparison,
                 document_id,
                 text_content,
                 framework,
                 standards,
-                request.special_instructions,
+                instructions,
                 results.get("extensiveSearch", False),
                 ai_svc,
             )
         else:
             # For single mode (zap or smart)
+            # Use custom_instructions if provided, otherwise fall back to special_instructions
+            instructions = request.custom_instructions or request.special_instructions
             background_tasks.add_task(
                 process_compliance_analysis,
                 document_id,
                 text_content,
                 framework,
                 standards,
-                request.special_instructions,
+                instructions,
                 results.get("extensiveSearch", False),
                 ai_svc,
                 processing_mode,  # Pass processing mode parameter
@@ -3583,6 +3791,22 @@ async def _initialize_analysis_tracking(
     if error_lock_file.exists():
         error_lock_file.unlink()
 
+    # Also create processing lock in persistent storage for Render deployment
+    try:
+        from services.persistent_storage import get_persistent_storage_manager
+        storage_manager = get_persistent_storage_manager()
+        await storage_manager.set_processing_lock(document_id, {
+            "status": "PROCESSING",
+            "started_at": datetime.now().isoformat(),
+            "framework": framework,
+            "standards": standards,
+            "special_instructions": special_instructions,
+            "extensive_search": extensive_search
+        })
+        logger.info(f"🔐 Created processing lock in persistent storage: {document_id}")
+    except Exception as e:
+        logger.error(f"❌ Failed to create persistent storage lock for {document_id}: {str(e)}")
+
     save_analysis_results(document_id, results)
 
     return results, results_path, processing_lock_file, error_lock_file
@@ -3597,6 +3821,7 @@ async def _process_standards_sequentially(
     processing_mode: str,
     results: dict,
     progress_tracker=None,
+    custom_instructions: Optional[str] = None,
 ) -> tuple[list, list]:
     """
     Process each standard sequentially and return all sections and failed standards.
@@ -3690,6 +3915,9 @@ async def _process_standards_sequentially(
 
             # Set progress tracker for question - level tracking
             ai_svc.progress_tracker = progress_tracker
+            
+            # Set custom instructions for this analysis
+            ai_svc.custom_instructions = custom_instructions
 
             # Choose processing approach based on mode
             if processing_mode == "smart":
@@ -3875,6 +4103,21 @@ def _handle_analysis_error(
         )
         if processing_lock_file.exists():
             processing_lock_file.unlink()
+        
+        # Remove processing lock from persistent storage on error
+        try:
+            from services.persistent_storage import get_persistent_storage_manager
+            storage_manager = get_persistent_storage_manager()
+            # Note: Using asyncio to call async function in sync context
+            import asyncio
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(storage_manager.remove_processing_lock(document_id))
+            loop.close()
+            logger.info(f"🔓 Removed processing lock from persistent storage on error: {document_id}")
+        except Exception as storage_e:
+            logger.error(f"❌ Failed to remove persistent storage lock on error for {document_id}: {str(storage_e)}")
+            
     except Exception as inner_e:
         logger.error(f"Error updating error status: {str(inner_e)}")
 
@@ -3951,6 +4194,7 @@ async def process_compliance_analysis(
             processing_mode,
             results,
             progress_tracker,
+            custom_instructions=special_instructions,  # Pass the custom instructions
         )
 
         # Handle completion and build final results
@@ -3971,6 +4215,16 @@ async def process_compliance_analysis(
         save_analysis_results(document_id, final_results)
         if processing_lock_file.exists():
             processing_lock_file.unlink()
+        
+        # Remove processing lock from persistent storage
+        try:
+            from services.persistent_storage import get_persistent_storage_manager
+            storage_manager = get_persistent_storage_manager()
+            await storage_manager.remove_processing_lock(document_id)
+            logger.info(f"🔓 Removed processing lock from persistent storage: {document_id}")
+        except Exception as e:
+            logger.error(f"❌ Failed to remove persistent storage lock for {document_id}: {str(e)}")
+        
         logger.info(f"Completed compliance analysis process for document {document_id}")
 
     except Exception as _e:
@@ -4031,15 +4285,55 @@ async def detailed_health_check():
 
 # Session Management endpoints (consolidated from sessions_routes.py)
 # Pydantic models for session management
+# Enhanced session models for comprehensive data storage
+class UserChoice(BaseModel):
+    choice_type: str  # "accounting_standard", "framework", "section_selection", etc.
+    value: Any
+    timestamp: datetime
+    context: Optional[str] = None
+
+class AIResponse(BaseModel):
+    response_type: str  # "suggestion", "analysis", "answer", etc.
+    content: str
+    confidence: Optional[float] = None
+    sources: Optional[List[str]] = None
+    timestamp: datetime
+
+class ConversationMessage(BaseModel):
+    message_id: str
+    role: str  # "user", "assistant", "system"
+    content: str
+    timestamp: datetime
+    message_type: Optional[str] = None  # "instruction", "query", "section_query", etc.
+    metadata: Optional[Dict[str, Any]] = None  # page_range, section_reference, etc.
+
+class SessionFile(BaseModel):
+    file_id: str
+    original_filename: str
+    file_size: int
+    upload_timestamp: datetime
+    file_type: str
+    storage_location: str  # "postgresql" or file path
+
+class SessionAnalysisContext(BaseModel):
+    accounting_standard: Optional[str] = None
+    custom_instructions: Optional[str] = None
+    selected_frameworks: Optional[List[str]] = None
+    analysis_preferences: Optional[Dict[str, Any]] = None
+
 class SessionCreate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+    analysis_context: Optional[SessionAnalysisContext] = None
 
 class SessionUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     chat_state: Optional[Dict[str, Any]] = None
-    messages: Optional[List[Dict[str, Any]]] = None
+    messages: Optional[List[ConversationMessage]] = None
+    user_choices: Optional[List[UserChoice]] = None
+    ai_responses: Optional[List[AIResponse]] = None
+    analysis_context: Optional[SessionAnalysisContext] = None
 
 class SessionResponse(BaseModel):
     session_id: str
@@ -4049,12 +4343,18 @@ class SessionResponse(BaseModel):
     updated_at: datetime
     document_count: int = 0
     last_document_id: Optional[str] = None
-    status: str = "active"  # active, completed, archived
+    status: str = "active"  # active, completed, archived, shared
+    shared_with: Optional[List[str]] = None  # list of user IDs
+    owner: Optional[str] = None
 
 class SessionDetail(SessionResponse):
     chat_state: Optional[Dict[str, Any]] = None
-    messages: Optional[List[Dict[str, Any]]] = None
+    conversation_history: Optional[List[ConversationMessage]] = None
+    user_choices: Optional[List[UserChoice]] = None
+    ai_responses: Optional[List[AIResponse]] = None
+    uploaded_files: Optional[List[SessionFile]] = None
     documents: Optional[List[Dict[str, Any]]] = None
+    analysis_context: Optional[SessionAnalysisContext] = None
 
 # Session storage directory
 SESSIONS_DIR = BACKEND_DIR / "sessions"
@@ -4109,9 +4409,20 @@ async def create_session(session_data: SessionCreate):
             "document_count": 0,
             "last_document_id": None,
             "status": "active",
+            "owner": "current_user",  # TODO: Replace with actual user ID from auth
+            "shared_with": [],
             "chat_state": None,
-            "messages": [],
-            "documents": []
+            "conversation_history": [],
+            "user_choices": [],
+            "ai_responses": [],
+            "uploaded_files": [],
+            "documents": [],
+            "analysis_context": {
+                "accounting_standard": session_data.analysis_context.accounting_standard if session_data.analysis_context else None,
+                "custom_instructions": session_data.analysis_context.custom_instructions if session_data.analysis_context else None,
+                "selected_frameworks": session_data.analysis_context.selected_frameworks if session_data.analysis_context else [],
+                "analysis_preferences": session_data.analysis_context.analysis_preferences if session_data.analysis_context else {}
+            }
         }
 
         # Save to file
@@ -4165,12 +4476,66 @@ async def list_sessions(limit: int = 50, offset: int = 0):
 
 @router.get("/sessions/{session_id}", response_model=SessionDetail, tags=["Sessions"])
 async def get_session(session_id: str):
-    """Get a specific session with full details"""
+    """Get a specific session with full details including documents from PostgreSQL"""
     try:
         session_data = load_session_from_file(session_id)
 
         if not session_data:
             raise HTTPException(status_code=404, detail="Session not found")
+
+        # Enhanced: Fetch document details from PostgreSQL storage
+        documents = []
+        document_ids = []
+        
+        # Collect document IDs from various sources
+        if session_data.get("last_document_id"):
+            document_ids.append(session_data["last_document_id"])
+        
+        # Check chat state for document IDs
+        chat_state = session_data.get("chat_state", {})
+        if isinstance(chat_state, dict) and chat_state.get("documentId"):
+            if chat_state["documentId"] not in document_ids:
+                document_ids.append(chat_state["documentId"])
+        
+        # Check messages for document references
+        messages = session_data.get("messages", [])
+        for message in messages:
+            if isinstance(message, dict):
+                # Look for document IDs in message content
+                content = str(message.get("content", ""))
+                if "RAI-" in content:
+                    # Extract document IDs from content (simple pattern matching)
+                    import re
+                    doc_matches = re.findall(r'RAI-[0-9A-Z-]+', content)
+                    for doc_id in doc_matches:
+                        if doc_id not in document_ids:
+                            document_ids.append(doc_id)
+
+        # Fetch document analysis results from persistent storage
+        try:
+            from services.persistent_storage_enhanced import PersistentStorageManager
+            storage = PersistentStorageManager()
+            
+            for doc_id in document_ids:
+                try:
+                    analysis_result = await storage.get_analysis_results(doc_id)
+                    if analysis_result:
+                        # Format document for frontend compatibility
+                        documents.append({
+                            "document_id": doc_id,
+                            "filename": f"{doc_id}.pdf",  # Default filename
+                            "status": analysis_result.get("status", "COMPLETED"),
+                            "metadata": analysis_result.get("metadata", {}),
+                            "sections": analysis_result.get("sections", []),
+                            "created_at": analysis_result.get("created_at"),
+                            "analysis_complete": True
+                        })
+                        logger.info(f"✅ Retrieved document {doc_id} from PostgreSQL for session {session_id}")
+                except Exception as e:
+                    logger.warning(f"Could not retrieve document {doc_id} from storage: {e}")
+                    
+        except Exception as e:
+            logger.warning(f"Storage system not available for session {session_id}: {e}")
 
         return SessionDetail(
             session_id=session_data["session_id"],
@@ -4178,12 +4543,12 @@ async def get_session(session_id: str):
             description=session_data.get("description"),
             created_at=datetime.fromisoformat(session_data["created_at"]),
             updated_at=datetime.fromisoformat(session_data["updated_at"]),
-            document_count=session_data.get("document_count", 0),
+            document_count=len(documents),  # Updated with actual document count
             last_document_id=session_data.get("last_document_id"),
             status=session_data.get("status", "active"),
             chat_state=session_data.get("chat_state"),
             messages=session_data.get("messages", []),
-            documents=session_data.get("documents", [])
+            documents=documents  # Now includes full document data from PostgreSQL
         )
 
     except HTTPException:
@@ -4281,6 +4646,265 @@ async def archive_session(session_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
+
+# Enhanced session management endpoints
+@router.delete("/sessions/{session_id}/delete", tags=["Sessions"])
+async def delete_session_permanently(session_id: str):
+    """Permanently delete a session"""
+    try:
+        session_file = get_session_file_path(session_id)
+        
+        if not session_file.exists():
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Delete session file
+        session_file.unlink()
+        
+        return JSONResponse(content={"message": "Session deleted successfully"})
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete session: {str(e)}")
+
+@router.post("/sessions/{session_id}/share", tags=["Sessions"])
+async def share_session(session_id: str, shared_users: List[str]):
+    """Share a session with other users"""
+    try:
+        session_data = load_session_from_file(session_id)
+        
+        if not session_data:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Update shared users list
+        session_data["shared_with"] = list(set(session_data.get("shared_with", []) + shared_users))
+        session_data["status"] = "shared"
+        session_data["updated_at"] = datetime.now().isoformat()
+        
+        # Save updated session
+        save_session_to_file(session_id, session_data)
+        
+        return JSONResponse(content={
+            "message": f"Session shared with {len(shared_users)} users",
+            "shared_with": session_data["shared_with"]
+        })
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to share session: {str(e)}")
+
+@router.post("/sessions/{session_id}/conversation", tags=["Sessions"])
+async def add_conversation_message(session_id: str, message: ConversationMessage):
+    """Add a message to session conversation history"""
+    try:
+        session_data = load_session_from_file(session_id)
+        
+        if not session_data:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Add message to conversation history
+        conversation_history = session_data.get("conversation_history", [])
+        conversation_history.append(message.dict())
+        session_data["conversation_history"] = conversation_history
+        session_data["updated_at"] = datetime.now().isoformat()
+        
+        # Save updated session
+        save_session_to_file(session_id, session_data)
+        
+        return JSONResponse(content={"message": "Conversation message added"})
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to add conversation message: {str(e)}")
+
+@router.post("/sessions/{session_id}/user-choice", tags=["Sessions"])
+async def record_user_choice(session_id: str, choice: UserChoice):
+    """Record a user choice in the session"""
+    try:
+        session_data = load_session_from_file(session_id)
+        
+        if not session_data:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Add user choice
+        user_choices = session_data.get("user_choices", [])
+        user_choices.append(choice.dict())
+        session_data["user_choices"] = user_choices
+        session_data["updated_at"] = datetime.now().isoformat()
+        
+        # Save updated session
+        save_session_to_file(session_id, session_data)
+        
+        return JSONResponse(content={"message": "User choice recorded"})
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to record user choice: {str(e)}")
+
+@router.post("/sessions/{session_id}/ai-response", tags=["Sessions"])
+async def record_ai_response(session_id: str, response: AIResponse):
+    """Record an AI response in the session"""
+    try:
+        session_data = load_session_from_file(session_id)
+        
+        if not session_data:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Add AI response
+        ai_responses = session_data.get("ai_responses", [])
+        ai_responses.append(response.dict())
+        session_data["ai_responses"] = ai_responses
+        session_data["updated_at"] = datetime.now().isoformat()
+        
+        # Save updated session
+        save_session_to_file(session_id, session_data)
+        
+        return JSONResponse(content={"message": "AI response recorded"})
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to record AI response: {str(e)}")
+
+# Document section query endpoint for results page chatbox
+class DocumentSectionQuery(BaseModel):
+    document_id: str
+    question: str
+    start_page: Optional[int] = None
+    end_page: Optional[int] = None
+    section_name: Optional[str] = None
+    custom_instructions: Optional[str] = None
+
+@router.post("/sessions/{session_id}/document-query", tags=["Sessions", "AI"])
+async def query_document_section(session_id: str, query: DocumentSectionQuery):
+    """Query a specific section of a document with AI assistance"""
+    try:
+        # Load session
+        session_data = load_session_from_file(session_id)
+        if not session_data:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Get document from PostgreSQL
+        from services.persistent_storage_enhanced import PersistentStorageManager
+        storage = PersistentStorageManager()
+        
+        # Get document analysis results
+        analysis_result = await storage.get_analysis_results(query.document_id)
+        if not analysis_result:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Get original file content if needed for page-specific queries
+        file_data = await storage.get_file(query.document_id)
+        
+        # Prepare context for AI query
+        context = {
+            "document_metadata": analysis_result.get("metadata", {}),
+            "sections": analysis_result.get("sections", []),
+            "query": query.question,
+            "custom_instructions": query.custom_instructions
+        }
+        
+        # Filter sections by page range if specified
+        if query.start_page and query.end_page:
+            # TODO: Implement page-based section filtering
+            context["page_filter"] = {"start": query.start_page, "end": query.end_page}
+        
+        # Filter by section name if specified
+        if query.section_name:
+            filtered_sections = [
+                section for section in context["sections"] 
+                if query.section_name.lower() in section.get("title", "").lower()
+            ]
+            context["sections"] = filtered_sections
+        
+        # Get custom instructions from analysis context
+        analysis_context = session_data.get("analysis_context", {})
+        base_instructions = analysis_context.get("custom_instructions", "")
+        
+        # Combine instructions
+        full_instructions = f"{base_instructions}\n\n{query.custom_instructions}" if query.custom_instructions else base_instructions
+        
+        # Prepare AI prompt
+        prompt = f"""
+        Based on the document analysis and the specific section(s) requested, please answer the following question:
+        
+        Question: {query.question}
+        
+        Custom Instructions: {full_instructions}
+        
+        Document Context:
+        Company: {context['document_metadata'].get('company_name', {}).get('value', 'Unknown')}
+        Document Type: {context['document_metadata'].get('document_type', {}).get('value', 'Unknown')}
+        
+        Relevant Sections:
+        {json.dumps(context['sections'], indent=2)}
+        
+        Please provide a detailed answer based only on the information available in these sections.
+        If the answer cannot be found in the provided sections, please state that clearly.
+        """
+        
+        # TODO: Call AI service to get response
+        # For now, return a structured response
+        ai_answer = {
+            "query_id": f"query_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            "question": query.question,
+            "answer": "This would be the AI-generated answer based on the document sections and custom instructions.",
+            "sections_referenced": len(context["sections"]),
+            "confidence": 0.85,
+            "sources": [section.get("title", "Unknown Section") for section in context["sections"]],
+            "page_range": f"{query.start_page}-{query.end_page}" if query.start_page and query.end_page else "All sections"
+        }
+        
+        # Record this interaction in session
+        conversation_message = ConversationMessage(
+            message_id=f"msg_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
+            role="user",
+            content=query.question,
+            timestamp=datetime.now(),
+            message_type="section_query",
+            metadata={
+                "document_id": query.document_id,
+                "start_page": query.start_page,
+                "end_page": query.end_page,
+                "section_name": query.section_name
+            }
+        )
+        
+        ai_response_message = ConversationMessage(
+            message_id=f"msg_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
+            role="assistant", 
+            content=ai_answer["answer"],
+            timestamp=datetime.now(),
+            message_type="section_answer",
+            metadata={
+                "query_id": ai_answer["query_id"],
+                "confidence": ai_answer["confidence"],
+                "sources": ai_answer["sources"]
+            }
+        )
+        
+        # Update session with conversation
+        conversation_history = session_data.get("conversation_history", [])
+        conversation_history.extend([conversation_message.dict(), ai_response_message.dict()])
+        session_data["conversation_history"] = conversation_history
+        session_data["updated_at"] = datetime.now().isoformat()
+        
+        save_session_to_file(session_id, session_data)
+        
+        return {
+            "success": True,
+            "ai_response": ai_answer,
+            "session_updated": True
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Document section query failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to process document query: {str(e)}")
 
 
 # Documents management endpoints (consolidated from documents_routes.py)

@@ -217,6 +217,7 @@ class AIPrompts:
         question: str,
         context: str,
         enhanced_evidence: Optional[Dict[str, Any]] = None,
+        custom_instructions: Optional[str] = None,
     ) -> str:
         """Generate the complete compliance analysis prompt, optimized for token efficiency."""
         # Limit context to 4000 characters as specified
@@ -228,8 +229,18 @@ class AIPrompts:
         system_prompt = cls.get_compliance_analysis_system_prompt()
         base_prompt = cls.get_compliance_analysis_base_prompt(question, context)
         instructions = cls.get_compliance_analysis_instructions()
+        
+        # Add custom instructions if provided
+        custom_instructions_section = ""
+        if custom_instructions and custom_instructions.strip():
+            custom_instructions_section = f"""
 
-        return f"{system_prompt}\n\n{base_prompt}\n\n{instructions}"
+CUSTOM ANALYSIS INSTRUCTIONS:
+{custom_instructions.strip()}
+
+Please incorporate these specific instructions into your analysis while maintaining the standard compliance evaluation format."""
+
+        return f"{system_prompt}\n\n{base_prompt}\n\n{instructions}{custom_instructions_section}"
 
     @classmethod
     def _assess_context_quality(
