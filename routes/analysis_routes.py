@@ -4477,3 +4477,42 @@ async def auto_fill_checklist(document_id: str, request: Dict[str, Any] = {}):
     except Exception as e:
         logger.error(f"Error auto-filling checklist for document {document_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/debug/files")
+async def debug_list_files():
+    """
+    DEBUG ENDPOINT: List files in analysis_results directory on Render
+    """
+    try:
+        import os
+        from pathlib import Path
+        
+        # Get the current working directory
+        cwd = os.getcwd()
+        
+        # List analysis_results directory
+        analysis_dir = Path(cwd) / "analysis_results"
+        files_info = {
+            "cwd": cwd,
+            "analysis_results_dir": str(analysis_dir),
+            "analysis_results_exists": analysis_dir.exists(),
+            "files": []
+        }
+        
+        if analysis_dir.exists():
+            files_info["files"] = [f.name for f in analysis_dir.iterdir() if f.is_file()]
+        
+        # Also check uploads directory
+        uploads_dir = Path(cwd) / "uploads"
+        files_info["uploads_dir"] = str(uploads_dir)
+        files_info["uploads_exists"] = uploads_dir.exists()
+        files_info["uploads_files"] = []
+        
+        if uploads_dir.exists():
+            files_info["uploads_files"] = [f.name for f in uploads_dir.iterdir() if f.is_file()]
+            
+        return files_info
+        
+    except Exception as e:
+        return {"error": str(e), "cwd": os.getcwd()}

@@ -1204,19 +1204,27 @@ class AIService:
                     max_tokens=800,
                 )
 
-                # Parse JSON response
+                # Parse JSON response with proper error handling
                 content = response.choices[0].message.content
-                result = json.loads(content) if content else {}
+                try:
+                    result = json.loads(content) if content else {}
+                    # Ensure result is a dictionary
+                    if not isinstance(result, dict):
+                        logger.error(f"AI returned non-dict JSON: {type(result)}, content: {result}")
+                        result = {}
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to parse AI response as JSON: {content[:200]}... Error: {e}")
+                    result = {}
 
                 # Validate and sanitize result
                 if not result:
-                    raise ValueError("Empty response from AI")
+                    raise ValueError("Empty or invalid response from AI")
 
-                # Ensure required fields
-                result["status"] = result.get("status", "Not found")
-                result["explanation"] = result.get("explanation", "")
-                result["evidence"] = result.get("evidence", "")
-                result["confidence"] = float(result.get("confidence", 0.0))
+                # Ensure required fields with safe access
+                result["status"] = result.get("status", "Not found") if isinstance(result, dict) else "Not found"
+                result["explanation"] = result.get("explanation", "") if isinstance(result, dict) else ""
+                result["evidence"] = result.get("evidence", "") if isinstance(result, dict) else ""
+                result["confidence"] = float(result.get("confidence", 0.0)) if isinstance(result, dict) else 0.0
 
                 # Adjust confidence if no vector index
                 if not vector_index_exists and result["confidence"] > 0.5:
