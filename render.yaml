@@ -5,6 +5,10 @@ services:
     plan: starter
     buildCommand: pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    disk:
+      name: analysis-data
+      mountPath: /opt/render/project/src/analysis_results
+      sizeGB: 1
     envVars:
       - key: AZURE_OPENAI_API_KEY
         sync: false
