@@ -1793,6 +1793,15 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
             # Include smart categorization metadata if available
             smart_categorization = results.get("smart_categorization", {})
 
+            # CRITICAL FIX: Only return sections when compliance analysis is completed
+            # This prevents frontend from showing 0% compliance for incomplete analyses
+            sections_data = []
+            if compliance_analysis in ["COMPLETED", "COMPLETED_WITH_ERRORS"]:
+                sections_data = results.get("sections", [])
+                logger.info(f"Returning {len(sections_data)} sections for completed analysis {document_id}")
+            else:
+                logger.info(f"Compliance analysis not completed ({compliance_analysis}) - returning empty sections for {document_id}")
+
             return {
                 "document_id": document_id,
                 "status": status,
@@ -1806,7 +1815,7 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
                     "categories_found": smart_categorization.get("categories_found", [])
                 },
                 "metadata": results.get("metadata", {}),
-                "sections": results.get("sections", []),
+                "sections": sections_data,
                 "progress": results.get("progress", {}),
                 "framework": results.get("framework"),
                 "standards": results.get("standards", []),
