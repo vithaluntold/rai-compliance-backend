@@ -1,3 +1,7 @@
+# PostgreSQL Database Configuration
+# Note: Database already exists with ID: dpg-d3ampjs9c44c73e0nqv0-a
+# Connection: postgresql://rai_admin:SOv5DgsrOVzS0Te5q6h9UiYu4xenIps8@dpg-d3ampjs9c44c73e0nqv0-a.oregon-postgres.render.com/rai_compliance_db
+
 services:
   - type: web
     name: rai-compliance-backend
@@ -5,11 +9,15 @@ services:
     plan: starter
     buildCommand: pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-    disk:
-      name: analysis-data
-      mountPath: /opt/render/project/src/analysis_results
-      sizeGB: 1
     envVars:
+      # Database Configuration - Use your existing database
+      - key: DATABASE_URL
+        value: postgresql://rai_admin:SOv5DgsrOVzS0Te5q6h9UiYu4xenIps8@dpg-d3ampjs9c44c73e0nqv0-a.oregon-postgres.render.com/rai_compliance_db
+      - key: USE_POSTGRESQL
+        value: "true"
+      - key: ENVIRONMENT
+        value: production
+      # Azure OpenAI Configuration
       - key: AZURE_OPENAI_API_KEY
         sync: false
       - key: AZURE_OPENAI_ENDPOINT

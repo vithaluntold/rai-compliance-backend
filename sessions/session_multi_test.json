@@ -1,0 +1,24 @@
+{
+  "session_id": "session_multi_test",
+  "title": "Multi-Document Session",
+  "description": "Session with multiple PostgreSQL documents",
+  "created_at": "2025-09-25T22:15:20.322407",
+  "updated_at": "2025-09-25T22:15:20.322421",
+  "document_count": 2,
+  "last_document_id": "MULTI-TEST-002",
+  "status": "active",
+  "chat_state": {
+    "documentId": "MULTI-TEST-002"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Uploaded documents: MULTI-TEST-001, MULTI-TEST-002"
+    },
+    {
+      "role": "assistant",
+      "content": "All documents processed successfully"
+    }
+  ],
+  "documents": []
+}

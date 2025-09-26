@@ -6,6 +6,9 @@ python-multipart>=0.0.6
 PyPDF2>=3.0.1
 PyCryptodome>=3.19.0
 
+# Database dependencies
+psycopg2-binary>=2.9.7
+
 # AI and document processing dependencies
 PyMuPDF>=1.23.0
 python-docx>=0.8.11

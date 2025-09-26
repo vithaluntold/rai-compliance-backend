@@ -40,9 +40,27 @@ class SmartMetadataExtractor:
     async def extract_metadata_optimized(
         self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
     ) -> Dict[str, Any]:
-        """Extract metadata using 3 - tier strategy"""
+        """Extract metadata using 3 - tier strategy with comprehensive error handling"""
         logger.info(f"Starting SMART metadata extraction for document {document_id}")
         logger.info(f"🔍 Processing {len(chunks)} chunks with smart extractor")
+        
+        try:
+            return await self._extract_metadata_core(document_id, chunks)
+        except Exception as e:
+            logger.error(f"❌ CRITICAL ERROR in metadata extraction for {document_id}: {str(e)}")
+            # Return basic fallback metadata structure to prevent 500 errors
+            return {
+                "company_name": {"value": "Company name not extracted", "confidence": 0.1, "extraction_method": "fallback", "context": "Extraction failed"},
+                "nature_of_business": {"value": "Business nature not determined", "confidence": 0.1, "extraction_method": "fallback", "context": "Extraction failed"},
+                "operational_demographics": {"value": "Geographic data not available", "confidence": 0.1, "extraction_method": "fallback", "context": "Extraction failed"},
+                "financial_statements_type": {"value": "Statement type not determined", "confidence": 0.1, "extraction_method": "fallback", "context": "Extraction failed"},
+                "optimization_metrics": {"tokens_used": 0, "extraction_methods_used": ["fallback"], "version": "error_fallback"}
+            }
+    
+    async def _extract_metadata_core(
+        self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
+    ) -> Dict[str, Any]:
+        """Core extraction logic separated for error handling"""
 
         # Combine all chunks for pattern analysis - extract text from chunk dictionaries
         if chunks and isinstance(chunks[0], dict):
@@ -546,8 +564,20 @@ class SmartMetadataExtractor:
             return content.strip() if content else "", context_text[:500]
 
         except Exception as _e:
-            logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {str(_e)}")
-            return "", ""
+            error_msg = str(_e)
+            logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {error_msg}")
+            
+            # Provide fallback values based on field type instead of empty strings
+            fallback_value = ""
+            if field_name == "nature_of_business":
+                fallback_value = "Business nature not specified in document"
+            elif field_name == "operational_demographics":
+                fallback_value = "Geographic information not available"
+            elif field_name == "financial_statements_type":
+                fallback_value = "Financial statement type not determined"
+                
+            logger.info(f"Using fallback value for {field_name}: {fallback_value}")
+            return fallback_value, "AI extraction failed - using fallback"
 
     def _find_sentences_with_keywords(self, text: str, keywords: List[str]) -> List[str]:
         """Find ALL complete sentences containing any of the keywords"""
