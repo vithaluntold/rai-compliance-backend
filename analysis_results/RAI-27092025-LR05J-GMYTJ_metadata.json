@@ -1,0 +1,39 @@
+{
+  "document_id": "RAI-27092025-LR05J-GMYTJ",
+  "timestamp": "2025-09-27T08:56:19.373422",
+  "status": "COMPLETED",
+  "data": {
+    "company_name": {
+      "value": "The Shareholders of Phoenix Group",
+      "confidence": 0.8,
+      "extraction_method": "pattern",
+      "context": "Box 46617, 14 Floor, WeWork Hub71, Al Khatem Tower, ADGM Square, \nAl Maryah Island, Abu Dhabi, UAE +971 2222 2236 - \n3\nIndependent Auditor’s Report \n \nTo: The Shareholders of Phoenix Group PLC \n \nReport on the Audit of the Consolidated Financial Statements \n \nOpinion \n \nWe have audited the consolidated financial statements of Phoenix Group PLC (the “Company”) and \nits subsidiaries (together the “Group”), which comprise the consolidated statement of financial \nposition as at 31 December 2024, and the consolidated statement of profit or loss, consolidated \nstatement of comprehensive income, consolidated statement of changes in equity and consolidated \nstatement of cash flows for the year then ended, and notes to the consolidated financial statements, \nincluding material accounting policy information"
+    },
+    "nature_of_business": {
+      "value": "Business nature not specified in document",
+      "confidence": 0.9,
+      "extraction_method": "ai",
+      "context": "AI extraction failed - using fallback"
+    },
+    "operational_demographics": {
+      "value": "Geographic information not available",
+      "confidence": 0.9,
+      "extraction_method": "ai",
+      "context": "AI extraction failed - using fallback"
+    },
+    "financial_statements_type": {
+      "value": "Consolidated",
+      "confidence": 0.9,
+      "extraction_method": "ai",
+      "context": "Pattern matched from document content"
+    },
+    "optimization_metrics": {
+      "tokens_used": 0,
+      "extraction_methods_used": [
+        "ai",
+        "pattern"
+      ],
+      "version": "4bb9380_fix_deployed"
+    }
+  }
+}

@@ -10,6 +10,7 @@ from io import BytesIO
 
 # Import consolidated router only
 from routes.analysis_routes import router as analysis_router
+from routes.logs import router as logs_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -43,6 +44,9 @@ app.add_middleware(
 
 # Include consolidated router (all endpoints are now in analysis_routes.py)
 app.include_router(analysis_router, prefix="/api/v1", tags=["analysis"])
+
+# Include logging router for comprehensive pipeline tracking
+app.include_router(logs_router, tags=["logging"])
 
 # Include BULLETPROOF V2 routes - temporarily disabled due to dual_storage dependency
 # from routes.bulletproof_routes import router_v2  
