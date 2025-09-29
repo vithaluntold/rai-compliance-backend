@@ -37,85 +37,52 @@ class IntelligentAITaggingEngine:
         self.prompt_template = self._create_intelligent_prompt()
         
     def _create_intelligent_prompt(self) -> str:
-        """Create intelligent pattern-based prompt with no hardcoded rules"""
+        """Create effective classification prompt with pattern matching"""
         return """
-You are an expert accounting standards analyst. Analyze the question and intelligently classify based on CONTENT PATTERNS.
+You are an expert at analyzing accounting questions. Look at this question and classify it using these exact patterns:
 
 QUESTION: {question_text}
-CONTEXT: {context}
 
-INSTRUCTIONS:
-Analyze the question's actual content and infer appropriate classifications. Use pattern recognition, not default values.
+Match the question to these patterns and return the corresponding classification:
 
-PATTERN RECOGNITION GUIDE:
+AUTHORIZATION QUESTIONS (contains "authorize", "approval", "who approved", "date of authorization"):
+- narrative_categories: ["policy_basis"]
+- temporal_scope: ["point_in_time"] 
+- data_sources: ["board_resolutions"]
+- cross_reference_anchors: ["policies_section"]
 
-1. NARRATIVE CATEGORIES - What type of disclosure is this?
-   - policy_basis: Contains "policy", "basis", "method", "criteria", "recognition"
-   - methodology: Contains "measurement", "valuation", "calculated", "approach", "determined" 
-   - judgement_estimate: Contains "estimate", "assumption", "judgement", "uncertain", "key assumption"
-   - risk_strategy: Contains "risk", "management", "objective", "strategy"
-   - derecognition_explainer: Contains "derecognit", "transfer", "extinguish", "removal"
-   - hedge_strategy: Contains "hedge", "designat", "effective", "hedge accounting"
-   - transition_adoption: Contains "first-time", "adoption", "transition", "new standard"
-   - changes_during_period: Contains "change", "reclassif", "restat", "revised"
-   - contingent_events: Contains "contingent", "commitment", "subsequent", "event", "after reporting"
-   - industry_specific_policy: Contains industry-specific terms
+ESTIMATE/EFFECT QUESTIONS (contains "estimate", "financial effect", "impact", "measurement"):
+- narrative_categories: ["judgement_estimate", "contingent_events"]
+- temporal_scope: ["period_flow"]
+- quantitative_expectations: ["class_by_class_totals"]
+- data_sources: ["management_reports", "event_notifications"]
+- cross_reference_anchors: ["notes_main"]
 
-2. TABLE ARCHETYPES - What format would the disclosure take?
-   - carrying_amounts_by_category: Asks for "amounts by class/category/type"
-   - movement_reconciliation: Asks for "movements", "reconciliation", "opening to closing"
-   - maturity_analysis: Asks for "maturity", "timing", "cash flows", "undiscounted"
-   - fair_value_hierarchy: Asks for "fair value", "Level 1/2/3", "valuation techniques"
-   - sensitivity_table: Asks for "sensitivity", "impact of changes", "assumptions"
-   - impairment_rollforward: Asks for "impairment", "loss allowance", "credit losses"
-   - collateral_summary: Asks for "collateral", "security", "pledged assets"
-   - exposure_summary: Asks for "exposure", "concentration", "counterparty"
-   - segment_analysis: Asks for "segment", "geographical", "business line"
-   - provision_rollforward: Asks for "provision movements"
-   - tax_reconciliation: Asks for "tax rate", "effective vs statutory"
-   - eps_calculation: Asks for "earnings per share", "EPS"
-   - cash_flow_breakdown: Asks for "cash flow analysis"
+NATURE/EVENTS QUESTIONS (contains "nature", "events", "subsequent", "non-adjusting"):
+- narrative_categories: ["contingent_events"]
+- temporal_scope: ["period_flow"]
+- data_sources: ["event_notifications"]
+- cross_reference_anchors: ["notes_main"]
 
-3. QUANTITATIVE EXPECTATIONS - Does it require numbers?
-   - class_by_class_totals: Asks for specific amounts by category
-   - tie_to_primary_statement: Mentions reconciliation to statements
-   - opening_to_closing_balances: Asks for period movements
-   - comparatives_presented: Mentions "prior year", "comparative"
-   - valuation_inputs_quantified: Asks for assumption values
-   - risk_concentration_amounts: Asks for concentration amounts
-   - maximum_exposure_to_loss: Asks for "maximum exposure"
-   - undiscounted_cash_flows: Asks for "contractual cash flows"
+POLICY/METHOD QUESTIONS (contains "policy", "accounting policy", "method", "basis"):
+- narrative_categories: ["policy_basis"]
+- temporal_scope: ["current_only"]
+- data_sources: ["accounting_records"]
+- cross_reference_anchors: ["policies_section"]
 
-4. TEMPORAL SCOPE - What time period?
-   - point_in_time: "at reporting date", "year-end", "balance sheet date", "authorization date"
-   - period_flow: "during period", "movements", "changes"
-   - current_with_comparative: "current and prior year", "comparative"
-   - multi_period_trend: "trend", "multiple years"
-   - current_only: Default for simple current year questions
+AMOUNT/BALANCE QUESTIONS (contains "amount", "balance", "carrying amount", specific numbers):
+- narrative_categories: ["quantitative_specifics"]
+- temporal_scope: ["point_in_time"]
+- table_archetypes: ["carrying_amounts_by_category"]
+- quantitative_expectations: ["class_by_class_totals"]
+- data_sources: ["accounting_records"]
+- cross_reference_anchors: ["primary_statement"]
 
-5. CROSS-REFERENCE ANCHORS - Where would you find this?
-   - primary_statement: Balance/amount questions
-   - policies_section: Policy/method questions  
-   - notes_main: Main disclosure notes
-   - linked_note: References other notes
-   - management_commentary: Narrative explanations
-   - segment_note: Segment-related disclosures
-
-6. DATA SOURCES - What evidence is needed?
-   - accounting_records: Balance/transaction questions
-   - board_resolutions: Authorization/approval questions
-   - authorization_documents: Policy decisions
-   - event_notifications: Subsequent events
-   - legal_documentation: Legal/compliance matters
-   - valuation_reports: Fair value/estimates
-   - management_reports: Management assessments
-
-CRITICAL LOGIC:
-- If question is purely narrative (no amounts/balances) → EMPTY table_archetypes and quantitative_expectations
-- If question asks for amounts/numbers → Include appropriate table + quantitative tags
-- If question is about authorization/approval → point_in_time + board_resolutions
-- If question is about policy/method → policy_basis + policies_section
-- Always match patterns to actual question content - NO DEFAULT FILLING
+DEFAULT FOR OTHER QUESTIONS:
+- narrative_categories: ["policy_basis"]
+- temporal_scope: ["current_only"]
+- data_sources: ["accounting_records"]
+- cross_reference_anchors: ["notes_main"]
 
 Return ONLY this JSON structure:
 
