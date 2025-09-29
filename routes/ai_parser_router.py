@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse
 import asyncio
 
 from ai_parser.file_processor import get_queue_manager
-from ai_parser.ai_tagging_engine import AITaggingEngine
+from ai_parser import AITaggingEngine
 
 logger = logging.getLogger(__name__)
 
