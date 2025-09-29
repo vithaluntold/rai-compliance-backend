@@ -1,0 +1,253 @@
+﻿{
+    "title": "IFRS 14 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 14",
+            "title": "Rate-regulated activities",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 14.",
+            "items": [
+                {
+                    "id": "618.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.20",
+                    "question": "Does the entity present a separate line item in the statement of financial position for the total of all regulatory deferral account debit balances?"
+                },
+                {
+                    "id": "618.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.21",
+                    "question": "Does the entity present a separate line item in the statement of financial position for the total of all regulatory deferral account credit balances?"
+                },
+                {
+                    "id": "619",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.22",
+                    "question": "Does the entity present, in the other comprehensive income section of the statement of profit or loss and other comprehensive income, the net movement in all regulatory deferral account balances for the reporting period that relate to items recognised in other comprehensive income?"
+                },
+                {
+                    "id": "620.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.22",
+                    "question": "Does the entity use a separate line item for the net movement related to items that will not be reclassified subsequently to profit or loss?"
+                },
+                {
+                    "id": "620.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.22",
+                    "question": "Does the entity use a separate line item for the net movement related to items that will be reclassified subsequently to profit or loss when specific conditions are met?"
+                },
+                {
+                    "id": "621",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.23",
+                    "question": "Does the entity present a separate line item in the profit or loss section of the statement of profit or loss and other comprehensive income (or in the separate statement of profit or loss) for the remaining net movement in all regulatory deferral account balances for the reporting period, excluding movements that are not reflected in profit or loss?"
+                },
+                {
+                    "id": "622",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.24, IFRS 14.B9–B12",
+                    "question": "When an entity recognises a deferred tax asset or liability as a result of recognising regulatory deferral account balances, does the entity present the resulting deferred tax asset (liability) and the related movement with the related regulatory deferral account balances and movements, instead of within the totals presented in accordance with IAS 12?"
+                },
+                {
+                    "id": "623.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B11",
+                    "question": "Instead of applying IAS 12, does the entity present the deferred tax asset (liability) with the line items presented for the regulatory deferral account debit balances and credit balances?"
+                },
+                {
+                    "id": "623.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B11",
+                    "question": "Instead of applying IAS 12, does the entity present the deferred tax asset (liability) as a separate line item alongside the related regulatory deferral account debit balances and credit balances?"
+                },
+                {
+                    "id": "624.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B12",
+                    "question": "Instead of applying IAS 12, does the entity present the movement in the deferred tax asset (liability) with the line items presented for the movements in regulatory deferral account balances?"
+                },
+                {
+                    "id": "624.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B12",
+                    "question": "Instead of applying IAS 12, does the entity present the movement in the deferred tax asset (liability) as a separate line item alongside the related movements in regulatory deferral account balances?"
+                },
+                {
+                    "id": "625",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.25, IFRS 14.B19–B22",
+                    "question": "When presenting a discontinued operation or disposal group under IFRS 5, does the entity present any related regulatory deferral account balances and the net movement in those balances, as applicable, with the regulatory deferral account balances and movements instead of within the discontinued operations or disposal group?"
+                },
+                {
+                    "id": "626.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B20",
+                    "question": "Instead of applying IFRS 5.33, does the entity present the movement in regulatory deferral account balances from the rate-regulated activities of the discontinued operation within the line item for movements in those balances related to profit or loss?"
+                },
+                {
+                    "id": "626.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B20",
+                    "question": "Instead of applying IFRS 5.33, does the entity present the movement in regulatory deferral account balances from the rate-regulated activities of the discontinued operation as a separate line item alongside the related line item for movements in those balances related to profit or loss?"
+                },
+                {
+                    "id": "627.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B21",
+                    "question": "Instead of applying IFRS 5.38, does the entity present the total of the regulatory deferral account debit balances that are part of the disposal group within the line items for regulatory deferral account debit and credit balances?"
+                },
+                {
+                    "id": "627.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B21",
+                    "question": "Instead of applying IFRS 5.38, does the entity present the total of the regulatory deferral account debit and credit balances that are part of the disposal group as separate line items alongside the other regulatory deferral account debit and credit balances?"
+                },
+                {
+                    "id": "628",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B22",
+                    "question": "If the entity includes regulatory deferral account balances and movements related to the disposal group or discontinued operation within the related regulatory deferral account line items, does it disclose them separately as part of the analysis described in IFRS 14.33?"
+                },
+                {
+                    "id": "629",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.26, IFRS 14.B13, IFRS 14.B14",
+                    "question": "When presenting earnings per share under IAS 33, does the entity present additional basic and diluted earnings per share calculated using the IAS 33 earnings amounts but excluding movements in regulatory deferral account balances?"
+                },
+                {
+                    "id": "630",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B14",
+                    "question": "For each earnings per share amount under IAS 33, does the entity applying IFRS 14 present additional basic and diluted earnings per share excluding net movement in regulatory deferral account balances, with equal prominence to the IAS 33 amounts?"
+                },
+                {
+                    "id": "631.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.27(a)",
+                    "question": "Does the entity disclose the nature of, and the risks associated with, the rate regulation that establishes the prices it can charge customers?"
+                },
+                {
+                    "id": "631.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.27(b)",
+                    "question": "Does the entity disclose the effects of that rate regulation on its financial position, financial performance and cash flows?"
+                },
+                {
+                    "id": "632",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.28",
+                    "question": "If disclosures under IFRS 14.30–36 are insufficient to meet the objective in IFRS 14.27, does the entity disclose additional information necessary to meet that objective?"
+                },
+                {
+                    "id": "633.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.30(a)",
+                    "question": "For each type of rate-regulated activity, does the entity disclose a brief description of the nature and extent of the activity and the regulatory rate-setting process?"
+                },
+                {
+                    "id": "633.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.30(b)",
+                    "question": "For each type of rate-regulated activity, does the entity disclose the identity of the rate regulator(s), and if the regulator is a related party, does it explain that relationship?"
+                },
+                {
+                    "id": "633.3",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.30(c)",
+                    "question": "For each type of rate-regulated activity, does the entity disclose how the future recovery of each class of regulatory deferral account debit balance or reversal of credit balance is affected by risks and uncertainty (for example, demand risk, regulatory risk, other risks)?"
+                },
+                {
+                    "id": "634",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.32",
+                    "question": "Does the entity disclose the basis on which regulatory deferral account balances are recognised and derecognised, how they are initially and subsequently measured, including how they are assessed for recoverability and how any impairment loss is allocated?"
+                },
+                {
+                    "id": "635.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.33(a)",
+                    "question": "For each class of regulatory deferral account balance, does the entity disclose a reconciliation of the carrying amount at the beginning and end of the period in a table (or other appropriate format)?"
+                },
+                {
+                    "id": "635.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.33",
+                    "question": "Does the entity disclose the amounts recognised in the current period in the statement of financial position as regulatory deferral account balances?"
+                },
+                {
+                    "id": "635.3",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.33(c)",
+                    "question": "Does the entity disclose the remaining periods over which it expects to recover or amortise each class of regulatory deferral account debit balance or to reverse each class of regulatory deferral account credit balance?"
+                },
+                {
+                    "id": "636",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.34(a)",
+                    "question": "When rate regulation affects the amount and timing of income tax expense or income, does the entity disclose the impact on current and deferred tax amounts recognised?"
+                },
+                {
+                    "id": "637",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.34(b)",
+                    "question": "Does the entity separately disclose any regulatory deferral account balance related to taxation and the related movement in that balance?"
+                },
+                {
+                    "id": "638.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.35(a)",
+                    "question": "When disclosing an interest in a rate-regulated subsidiary, associate or joint venture under IFRS 12, does the entity disclose the amounts included for the regulatory deferral account debit balances and credit balances?"
+                },
+                {
+                    "id": "638.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.35(b)",
+                    "question": "When disclosing an interest in a rate-regulated subsidiary, associate or joint venture under IFRS 12, does the entity disclose the net movement in those balances for the interests disclosed?"
+                },
+                {
+                    "id": "639",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B25",
+                    "question": "Does the entity that recognises regulatory deferral account balances disclose the net movement in those balances included within amounts required by IFRS 12.12(e)?"
+                },
+                {
+                    "id": "640.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B27(a)",
+                    "question": "In addition to IFRS 12 disclosures, does the entity disclose the total regulatory deferral account debit balance?"
+                },
+                {
+                    "id": "640.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B27(b)",
+                    "question": "In addition to IFRS 12 disclosures, does the entity disclose the total regulatory deferral account credit balance?"
+                },
+                {
+                    "id": "640.3",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B27(c)",
+                    "question": "In addition to IFRS 12 disclosures, does the entity disclose the net movements in those balances, split between amounts recognised in profit or loss and amounts recognised in other comprehensive income, for each entity requiring IFRS 12 disclosures?"
+                },
+                {
+                    "id": "641",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.B28",
+                    "question": "In addition to IFRS 12.19 disclosures, does the entity that elects to apply IFRS 14 disclose the portion of gain or loss attributable to derecognising regulatory deferral account balances in the former subsidiary when control is lost?"
+                },
+                {
+                    "id": "642.1",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.36(a)",
+                    "question": "When the entity concludes a regulatory deferral account balance is no longer fully recoverable or reversible, does it disclose that fact?"
+                },
+                {
+                    "id": "642.2",
+                    "section": "IFRS 14",
+                    "reference": "IFRS 14.36(b)",
+                    "question": "When the entity concludes a regulatory deferral account balance is no longer fully recoverable or reversible, does it disclose the reason and the amount by which the balance has been reduced?"
+                }
+            ]
+        }
+    ]
+}

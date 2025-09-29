@@ -1,0 +1,205 @@
+﻿{
+    "title": "IFRS_1 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS_1",
+            "title": "First-time adoption",
+            "description": "Checklist for first-time adoption of IFRS, including related disclosure requirements.",
+            "items": [
+                {
+                    "id": "24",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.39AK",
+                    "question": "If an entity applies the Amendments to IFRS 1 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact?"
+                },
+                {
+                    "id": "25",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.23",
+                    "question": "Does the entity explain how the transition from previous GAAP to IFRS accounting standards affected its financial position, financial performance and cash flows?"
+                },
+                {
+                    "id": "26.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.24(a)",
+                    "question": "Do the entity’s first IFRS financial statements include reconciliations of its equity reported under previous GAAP to its equity under IFRS accounting standards (in sufficient detail to enable users to understand the material adjustments to the statement of financial position) for the date of transition to IFRS accounting standards?"
+                },
+                {
+                    "id": "26.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.24(a)",
+                    "question": "Do the entity’s first IFRS financial statements include reconciliations of its equity reported under previous GAAP to its equity under IFRS accounting standards (in sufficient detail to enable users to understand the material adjustments to the statement of financial position) for the end of the latest period presented in the entity’s most recent annual financial statements under previous GAAP?"
+                },
+                {
+                    "id": "26.3",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.25",
+                    "question": "Do the entity’s first IFRS financial statements include a reconciliation of the total comprehensive income or profit or loss reported under previous GAAP for the latest period in the entity’s most recent annual financial statements to its total comprehensive income under IFRS accounting standards for the same period (in sufficient detail to enable users to understand the material adjustments to the statement of comprehensive income)?"
+                },
+                {
+                    "id": "27",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.24(c)",
+                    "question": "If the entity recognised or reversed any impairment losses for the first time in preparing its opening IFRS statement of financial position, do the financial statements include the disclosures that IAS 36 Impairment of Assets would have required if those impairments or reversals had been recognised in the period beginning with the date of transition to IFRS accounting standards?"
+                },
+                {
+                    "id": "28",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.26",
+                    "question": "If the entity is aware of errors under previous GAAP, do the reconciliations required by IFRS 1.24(a) and (b) distinguish between corrections of errors and changes in accounting policies?"
+                },
+                {
+                    "id": "29",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.25",
+                    "question": "If the entity presented a statement of cash flows under its previous GAAP, does it explain the material adjustments to that statement of cash flows?"
+                },
+                {
+                    "id": "30",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.28",
+                    "question": "If the entity does not present financial statements for previous periods, does it disclose that fact?"
+                },
+                {
+                    "id": "31.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.23A",
+                    "question": "Does an entity that has applied IFRS accounting standards in a previous period, as described in IFRS 1.4A, disclose the reason it stopped applying IFRS accounting standards?"
+                },
+                {
+                    "id": "31.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.23A",
+                    "question": "Does an entity that has applied IFRS accounting standards in a previous period, as described in IFRS 1.4A, disclose the reason it is resuming the application of IFRS accounting standards?"
+                },
+                {
+                    "id": "32",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.23B",
+                    "question": "When an entity, in accordance with IFRS 1.4A, does not elect to apply IFRS 1, does it explain the reasons for electing to apply IFRS accounting standards as if it had never stopped?"
+                },
+                {
+                    "id": "33.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.29",
+                    "question": "If the entity designates a previously recognised financial asset as a financial asset measured at fair value through profit or loss under IFRS 1.D19A, does it disclose the fair value of the financial asset so designated at the date of designation?"
+                },
+                {
+                    "id": "33.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.29",
+                    "question": "If the entity designates a previously recognised financial asset under IFRS 1.D19A, does it disclose the classification and carrying amount in the previous financial statements?"
+                },
+                {
+                    "id": "34.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.29A",
+                    "question": "If the entity designates a previously recognised financial liability as a financial liability at fair value through profit or loss under IFRS 1.D19, does it disclose the fair value of the financial liability so designated at the date of designation?"
+                },
+                {
+                    "id": "34.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.29A",
+                    "question": "If the entity designates a previously recognised financial liability under IFRS 1.D19, does it disclose the classification and carrying amount in the previous financial statements?"
+                },
+                {
+                    "id": "35.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.30(a)",
+                    "question": "If the entity uses fair value in its opening IFRS statement of financial position as deemed cost for an item of property, plant and equipment, investment property, intangible asset or right-of-use asset, does it disclose the aggregate of those fair values?"
+                },
+                {
+                    "id": "35.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.30(b)",
+                    "question": "If the entity uses fair value as deemed cost in its opening IFRS statement of financial position, does it disclose the aggregate adjustment to the carrying amounts reported under previous GAAP?"
+                },
+                {
+                    "id": "36.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31(a)",
+                    "question": "If the entity uses deemed cost in its opening IFRS statement of financial position for investments in subsidiaries, joint ventures or associates in separate financial statements, does it disclose the aggregate deemed cost of those investments for which deemed cost is their previous GAAP amounts?"
+                },
+                {
+                    "id": "36.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31(b)",
+                    "question": "If the entity uses deemed cost in its opening IFRS statement of financial position for such investments, does it disclose the aggregate deemed cost of those investments for which deemed cost is fair value?"
+                },
+                {
+                    "id": "37.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.21(a)",
+                    "question": "In its first IFRS financial statements, does the entity present three statements of financial position (including opening IFRS statements at the date of transition)?"
+                },
+                {
+                    "id": "37.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.21(b)",
+                    "question": "In its first IFRS financial statements, does the entity present two statements of profit or loss and comprehensive income, either in a single statement or in two separate statements showing profit or loss and other comprehensive income?"
+                },
+                {
+                    "id": "37.3",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.21(c)",
+                    "question": "In its first IFRS financial statements, does the entity present two statements of cash flows?"
+                },
+                {
+                    "id": "37.4",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.21(d)",
+                    "question": "In its first IFRS financial statements, does the entity present two statements of changes in equity?"
+                },
+                {
+                    "id": "37.5",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.21(e)",
+                    "question": "In its first IFRS financial statements, does the entity present related notes, including comparative information for all statements presented?"
+                },
+                {
+                    "id": "38.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.22(a)",
+                    "question": "For any historical summaries or comparative information under previous GAAP that do not comply with IFRS recognition and measurement, does the entity label that information prominently as not being prepared under IFRS accounting standards?"
+                },
+                {
+                    "id": "38.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.22(b)",
+                    "question": "For any such information, does the entity disclose the nature of the main adjustments that would make it comply with IFRS accounting standards, without needing to quantify them?"
+                },
+                {
+                    "id": "39",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31A, IFRS 1.D8A(b)",
+                    "question": "If an entity uses the exemption in IFRS 1.D8A(b) for oil and gas assets, does it disclose that fact and the basis on which carrying amounts determined under previous GAAP were allocated?"
+                },
+                {
+                    "id": "40.1",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31B(a)",
+                    "question": "If an entity holds items of property, plant and equipment or intangible assets used in rate-regulated operations and uses previous GAAP carrying amounts as deemed cost, does it disclose that fact?"
+                },
+                {
+                    "id": "40.2",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31B(b)",
+                    "question": "If an entity uses previous GAAP carrying amounts as deemed cost for such items, does it disclose the basis on which those carrying amounts were determined under previous GAAP?"
+                },
+                {
+                    "id": "41",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.31C",
+                    "question": "If an entity measures assets and liabilities at fair value as deemed cost in its opening IFRS statement because of severe hyperinflation, does it disclose how and why it had, and then ceased to have, a functional currency subject to severe hyperinflation?"
+                },
+                {
+                    "id": "42",
+                    "section": "IFRS_1",
+                    "reference": "IFRS 1.D34, IFRS 15.C6",
+                    "question": "If an entity applies the transition provisions in IFRS 15.C5, does it make the disclosures required by IFRS 15.C6?"
+                }
+            ]
+        }
+    ]
+}

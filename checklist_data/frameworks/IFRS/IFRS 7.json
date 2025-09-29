@@ -1,0 +1,877 @@
+﻿{
+    "title": "IFRS 7 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 7",
+            "title": "Financial Instruments",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 7.",
+            "items": [
+                {
+                    "id": "IFRS7-1a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.6",
+                    "question": "If disclosures are required by class of financial instrument, does the entity group financial instruments into classes that are appropriate to the nature of the information disclosed and that take into account the characteristics of those financial instruments?"
+                },
+                {
+                    "id": "IFRS7-1b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.6",
+                    "question": "If disclosures are required by class of financial instrument, does the entity provide sufficient information to permit reconciliation to the relevant items in the statement of financial position?"
+                },
+                {
+                    "id": "IFRS7-2",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.7",
+                    "question": "Does the entity disclose information that enables users of its financial statements to evaluate the significance of financial instruments to its financial position and performance"
+                },
+                {
+                    "id": "IFRS7-3a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through profit or loss that are designated as such upon initial recognition or subsequently in accordance with IFRS 9.6.7.1?"
+                },
+                {
+                    "id": "IFRS7-3b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through profit or loss that are mandatorily measured at fair value through profit or loss in accordance with IFRS 9?"
+                },
+                {
+                    "id": "IFRS7-3c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through profit or loss in accordance with the election in IFRS 9.3.3.5?"
+                },
+                {
+                    "id": "IFRS7-3d",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through profit or loss in accordance with the election in IAS 32.33A?"
+                },
+                {
+                    "id": "IFRS7-3e",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial liabilities at fair value through profit or loss that are designated as such upon initial recognition or subsequently in accordance with IFRS 9.6.7.1?"
+                },
+                {
+                    "id": "IFRS7-3f",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial liabilities at fair value through profit or loss that meet the definition of held for trading in IFRS 9?"
+                },
+                {
+                    "id": "IFRS7-3g",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at amortised cost?"
+                },
+                {
+                    "id": "IFRS7-3h",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial liabilities measured at amortised cost?"
+                },
+                {
+                    "id": "IFRS7-3i",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets that are measured at fair value through other comprehensive income in accordance with IFRS 9.4.1.2A?"
+                },
+                {
+                    "id": "IFRS7-3j",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.6.7.1",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of investments in equity instruments designated as measured at fair value through other comprehensive income upon initial recognition in accordance with IFRS 9.5.7.5?"
+                },
+                {
+                    "id": "IFRS7-4a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 9.7.1.12, IFRS 9.7.1.13",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that it applies all the amendments at the same time?"
+                },
+                {
+                    "id": "IFRS7-4b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 9.7.1.12, IFRS 9.7.1.13",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that it applies only the amendments to the Application Guidance to Section 4.1 (Classification of financial assets) of IFRS 9 for that earlier period?"
+                },
+                {
+                    "id": "IFRS7-5a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 9.7.2.49",
+                    "question": "At the date of initial application of the amendments to the Application Guidance to Section 4.1 of IFRS 9 (Classification of financial assets), does the entity disclose for each class of financial assets that changed measurement category as a result of applying the amendments the measurement category and carrying amount determined immediately before the amendments were applied?"
+                },
+                {
+                    "id": "IFRS7-5b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 9.7.2.49",
+                    "question": "At the date of initial application of the amendments to the Application Guidance to Section 4.1 of IFRS 9 (Classification of financial assets), does the entity disclose for each class of financial assets that changed measurement category as a result of applying the amendments the measurement category and carrying amount determined immediately after the amendments were applied?"
+                },
+                {
+                    "id": "IFRS7-6",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 9.7.1.14",
+                    "question": "If an entity applies the Amendments to IFRS 9 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact"
+                },
+                {
+                    "id": "IFRS7-7",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.9, IFRS 7.36(a), IFRS 7.36(b)",
+                    "question": "If the entity has designated a financial asset (or group of financial assets) as measured at fair value through profit or loss that would otherwise be measured at fair value through other comprehensive income or amortised cost, does it disclose: a. The maximum exposure to credit risk (see IFRS 7.36(a)) of the financial asset (or group of financial assets) at the end of the reporting period b. The amount by which any related credit derivatives or similar instruments mitigate that maximum exposure to credit risk (see IFRS 7.36(b)) c. The amount of change, during the period and cumulatively, in the fair value of the financial asset (or group of financial assets) that is attributable to changes in the credit risk of the financial asset determined either: ► As the change in its fair value that is not attributable to changes in market conditions that give rise to market risk Or ► Using an alternative method that the entity believes more faithfully represents the change in its fair value that is attributable to changes in credit risk of the asset d. The amount of the change in the fair value of any related credit derivatives or similar instruments that has occurred during the reporting period and cumulatively since the financial asset was designated"
+                },
+                {
+                    "id": "IFRS7-8",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.10, IFRS 9.4.2.2, IFRS 9.5.7.7, IFRS 9.B5.7.13 -B5.7.20",
+                    "question": "If the entity (a) has designated a financial liability as at fair value through profit or loss in accordance with IFRS 9.4.2.2 and (b) is required to present the effects of changes in that liability's credit risk in other comprehensive income (see IFRS 9.5.7.7) does it disclose: a. The amount of change, cumulatively, in the fair value of the financial liability that is attributable to changes in the credit risk of that liability b. The difference between the financial liability’s carrying amount and the amount the entity would be contractually required to pay at maturity to the holder of the obligation c. Any transfers of the cumulative gain or loss within equity during the reporting period, including the reason for such transfers d. If a liability is derecognised during the reporting period, the amount (if any) presented in other comprehensive income that was realised at derecognition"
+                },
+                {
+                    "id": "IFRS7-9",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.10A, IFRS 9.4.2.2, IFRS 9.5.7.7, IFRS 9.5.7.8, IFRS 9.B5.7.13 -B5.7.20",
+                    "question": "If the entity (a) has designated a financial liability as at fair value through profit or loss in accordance with IFRS 9.4.2.2 and (b) is required to present all changes in the fair value of that liability (including the effects of changes in the credit risk of the liability) in profit or loss (see IFRS 9.5.7.7-8) does it disclose: a. The amount of change, during the period and cumulatively, in the fair value of the financial liability that is attributable to changes in the credit risk of that liability b. The difference between the financial liability’s carrying amount and the amount the entity would be contractually required to pay at maturity to the holder of the obligation"
+                },
+                {
+                    "id": "IFRS7-10",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.11, IFRS 9.5.7.7 (a)",
+                    "question": "Does the entity disclose: a. A detailed description of the methods used to comply with the requirements in IFRS 7.9(c), 10(a) and 10A(a) and IFRS 9.5.7.7(a), including an explanation of why the method is appropriate b. If the entity believes that the disclosure it has given, either in the statement of financial position or in the notes, to comply with the requirements in IFRS 7.9(c), 10(a) and 10A(a) or IFRS 9.5.7.7(a) does not faithfully represent the change in the fair value of the financial asset or financial liability attributable to changes in its credit risk: ► The reasons for reaching this conclusion ► The factors the entity believes are relevant c. A detailed description of the methodology or methodologies used to determine whether presenting the effects of changes in a liability’s credit risk in other comprehensive income would create or enlarge an accounting mismatch in profit or loss d. If the entity is required to present the effects of changes in a liability’s credit risk in profit or loss (to comply with c. above), the disclosure must include a detailed description of the economic relationship described in IFRS 9.B5.7.6"
+                },
+                {
+                    "id": "IFRS7-11",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.11A, IFRS 9.5.7.5",
+                    "question": "If an entity does not apply the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity designated investments in equity instruments to be measured at fair value through other comprehensive income, as permitted by IFRS 9.5.7.5, does it disclose: a. Which investments in equity instruments have been designated to be measured at fair value through other comprehensive income b. The reasons for using this presentation alternative c. The fair value of each such investment at the end of the reporting period d. Dividends recognised during the period, showing separately: ► Those related to investments derecognised during the reporting period ► Those related to investments held at the end of the reporting period e. Any transfers of the cumulative gain or loss within equity during the reporting period and the reason for such transfers"
+                },
+                {
+                    "id": "IFRS7-12",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.11B",
+                    "question": "If an entity does not apply the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity derecognises investments in equity instruments measured at fair value through other comprehensive income during the reporting period, does it disclose: a. The reasons for disposing of the investments b. The fair value of the investments at the date of derecognition c. The cumulative gain or loss on disposal"
+                },
+                {
+                    "id": "IFRS7-13",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.11A, IFRS 9.5.7.5",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity designated investments in equity instruments to be measured at fair value through other comprehensive income, as permitted by IFRS 9.5.7.5, does it disclose for each class of investment: a. Which investments in equity instruments have been designated to be measured at fair value through other comprehensive income b. The reasons for using this presentation alternative c. The fair value at the end of the reporting period d. Dividends recognised during the period, showing separately: ► Those related to investments derecognised during the reporting period ► Those related to investments held at the end of the reporting period e. Any transfers of the cumulative gain or loss within equity during the reporting period and the reason for such transfers f. The fair value gain or loss presented in other comprehensive income during the period, showing separately the fair value gain or loss related to investments derecognised during the reporting period and the fair value gain or loss related to investments held at the end of the reporting period"
+                },
+                {
+                    "id": "IFRS7-14",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.11B",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity derecognises investments in equity instruments measured at fair value through other comprehensive income during the reporting period, does it disclose: a. The reasons for disposing of the investments b. The fair value of the investments at the date of derecognition c. The cumulative gain or loss on disposal d. Any transfers of the cumulative gain or loss within equity during the reporting period related to the investments derecognised during that reporting period"
+                },
+                {
+                    "id": "IFRS7-15",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.12B, IFRS 9.4.4.1",
+                    "question": "If the entity, in the current or previous reporting periods, has reclassified any financial assets in accordance with paragraph 4.4.1 of IFRS 9, for each such event, does the entity disclose: a. The date of reclassification b. A detailed explanation of the change in business model and a qualitative description of its effect on the entity's financial statements c. The amount reclassified into and out of each category d. For any financial assets reclassified out of the amortised cost measurement category so that they are measured at fair value through profit or loss, any gain or loss arising from a difference between the previous amortised cost of the financial asset and its fair value at the reclassification date e. For any financial asset is reclassified out of the fair value through other comprehensive income measurement category so that it is measured at fair value through profit or loss, any cumulative gain or loss previously recognised in other comprehensive income that is reclassified to profit or loss"
+                },
+                {
+                    "id": "IFRS7-16",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.12C, IFRS 9.4.4.1",
+                    "question": "For each reporting period following reclassification until derecognition of assets reclassified out of the fair value through profit or loss category so that they are measured at amortised cost or fair value through other comprehensive income in accordance with IFRS 9.4.4.1, does the entity disclose: a. The effective interest rate determined on the date of reclassification b. The interest revenue recognised"
+                },
+                {
+                    "id": "IFRS7-17",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.12D",
+                    "question": "If, since its last annual reporting date, the entity has reclassified financial assets out of the fair value through other comprehensive income category so that they are measured at amortised cost or out of the fair value through profit or loss category so that they are measured at amortised cost or fair value through other comprehensive income, does it disclose: a. The fair value of the financial assets at the end of the reporting period b. The fair value gain or loss that would have been recognised in profit or loss or other comprehensive income during the reporting period if the financial assets had not been reclassified"
+                },
+                {
+                    "id": "IFRS7-18",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42N",
+                    "question": "If an entity treats the fair value of a financial asset or financial liability as its amortised cost at the date of initial application of IFRS 9, does the entity make the disclosures in IFRS 7.42N for each reporting period until derecognition"
+                },
+                {
+                    "id": "IFRS7-19",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42A",
+                    "question": "Does the entity present the disclosures required by IFRS 7.42B-42H in a single note in its financial statements"
+                },
+                {
+                    "id": "IFRS7-20",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42B",
+                    "question": "Does the entity disclose information that enables users of its financial statements: a. To understand the relationship between transferred financial assets that are not derecognised in their entirety and the associated liabilities b. To evaluate the nature of, and risks associated with, the entity’s continuing involvement in derecognised financial assets"
+                },
+                {
+                    "id": "IFRS7-21",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42D",
+                    "question": "To meet the objectives in IFRS 7.42B(a) above, does the entity disclose for each class of transferred financial assets that are not derecognised in their entirety: a. The nature of the transferred assets b. The nature of the risks and rewards of ownership to which the entity remains exposed c. A description of the nature of the relationship between the transferred assets and the associated liabilities, including any restrictions arising from the transfer on the entity’s use of the transferred assets d. When the counterparty (counterparties) to the associated liabilities has (have) recourse only to the transferred assets, a schedule that sets out: ► The fair value of the transferred assets ► The fair value of the associated liabilities ► The net position e. When the entity continues to recognise all of the transferred assets, the carrying amounts of the transferred assets and the associated liabilities f. When the entity continues to recognise the assets to the extent of its continuing involvement: ► The total carrying amount of the original assets before the transfer ► The carrying amount of the assets that the entity continues to recognise ► The carrying amount of the associated liabilities"
+                },
+                {
+                    "id": "IFRS7-22",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.44NN",
+                    "question": "If an entity applies the Amendments to IFRS 7 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact"
+                },
+                {
+                    "id": "IFRS7-23",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6 (a), IFRS 9.3.2.6(c) (i)",
+                    "question": "To meet the objectives in IFRS 7.42B(b), when the entity derecognises transferred financial assets in their entirety, but has continuing involvement in them, does the entity disclose for each type of continuing involvement at the reporting date: a. The carrying amount of the assets and liabilities that are recognised in the entity’s statement of financial position and represent the entity’s continuing involvement in the derecognised financial assets, and the line items in which those assets and liabilities are recognised b. The fair value of the assets and liabilities that represent the entity’s continuing involvement in the derecognised financial assets c. The amount that best represents the entity’s maximum exposure to loss from its continuing involvement in the derecognised financial assets, and how the maximum exposure to loss is determined d. The undiscounted cash outflows that would or may be required to repurchase the derecognised financial assets or other amounts payable to the transferee for the transferred assets e. A maturity analysis of the undiscounted cash outflows that would or may be required to repurchase the derecognised financial assets or other amounts payable to the transferee in respect of the transferred assets, showing the remaining contractual maturities of the entity's continuing involvement f. Qualitative information that explains and supports the quantitative disclosures in (a)–(e), that includes a description of: ► The derecognised financial assets and the nature and purpose of the continuing involvement retained after transferring those assets ► The risks to which an entity is exposed, including: ► A description of how the entity manages the risk inherent in its continuing involvement in the derecognised financial assets ► Whether the entity is required to bear losses before other parties, and the ranking and amounts of losses borne by parties whose interests rank lower than the entity’s interest in the asset (i.e., its continuing involvement in the asset) ► A description of any triggers associated with obligations to provide financial support or to repurchase a transferred financial asset"
+                },
+                {
+                    "id": "IFRS7-24",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42G, IFRS 7.B38",
+                    "question": "Does the entity disclose, for each reporting period for which a statement of comprehensive income is presented, for each type of continuing involvement: a. The gain or loss recognised at the date of transfer of the assets, including: ► Whether that gain or loss on derecognition arose because the fair values of the components of the previously recognised asset (i.e., the interest in the asset derecognised and the interest retained by the entity) were different from the fair value of the previously recognised asset as a whole ► If that gain or loss on derecognition arose because the fair values of the components of the previously recognised asset were different from the fair value of the previously recognised asset as a whole, whether the fair value measurements included significant inputs that were not based on observable market data or - if the entity applies the Amendments to IFRS 7 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024 - significant unobservable inputs as described in paragraphs 72–73 of IFRS 13 b. Income and expenses recognised, both in the reporting period and cumulatively, from the entity’s continuing involvement (for example, fair value changes in derivative instruments)"
+                },
+                {
+                    "id": "IFRS7-25",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42H, IFRS 7.B39",
+                    "question": "Does the entity disclose any additional information that it considers necessary to meet the disclosure objectives of IFRS 7.42B above"
+                },
+                {
+                    "id": "IFRS7-26a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.14, IFRS 9.3.2.23 (a)",
+                    "question": "Does the entity disclose the carrying amount of financial assets pledged as collateral for liabilities or contingent liabilities, including amounts reclassified in accordance with IFRS 9.3.2.23(a)?"
+                },
+                {
+                    "id": "IFRS7-26b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.14, IFRS 9.3.2.23 (a)",
+                    "question": "Does the entity disclose the terms and conditions relating to the pledge of financial assets as collateral for liabilities or contingent liabilities?"
+                },
+                {
+                    "id": "IFRS7-27a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.15",
+                    "question": "If the entity holds collateral (of financial or non-financial assets) and may sell or repledge the collateral in the absence of default by the owner of the collateral, does the entity disclose the fair value of the collateral held?"
+                },
+                {
+                    "id": "IFRS7-27b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.15",
+                    "question": "If the entity holds collateral (of financial or non-financial assets) and may sell or repledge the collateral in the absence of default by the owner of the collateral, does the entity disclose the fair value of any such collateral sold or repledged, and whether the entity has an obligation to return it?"
+                },
+                {
+                    "id": "IFRS7-27c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.15",
+                    "question": "If the entity holds collateral (of financial or non-financial assets) and may sell or repledge the collateral in the absence of default by the owner of the collateral, does the entity disclose the terms and conditions associated with its use of this collateral?"
+                },
+                {
+                    "id": "IFRS7-28",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.16A",
+                    "question": "Does the entity disclose the loss allowance for a debt instrument measured at fair value through other comprehensive income in the notes to the financial statements"
+                },
+                {
+                    "id": "IFRS7-29",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.17",
+                    "question": "If the entity issued an instrument that contains both a liability and an equity component and the instrument has multiple embedded derivatives whose values are interdependent (such as a callable convertible debt instrument), does the entity disclose the existence of those features"
+                },
+                {
+                    "id": "IFRS7-30a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.18",
+                    "question": "For loans payable recognised at the end of the reporting period, does the entity disclose details of any defaults during the period of principal, interest, sinking fund, or redemption terms of those loans payable?"
+                },
+                {
+                    "id": "IFRS7-30b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.18",
+                    "question": "For loans payable recognised at the end of the reporting period, does the entity disclose the carrying amount of the loans payable in default at the end of the reporting period?"
+                },
+                {
+                    "id": "IFRS7-30c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.18",
+                    "question": "For loans payable recognised at the end of the reporting period, does the entity disclose whether the default was remedied, or the terms of the loans payable were renegotiated, before the financial statements were authorised for issue?"
+                },
+                {
+                    "id": "IFRS7-31",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.19",
+                    "question": "If, during the reporting period, there are breaches of loan agreement terms other than those described in IFRS 7.18, does the entity disclose the same information as required by IFRS 7.18 if those breaches permit the lender to demand accelerated repayment (unless the breaches were remedied, or the terms of the loan were renegotiated, on or before the end of the reporting period)"
+                },
+                {
+                    "id": "IFRS7-32",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20(a)",
+                    "question": "Does the entity disclose the following items of income, expense, gains or losses, either in the statement of comprehensive income or in the notes: Net gains or net losses on: ► Financial assets or liabilities measured at fair value through profit or loss, showing separately: ► Net gains or net losses on financial assets or financial liabilities designated as such upon initial recognition, or subsequently in accordance with IFRS 9.6.7.1 ► Net gains or net losses on financial assets or financial liabilities that are mandatorily measured at fair value through profit or loss in accordance with IFRS 9 (e.g., financial liabilities that meet the definition of held for trading in IFRS 9) ► Financial liabilities designated as at fair value through profit or loss under the fair value option, showing separately: ► The amount of gain or loss recognised in other comprehensive income ► The amount of gain or loss recognised in profit or loss ► Financial assets measured at amortised cost ► Financial liabilities measured at amortised cost ► Investments in equity instruments designated at fair value through other comprehensive income in accordance with IFRS 9.5.7.5 ► Financial assets measured at fair value through other comprehensive income in accordance with IFRS 9.4.1.2A, showing separately the amount of gain or loss recognised in other comprehensive income during the period and the amount reclassified upon derecognition from accumulated other comprehensive income to profit or loss for the period"
+                },
+                {
+                    "id": "IFRS7-33a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20(b)",
+                    "question": "Does the entity disclose either in the statement of comprehensive income or in the notes (calculated using the effective interest method) for financial assets that are measured at amortised cost or that are measured at fair value through other comprehensive income in accordance with IFRS 9.4.1.2A (showing these amounts separately) or financial liabilities not at fair value through profit or loss the total interest revenue?"
+                },
+                {
+                    "id": "IFRS7-33b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20(b)",
+                    "question": "Does the entity disclose either in the statement of comprehensive income or in the notes (calculated using the effective interest method) for financial assets that are measured at amortised cost or that are measured at fair value through other comprehensive income in accordance with IFRS 9.4.1.2A (showing these amounts separately) or financial liabilities not at fair value through profit or loss the total interest expense?"
+                },
+                {
+                    "id": "IFRS7-34a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20(c)",
+                    "question": "Does the entity disclose either in the statement of comprehensive income or in the notes, the fee income and expense (other than amounts included in determining the effective interest rate) arising from financial assets and financial liabilities that are not at fair value through profit or loss?"
+                },
+                {
+                    "id": "IFRS7-34b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20(c)",
+                    "question": "Does the entity disclose either in the statement of comprehensive income or in the notes, the fee income and expense (other than amounts included in determining the effective interest rate) arising from trust and other fiduciary activities that result in the holding or investing of assets on behalf of individuals, trusts, retirement benefit plans and other institutions?"
+                },
+                {
+                    "id": "IFRS7-35a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20A",
+                    "question": "If the entity derecognised a financial asset measured at amortised cost, does it disclose an analysis of the gain or loss recognised in the statement of profit or loss and other comprehensive income arising from the derecognition of those financial assets, showing separately gains and losses arising from derecognition?"
+                },
+                {
+                    "id": "IFRS7-35b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20A",
+                    "question": "If the entity derecognised a financial asset measured at amortised cost, does it disclose the reasons for derecognising those financial assets?"
+                },
+                {
+                    "id": "IFRS7-36",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.20B, IFRS 7.20C",
+                    "question": "If an entity applies the amendments to the Application Guidance Section 4.1 (Classification of financial assets) of IFRS 9 – as set out in the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024 – in its financial statements for a period beginning before 1 January 2026, does the entity disclose (by class of financial assets measured at amortised cost or fair value through other comprehensive income and by class of financial liabilities measured at amortised cost): a. A qualitative description of the nature of the contingent event b. Quantitative information about the possible changes to contractual cash flows that could result from those contractual terms (for example, the range of possible changes c. The gross carrying amount of financial assets and the amortised cost of financial liabilities subject to those contractual terms"
+                },
+                {
+                    "id": "IFRS7-37",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.21, IAS 1.117, IAS8.27A",
+                    "question": "Does the entity disclose its material accounting policy information. Information about the measurement basis (or bases) for financial instruments used in preparing the financial statements is expected to be material accounting policy information"
+                },
+                {
+                    "id": "IFRS7-38",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B5(a)",
+                    "question": "Does the entity disclose, for financial liabilities designated as at fair value through profit or loss: a. The nature of the financial liabilities the entity has designated as at fair value through profit or loss b. The criteria for so designating such financial liabilities on initial recognition c. How the entity has satisfied the conditions in IFRS 9.4.2.2 for such designation"
+                },
+                {
+                    "id": "IFRS7-39",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B5(aa)",
+                    "question": "For financial assets designated at fair value through profit or loss, does the entity disclose: a. The nature of the financial assets the entity has designated as measured at fair value through profit or loss b. How the entity has satisfied the criteria in paragraph 4.1.5 of IFRS 9 for such designation"
+                },
+                {
+                    "id": "IFRS7-40a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B5(c), IFRS 7B5(e), IFRS 7.20(a)",
+                    "question": "Does the entity disclose whether regular way purchases and sales of financial assets are accounted for at trade date or at settlement date (IFRS 9.3.1.2)?"
+                },
+                {
+                    "id": "IFRS7-40b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B5(c), IFRS 7B5(e), IFRS 7.20(a)",
+                    "question": "Does the entity disclose how net gains or net losses on each category of financial instrument are determined, for example, whether the net gains or net losses on items at fair value through profit or loss include interest or dividend income?"
+                },
+                {
+                    "id": "IFRS7-41",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B5, IAS 1.122, IAS 8.27G",
+                    "question": "Does the entity disclose management's judgements for financial instruments that have the most significant effect on the financial statements"
+                },
+                {
+                    "id": "IFRS7-42",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.21A",
+                    "question": "Does the entity apply the disclosure requirements in IFRS 7.21B–24F for those risk exposures that an entity hedges and for which it elects to apply hedge accounting. Hedge accounting disclosures must provide information about: a. An entity’s risk management strategy and how it is applied to manage risk (see IFRS 7.22A-C) b. How the entity’s hedging activities may affect the amount, timing and uncertainty of its future cash flows (see IFRS 7.23A-F) c. The effect that hedge accounting has had on the entity’s statement of financial position, statement of comprehensive income and statement of changes in equity (see IFRS 7.24A-F)"
+                },
+                {
+                    "id": "IFRS7-43a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22A",
+                    "question": "Does the entity explain its risk management strategy for each risk category of risk exposures that it decides to hedge and for which hedge accounting is applied, enabling users of financial statements to evaluate how each risk arises?"
+                },
+                {
+                    "id": "IFRS7-43b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22A",
+                    "question": "Does the entity explain its risk management strategy for each risk category of risk exposures that it decides to hedge and for which hedge accounting is applied, enabling users of financial statements to evaluate how the entity manages each risk; this includes whether the entity hedges an item in its entirety for all risks or hedges a risk component (or components) of an item and why?"
+                },
+                {
+                    "id": "IFRS7-43c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22A",
+                    "question": "Does the entity explain its risk management strategy for each risk category of risk exposures that it decides to hedge and for which hedge accounting is applied, enabling users of financial statements to evaluate the extent of risk exposures that the entity manages?"
+                },
+                {
+                    "id": "IFRS7-44a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22B",
+                    "question": "To meet the requirements in IFRS 7.22A, does the entity provide information that includes (but is not limited to) a description of the hedging instruments that are used (and how they are used) to hedge risk exposures?"
+                },
+                {
+                    "id": "IFRS7-44b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22B",
+                    "question": "To meet the requirements in IFRS 7.22A, does the entity provide information that includes (but is not limited to) a description of how the entity determines the economic relationship between the hedged item and the hedging instrument for the purpose of assessing hedge effectiveness?"
+                },
+                {
+                    "id": "IFRS7-44c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22B",
+                    "question": "To meet the requirements in IFRS 7.22A, does the entity provide information that includes (but is not limited to) a description of how the entity establishes the hedge ratio and what the sources of hedge ineffectiveness are?"
+                },
+                {
+                    "id": "IFRS7-45a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22C, IFRS 9.6.3.7",
+                    "question": "When an entity designates a specific risk component as a hedged item (see IFRS 9.6.3.7) does the entity provide, in addition to the disclosures required by IFRS 7. 22A and 22B, qualitative or quantitative information about how it determined the risk component that is designated as the hedged item (including a description of the nature of the relationship between the risk component and the item as a whole)?"
+                },
+                {
+                    "id": "IFRS7-45b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.22C, IFRS 9.6.3.7",
+                    "question": "When an entity designates a specific risk component as a hedged item (see IFRS 9.6.3.7) does the entity provide, in addition to the disclosures required by IFRS 7. 22A and 22B, qualitative or quantitative information about how the risk component relates to the item in its entirety (e.g., the designated risk component historically covered on average 80% of the changes in fair value of the item as a whole)?"
+                },
+                {
+                    "id": "IFRS7-46",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23A",
+                    "question": "Unless exempted by IFRS 7.23C, does the entity disclose, by risk category, quantitative information to allow users of its financial statements to evaluate the terms and conditions of hedging instruments and how they affect the amount, timing and uncertainty of future cash flows of the entity"
+                },
+                {
+                    "id": "IFRS7-47a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23B",
+                    "question": "To meet the requirement in IFRS 7.23A, does the entity provide a breakdown that discloses a profile of the timing of the nominal amount of the hedging instrument?"
+                },
+                {
+                    "id": "IFRS7-47b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23B",
+                    "question": "To meet the requirement in IFRS 7.23A, does the entity provide a breakdown that discloses, if applicable, the average price or rate (e.g., strike or forward prices, etc.) of the hedging instrument?"
+                },
+                {
+                    "id": "IFRS7-48",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23C",
+                    "question": "In situations in which an entity frequently resets (i.e., discontinues and restarts) hedging relationships because both the hedging instrument and the hedged item frequently change (i.e., the entity uses a dynamic process in which both the exposure and the hedging instruments used to manage that exposure do not remain the same for long — such as in the example in IFRS 9.B6.5.24(b)) the entity is exempt from providing the disclosures required by IFRS 7.23A and 23B. In such a situation, does the entity disclose: a. Information about the ultimate risk management strategy in relation to those hedging relationships b. A description of how it reflects its risk management strategy by using hedge accounting and designating those particular hedging relationships c. An indication of how frequently the hedging relationships are discontinued and restarted as part of the entity’s process in relation to those hedging relationships"
+                },
+                {
+                    "id": "IFRS7-49",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23D",
+                    "question": "Does the entity disclose by risk category a description of the sources of hedge ineffectiveness that are expected to affect the hedging relationship during its term"
+                },
+                {
+                    "id": "IFRS7-50",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23E",
+                    "question": "If other sources of hedge ineffectiveness emerge in a hedging relationship, does the entity disclose those sources by risk category and explain the resulting hedge ineffectiveness"
+                },
+                {
+                    "id": "IFRS7-51",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.23F",
+                    "question": "For cash flow hedges, does the entity disclose a description of any forecast transaction for which hedge accounting had been used in the previous period, but which is no longer expected to occur"
+                },
+                {
+                    "id": "IFRS7-52",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24A",
+                    "question": "Does the entity disclose, in a tabular format, the following amounts related to items designated as hedging instruments separately, by risk category, for each type of hedge (fair value hedge, cash flow hedge or hedge of a net investment in a foreign operation): a. The carrying amount of the hedging instruments (financial assets separately from financial liabilities) b. The line item in the statement of financial position that includes the hedging instrument c. The change in fair value of the hedging instrument used as the basis for recognising hedge ineffectiveness for the period d. The nominal amounts (including quantities such as tonnes or cubic metres) of the hedging instruments"
+                },
+                {
+                    "id": "IFRS7-53",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24B(a)",
+                    "question": "Does the entity disclose, in a tabular format, the following amounts related to hedged items separately by risk category for fair value hedges: a. The carrying amount of the hedged item recognised in the statement of financial position (presenting assets separately from liabilities) b. The accumulated amount of fair value hedge adjustments on the hedged item included in the carrying amount of the hedged item recognised in the statement of financial position (presenting assets separately from liabilities) c. The line item in the statement of financial position that includes the hedged item d. The change in value of the hedged item used as the basis for recognising hedge ineffectiveness for the period e. The accumulated amount of fair value hedge adjustments remaining in the statement of financial position for any hedged items that have ceased to be adjusted for hedging gains and losses in accordance with IFRS 9.6.5.10"
+                },
+                {
+                    "id": "IFRS7-54",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24B(b), IFRS 9.6.5.11 (c)",
+                    "question": "Does the entity disclose, in a tabular format, the following amounts related to hedged items separately, by risk category, for cash flow hedges and hedges of a net investment in a foreign operation: a. The change in value of the hedged item used as the basis for recognising hedge ineffectiveness for the period (i.e., for cash flow hedges the change in value used to determine the recognised hedge ineffectiveness in accordance with IFRS 9.6.5.11(c)) b. The balances in the cash flow hedge reserve and the foreign currency translation reserve for continuing hedges that are accounted for in accordance with IFRS 9.6.5.11 and 6.5.13(a) c. The balances remaining in the cash flow hedge reserve and the foreign currency translation reserve from any hedging relationships for which hedge accounting is no longer applied"
+                },
+                {
+                    "id": "IFRS7-55",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24C(a), IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, in a tabular format, the following amounts separately by risk category for fair value hedges: a. Hedge ineffectiveness - i.e., the difference between the hedging gains or losses of the hedging instrument and the hedged item — recognised in profit or loss (or other comprehensive income for hedges of an equity instrument for which an entity has elected to present changes in fair value in other comprehensive income in accordance with IFRS 9.5.7.5) b. The line item in the statement of comprehensive income that includes the recognised hedge ineffectiveness"
+                },
+                {
+                    "id": "IFRS7-56",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24C(b)",
+                    "question": "Does the entity disclose, in a tabular format, the following amounts separately, by risk category, for cash flow hedges and hedges of a net investment in a foreign operation: a. Hedging gains or losses of the reporting period that were recognised in other comprehensive income b. Hedge ineffectiveness recognised in profit or loss c. The line item in the statement of comprehensive income that includes the recognised hedge ineffectiveness d. The amount reclassified from the cash flow hedge reserve or the foreign currency translation reserve into profit or loss as a reclassification adjustment (see IAS 1 or IFRS 18 if the entity applies it early) (differentiating between amounts for which hedge accounting had previously been used, but for which the hedged future cash flows are no longer expected to occur, and amounts that have been transferred because the hedged item has affected profit or loss) e. The line item in the statement of comprehensive income that includes the reclassification adjustment (see IAS 1 or IFRS 18 if the entity adopts it early) f. For hedges of net positions, the hedging gains or losses recognised in a separate line item in the statement of comprehensive income (see IFRS 9.6.6.4)"
+                },
+                {
+                    "id": "IFRS7-57",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24D",
+                    "question": "When the volume of hedging relationships to which the exemption in IFRS 7.23C applies is unrepresentative of normal volumes during the period (i.e., the volume at the reporting date does not reflect the volumes during the period) does the entity disclose that fact and the reason it believes the volumes are unrepresentative"
+                },
+                {
+                    "id": "IFRS7-58",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24E",
+                    "question": "Does the entity provide a reconciliation of each component of equity and an analysis of other comprehensive income in accordance with IAS 1 that, taken together: a. Differentiates, at a minimum, between the amounts that relate to the disclosures in IFRS 7.24C(b)(i) and (b)(iv) as well as the amounts accounted for in accordance with IFRS 9.6.5.11(d)(i) and (d)(iii) b. Differentiates between : ► The amounts associated with the time value of options that hedge transaction-related hedged items ► The amounts associated with the time value of options that hedge time-period related hedged items when an entity accounts for the time value of an option in accordance with IFRS 9.6.5.15 c. Differentiates between the amounts associated with forward elements of forward contracts and the foreign currency basis spreads of financial instruments that hedge transaction-related hedged items, and the amounts associated with forward elements of forward contracts and the foreign currency basis spreads of financial instruments that hedge time-period related hedged items when an entity accounts for those amounts in accordance with IFRS 9.6.5.16"
+                },
+                {
+                    "id": "IFRS7-59",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24F",
+                    "question": "Does the entity disclose the information required in IFRS 7.24E separately by risk category. This disaggregation by risk may be provided in the notes to the financial statements"
+                },
+                {
+                    "id": "IFRS7-60",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24G, IFRS 9.6.7.1",
+                    "question": "If an entity designated a financial instrument, or a proportion of it, as measured at fair value through profit or loss because it uses a credit derivative to manage the credit risk of that financial instrument, does it disclose: a. For credit derivatives that have been used to manage the credit risk of financial instruments designated as measured at fair value through profit or loss in accordance with IFRS 9.6.7.1, a reconciliation of each of the nominal amount and the fair value at the beginning and at the end of the period b. The gain or loss recognised in profit or loss on designation of a financial instrument, or a proportion of it, as measured at fair value through profit or loss in accordance with IFRS 9.6.7.1 c. On discontinuation of measuring a financial instrument, or a proportion of it, at fair value through profit or loss, that financial instrument’s fair value that has become the new carrying amount in accordance with IFRS 9.6.7.4 and the related nominal or principal amount (except for providing comparative information in accordance with IAS 1 (or IFRS 18 if the entity adopts it early), an entity does not need to continue this disclosure in subsequent periods)"
+                },
+                {
+                    "id": "IFRS7-61",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24H",
+                    "question": "Does the entity disclose for hedging relationships to which it applies the exceptions set out in paragraphs 6.8.4–6.8.12 of IFRS 9 or paragraphs 102D–102N of IAS 39: a. The significant interest rate benchmarks to which the entity’s hedging relationships are exposed b. The extent of the risk exposure the entity manages that is directly affected by the interest rate benchmark reform c. How the entity is managing the process to transition to alternative benchmark rates d. A description of significant assumptions or judgements the entity made in applying these paragraphs (for example, assumptions or judgements about when the uncertainty arising from interest rate benchmark reform is no longer present with respect to the timing and the amount of the interest rate benchmark-based cash flows) e. The nominal amount of the hedging instruments in those hedging relationships"
+                },
+                {
+                    "id": "IFRS7-62",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24I",
+                    "question": "To enable users of financial statements to understand the effect of interest rate benchmark reform on an entity’s financial instruments and risk management strategy, does the entity disclose information about: a. The nature and extent of risks to which the entity is exposed arising from financial instruments subject to interest rate benchmark reform, and how the entity manages these risks b. The entity’s progress in completing the transition to alternative benchmark rates, and how the entity is managing the transition"
+                },
+                {
+                    "id": "IFRS7-63",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.24J",
+                    "question": "To meet the objectives in IFRS 7.24I, does the entity disclose: a. How the entity is managing the transition to alternative benchmark rates, its progress at the reporting date and the risks to which it is exposed arising from financial instruments because of the transition b. Disaggregated by significant interest rate benchmark subject to interest rate benchmark reform, quantitative information about financial instruments that have yet to transition to an alternative benchmark rate as at the end of the reporting period, showing separately: ► Non-derivative financial assets ► Non-derivative financial liabilities ► Derivatives c. If the risks identified in (a) above have resulted in changes to an entity’s risk management strategy (see IFRS 7.22A), a description of these changes"
+                },
+                {
+                    "id": "IFRS7-64",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.25, IFRS 7.29",
+                    "question": "Does the entity disclose for each class of financial assets and financial liabilities, the fair value of that class of assets and liabilities in a way that permits it to be compared with its carrying amount (except for those noted in IFRS 7.29)"
+                },
+                {
+                    "id": "IFRS7-65",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.26",
+                    "question": "In disclosing fair values, does the entity group financial assets and financial liabilities into classes, but offset them only to the extent that their carrying amounts are offset in the statement of financial position"
+                },
+                {
+                    "id": "IFRS7-66",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.28, IFRS 9.B5.1.2A",
+                    "question": "In some cases, an entity does not recognise a gain or loss on initial recognition of a financial asset or financial liability because the fair value is neither evidenced by a quoted price in an active market for an identical asset or liability (i.e., a Level 1 input) nor based on a valuation technique that uses only data from observable markets (see IFRS 9.B5.1.2A). In such cases, does the entity disclose by class of financial asset or financial liability: c. Why it has concluded that the transaction price was not the best evidence of fair value, including a description of the evidence that supports the fair value"
+                },
+                {
+                    "id": "IFRS7-67",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.31",
+                    "question": "Does the entity disclose information that enables users of its financial statements to evaluate the nature and extent of risks arising from financial instruments to which the entity is exposed at the end of the reporting period"
+                },
+                {
+                    "id": "IFRS7-68a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.33",
+                    "question": "For each type of risk arising from financial instruments, does the entity disclose the exposures to risk and how they arise?"
+                },
+                {
+                    "id": "IFRS7-68b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.33",
+                    "question": "For each type of risk arising from financial instruments, does the entity disclose its objectives, policies and processes for managing the risk and the methods used to measure the risk?"
+                },
+                {
+                    "id": "IFRS7-68c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.33",
+                    "question": "For each type of risk arising from financial instruments, does the entity disclose any changes in the exposures to risk and how they arise, or its objectives, policies and processes for managing the risk and the methods used to measure the risk from the previous period?"
+                },
+                {
+                    "id": "IFRS7-69",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.34, IAS 24.9",
+                    "question": "For each type of risk arising from financial instruments, does the entity disclose: a. Summary quantitative data about its exposure to that risk at the end of the reporting period based on the information provided internally to key management personnel of the entity (as defined in IAS 24), for example, the entity’s board of directors and chief executive officer b. The disclosures required by IFRS 7.35A-42 below to the extent they are not provided in accordance with (a) c. Concentrations of risk if not apparent from the disclosures made in accordance with (a) and (b)"
+                },
+                {
+                    "id": "IFRS7-70",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35",
+                    "question": "If the quantitative data disclosed as at the end of the reporting period are unrepresentative of the entity’s exposure to risk during the period, does the entity provide further information that is representative"
+                },
+                {
+                    "id": "IFRS7-71",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35E",
+                    "question": "If the disclosures provided in accordance with IFRS 7.35F-35N are insufficient to meet the objectives in IFRS 7.35B, does the entity disclose additional information that is necessary to meet those objectives"
+                },
+                {
+                    "id": "IFRS7-72",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35F",
+                    "question": "An entity must explain its credit risk management practices and how they relate to the recognition and measurement of expected credit losses. To meet this objective, does the entity disclose information that enables users of financial statements to understand and evaluate: a. How an entity determined whether the credit risk of financial instruments has increased significantly since initial recognition, including, if and how: ► Financial instruments are considered to have low credit risk in accordance with IFRS 9.5.5.10, including the classes of financial instruments to which it applies ► The presumption in IFRS 9.5.5.11, that there have been significant increases in credit risk since initial recognition when financial assets are more than 30 days past due, has been rebutted b. An entity’s definitions of default, including the reasons for selecting those definitions c. How the instruments were grouped if expected credit losses were measured on a collective basis d. How an entity determined that financial assets are credit-impaired financial assets e. An entity’s write-off policy, including the indicators that there is no reasonable expectation of recovery and information about the policy for financial assets that are written-off but are still subject to enforcement activity f. How the requirements in IFRS 9.5.5.12 for the modification of contractual cash flows of financial assets have been applied, including how an entity: ► Determines whether the credit risk on a financial asset that has been modified while the loss allowance was measured at an amount equal to lifetime expected credit losses, has improved to the extent that the loss allowance reverts to being measured at an amount equal to 12-month expected credit losses in accordance with IFRS 9.5.5.5 ► Monitors the extent to which the loss allowance on financial assets meeting the criteria in (i) is subsequently remeasured at an amount equal to lifetime expected credit losses in accordance with IFRS 9.5.5.3"
+                },
+                {
+                    "id": "IFRS7-73a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35G",
+                    "question": "Does the entity disclose the basis of inputs, assumptions and estimation techniques used to measure the 12-month and lifetime expected credit losses?"
+                },
+                {
+                    "id": "IFRS7-73b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35G",
+                    "question": "Does the entity disclose the basis of inputs, assumptions and estimation techniques used to determine whether the credit risk of financial instruments has increased significantly since initial recognition?"
+                },
+                {
+                    "id": "IFRS7-73c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35G",
+                    "question": "Does the entity disclose the basis of inputs, assumptions and estimation techniques used to determine whether a financial asset is a credit-impaired financial asset?"
+                },
+                {
+                    "id": "IFRS7-73d",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35G",
+                    "question": "Does the entity disclose how forward-looking information has been incorporated into the determination of expected credit losses, including the use of macroeconomic information?"
+                },
+                {
+                    "id": "IFRS7-73e",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35G",
+                    "question": "Does the entity disclose changes in the estimation techniques or significant assumptions made during the reporting period and the reasons for those changes?"
+                },
+                {
+                    "id": "IFRS7-74",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35H",
+                    "question": "To explain the changes in the loss allowance and the reasons for those changes, does the entity provide, by class of financial instrument, a reconciliation from the opening balance to the closing balance of the loss allowance, in a table, showing separately the changes during the period for: ► Trade receivables, contract assets or lease receivables for which the loss allowances are measured in accordance with IFRS 9.5.5.15 c. Financial assets that are purchased or originated credit-impaired. In addition to the reconciliation, an entity must disclose the total amount of undiscounted expected credit losses at initial recognition on financial assets initially recognised during the reporting period"
+                },
+                {
+                    "id": "IFRS7-75",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.B8E",
+                    "question": "For loan commitments and financial guarantee contracts, the loss allowance is recognised as a provision. Does the entity disclose information about the changes in the loss allowance for financial assets separately from those for loan commitments and financial guarantee contracts"
+                },
+                {
+                    "id": "IFRS7-76",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35I",
+                    "question": "To enable users of financial statements to understand the changes in the loss allowance disclosed in accordance with IFRS 7.35H, does the entity provide an explanation of how significant changes in the gross carrying amount of financial instruments during the period contributed to changes in the loss allowance"
+                },
+                {
+                    "id": "IFRS7-77a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35J",
+                    "question": "Does the entity disclose the amortised cost before the modification and the net modification gain or loss recognised for financial assets for which the contractual cash flows have been modified during the reporting period while they had a loss allowance measured at an amount equal to lifetime expected credit losses?"
+                },
+                {
+                    "id": "IFRS7-77b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35J",
+                    "question": "Does the entity disclose the gross carrying amount, at the end of the reporting period, of financial assets that have been modified since initial recognition at a time when the loss allowance was measured at an amount equal to lifetime expected credit losses and for which the loss allowance has changed during the reporting period to an amount equal to 12-month expected credit losses?"
+                },
+                {
+                    "id": "IFRS7-78a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35K",
+                    "question": "Does the entity disclose by class of financial instrument the amount that best represents its maximum exposure to credit risk at the end of the reporting period without taking account of any collateral held or other credit enhancements (e.g., netting agreements that do not qualify for offset in accordance with IAS 32)?"
+                },
+                {
+                    "id": "IFRS7-78b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35K",
+                    "question": "Does the entity disclose by class of financial instrument quantitative information about the collateral held as security and other credit enhancements (for example, quantification of the extent to which collateral and other credit enhancements mitigate credit risk) for financial assets that are credit-impaired at the reporting date?"
+                },
+                {
+                    "id": "IFRS7-79",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35L",
+                    "question": "Does the entity disclose the contractual amount outstanding on financial assets that were written off during the reporting period and are still subject to enforcement activity"
+                },
+                {
+                    "id": "IFRS7-80",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.35M",
+                    "question": "To enable users of financial statements to assess an entity’s credit risk exposure and understand its significant credit risk concentrations, does the entity disclose, by credit risk rating grades: ► The gross carrying amount of financial assets ► The exposure to credit risk on loan commitments and financial guarantee contracts This information must be provided separately for financial instruments: a. For which the loss allowance is measured at an amount equal to 12-month expected credit losses b. For which the loss allowance is measured at an amount equal to lifetime expected credit losses and that are: ► Financial instruments for which credit risk has increased significantly since initial recognition but are not credit-impaired financial assets ► Financial assets that are credit-impaired at the reporting date (but are not purchased or originated credit- impaired) ► Trade receivables, contract assets or lease receivables for which the loss allowances are measured in accordance with IFRS 9.5.5.15 c. That are purchased or originated credit-impaired financial assets"
+                },
+                {
+                    "id": "IFRS7-81a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.36, IAS 32.42",
+                    "question": "For financial instruments within IFRS 7's scope but not subject to IFRS 9's impairment requirements, does the entity disclose by class of financial instrument the amount that best represents its maximum exposure to credit risk at the end of the reporting period without considering collateral or credit enhancements, if the carrying amount does not represent the maximum exposure?"
+                },
+                {
+                    "id": "IFRS7-81b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.36, IAS 32.42",
+                    "question": "For financial instruments within IFRS 7's scope but not subject to IFRS 9's impairment requirements, does the entity disclose by class of financial instrument a description of collateral held as security and other credit enhancements, including their financial effect in mitigating credit risk?"
+                },
+                {
+                    "id": "IFRS7-82a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.38",
+                    "question": "For assets obtained by taking possession of collateral or calling on credit enhancements that meet recognition criteria, does the entity disclose the nature and carrying amount of these assets at the reporting date?"
+                },
+                {
+                    "id": "IFRS7-82b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.38",
+                    "question": "For assets obtained by taking possession of collateral or calling on credit enhancements that are not readily convertible to cash, does the entity disclose its policies for disposing of such assets or using them in operations?"
+                },
+                {
+                    "id": "IFRS7-83a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.39",
+                    "question": "Does the entity disclose a maturity analysis for non-derivative financial liabilities (including issued financial guarantee contracts) that shows the remaining contractual maturities?"
+                },
+                {
+                    "id": "IFRS7-83b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.39",
+                    "question": "Does the entity disclose a maturity analysis for derivative financial liabilities, which includes the remaining contractual maturities for those derivative financial liabilities for which contractual maturities are essential for understanding the timing of cash flows?"
+                },
+                {
+                    "id": "IFRS7-83c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.39",
+                    "question": "Does the entity disclose how it manages the liquidity risk inherent in its non-derivative and derivative financial liabilities?"
+                },
+                {
+                    "id": "IFRS7-83d",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.39",
+                    "question": "Does the entity explain how summary quantitative data about its exposure to liquidity risk are determined?"
+                },
+                {
+                    "id": "IFRS7-83e",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.39",
+                    "question": "If cash outflows could occur significantly earlier or be for significantly different amounts than indicated in the liquidity risk data, does the entity disclose this fact and provide quantitative information to evaluate the extent of this risk (unless included in the contractual maturity analysis)?"
+                },
+                {
+                    "id": "IFRS7-84a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.40, IFRS 7.IG33, IFRS 7.IG34",
+                    "question": "Unless complying with IFRS 7.41, does the entity disclose a sensitivity analysis for each type of market risk, showing how profit or loss and equity would have been affected by reasonably possible changes in risk variables at the reporting period end?"
+                },
+                {
+                    "id": "IFRS7-84b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.40",
+                    "question": "Unless complying with IFRS 7.41, does the entity disclose the methods and assumptions used in preparing the market risk sensitivity analysis?"
+                },
+                {
+                    "id": "IFRS7-84c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.40",
+                    "question": "Unless complying with IFRS 7.41, does the entity disclose changes from the previous period in the methods and assumptions used for the market risk sensitivity analysis and the reasons for such changes?"
+                },
+                {
+                    "id": "IFRS7-85a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.41",
+                    "question": "If using an alternative sensitivity analysis (e.g., value-at-risk) that reflects interdependencies between risk variables, does the entity explain the method used and the main parameters and assumptions underlying the data?"
+                },
+                {
+                    "id": "IFRS7-85b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.41",
+                    "question": "If using an alternative sensitivity analysis, does the entity explain the objective of the method used and any limitations that may result in the information not fully reflecting the fair value of the assets and liabilities involved?"
+                },
+                {
+                    "id": "IFRS7-86",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.42",
+                    "question": "If the sensitivity analyses in IFRS 7.40 or 41 above are unrepresentative of a risk inherent in a financial instrument (e.g., because the exposure at the end of the reporting period does not reflect the exposure during the reporting period), does the entity disclose that fact and the reason it believes the sensitivity analyses are unrepresentative"
+                },
+                {
+                    "id": "IFRS7-87",
+                    "section": "IFRS 7",
+                    "reference": "IAS 1.80A, IFRS 7.19B",
+                    "question": "If the entity reclassifies: a. A puttable financial instrument classified as an equity instrument Or b. An instrument that imposes on the entity an obligation to deliver to another party a pro rata share of the net assets of the entity only on liquidation, and is classified as an equity instrument between financial liabilities and equity, does it disclose: ► The amount reclassified into and out of each category (financial liabilities or equity) ► The timing of the reclassification ► The reason for the reclassification"
+                },
+                {
+                    "id": "IFRS7-88a",
+                    "section": "IFRS 7",
+                    "reference": "IAS 1.136A, IFRS 7.19A",
+                    "question": "For puttable financial instruments classified as equity instruments, does the entity disclose summary quantitative data about the amount classified as equity?"
+                },
+                {
+                    "id": "IFRS7-88b",
+                    "section": "IFRS 7",
+                    "reference": "IAS 1.136A, IFRS 7.19A",
+                    "question": "For puttable financial instruments classified as equity instruments, does the entity disclose its objectives, policies and processes for managing its obligation to repurchase or redeem the instruments if required to do so by the instrument holders, including any changes from the previous period?"
+                },
+                {
+                    "id": "IFRS7-88c",
+                    "section": "IFRS 7",
+                    "reference": "IAS 1.136A, IFRS 7.19A",
+                    "question": "For puttable financial instruments classified as equity instruments, does the entity disclose the expected cash outflow on redemption or repurchase of that class of financial instruments?"
+                },
+                {
+                    "id": "IFRS7-88d",
+                    "section": "IFRS 7",
+                    "reference": "IAS 1.136A, IFRS 7.19A",
+                    "question": "For puttable financial instruments classified as equity instruments, does the entity disclose information about how the expected cash outflow on redemption or repurchase was determined?"
+                },
+                {
+                    "id": "IFRS7-89",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13A",
+                    "question": "Disclosures below also apply to recognised financial instruments that are subject to an enforceable master netting arrangement or similar agreement, irrespective of whether they are set off in accordance with IAS 32.42."
+                },
+                {
+                    "id": "IFRS7-90",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13B",
+                    "question": "An entity shall disclose information to enable users of its financial statements to evaluate the effect, or potential effect, of netting arrangements on the entity’s financial position. This includes the effect, or potential effect, of rights of set-off associated with the entity’s recognised financial assets and recognised financial liabilities that are within the scope of IFRS 7.13A."
+                },
+                {
+                    "id": "IFRS7-91a",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13C, IFRS 7.13D",
+                    "question": "Does the entity separately disclose, in a tabular format (unless another format is more appropriate), the gross amounts of recognised financial assets and financial liabilities that have been set off or are subject to master netting arrangements?"
+                },
+                {
+                    "id": "IFRS7-91b",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13C, IFRS 7.13D",
+                    "question": "Does the entity separately disclose the amounts that are set off in accordance with IAS 32.42 when determining the net amounts presented in the statement of financial position?"
+                },
+                {
+                    "id": "IFRS7-91c",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13C, IFRS 7.13D",
+                    "question": "Does the entity separately disclose the net amounts presented in the statement of financial position?"
+                },
+                {
+                    "id": "IFRS7-91d",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13C, IFRS 7.13D",
+                    "question": "Does the entity separately disclose amounts subject to master netting arrangements not included in the offset amounts, including both non-qualifying offsetting amounts and financial collateral amounts?"
+                },
+                {
+                    "id": "IFRS7-91e",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13C, IFRS 7.13D",
+                    "question": "Does the entity separately disclose the net amount after deducting the master netting arrangement amounts from the net amounts presented in the statement of financial position?"
+                },
+                {
+                    "id": "IFRS7-92",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13E",
+                    "question": "Does the entity disclose a description of the rights of set-off associated with the entity’s recognised financial assets and recognised financial liabilities subject to enforceable master netting arrangements and similar agreements that are disclosed in accordance with IFRS 7.13C(d) above, including the nature of those rights"
+                },
+                {
+                    "id": "IFRS7-93",
+                    "section": "IFRS 7",
+                    "reference": "IFRS 7.13F",
+                    "question": "Does the entity cross-refer the information of IFRS 7.13B-13E above if it is disclosed in more than one note to the financial statements"
+                }
+            ]
+        }
+    ]
+}

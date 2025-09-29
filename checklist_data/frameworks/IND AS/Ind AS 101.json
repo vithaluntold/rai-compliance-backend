@@ -1,0 +1,181 @@
+﻿{
+    "title": "First-time Adoption of Indian Accounting Standards (Ind AS 101) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 101",
+            "title": "First-time Adoption of Indian Accounting Standards",
+            "description": "Checklist for disclosure requirements under Ind AS 101.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 101",
+                    "reference": "101.6",
+                    "question": "Has the entity prepared and presented an **opening Ind AS Balance Sheet** at the date of transition to Ind ASs?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 101",
+                    "reference": "101.21",
+                    "question": "Does the entity's first Ind AS financial statements include at least **three Balance Sheets, two Statements of profit and loss, two Statements of cash flows and two Statements of changes in equity and related notes**, including comparative information for all statements presented?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 101",
+                    "reference": "101.22",
+                    "question": "In any financial statements containing historical summaries or comparative information in accordance with previous GAAP, has the entity **labelled the previous GAAP information prominently** as not being prepared in accordance with Ind ASs and **disclosed the nature of the main adjustments** that would make it comply with Ind ASs?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 101",
+                    "reference": "101.23",
+                    "question": "Has the entity **explained how the transition from previous GAAP to Ind ASs has affected its reported Balance Sheet, financial performance and cash flows**?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 101",
+                    "reference": "101.24",
+                    "question": "To comply with paragraph 101.23, does the entity's first Ind AS Financial Statements include: a) **reconciliations of its equity** reported in accordance with previous GAAP to its equity in accordance with Ind ASs for both the date of transition to Ind ASs and the end of the latest period presented in the entity’s most recent annual Financial Statements in accordance with previous GAAP; b) a **reconciliation to its total comprehensive income** in accordance with Ind ASs for the latest period in the entity’s most recent annual Financial Statements; and c) if any impairment losses were recognised or reversed for the first time in preparing its opening Ind AS Balance Sheet, **disclosures that Ind AS 36 would have required**?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 101",
+                    "reference": "101.25",
+                    "question": "When the entity presents a Statement of cash flows under its previous GAAP, has it also **explained the material adjustments to the Statement of cash flows**?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 101",
+                    "reference": "101.26",
+                    "question": "When the entity becomes aware of errors made under previous GAAP, do the reconciliations required by paragraph 101.24(a) and (b) **distinguish the correction of those errors from changes in accounting policies**?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 101",
+                    "reference": "101.27A",
+                    "question": "If during the period covered by its first Ind AS financial statements an entity changes its accounting policies or its use of the exemptions contained in this Ind AS, has it **explained the changes** between its first Ind AS interim financial report and its first Ind AS financial statements and **updated the reconciliations** required by paragraph 101.24(a) and (b)?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 101",
+                    "reference": "101.27AA",
+                    "question": "Has the entity **disclosed the fact and the accounting policy** if the first-time exemption option provided in accordance with paragraph 101.D7AA is adopted until such time that those items of Property, plant and equipment, investment properties or intangible assets, as the case may be, are significantly depreciated, impaired or derecognised from the entity’s Balance Sheet?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 101",
+                    "reference": "101.28",
+                    "question": "In case financial statements for previous periods are not presented, has the entity **disclosed that fact** in first Ind AS financial statements?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 101",
+                    "reference": "101.29",
+                    "question": "In case a previously recognised financial asset is designated as a financial asset measured at fair value through profit or loss in accordance with paragraph 101.D19A, has the entity **disclosed the fair value** of financial assets so designated at the date of designation and their classification and carrying amount in the previous financial statements?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 101",
+                    "reference": "101.29A",
+                    "question": "In case a previously recognised financial liability is designated as a financial liability at fair value through profit or loss in accordance with paragraph 101.D19, has the entity **disclosed the fair value** of financial liabilities so designated at the date of designation and their classification and carrying amount in the previous financial statements?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 101",
+                    "reference": "101.30",
+                    "question": "In case fair value is used in the opening Ind AS Balance Sheet as deemed cost for an item of property, plant and equipment, an intangible asset or a right-of-use asset in accordance with paragraphs 101.D5 and 101.D7, has the first Ind AS financial statements **disclosed, for each line item in the opening Ind AS Balance Sheet**: a) the aggregate of those fair values; and b) the aggregate adjustment to the carrying amounts reported under previous GAAP?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 101",
+                    "reference": "101.31",
+                    "question": "In case deemed cost is used in the opening Ind AS Balance Sheet for an investment in a subsidiary, joint venture or associate in its separate financial statements in accordance with paragraph 101.D15, has the first Ind AS separate financial statements **disclosed**: a) the aggregate deemed cost of those investments for which deemed cost is their previous GAAP carrying amount; b) the aggregate deemed cost of those investments for which deemed cost is fair value; and c) the aggregate adjustment to the carrying amounts reported under previous GAAP?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 101",
+                    "reference": "101.31A",
+                    "question": "In case an entity uses exemption in paragraph 101.D8A(b) for oil and gas assets, has it **disclosed**: a) that fact; and b) the basis on which carrying amounts determined under previous GAAP were allocated?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 101",
+                    "reference": "101.31B",
+                    "question": "In case exemption in paragraph 101.D8B for operations subject to rate regulation is used, has it **disclosed that fact and the basis on which carrying amounts were determined under previous GAAP**?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 101",
+                    "reference": "101.31C",
+                    "question": "In case an entity elects to measure assets and liabilities at fair value and to use that fair value as the deemed cost in the opening Ind AS Balance Sheet because of severe hyperinflation in accordance with paragraphs 101.D26–101.D30, has the entity **disclosed in its first Ind AS financial statements an explanation of how, and why, the entity had, and then ceased to have, a functional currency** that has both of the following characteristics: a) a reliable general price index is not available to all entities with transactions and balances in the currency; and b) exchangeability between the currency and a relatively stable foreign currency does not exist?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 101",
+                    "reference": "101.32",
+                    "question": "To comply with paragraph 23, if the entity presents an interim financial report in accordance with Ind AS 34 for part of the period covered by its first Ind AS Financial Statements, has the entity satisfied the following requirements in addition to Ind AS 34 requirements: a) each such interim financial report includes reconciliations of equity and total comprehensive income, if applicable; b) the first interim financial report includes the reconciliations or a cross-reference; and c) if accounting policies or exemptions change, has it explained the changes and updated reconciliations?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 101",
+                    "reference": "101.33",
+                    "question": "If a first-time adopter did not, in its most recent annual financial statements in accordance with previous GAAP, disclose information material to an understanding of the current interim period, has it **disclosed that information in the interim financial report or included a cross-reference to another published document** that includes it?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 101",
+                    "reference": "101.B8A",
+                    "question": "If it is impracticable to assess a modified time value of money element in accordance with paragraphs 109.B4.1.9B–109.B4.1.9D on the basis of the facts and circumstances that exist at the date of transition to Ind ASs, has the entity **disclosed the carrying amount at the reporting date of the financial assets** whose contractual cash flow characteristics have been assessed based on the facts and circumstances that existed at the date of transition to Ind ASs without taking into account the requirements related to the modification of the time value of money element until those financial assets are derecognized?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 101",
+                    "reference": "101.B8B",
+                    "question": "Has the entity **disclosed the carrying amount at the reporting date of the financial assets** whose contractual cash flow characteristics have been assessed based on the facts and circumstances that existed at the date of transition to Ind ASs without taking into account the exception for prepayment features in paragraph 109.B4.1.12 until those financial assets are derecognised?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 101",
+                    "reference": "101.D2 (voluntary disclosure)",
+                    "question": "In case a first-time adopter elects to apply Ind AS 102, Share-based Payment, to equity instruments that vested before the date of transition to Ind ASs, has the **fair value of those equity instruments** been disclosed publicly, determined at the measurement date? Also, for all grants of equity instruments to which Ind AS 102 has not been applied, has the first-time adopter provided the information required by paragraphs 102.44 and 102.45?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 101",
+                    "reference": "101.D4",
+                    "question": "If an entity applies Ind AS 104, Insurance Contracts, for an earlier period than required, has the entity **disclosed that fact**?"
+                },
+                {
+                    "id": "24",
+                    "section": "Ind AS 101",
+                    "reference": "101.D4",
+                    "question": "If it is impracticable, when an entity first applies Ind AS 104, to prepare information about claims development that occurred before the beginning of the earliest period for which an entity presents full comparative information that complies with this Ind AS, has the entity **disclosed that fact**?"
+                },
+                {
+                    "id": "25",
+                    "section": "Ind AS 101",
+                    "reference": "101.D22(iii)",
+                    "question": "In case retrospective remeasurement of service arrangement assets is not practicable, has the entity **disclosed such fact**?"
+                },
+                {
+                    "id": "26",
+                    "section": "Ind AS 101",
+                    "reference": "101.D31AD",
+                    "question": "If aggregating all previously proportionately consolidated assets and liabilities results in negative net assets, and the entity concludes that it does not have legal or constructive obligations in relation to the negative net assets, has the entity **disclosed this fact, along with its cumulative unrecognised share of losses** of its joint ventures at the date of transition to Ind ASs?"
+                },
+                {
+                    "id": "27",
+                    "section": "Ind AS 101",
+                    "reference": "101.D31AE",
+                    "question": "Has an entity **disclosed a breakdown of the assets and liabilities that have been aggregated into the single line investment balance** at the date of transition to Ind ASs, prepared in an aggregated manner for all joint ventures at the date of transition to Ind ASs?"
+                },
+                {
+                    "id": "28",
+                    "section": "Ind AS 101",
+                    "reference": "101.D9D (b) and (c) (voluntary disclosure)",
+                    "question": "In case the entity has applied any of the practical expedients for leases (lease term ends within 12 months or underlying asset is of low value) at the date of transition to Ind AS, has it **disclosed information about such lease in accordance with paragraph 116.6**?"
+                }
+            ]
+        }
+    ]
+}

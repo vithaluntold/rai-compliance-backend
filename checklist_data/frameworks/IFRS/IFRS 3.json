@@ -1,0 +1,403 @@
+﻿{
+    "title": "IFRS 3 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 3",
+            "title": "Business Combinations",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 3.",
+            "items": [
+                {
+                    "id": "152.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity disclosed the name of the acquiree for each business combination during the period?"
+                },
+                {
+                    "id": "152.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity provided a description of the acquiree for each business combination during the period?"
+                },
+                {
+                    "id": "152.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity disclosed the acquisition date for each business combination during the period?"
+                },
+                {
+                    "id": "152.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity disclosed the percentage of voting equity interests acquired in each business combination?"
+                },
+                {
+                    "id": "152.5",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity explained the primary reasons for each business combination and how control was obtained?"
+                },
+                {
+                    "id": "152.6",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(a)-(e), IFRS 3.B66",
+                    "question": "Has the entity described the factors that make up the goodwill recognised (e.g., expected synergies, unrecognised intangibles or other factors)?"
+                },
+                {
+                    "id": "153.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(f), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "Has the entity disclosed the acquisition-date fair value of the total consideration transferred?"
+                },
+                {
+                    "id": "153.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(f), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "Has the entity disclosed the acquisition-date fair value of cash transferred?"
+                },
+                {
+                    "id": "153.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(f), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "Has the entity disclosed the acquisition-date fair value of other tangible or intangible assets transferred?"
+                },
+                {
+                    "id": "153.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(f), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "Has the entity disclosed the acquisition-date fair value of liabilities incurred (e.g., contingent consideration)?"
+                },
+                {
+                    "id": "153.5",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(f), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "Has the entity disclosed the acquisition-date fair value of equity interests issued or issuable, and how those were measured?"
+                },
+                {
+                    "id": "154.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(g), IFRS 3.B66",
+                    "question": "Has the entity disclosed the amount recognised for each contingent consideration arrangement at the acquisition date?"
+                },
+                {
+                    "id": "154.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(g), IFRS 3.B66",
+                    "question": "Has the entity described each contingent consideration arrangement and the basis for determining payment?"
+                },
+                {
+                    "id": "154.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(g), IFRS 3.B66",
+                    "question": "Has the entity estimated the range of undiscounted outcomes for contingent consideration or, if not, disclosed that fact and the reasons?"
+                },
+                {
+                    "id": "154.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(g), IFRS 3.B66",
+                    "question": "If the maximum contingent consideration payment is unlimited, has the entity disclosed that fact?"
+                },
+                {
+                    "id": "155.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(h), IFRS 3.B66",
+                    "question": "Has the entity disclosed the fair value of acquired receivables at the acquisition date?"
+                },
+                {
+                    "id": "155.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(h), IFRS 3.B66",
+                    "question": "Has the entity disclosed the gross contractual amounts receivable acquired?"
+                },
+                {
+                    "id": "155.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(h), IFRS 3.B66",
+                    "question": "Has the entity disclosed its best estimate of contractual cash flows not expected to be collected, by major class of receivable?"
+                },
+                {
+                    "id": "156.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(i), IFRS 3.B66",
+                    "question": "Has the entity disclosed the acquisition-date amounts recognised for each major class of assets acquired?"
+                },
+                {
+                    "id": "156.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(i), IFRS 3.B66",
+                    "question": "Has the entity disclosed the acquisition-date amounts recognised for each major class of liabilities assumed?"
+                },
+                {
+                    "id": "157.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.23, IFRS 3.B64(j), IFRS 3.B66",
+                    "question": "For each contingent liability recognised under IFRS 3.23, has the entity disclosed the information required by IAS 37.85?"
+                },
+                {
+                    "id": "158.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.23, IFRS 3.B64(j), IFRS 3.B66",
+                    "question": "If a contingent liability is not recognised because fair value cannot be measured reliably, has the entity disclosed the information required by IAS 37.86?"
+                },
+                {
+                    "id": "158.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.23, IFRS 3.B64(j), IFRS 3.B66",
+                    "question": "If a contingent liability is not recognised, has the entity disclosed why the liability cannot be measured reliably?"
+                },
+                {
+                    "id": "159.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(k), IFRS 3.B66",
+                    "question": "Has the entity disclosed the amount of goodwill expected to be deductible for tax purposes?"
+                },
+                {
+                    "id": "160.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.51, IFRS 3.B64(l), IFRS 3.B66",
+                    "question": "Has the entity described each transaction recognised separately under IFRS 3.51?"
+                },
+                {
+                    "id": "160.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.51, IFRS 3.B64(l), IFRS 3.B66",
+                    "question": "Has the entity disclosed how the acquirer accounted for each separately recognised transaction?"
+                },
+                {
+                    "id": "160.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.51, IFRS 3.B64(l), IFRS 3.B66",
+                    "question": "Has the entity disclosed the amounts recognised for each separately identified transaction and the line items in which they appear?"
+                },
+                {
+                    "id": "160.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.51, IFRS 3.B64(l), IFRS 3.B66",
+                    "question": "For transactions that settle a pre-existing relationship, has the entity disclosed the method used to determine the settlement amount?"
+                },
+                {
+                    "id": "161.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(m), IFRS 3.B66",
+                    "question": "Has the entity disclosed the total amount of acquisition-related costs?"
+                },
+                {
+                    "id": "161.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(m), IFRS 3.B66",
+                    "question": "Has the entity disclosed the amount of acquisition-related costs recognised as an expense?"
+                },
+                {
+                    "id": "161.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(m), IFRS 3.B66",
+                    "question": "Has the entity disclosed the line item(s) in the statement of comprehensive income where acquisition-related costs are recognised?"
+                },
+                {
+                    "id": "161.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(m), IFRS 3.B66",
+                    "question": "Has the entity disclosed the amount of issue costs not recognised as an expense?"
+                },
+                {
+                    "id": "161.5",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(m), IFRS 3.B66",
+                    "question": "Has the entity explained the treatment of issue costs not recognised as an expense?"
+                },
+                {
+                    "id": "162.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(n), IFRS 3.34, IFRS 3.B66",
+                    "question": "In a bargain purchase, has the entity disclosed the amount of any gain recognised?"
+                },
+                {
+                    "id": "162.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(n), IFRS 3.34, IFRS 3.B66",
+                    "question": "In a bargain purchase, has the entity disclosed the line item in which the gain is recognised?"
+                },
+                {
+                    "id": "162.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(n), IFRS 3.34, IFRS 3.B66",
+                    "question": "In a bargain purchase, has the entity explained why the transaction resulted in a gain?"
+                },
+                {
+                    "id": "163.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(o), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "For non-controlling interests held at acquisition, has the entity disclosed the amount recognised and the measurement basis?"
+                },
+                {
+                    "id": "163.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(o), IFRS 3.B66, IFRS 3.App.A",
+                    "question": "For any non-controlling interest measured at fair value, has the entity disclosed the valuation techniques and significant inputs used?"
+                },
+                {
+                    "id": "164.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(p), IFRS 3.B66, IFRS 3.42",
+                    "question": "In a staged acquisition, has the entity disclosed the acquisition-date fair value of equity interests held immediately before the final acquisition?"
+                },
+                {
+                    "id": "164.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(p), IFRS 3.B66, IFRS 3.42",
+                    "question": "In a staged acquisition, has the entity disclosed any gain or loss from remeasuring the prior interest to fair value and the line item where it is recognised?"
+                },
+                {
+                    "id": "165.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "Has the entity disclosed the acquiree’s revenue in the consolidated statement of comprehensive income since acquisition?"
+                },
+                {
+                    "id": "165.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "Has the entity disclosed the acquiree’s profit or loss in the consolidated statement of comprehensive income since acquisition?"
+                },
+                {
+                    "id": "165.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "If revenue or profit or loss since acquisition is impracticable to disclose, has the entity stated that fact and explained why?"
+                },
+                {
+                    "id": "166.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "Has the entity disclosed combined-entity revenue as if all combinations occurred at the start of the period?"
+                },
+                {
+                    "id": "166.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "Has the entity disclosed combined-entity profit or loss as if all combinations occurred at the start of the period?"
+                },
+                {
+                    "id": "166.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.59, IFRS 3.B64(q), IFRS 3.B66",
+                    "question": "If combined-entity revenue or profit or loss is impracticable to disclose, has the entity stated that fact and explained why?"
+                },
+                {
+                    "id": "167.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B66",
+                    "question": "If acquisition accounting is incomplete at authorization date, has the entity disclosed which disclosures could not be made?"
+                },
+                {
+                    "id": "167.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B66",
+                    "question": "If acquisition accounting is incomplete at authorization date, has the entity explained why those disclosures could not be made?"
+                },
+                {
+                    "id": "168.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(a), IFRS 3.45, IFRS 3.49",
+                    "question": "Has the entity disclosed the reasons why initial acquisition accounting is incomplete for particular items?"
+                },
+                {
+                    "id": "168.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(a), IFRS 3.45, IFRS 3.49",
+                    "question": "Has the entity identified which assets, liabilities, equity interests or consideration items have provisional amounts?"
+                },
+                {
+                    "id": "168.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(a), IFRS 3.45, IFRS 3.49",
+                    "question": "Has the entity disclosed the nature and amount of any measurement-period adjustments recognised during the period?"
+                },
+                {
+                    "id": "169.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(b)",
+                    "question": "For post-acquisition periods, has the entity disclosed changes in recognised contingent consideration amounts, including differences on settlement?"
+                },
+                {
+                    "id": "169.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(b)",
+                    "question": "For post-acquisition periods, has the entity disclosed changes in the range of undiscounted outcomes and the reasons for those changes?"
+                },
+                {
+                    "id": "169.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(b)",
+                    "question": "For post-acquisition periods, has the entity disclosed the valuation techniques and key model inputs used for contingent consideration?"
+                },
+                {
+                    "id": "170.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(c)",
+                    "question": "For contingent liabilities recognised in a business combination, has the entity disclosed the information required by IAS 37.84 and 37.85 for each provision?"
+                },
+                {
+                    "id": "171.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity reconciled the gross carrying amount of goodwill at the beginning of the period?"
+                },
+                {
+                    "id": "171.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed additional goodwill recognised during the period (excluding amounts in disposal groups held for sale)?"
+                },
+                {
+                    "id": "171.3",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed adjustments from subsequent recognition of deferred tax assets during the period?"
+                },
+                {
+                    "id": "171.4",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed goodwill included in disposal groups held for sale and goodwill derecognised during the period?"
+                },
+                {
+                    "id": "171.5",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed impairment losses on goodwill recognised during the period?"
+                },
+                {
+                    "id": "171.6",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed net exchange rate differences on goodwill during the period?"
+                },
+                {
+                    "id": "171.7",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity disclosed any other changes in the carrying amount of goodwill during the period?"
+                },
+                {
+                    "id": "171.8",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(d), IFRS 5.6, IFRS 3.67, IAS 36.104, IAS 21.47",
+                    "question": "Has the entity reconciled the gross carrying amount and accumulated impairment losses of goodwill at the end of the period?"
+                },
+                {
+                    "id": "172.1",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(e)",
+                    "question": "Has the entity disclosed the amount of any gain or loss relating to identifiable assets acquired or liabilities assumed?"
+                },
+                {
+                    "id": "172.2",
+                    "section": "IFRS 3",
+                    "reference": "IFRS 3.B67(e)",
+                    "question": "Has the entity explained any gain or loss of such size or nature that disclosure is relevant to understanding the combined entity’s financial statements?"
+                }
+            ]
+        }
+    ]
+}

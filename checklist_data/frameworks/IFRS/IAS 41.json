@@ -1,0 +1,259 @@
+﻿{
+    "title": "Agriculture (IAS 41) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 41",
+            "title": "Agriculture",
+            "description": "Checklist for presentation and disclosure requirements under IAS 41.",
+            "items": [
+                {
+                    "id": "542.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.40(a)",
+                    "question": "Does the entity disclose the aggregate gain or loss arising during the current period on initial recognition of biological assets and agricultural produce?"
+                },
+                {
+                    "id": "542.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.40(b)",
+                    "question": "Does the entity disclose the aggregate gain or loss arising from the change in fair value less costs to sell of biological assets?"
+                },
+                {
+                    "id": "543.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.41",
+                    "question": "Does the entity disclose a narrative description of each group of biological assets?"
+                },
+                {
+                    "id": "543.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.42",
+                    "question": "Does the entity disclose a quantified description of each group of biological assets?"
+                },
+                {
+                    "id": "544.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.43(a)",
+                    "question": "Does the entity elect to provide a quantified description of each group of biological assets distinguishing between consumable and bearer biological assets?"
+                },
+                {
+                    "id": "544.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.43(b)",
+                    "question": "Does the entity elect to provide a quantified description of each group of biological assets distinguishing between mature and immature biological assets?"
+                },
+                {
+                    "id": "544.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.43(c)",
+                    "question": "Does the entity disclose the basis for making any such distinction?"
+                },
+                {
+                    "id": "545.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.46(a)",
+                    "question": "Does the entity describe the nature of its activities involving each group of biological assets?"
+                },
+                {
+                    "id": "545.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.46(b)(i)",
+                    "question": "Does the entity disclose non-financial measures or estimates of the physical quantities of each group of biological assets at the end of the period?"
+                },
+                {
+                    "id": "545.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.46(b)(ii)",
+                    "question": "Does the entity disclose non-financial measures or estimates of the physical quantities of the output of agricultural produce during the period?"
+                },
+                {
+                    "id": "547.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.49(a)",
+                    "question": "Does the entity disclose the existence and carrying amounts of biological assets whose title is restricted?"
+                },
+                {
+                    "id": "547.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.49(b)",
+                    "question": "Does the entity disclose the carrying amounts of biological assets pledged as security for liabilities?"
+                },
+                {
+                    "id": "547.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.49(c)",
+                    "question": "Does the entity disclose the amount of commitments for the development or acquisition of biological assets?"
+                },
+                {
+                    "id": "547.4",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.49(d)",
+                    "question": "Does the entity disclose financial risk management strategies related to agricultural activity?"
+                },
+                {
+                    "id": "548.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.50",
+                    "question": "Does the entity provide a reconciliation of changes in the carrying amount of biological assets between the beginning and the end of the current period?"
+                },
+                {
+                    "id": "548.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.50(g)",
+                    "question": "Does that reconciliation include other changes?"
+                },
+                {
+                    "id": "549",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.53",
+                    "question": "Does the entity disclose the nature and amount of material items of income or expense that result from climatic, disease, or other natural risks?"
+                },
+                {
+                    "id": "550.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.51",
+                    "question": "Does the entity elect to disclose the amount of change in fair value less costs to sell included in profit or loss due to physical changes?"
+                },
+                {
+                    "id": "550.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.52",
+                    "question": "Does the entity elect to disclose the amount of change in fair value less costs to sell included in profit or loss due to price changes?"
+                },
+                {
+                    "id": "551.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(a)",
+                    "question": "If biological assets are measured at cost less depreciation and impairment because fair value cannot be measured reliably, does the entity disclose a description of those biological assets?"
+                },
+                {
+                    "id": "551.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(b)",
+                    "question": "Does the entity explain why fair value cannot be measured reliably?"
+                },
+                {
+                    "id": "551.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(c)",
+                    "question": "Does the entity disclose the range of estimates within which fair value is highly likely to lie, if possible?"
+                },
+                {
+                    "id": "551.4",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(d)",
+                    "question": "Does the entity disclose the depreciation method used?"
+                },
+                {
+                    "id": "551.5",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(e)",
+                    "question": "Does the entity disclose the useful lives or depreciation rates used?"
+                },
+                {
+                    "id": "551.6",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.54(f)",
+                    "question": "Does the entity disclose the gross carrying amount and the accumulated depreciation (aggregated with accumulated impairment losses) at the beginning and end of the period?"
+                },
+                {
+                    "id": "552.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(a)",
+                    "question": "Does the entity disclose any gain or loss recognised on disposal of biological assets measured at cost less depreciation and impairment?"
+                },
+                {
+                    "id": "552.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(i)",
+                    "question": "Does the reconciliation include increases due to purchases?"
+                },
+                {
+                    "id": "552.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(ii)",
+                    "question": "Does the reconciliation include decreases due to sales and biological assets classified as held for sale in accordance with IFRS 5?"
+                },
+                {
+                    "id": "552.4",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(iii)",
+                    "question": "Does the reconciliation include decreases due to harvest?"
+                },
+                {
+                    "id": "552.5",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(iv)",
+                    "question": "Does the reconciliation include increases resulting from business combinations?"
+                },
+                {
+                    "id": "552.6",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(v)",
+                    "question": "Does the reconciliation include net exchange differences arising on translation of the financial statements?"
+                },
+                {
+                    "id": "552.7",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(vi)",
+                    "question": "Does the reconciliation include impairment losses included in profit or loss?"
+                },
+                {
+                    "id": "552.8",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(vii)",
+                    "question": "Does the reconciliation include reversals of impairment losses included in profit or loss?"
+                },
+                {
+                    "id": "552.9",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(viii)",
+                    "question": "Does the reconciliation include depreciation included in profit or loss?"
+                },
+                {
+                    "id": "552.10",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.55(b)(ix)",
+                    "question": "Does the reconciliation include other changes?"
+                },
+                {
+                    "id": "553.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.56(a)",
+                    "question": "If fair value becomes reliably measurable during the current period, does the entity disclose a description of the biological assets?"
+                },
+                {
+                    "id": "553.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.56(b)",
+                    "question": "Does the entity disclose an explanation of why fair value has become reliably measurable?"
+                },
+                {
+                    "id": "553.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.56(c)",
+                    "question": "Does the entity disclose the effect of the change?"
+                },
+                {
+                    "id": "554.1",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.57(a)",
+                    "question": "Does the entity disclose the nature and extent of government grants recognised in the financial statements?"
+                },
+                {
+                    "id": "554.2",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.57(b)",
+                    "question": "Does the entity disclose any unfulfilled conditions and other contingencies attaching to government grants?"
+                },
+                {
+                    "id": "554.3",
+                    "section": "IAS 41",
+                    "reference": "IAS 41.57(c)",
+                    "question": "Does the entity disclose significant decreases expected in the level of government grants?"
+                }
+            ]
+        }
+    ]
+}

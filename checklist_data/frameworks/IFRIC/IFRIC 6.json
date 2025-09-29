@@ -1,0 +1,21 @@
+﻿  
+{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 6",
+            "title": "Liabilities arising from participating in a specific market-waste electrical and electronic equipment",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 6.",
+            "items": [
+                {
+                    "id": "500",
+                    "section": "IFRIC 6",
+                    "reference": "IAS 1.117, IAS 8.27A",
+                    "question": "Does the entity disclose its accounting policy for liabilities arising from participating in specific market-waste electrical and electronic equipment"
+                }
+            ]
+        }
+    ]
+}
+    

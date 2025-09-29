@@ -1,0 +1,67 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 105: Non-current Assets Held for Sale and Discontinued Operations Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 105",
+            "title": "Non-current Assets Held for Sale and Discontinued Operations",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 105.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 105",
+                    "reference": "105.30 and 105.33",
+                    "question": "Whether the entity has disclosed information that enables users of the financial statements to evaluate the financial effects of discontinued operations and disposals of non-current assets (or disposal groups), including: (a) a single amount in the statement of profit and loss comprising the total of: (i) the post-tax profit or loss of discontinued operations and (ii) the post-tax gain or loss recognised on the measurement to fair value less costs to sell or on the disposal of the assets or disposal group(s) constituting the discontinued operation; (b) an analysis of the single amount in (a) into: (i) the revenue, expenses and pre-tax profit or loss of discontinued operations; (ii) the related income tax expense as required by paragraph 12.81(h); and (iii) the gain or loss recognised on the measurement to fair value less costs to sell or on the disposal of the assets or disposal group(s) constituting the discontinued operation; (iv) the related income tax expense as required by paragraph 12.81(h); (c) the net cash flows attributable to the operating, investing and financing activities of discontinued operations; and (d) the amount of income from continuing operations and from discontinued operations attributable to owners of the parent."
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 105",
+                    "reference": "105.34",
+                    "question": "Whether an entity has re-presented the disclosures in paragraph 105.33 for prior periods presented in the financial statements so that the disclosures relate to all operations that have been discontinued by the end of the reporting period for the latest period presented."
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 105",
+                    "reference": "105.35",
+                    "question": "Whether the entity has made separate classification in discontinued operations adjustments in the current period to amounts previously presented in discontinued operations that are directly related to the disposal of a discontinued operation in a prior period and disclosed the nature and amount of such adjustments."
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 105",
+                    "reference": "105.36",
+                    "question": "If an entity ceases to classify a component of an entity as held for sale, whether the results of operations of the component previously presented in discontinued operations in accordance with paragraphs 105.33–105.35 are reclassified and included in income from continuing operations for all periods presented, and whether the amounts for prior periods are described as having been re-presented."
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 105",
+                    "reference": "105.36A",
+                    "question": "In case entity committed to a sale plan involving loss of control of a subsidiary, whether the entity has given disclosure of the information required in paragraphs 105.33–105.36 when the subsidiary is a disposal group that meets the definition of a discontinued operation in accordance with paragraph 105.32."
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 105",
+                    "reference": "105.38",
+                    "question": "For non-current asset or disposal group classified as held for sale, whether the entity has disclosed: (a) non-current asset and the assets of a disposal group classified as held for sale separately from other assets in the balance sheet; (b) liabilities of a disposal group classified as held for sale separately from other liabilities in the balance sheet; (c) assets and liabilities not offset and presented as a single amount; (d) the major classes of assets and liabilities classified as held for sale either in the balance sheet or in the notes, except as permitted by paragraph 105.39; and (e) cumulative income or expense recognised in other comprehensive income relating to a non-current asset (or disposal group) classified as held for sale."
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 105",
+                    "reference": "105.39",
+                    "question": "Whether the entity has provided disclosure of the major classes of assets and liabilities if the disposal group is a newly acquired subsidiary that meets the criteria to be classified as held for sale on acquisition (see paragraph 105.11)."
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 105",
+                    "reference": "105.41",
+                    "question": "Whether the entity has disclosed the following information in the notes in the period in which a non-current asset (or disposal group) has been either classified as held for sale or sold: (a) a description of the non-current asset (or disposal group); (b) a description of the facts and circumstances of the sale, or leading to the expected disposal, and the expected manner and timing of that disposal; (c) the gain or loss recognised in accordance with paragraphs 105.20–105.22 and, if not separately presented in the statement of profit and loss, the caption in the statement of profit and loss that includes that gain or loss; and (d) if applicable, the reportable segment in which the non-current asset (or disposal group) is presented in accordance with Ind AS 108, Operating Segments."
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 105",
+                    "reference": "105.42",
+                    "question": "In case either paragraph 105.26 or paragraph 105.29 applies, whether the entity has disclosed, in the period of the decision to change the plan to sell the non-current asset (or disposal group): (i) a description of the facts; (ii) circumstances leading to the decision; and (iii) the effect of the decision on the results of operations for the period and any prior periods presented."
+                }
+            ]
+        }
+    ]
+}

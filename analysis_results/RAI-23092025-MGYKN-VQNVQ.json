@@ -1,0 +1,26 @@
+{
+  "status": "metadata_extraction_in_progress",
+  "document_id": "RAI-23092025-MGYKN-VQNVQ",
+  "chunks_count": 96,
+  "processing_mode": "smart",
+  "completed_at": "2025-09-23T23:22:16.870591",
+  "timestamp": "2025-09-23T23:22:16.870602",
+  "metadata": {},
+  "sections": [],
+  "metadata_extraction": "COMPLETED",
+  "compliance_analysis": "PENDING",
+  "message": "Document chunking completed. Metadata extraction in progress - poll /metadata-status for updates.",
+  "metadata_completed_at": "2025-09-23T23:22:22.311564",
+  "metadata_file": "analysis_results\\RAI-23092025-MGYKN-VQNVQ_metadata.json",
+  "smart_categorization": {
+    "total_categories": 4,
+    "content_chunks": 96,
+    "categorization_complete": true,
+    "categories_found": [
+      "MEASUREMENT",
+      "PRESENTATION",
+      "RECOGNITION",
+      "DISCLOSURE"
+    ]
+  }
+}

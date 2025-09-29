@@ -1,0 +1,205 @@
+﻿{
+    "title": "IFRS 11 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 11",
+            "title": "Joint Arrangements",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 11.",
+            "items": [
+                {
+                    "id": "201.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.7(a)",
+                    "question": "Does the entity disclose information about significant judgements and assumptions it has made in determining that it has joint control of an arrangement?"
+                },
+                {
+                    "id": "201.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.7(b)",
+                    "question": "Does the entity disclose information about significant judgements and assumptions it has made in determining the type of joint arrangement (i.e., joint operation or joint venture) when the arrangement has been structured through a separate vehicle?"
+                },
+                {
+                    "id": "202",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.8",
+                    "question": "Does the entity include under those significant judgements and assumptions, those made when changes in facts and circumstances are such that the conclusion about whether it has joint control changes during the reporting period?"
+                },
+                {
+                    "id": "203.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.20(a)",
+                    "question": "Does the entity disclose information that enables users to evaluate the nature, extent and financial effects of its interests in joint arrangements, including the nature and effects of its contractual relationship with the other investors with joint control of joint arrangements?"
+                },
+                {
+                    "id": "203.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.20(b)",
+                    "question": "Does the entity disclose information that enables users to evaluate the nature of, and changes in, the risks associated with its interests in joint ventures?"
+                },
+                {
+                    "id": "204.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(a)(i)",
+                    "question": "For each joint arrangement that is material to the reporting entity, does the entity disclose the name of the joint arrangement?"
+                },
+                {
+                    "id": "204.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(a)(ii)",
+                    "question": "For each joint arrangement that is material to the reporting entity, does the entity disclose the nature of its relationship with the joint arrangement (for example, the nature of the activities and whether they are strategic to the entity)?"
+                },
+                {
+                    "id": "204.3",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(a)(iii)",
+                    "question": "For each joint arrangement that is material to the reporting entity, does the entity disclose the principal place of business (and country of incorporation, if different) of the joint arrangement?"
+                },
+                {
+                    "id": "204.4",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(a)(iv)",
+                    "question": "For each joint arrangement that is material to the reporting entity, does the entity disclose the proportion of ownership interest or participating share held by the entity and, if different, the proportion of voting rights held?"
+                },
+                {
+                    "id": "205",
+                    "section": "IFRS 11",
+                    "reference": "IAS 28.45C",
+                    "question": "If the entity applies the Amendments to IFRS 10 and IAS 28 – Sale or Contribution of Assets between an Investor and its Associate or Joint Venture issued in September 2014, does it disclose that fact?"
+                },
+                {
+                    "id": "206.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(b)(i)",
+                    "question": "For each joint venture that is material to the reporting entity, does the entity disclose whether the investment in the joint venture is measured using the equity method or at fair value?"
+                },
+                {
+                    "id": "206.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(b)(ii)",
+                    "question": "For each joint venture that is material to the reporting entity, does the entity disclose financial information including dividends received, summarised financial information (current assets, non-current assets, current liabilities, non-current liabilities, revenue, profit or loss from continuing operations, depreciation and amortisation, interest income, interest expense, income tax expense or income) and, if accounted for using the equity method, the fair value of its investment if there is a quoted market price?"
+                },
+                {
+                    "id": "207",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B14",
+                    "question": "Does the summarised financial information reflect the amounts included in the IFRS financial statements of the joint venture and not the entity’s share of those amounts?"
+                },
+                {
+                    "id": "208",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B14",
+                    "question": "If the entity accounts for its interest in a joint venture using the equity method, are the amounts included in the joint venture’s IFRS financial statements adjusted to reflect fair value adjustments made at acquisition and differences in accounting policies?"
+                },
+                {
+                    "id": "209",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B14",
+                    "question": "Does the entity provide a reconciliation of the summarised financial information presented to the carrying amount of its interest in the joint venture?"
+                },
+                {
+                    "id": "210.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B15(a)",
+                    "question": "If the entity measures its interest in the joint venture at fair value, does it disclose the basis on which the summarised financial information has been prepared?"
+                },
+                {
+                    "id": "210.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B15(b)",
+                    "question": "If the joint venture does not prepare IFRS financial statements and preparation on that basis would be impracticable or cause undue cost, does the entity disclose the basis on which the summarised financial information has been prepared?"
+                },
+                {
+                    "id": "211",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.B16",
+                    "question": "Does the entity disclose, in aggregate, the carrying amount of its interests in all individually immaterial joint ventures accounted for using the equity method?"
+                },
+                {
+                    "id": "212.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(c)(i)",
+                    "question": "Does the entity disclose the aggregate share of profit or loss from continuing operations for all individually immaterial joint ventures?"
+                },
+                {
+                    "id": "212.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(c)(ii)",
+                    "question": "Does the entity disclose the aggregate share of post-tax profit or loss from discontinued operations for all individually immaterial joint ventures?"
+                },
+                {
+                    "id": "212.3",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(c)(iii)",
+                    "question": "Does the entity disclose the aggregate share of other comprehensive income for all individually immaterial joint ventures?"
+                },
+                {
+                    "id": "212.4",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.21(c)(iv)",
+                    "question": "Does the entity disclose the aggregate share of total comprehensive income for all individually immaterial joint ventures?"
+                },
+                {
+                    "id": "213.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.23(a)(i), IFRS 12.B18, IFRS 12.B19",
+                    "question": "Does the entity disclose, separately from other commitments, unrecognised commitments to contribute funding or resources that may give rise to a future outflow of cash or other resources?"
+                },
+                {
+                    "id": "213.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.23(a)(ii), IFRS 12.B18, IFRS 12.B19",
+                    "question": "Does the entity disclose, separately from other commitments, unrecognised commitments to acquire another party’s ownership interest in a joint venture if a particular event occurs or does not occur in the future?"
+                },
+                {
+                    "id": "214",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.23(b)",
+                    "question": "Does the entity disclose contingent liabilities incurred relating to its interests in joint ventures, including its share of contingent liabilities incurred jointly with other investors, separately from other contingent liabilities?"
+                },
+                {
+                    "id": "215.1",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.22(a)",
+                    "question": "Does the entity disclose the nature and extent of any significant restrictions on the ability of joint ventures to transfer funds to the entity as cash dividends or to repay loans or advances made by the entity?"
+                },
+                {
+                    "id": "215.2",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 12.22(b)",
+                    "question": "Does the entity disclose when the financial statements of a joint venture used in applying the equity method are as of a date or for a period different from that of the entity?"
+                },
+                {
+                    "id": "216",
+                    "section": "IFRS 11",
+                    "reference": "IFRS 11.24A, IFRS 3",
+                    "question": "When an entity obtains an interest in a joint operation in which the activity constitutes a business as defined in IFRS 3, does it disclose the information required by IFRS 3 and other IFRS standards related to business combinations?"
+                },
+                {
+                    "id": "246.1",
+                    "section": "IFRS 11",
+                    "reference": "IAS 27.17(a)",
+                    "question": "When a parent or investor with joint control or significant influence prepares separate financial statements, does the entity identify the financial statements prepared in accordance with IFRS 10, IFRS 11 or IAS 28 to which they relate?"
+                },
+                {
+                    "id": "246.2",
+                    "section": "IFRS 11",
+                    "reference": "IAS 27.17(b)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose that these statements are separate financial statements?"
+                },
+                {
+                    "id": "246.3",
+                    "section": "IFRS 11",
+                    "reference": "IAS 27.17(c)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose a list of significant investments in subsidiaries, joint ventures and associates, including the name, principal place of business (and country of incorporation, if different) of each investee, and its proportion of ownership interest (and voting rights, if different) held in each?"
+                },
+                {
+                    "id": "246.4",
+                    "section": "IFRS 11",
+                    "reference": "IAS 27.17(d)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose a description of the method used to account for the investments listed under IAS 27.17(c)?"
+                }
+            ]
+        }
+    ]
+}

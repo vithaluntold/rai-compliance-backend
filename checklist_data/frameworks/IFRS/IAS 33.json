@@ -1,0 +1,139 @@
+﻿{
+    "title": "Earnings per Share (IAS 33) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 33",
+            "title": "Earnings per Share",
+            "description": "Checklist for presentation and disclosure requirements under IAS 33.",
+            "items": [
+                {
+                    "id": "87",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.4",
+                    "question": "If the entity presents both consolidated financial statements and separate financial statements prepared under IFRS 10 and IAS 27, does it present the disclosures required by IAS 33 only on the basis of the consolidated information?"
+                },
+                {
+                    "id": "88",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.4",
+                    "question": "If the entity chooses to disclose earnings per share based on its separate financial statements, does it present such earnings per share only in the statement of comprehensive income and not in the consolidated financial statements?"
+                },
+                {
+                    "id": "89",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.64",
+                    "question": "If the number of ordinary or potential ordinary shares outstanding increases or decreases as a result of a capitalisation, bonus issue, share split or reverse share split (even if these changes occur after the reporting period but before the financial statements are authorised for issue), and therefore the calculation of basic and diluted earnings per share for all periods presented has been adjusted retrospectively, does the entity disclose that per-share calculations reflect such changes?"
+                },
+                {
+                    "id": "90.1",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.66(a)",
+                    "question": "Does the entity present basic and diluted earnings per share for profit or loss from continuing operations attributable to the ordinary equity holders of the parent entity?"
+                },
+                {
+                    "id": "90.2",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.66(b)",
+                    "question": "Does the entity present basic and diluted earnings per share for profit or loss attributable to the ordinary equity holders of the parent entity for each class of ordinary shares that has a different right to share in profit?"
+                },
+                {
+                    "id": "91",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.67A",
+                    "question": "If the entity presents a separate statement of profit or loss as described in IAS 1.10A (or, if early adopting IFRS 18, a separate profit or loss statement), does it disclose basic and diluted earnings per share only in that separate statement?"
+                },
+                {
+                    "id": "92",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.66",
+                    "question": "Does the entity present basic and diluted earnings per share with equal prominence for all periods presented?"
+                },
+                {
+                    "id": "93",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.68",
+                    "question": "If the entity reports a discontinued operation, does it disclose basic and diluted earnings per share for the discontinued operation in the statement of comprehensive income or in the notes?"
+                },
+                {
+                    "id": "94",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.68A",
+                    "question": "If the entity presents a separate profit or loss statement, does it present basic and diluted earnings per share for the discontinued operation in that statement or in the notes?"
+                },
+                {
+                    "id": "95",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.69",
+                    "question": "Does the entity present basic and diluted earnings per share even if the amounts are negative (i.e., a loss per share)?"
+                },
+                {
+                    "id": "96.1",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.70(a)",
+                    "question": "Does the entity disclose the amounts used as the numerators in calculating basic and diluted earnings per share and reconcile those amounts to profit or loss attributable to the parent entity for the period (including the effect of each class of instrument that affects earnings per share)?"
+                },
+                {
+                    "id": "96.2",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.70(b)",
+                    "question": "Does the entity disclose the weighted average number of ordinary shares used as the denominators in calculating basic and diluted earnings per share and reconcile those denominators to each other (including the effect of each class of instrument that affects earnings per share)?"
+                },
+                {
+                    "id": "97",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.72",
+                    "question": "Does the entity disclose the terms and conditions of financial instruments and other contracts generating potential ordinary shares that affect earnings per share, if not already required by other standards (e.g., IFRS 7)?"
+                },
+                {
+                    "id": "98.1",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73(a)",
+                    "question": "If the entity discloses, in addition to basic and diluted earnings per share, amounts per share based on a reported component of the statement of comprehensive income other than one required by IAS 33, does it disclose basic and diluted amounts per share for that component with equal prominence and present them in the notes?"
+                },
+                {
+                    "id": "98.2",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73(b)",
+                    "question": "Does the entity disclose the basis on which the numerator(s) is (are) determined for those additional per-share amounts, including whether amounts are before tax or after tax?"
+                },
+                {
+                    "id": "99",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73",
+                    "question": "If the entity discloses additional amounts per share using a component not reported as a line item in the statement of comprehensive income, does it reconcile that component to a line item that is reported?"
+                },
+                {
+                    "id": "100",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73A",
+                    "question": "If the entity discloses additional amounts per share using a reported item of profit or loss other than one required by IAS 33, does it provide the disclosures in IAS 33.73 for those additional amounts per share?"
+                },
+                {
+                    "id": "101.1",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73C(a)",
+                    "question": "If the entity discloses additional per-share amounts using a performance measure as the numerator different from that required by IAS 33 paragraphs 12–18 and 33–35, does it disclose those additional basic and diluted amounts per share with equal prominence in the notes?"
+                },
+                {
+                    "id": "101.2",
+                    "section": "IAS 33",
+                    "reference": "IAS 33.73C(b)",
+                    "question": "Does the entity disclose the information required by IFRS 18 paragraphs 121–125 for the numerators that are management-defined performance measures?"
+                },
+                {
+                    "id": "629",
+                    "section": "IAS 33",
+                    "reference": "IFRS 14.26",
+                    "question": "When an entity presents earnings per share in accordance with IAS 33, does it present additional basic and diluted earnings per share calculated using the IAS 33 earnings amounts but excluding movements in regulatory deferral account balances?"
+                },
+                {
+                    "id": "630",
+                    "section": "IAS 33",
+                    "reference": "IFRS 14.B14",
+                    "question": "For each earnings per share amount presented in accordance with IAS 33, does an entity applying IFRS 14 present additional basic and diluted earnings per share calculated in the same way but excluding net movements in regulatory deferral account balances, and present them with equal prominence to the IAS 33 earnings per share for all periods presented?"
+                }
+            ]
+        }
+    ]
+}

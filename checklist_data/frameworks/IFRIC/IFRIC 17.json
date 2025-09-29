@@ -1,0 +1,97 @@
+﻿{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 17",
+            "title": "Distributions of non-cash assets to owners",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 17.",
+            "items": [
+                {
+                    "id": "86",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.14, IFRIC 17.15",
+                    "question": "If the entity settles a dividend payable by distributing non-cash assets, does it present any difference between the carrying amount of the assets distributed and the carrying amount of the dividend payable as a separate line item in profit or loss?"
+                },
+                {
+                    "id": "252.1",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.16(a)",
+                    "question": "In a distribution of non-cash assets to owners, does the entity disclose the carrying amount of the dividend payable at the beginning and end of the reporting period?"
+                },
+                {
+                    "id": "252.2",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.16(b)",
+                    "question": "In a distribution of non-cash assets to owners, does the entity disclose the change in the carrying amount of the dividend payable recognised during the period because of changes in the fair value of the assets to be distributed?"
+                },
+                {
+                    "id": "253",
+                    "section": "IFRIC 17",
+                    "reference": "IFRS 13.5-7",
+                    "question": "For fair-value measurements required by IFRIC 17, does the entity provide the disclosures required by IFRS 13?"
+                },
+                {
+                    "id": "254.1",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(a)",
+                    "question": "If the entity declares a dividend to distribute a non-cash asset after the end of a reporting period but before the financial statements are authorised for issue, does it disclose the nature of the asset to be distributed?"
+                },
+                {
+                    "id": "254.2",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(b)",
+                    "question": "Does the entity disclose the carrying amount of the asset to be distributed as of the end of the reporting period?"
+                },
+                {
+                    "id": "254.3",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(c)",
+                    "question": "Does the entity disclose the fair value of the asset to be distributed as of the end of the reporting period, if it differs from its carrying amount?"
+                },
+                {
+                    "id": "254.4.1",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.99",
+                    "question": "If the fair value of the asset to be distributed is disclosed, does the entity provide the quantitative disclosures required by IFRS 13 in a tabular format (unless another format is more appropriate)?"
+                },
+                {
+                    "id": "254.4.2",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.99",
+                    "question": "Does the entity disclose the level of the fair value hierarchy (Level 1, Level 2 or Level 3) within which the fair value measurements are categorised in their entirety?"
+                },
+                {
+                    "id": "254.4.3",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.93(b)",
+                    "question": "For fair value measurements categorised within Level 2 and Level 3, does the entity describe the valuation technique(s) and the inputs used?"
+                },
+                {
+                    "id": "254.4.4",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.93(d)",
+                    "question": "If there has been a change in valuation technique, does the entity disclose that change and the reason(s) for it?"
+                },
+                {
+                    "id": "254.4.5",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.93(g)",
+                    "question": "For fair value measurements categorised within Level 3, does the entity disclose quantitative information about the significant unobservable inputs used?"
+                },
+                {
+                    "id": "254.4.6",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.93(i)",
+                    "question": "For fair value measurements categorised within Level 3, does the entity describe the valuation processes used (for example, how it sets policies and procedures and analyses changes in fair value measurements)?"
+                },
+                {
+                    "id": "254.4.7",
+                    "section": "IFRIC 17",
+                    "reference": "IFRIC 17.17(d), IFRS 13.99",
+                    "question": "If the highest and best use of a non-financial asset differs from its current use, does the entity disclose that fact and explain why the asset is used differently?"
+                }
+            ]
+        }
+    ]
+}

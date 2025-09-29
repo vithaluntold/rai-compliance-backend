@@ -1,0 +1,85 @@
+﻿{
+    "title": "Provisions, Contingent Liabilities and Contingent Assets (Ind AS 37) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 37",
+            "title": "Provisions, Contingent Liabilities and Contingent Assets",
+            "description": "Checklist for disclosure requirements under Ind AS 37.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 37",
+                    "reference": "37.9",
+                    "question": "Has the entity provided additional disclosures required by Ind AS 105, Non-current Assets Held for Sale and Discontinued Operations, when a restructuring meets the definition of a discontinued operation [1]?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 37",
+                    "reference": "37.75",
+                    "question": "Has the entity made disclosures required under Ind AS 10, Events after the Reporting Period, if a restructuring plan is started or its main features are announced after the reporting period but before the financial statements are approved for issue, and the restructuring is material and non-disclosure could reasonably be expected to influence decisions made by primary users of general purpose financial statements [1]?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 37",
+                    "reference": "37.84",
+                    "question": "Has the entity disclosed the following for each class of provision (comparative information not required) [2]:\n  a) the carrying amount at the beginning and end of the period [2];\n  b) additional provisions made in the period, including increases to existing provisions [2];\n  c) amounts used (i.e., incurred and charged against the provision) during the period [2];\n  d) unused amounts reversed during the period [2]; and\n  e) the increase during the period in the discounted amount arising from the passage of time and the effect of any change in the discount rate [2]?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 37",
+                    "reference": "37.85",
+                    "question": "Has the entity disclosed the following for each class of provision [3]:\n  a) a brief description of the nature of the obligation and the expected timing of any resulting outflows of economic benefits [3];\n  b) an indication of the uncertainties about the amount or timing of those outflows, including major assumptions made concerning future events as addressed in paragraph 48, where necessary to provide adequate information [3]; and\n  c) the amount of any expected reimbursement, stating the amount of any asset that has been recognised for that expected reimbursement [4]?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 37",
+                    "reference": "37.86",
+                    "question": "Has the entity disclosed a brief description of the nature of each class of contingent liability at the end of the reporting period and, where practicable, an estimate of its financial effect measured under paragraphs 37.36–37.52, an indication of the uncertainties relating to the amount or timing of any outflow, and the possibility of any reimbursement, unless the possibility of any outflow in settlement is remote [4, 5]?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 37",
+                    "reference": "37.88",
+                    "question": "Are the disclosures required by paragraphs 37.84–37.86 given by the entity in a way that shows the link between the provision and the contingent liability, when both arise from the same set of circumstances [5]?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 37",
+                    "reference": "37.89",
+                    "question": "Has the entity disclosed a brief description of the nature of the contingent assets at the end of the reporting period, and, where practicable, an estimate of their financial effect measured using the principles set out for provisions in paragraphs 37.36–37.52, where an inflow of economic benefits is probable [5]?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 37",
+                    "reference": "37.91",
+                    "question": "Has the entity disclosed the fact that any information required by paragraphs 37.86 and 37.89 is not disclosed because it is not practicable to do so [6]?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 37",
+                    "reference": "37.92",
+                    "question": "In extremely rare cases where disclosure of some or all of the information required by paragraphs 37.84–37.89 can be expected to prejudice seriously the entity's position in a dispute, has the entity disclosed the general nature of the dispute, together with the fact that, and reason why, the information has not been disclosed [6]?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 37",
+                    "reference": "37.A11",
+                    "question": "Has the contributor disclosed the nature of its interest in a fund and any restrictions on access to the assets in the fund [7]?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 37",
+                    "reference": "37.A12",
+                    "question": "Have the disclosures given under paragraph 37.86 been provided when a contributor has an obligation to make potential additional contributions that is not recognised as a liability [7]?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 37",
+                    "reference": "37.A13",
+                    "question": "Have the disclosures required by paragraph 37.85(c) been made when a contributor accounts for its interest in the fund [7]?"
+                }
+            ]
+        }
+    ]
+}

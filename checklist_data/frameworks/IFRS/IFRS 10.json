@@ -1,0 +1,157 @@
+﻿{
+    "title": "IFRS 10 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 10",
+            "title": "Consolidated Financial Statements",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 10.",
+            "items": [
+                {
+                    "id": "179",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 10.C1E",
+                    "question": "If an entity applies the Amendments to IFRS 10 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact?"
+                },
+                {
+                    "id": "186",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 10.C1C",
+                    "question": "If the entity applies Amendments to IFRS 10 and IAS 28 - Sale or Contribution of Assets between an Investor and its Associate or Joint Venture issued in September 2014, does it disclose that fact?"
+                },
+                {
+                    "id": "187",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.18, IFRS 10.25",
+                    "question": "Does the entity present a schedule that shows the effects on the equity attributable to owners of the parent of any changes in its ownership interest in a subsidiary that do not result in a loss of control?"
+                },
+                {
+                    "id": "188.1",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.19(a)",
+                    "question": "When an entity loses control of a subsidiary, does the entity disclose the gain or loss calculated in accordance with IFRS 10.25?"
+                },
+                {
+                    "id": "188.2",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.19(b)",
+                    "question": "When an entity loses control of a subsidiary, does the entity disclose the portion of that gain or loss attributable to measuring any investment retained in the former subsidiary at its fair value at the date when control is lost?"
+                },
+                {
+                    "id": "188.3",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.19(c)",
+                    "question": "When an entity loses control of a subsidiary, does the entity disclose the line item(s) in profit or loss in which the gain or loss is recognised if not presented separately?"
+                },
+                {
+                    "id": "189",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.9A, IFRS 10.27",
+                    "question": "When a parent determines that it is an investment entity in accordance with IFRS 10.27, does the investment entity disclose information about significant judgements and assumptions it has made in determining that it is an investment entity?"
+                },
+                {
+                    "id": "190",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.9A, IFRS 10.28",
+                    "question": "If the investment entity does not have one or more of the typical characteristics of an investment entity (see IFRS 10.28), does the investment entity disclose its reasons for concluding that it is nevertheless an investment entity?"
+                },
+                {
+                    "id": "192.1",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.9B(a)",
+                    "question": "When an entity becomes an investment entity, does the entity disclose the total fair value, as of the date of change of status, of the subsidiaries that cease to be consolidated?"
+                },
+                {
+                    "id": "192.2",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.9B(b)",
+                    "question": "When an entity becomes an investment entity, does the entity disclose the total gain or loss calculated in accordance with IFRS 10.B101?"
+                },
+                {
+                    "id": "192.3",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.9B(c)",
+                    "question": "When an entity becomes an investment entity, does the entity disclose the line item(s) in profit or loss in which the gain or loss is recognised if not presented separately?"
+                },
+                {
+                    "id": "193",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12.19A, IFRS 10",
+                    "question": "Does an investment entity that, in accordance with IFRS 10, is required to apply the exception to consolidation and, instead, account for its investment in a subsidiary at fair value through profit or loss disclose that fact?"
+                },
+                {
+                    "id": "242.1",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.16(a)",
+                    "question": "In the parent’s separate financial statements (where consolidated financial statements are not presented in accordance with IFRS 10.4(a)), does the entity disclose that the financial statements are separate financial statements?"
+                },
+                {
+                    "id": "242.2",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.16(b)",
+                    "question": "In the parent’s separate financial statements, does the entity disclose that the exemption from consolidation has been used?"
+                },
+                {
+                    "id": "242.3",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.16(c)",
+                    "question": "In the parent’s separate financial statements, does the entity disclose the name and principal place of business (and country of incorporation, if different) of the entity whose consolidated financial statements that comply with IFRS accounting standards have been produced for public use, and the address where these are obtainable?"
+                },
+                {
+                    "id": "242.4",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.16(d)",
+                    "question": "In the parent’s separate financial statements, does the entity disclose a list of significant investments in subsidiaries, joint ventures and associates, including the names of those investees, the principal place of business (and country of incorporation, if different) of those investees, and its proportion of the ownership interest (and, if different, proportion of the voting rights) held in those investees?"
+                },
+                {
+                    "id": "242.5",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.16(e)",
+                    "question": "In the parent’s separate financial statements, does the entity disclose a description of the method used to account for investments listed under IAS 27.16(d)?"
+                },
+                {
+                    "id": "244",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 10.31",
+                    "question": "Does an investment entity that is required, throughout the current period and all comparative periods presented, to apply the exception to consolidation for all of its subsidiaries in accordance with IFRS 10.31 present separate financial statements as its only financial statements?"
+                },
+                {
+                    "id": "245.1",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.8A",
+                    "question": "When an investment entity that is a parent (other than a parent under IAS 27.16) prepares, in accordance with IAS 27.8A, separate financial statements as its only financial statements, does the entity disclose that fact?"
+                },
+                {
+                    "id": "245.2",
+                    "section": "IFRS 10",
+                    "reference": "IFRS 12",
+                    "question": "When an investment entity prepares separate financial statements as its only financial statements, does the entity present the disclosures relating to investment entities required by IFRS 12?"
+                },
+                {
+                    "id": "246.1",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.17(a)",
+                    "question": "When a parent or investor with joint control or significant influence prepares separate financial statements, does the entity identify the financial statements prepared in accordance with IFRS 10, IFRS 11 or IAS 28 to which they relate?"
+                },
+                {
+                    "id": "246.2",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.17(b)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose that these statements are separate financial statements?"
+                },
+                {
+                    "id": "246.3",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.17(c)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose a list of significant investments in subsidiaries, joint ventures and associates, including the name of those investees, the principal place of business (and country of incorporation, if different) of those investees, and its proportion of the ownership interest (and, if different, proportion of the voting rights) held in those investees?"
+                },
+                {
+                    "id": "246.4",
+                    "section": "IFRS 10",
+                    "reference": "IAS 27.17(d)",
+                    "question": "When a parent or investor prepares separate financial statements, does the entity disclose a description of the method used to account for the investments listed under IAS 27.17(c)?"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+  "session_id": "session_20250927_090628_03c3cca2",
+  "title": "RAI-27092025-TELBH-QH064",
+  "description": "Financial statement analysis for Phoenix_Group_English_accounts_-_2024_-_Final-.pdf",
+  "created_at": "2025-09-27T09:06:28.066696",
+  "updated_at": "2025-09-27T09:06:28.066696",
+  "document_count": 0,
+  "last_document_id": null,
+  "status": "active",
+  "owner": "current_user",
+  "shared_with": [],
+  "chat_state": null,
+  "conversation_history": [],
+  "user_choices": [],
+  "ai_responses": [],
+  "uploaded_files": [],
+  "documents": [],
+  "analysis_context": {
+    "accounting_standard": null,
+    "custom_instructions": null,
+    "selected_frameworks": [],
+    "analysis_preferences": {}
+  }
+}

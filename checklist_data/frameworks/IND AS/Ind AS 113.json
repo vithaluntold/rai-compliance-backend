@@ -1,0 +1,59 @@
+﻿
+{
+    "title": "Indian Accounting Standards (Ind AS) : Disclosures Checklist (Revised April, 2024)",
+    "version": "Revised April 2024",
+    "sections": [
+        {
+            "section": "Ind AS 113",
+            "title": "Fair Value Measurements",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 113.",
+            "items": [
+                {
+                    "id": "1",
+                    "reference": "113.91",
+                    "question": "Whether the entity has given disclosure of the following: a) for assets and liabilities that are measured at fair value on a recurring or non-recurring basis in the balance sheet after initial recognition, the valuation techniques and inputs used to develop those measurements, and b) for recurring fair value measurements using significant unobservable inputs (Level 3), the effect of the measurements on profit or loss or other comprehensive income for the period."
+                },
+                {
+                    "id": "2",
+                    "reference": "113.93",
+                    "question": "Whether the entity has provided disclosure of, at a minimum, the following information for each class of assets and liabilities measured at fair value in the balance sheet after initial recognition: a) for recurring and non-recurring fair value measurements, the fair value measurement at the end of the reporting period, and for non-recurring fair value measurements, the reason for the measurement, b) for recurring and non-recurring fair value measurements, the level of the fair value hierarchy (Level 1, 2, or 3), c) for assets and liabilities held at the end of the reporting period that are measured at fair value on a recurring basis, if there are any transfers between level 1 and level 2 of the hierarchy: (i) the reasons for those transfers, and (ii) the entity’s policy for determining when transfers between levels are deemed to have occurred. d) for recurring and non-recurring fair value measurements, a description of the valuation technique (s) and the inputs used in the fair value measurement for the items categorised within Level 2 and Level 3 of the hierarchy, (i) if there has been change in the valuation technique, that change and the reasons for making it, (ii) for fair value measurements categorised within Level 3 of the fair value hierarchy, quantitative information about the significant unobservable inputs, e) for recurring fair value measurements categorised within Level 3 of the fair value hierarchy, a reconciliation from the opening balances to the closing balances, disclosing separately changes during the period attributable to the following: i) total gains and losses for the period recognised in profit or loss and the line items in profit or loss in which those gains or losses are recognised, ii) total gains and losses for the period recognised in other comprehensive income, and the line items in other comprehensive income in which those gains or losses are recognized, iii) purchases, sales, issues and settlements, and (iv) the amounts of any transfers into or out of Level 3 of the fair value hierarchy, the reasons for those transfers and the entity’s policy for determining when transfers between levels are deemed to have occurred, f) for recurring fair value measurements categorized within Level 3, the amount of gains or losses for the period included in profit or loss that are attributable to the change in unrealised gains or losses relating to those assets and liabilities held at the end of the reporting period, and the line item(s) in profit or loss in which those unrealised gains or losses are recognised, g) for recurring fair value measurements categorized within Level 3, a description of valuation processes used by the entity for recurring and non-recurring fair value measurements categorized within Level 3 of the fair value hierarchy, h) for recurring fair value measurements categorised within Level 3 of the fair value hierarchy: i) a narrative description of the sensitivity of the fair value measurement to changes in unobservable inputs if a change in those inputs to a different amount might result in a significantly higher or lower fair value measurement. If there are interrelationships between those inputs and other unobservable inputs used in the fair value measurement: A. a description of those interrelationships and B. how they might magnify or mitigate the effect of changes in the unobservable inputs on the fair value measurement., To comply with the aforesaid disclosure requirement, the narrative description of the sensitivity to changes in unobservable inputs shall include, at a minimum, the unobservable inputs disclosed when complying with 93(d). ii) for financial assets and liabilities, if changing one or more of the unobservable inputs to reflect reasonably possible alternative assumptions would change the fair value significantly, that fact and effect of those changes. The entity shall disclose how the effect of a change to reflect a reasonably possible alternative assumption was calculated. For that purpose, significance shall be judged with respect to profit or loss, and total assets or total liabilities, or, when changes in fair value are recognised in other comprehensive income, total equity, i) for recurring and non-recurring fair value measurements, if the highest and the best use differs from the current use, the reasons as to why it is used in such manner."
+                },
+                {
+                    "id": "3",
+                    "reference": "113.94",
+                    "question": "Whether the entity has determined the appropriate classes of assets and liabilities based on the following: a) the nature, characteristics and risks of the asset or liability, and b) the level of the fair value hierarchy within which the fair value measurement is categorised."
+                },
+                {
+                    "id": "4",
+                    "reference": "113.95",
+                    "question": "Whether the entity has disclosed and also consistently followed the policy for determining the transfers between levels in the fair value hierarchy that are deemed to have occurred."
+                },
+                {
+                    "id": "5",
+                    "reference": "113.96",
+                    "question": "If an entity has made an accounting policy decision to use the exception in paragraph 113.48, has it disclosed the same."
+                },
+                {
+                    "id": "6",
+                    "reference": "113.97",
+                    "question": "Whether the entity has made disclosure of the information required by paragraph 113.93(b)-(d) for each class of assets and liabilities not measured at fair value but for which the fair value is disclosed. Note: However, the entity is not required to provide the quantitative disclosures about significant unobservable inputs used in Fair Value measurements categorised within Level 3 of the Fair Value hierarchy required by paragraph 113.93(d). For such assets and liabilities, the entity does not need to provide the other disclosures required by this Ind AS."
+                },
+                {
+                    "id": "7",
+                    "reference": "113.98",
+                    "question": "In case entity has issued a liability with inseparable third-party credit enhancement and measured the same at fair value, whether the disclosure of the existence of that credit enhancement has been made and whether it is reflected in the fair value measurement of the liability."
+                },
+                {
+                    "id": "8",
+                    "reference": "113.99",
+                    "question": "Whether the presentation of the quantitative disclosures required by Ind AS 113 are given in a tabular format unless other format is more appropriate."
+                },
+                {
+                    "id": "9",
+                    "reference": "113.B11",
+                    "question": "Whether the entity disclosed the fair value by using one of the following techniques: i) Present value techniques, ii) Option pricing models, or iii) Multi-period excess earnings method."
+                }
+            ]
+        }
+    ]
+}

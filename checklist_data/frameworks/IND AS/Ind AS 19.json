@@ -1,0 +1,152 @@
+﻿
+{
+    "title": "Employee Benefits (Ind AS 19) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 19",
+            "title": "Employee Benefits",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 19.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 19",
+                    "reference": "19.25",
+                    "question": "Whether the entity has given disclosure about short-term employee benefits for key management personnel in accordance with Ind AS 24, Related Party Disclosures, and disclosure of short-term employee benefits expense in accordance with Ind AS 1, Presentation of Financial Statements?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 19",
+                    "reference": "19.53",
+                    "question": "Whether the entity has disclosed the amount recognised as an expense for defined contribution plans?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 19",
+                    "reference": "19.54",
+                    "question": "Where required by Ind AS 24, whether the entity has disclosed the information about contributions to defined contribution plans for key management personnel?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 19",
+                    "reference": "19.131",
+                    "question": "Whether the entity shall offset an asset relating to one plan against a liability relating to another plan only in case where following conditions are met: (a) the entity has a legally enforceable right to use a surplus in one plan to settle obligations under the other plan; and (b) the entity intends either to settle the obligations on a net basis, or to realize the surplus in one plan and settle its obligation under the other plan simultaneously?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 19",
+                    "reference": "19.134",
+                    "question": "Paragraph 19.120 requires an entity to recognise service cost and net interest on the net defined benefit liability (asset) in profit or loss. This Standard does not specify how an entity should present service cost and net interest on the net defined benefit liability (asset). Whether the entity presented those components in accordance with Ind AS 1?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 19",
+                    "reference": "19.135-19.136",
+                    "question": "Whether the entity has given disclosure of information that: (a) explains the characteristics of its defined benefit plans and risks associated with them (paragraph 19.139); (b) identifies and explains the amounts in its financial statements arising from its defined benefit plans (paragraphs 19.140–19.144 ); and (c) describes how its defined benefit plans may affect the amount, timing and uncertainty of the entity’s future cash flows (paragraphs 19.145–19.147)?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 19",
+                    "reference": "19.137",
+                    "question": "If the disclosures provided in accordance with the requirements in this Standard and other Ind ASs are insufficient to meet the objectives under 19.135, whether the entity has disclosure of additional information necessary to meet those objectives be given?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 19",
+                    "reference": "19.138",
+                    "question": "Whether the entity has assessed as to whether all or some disclosures should be disaggregated to distinguish plans or groups of plans with materially different risks?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 19",
+                    "reference": "19.139",
+                    "question": "Whether the entity has given disclosure of: (a) information about the characteristics of its defined benefit plans, including: (i) the nature of the benefits provided by the plan. (ii) a description of the regulatory framework in which the plan operates (see paragraph 19.64). (iii) a description of any other entity’s responsibilities for the governance of the plan. (b) a description of the risks to which the plan exposes the entity, focused on any unusual, entity specific or plan-specific risks, and of any significant concentrations of risk. (c) a description of any plan amendments, curtailments and settlements?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 19",
+                    "reference": "19.140",
+                    "question": "Whether a reconciliation from the opening balance to the closing balance for each of the following, if applicable have been provided: (a) the net defined benefit liability (asset), showing separate reconciliations for: (i) plan assets. (ii) the present value of the defined benefit obligation. (iii) the effect of the asset ceiling. (b) any reimbursement rights. An entity shall also describe the relationship between any reimbursement right and the related obligation?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 19",
+                    "reference": "19.141",
+                    "question": "Whether each reconciliation listed in paragraph 140 disclose each of the following, if applicable: (a) current service cost. (b) interest income or expense. (c) remeasurements of the net defined benefit liability (asset), showing separately: (i) the return on plan assets, excluding amounts included in interest in (b). (ii) actuarial gains and losses arising from changes in demographic assumptions (see paragraph 19.76(a)). (iii) actuarial gains and losses arising from changes in financial assumptions (see paragraph 19.76(b)). (iv) changes in the effect of limiting a net defined benefit asset to the asset ceiling, excluding amounts included in interest in (b). An entity shall also disclose how it determined the maximum economic benefit available, ie whether those benefits would be in the form of refunds, reductions in future contributions or a combination of both. (d) past service cost and gains and losses arising from settlements. As permitted by paragraph 19.100, past service cost and gains and losses arising from settlements need not be distinguished if they occur together. (e) the effect of changes in foreign exchange rates. (f) contributions to the plan, showing separately those by the employer and by plan participants (g) payments from the plan, showing separately the amount paid in respect of any settlements. (h) the effects of business combinations and disposals?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 19",
+                    "reference": "19.143",
+                    "question": "Whether the entity has given disclosure of the fair value of the entity’s own transferable financial instruments held as plan assets, and the fair value of plan assets that are property occupied by, or other assets used by, the entity?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 19",
+                    "reference": "19.144",
+                    "question": "Whether the entity has disclosed the significant actuarial assumptions used to determine the present value of the defined benefit obligation (paragraph 19.76). Whether such disclosure has been given in absolute terms. In case disclosures are provided in total for a grouping of plans, whether such disclosures are provided in the form of weighted averages or relatively narrow ranges?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 19",
+                    "reference": "19.145",
+                    "question": "Whether the entity has made disclosure of: (a) a sensitivity analysis for each significant actuarial assumption (as disclosed under paragraph 19.144) as of the end of the reporting period, showing how the defined benefit obligation would have been affected by changes in the relevant actuarial assumption that were reasonably possible at that date. (b) the methods and assumptions used in preparing the sensitivity analyses required by (a) and the limitations of those methods. (c) changes from the previous period in the methods and assumptions used in preparing the sensitivity analyses, and the reasons for such changes?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 19",
+                    "reference": "19.146",
+                    "question": "Whether the entity disclosed a description of any asset-liability matching strategies used by the plan or the entity, including the use of annuities and other techniques, such as longevity swaps, to manage risk?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 19",
+                    "reference": "19.147",
+                    "question": "To provide an indication of the effect of the defined benefit plan on the entity’s future cash flows, whether the entity has disclosed: (a) a description of any funding arrangements and funding policy that affect future contributions. (b) the expected contributions to the plan for the next annual reporting period. (c) information about the maturity profile of the defined benefit obligation. This will include the weighted average duration of the defined benefit obligation and may include other information about the distribution of the timing of benefit payments, such as a maturity analysis of the benefit payments?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 19",
+                    "reference": "19.148",
+                    "question": "If an entity participates in a multi-employer defined benefit plan, then whether it has provided disclosure of: (a) a description of the funding arrangements, including the method used to determine the entity’s rate of contributions and any minimum funding requirements. (b) a description of the extent to which the entity can be liable to the plan for other entities’ obligations under the terms and conditions of the multi-employer plan. (c) a description of any agreed allocation of a deficit or surplus on: (i) wind-up of the plan; or (ii) the entity’s withdrawal from the plan. (d) if the entity accounts for that plan as if it were a defined contribution plan in accordance with paragraph 19.34, whether it has disclosed the following, in addition to the information required by (a)–(c) and instead of the information required by paragraphs 19.139– 19.147: (i) the fact that the plan is a defined benefit plan (ii) the reason why sufficient information is not available to enable the entity to account for the plan as a defined benefit plan. (iii) the expected contributions to the plan for the next annual reporting period. (iv) information about any deficit or surplus in the plan that may affect the amount of future contributions, including the basis used to determine that deficit or surplus and the implications, if any, for the entity. (v) an indication of the level of participation of the entity in the plan compared with other participating entities?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 19",
+                    "reference": "19.149",
+                    "question": "If an entity participates in a defined benefit plan that shares risks between entities under common control, whether the entity has disclosed: (a) the contractual agreement or stated policy for charging the net defined benefit cost or the fact that there is no such policy. (b) the policy for determining the contribution to be paid by the entity. (c) if the entity accounts for an allocation of the net defined benefit cost as noted in paragraph 19.41, all the information about the plan as a whole required by paragraphs 19.135–19.147. (d) if the entity accounts for the contribution payable for the period as noted in paragraph 19.41, the information about the plan as a whole required by paragraphs 19.135–19.137, 19.139, 19.142–19.144 and 19.147(a) and (b)?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 19",
+                    "reference": "19.150",
+                    "question": "Whether the information required by Paragraph 149 (c) and (d) is disclosed by cross-reference to disclosures in another group entity’s Financial Statement if: a) that group entity’s Financial Statements separately identify and disclose the information required about the plan; and b) that group entity’s Financial Statements are available to users of the Financial Statements on the same terms as the Financial Statements of the entity and at the same time as, or earlier than, the Financial Statements of the entity?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 19",
+                    "reference": "19.151",
+                    "question": "Where required by Ind AS 24, whether the disclosures of information about the following has been given by the entity: (a) related party transactions with post-employment benefit plans; and (b) post-employment benefits for key management personnel?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 19",
+                    "reference": "19.152",
+                    "question": "Where required by Ind AS 37, whether the disclosures of information about contingent liabilities arising from post-employment benefit obligations has been given by the entity?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 19",
+                    "reference": "19.158",
+                    "question": "Whether the entity has made disclosure about other long-term employee benefits for key management personnel in accordance with Ind AS 24, Related Party Disclosures, and disclosure of other long-term employee benefits expense in accordance with Ind AS 1, Presentation of Financial Statements?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 19",
+                    "reference": "19.171",
+                    "question": "Whether the entity has made disclosure about termination benefits for key management personnel in accordance with Ind AS 24, Related Party Disclosures, and disclosure of termination benefits expense in accordance with Ind AS 1, Presentation of Financial Statements?"
+                }
+            ]
+        }
+    ]
+}

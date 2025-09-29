@@ -1,0 +1,33 @@
+﻿  
+{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 5",
+            "title": "Rights to interests arising from decommissioning, restoration and environmental rehabilitation funds",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 5.",
+            "items": [
+                {
+                    "id": "497",
+                    "section": "IFRIC 5",
+                    "reference": "IFRIC 5.11",
+                    "question": "Does the entity (as a contributor) disclose the nature of its interest in a fund and any restrictions on access to the assets in the fund"
+                },
+                {
+                    "id": "498",
+                    "section": "IFRIC 5",
+                    "reference": "IFRIC 5.12",
+                    "question": "If the entity (as a contributor) has an obligation to make potential contributions that it does not recognise as a liability, does the entity make the disclosures required by IAS 37.86"
+                },
+                {
+                    "id": "499",
+                    "section": "IFRIC 5",
+                    "reference": "IFRIC 5.9, IFRIC 5.13",
+                    "question": "If an entity (as a contributor) accounts for its interest in the fund under IFRIC 5.9, does the entity make the disclosures required by IAS 37.85(c)"
+                }
+            ]
+        }
+    ]
+}
+    

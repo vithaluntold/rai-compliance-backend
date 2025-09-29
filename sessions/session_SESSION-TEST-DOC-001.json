@@ -1,0 +1,25 @@
+{
+  "session_id": "session_SESSION-TEST-DOC-001",
+  "title": "Session Integration Test",
+  "description": "Testing session integration with PostgreSQL documents",
+  "created_at": "2025-09-25T22:15:08.925241",
+  "updated_at": "2025-09-25T22:15:08.925260",
+  "document_count": 1,
+  "last_document_id": "SESSION-TEST-DOC-001",
+  "status": "active",
+  "chat_state": {
+    "documentId": "SESSION-TEST-DOC-001",
+    "analysisComplete": true
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Document SESSION-TEST-DOC-001 uploaded successfully"
+    },
+    {
+      "role": "assistant",
+      "content": "Analysis complete for SESSION-TEST-DOC-001. You can now view the results."
+    }
+  ],
+  "documents": []
+}

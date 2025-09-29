@@ -1,0 +1,1039 @@
+﻿{
+    "title": "IFRS 9 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 9",
+            "title": "Financial Instruments",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 9, including related disclosures from IFRS 7, IAS 1, IAS 15, IFRS 17 and IFRS 18 where IFRS 9 is explicitly referenced.",
+            "items": [
+                {
+                    "id": "IFRS9-33a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 1.29, IFRS 1.D19A",
+                    "question": "If the entity designates a previously recognised financial asset as a financial asset measured at fair value through profit or loss under IFRS 1.D19A, does the entity disclose the fair value of financial assets so designated at the date of designation"
+                },
+                {
+                    "id": "IFRS9-33b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 1.29, IFRS 1.D19A",
+                    "question": "If the entity designates a previously recognised financial asset as a financial asset measured at fair value through profit or loss under IFRS 1.D19A, does the entity disclose the classification and carrying amount in the previous financial statements"
+                },
+                {
+                    "id": "IFRS9-34a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 1.29A, IFRS 1.D19",
+                    "question": "If the entity designates a previously recognised financial liability as a financial liability at fair value through profit or loss under IFRS 1.D19, does the entity disclose the fair value of financial liabilities so designated at the date of designation"
+                },
+                {
+                    "id": "IFRS9-34b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 1.29A, IFRS 1.D19",
+                    "question": "If the entity designates a previously recognised financial liability as a financial liability at fair value through profit or loss under IFRS 1.D19, does the entity disclose the classification and carrying amount in the previous financial statements"
+                },
+                {
+                    "id": "IFRS9-292a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.6, IFRS 7.B1-B3, IFRS 9",
+                    "question": "If disclosures are required by class of financial instrument, does the entity group financial instruments into classes that are appropriate to the nature of the information disclosed and that take into account the characteristics of those financial instruments"
+                },
+                {
+                    "id": "IFRS9-292b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.6, IFRS 7.B1-B3, IFRS 9",
+                    "question": "If disclosures are required by class of financial instrument, does the entity provide sufficient information to permit reconciliation to the relevant items in the statement of financial position"
+                },
+                {
+                    "id": "IFRS9-294a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.4.1.2A, IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through profit or loss, showing separately: those designated as such upon initial recognition or subsequently in accordance with IFRS 9.6.7.1, those mandatorily measured at fair value through profit or loss in accordance with IFRS 9, those measured as such in accordance with the election in IFRS 9.3.3.5, and those measured as such in accordance with the election in IAS 32.33A"
+                },
+                {
+                    "id": "IFRS9-294b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.4.1.2A, IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial liabilities at fair value through profit or loss, showing separately: those designated as such upon initial recognition or subsequently in accordance with IFRS 9.6.7.1 and those that meet the definition of held for trading in IFRS 9"
+                },
+                {
+                    "id": "IFRS9-294c",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.4.1.2A, IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at amortised cost"
+                },
+                {
+                    "id": "IFRS9-294d",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.4.1.2A, IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial liabilities measured at amortised cost"
+                },
+                {
+                    "id": "IFRS9-294e",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.8, IFRS 9.4.1.1-4.1.5, IFRS 9.4.2.1-4.2.2, IFRS 9.6.7.1, IFRS 9.3.3.5, IAS 32.33A, IFRS 9.4.1.2A, IFRS 9.5.7.5",
+                    "question": "Does the entity disclose, either in the statement of financial position or in the notes, the carrying amounts of financial assets measured at fair value through other comprehensive income, showing separately: financial assets that are measured at fair value through other comprehensive income in accordance with IFRS 9.4.1.2A and investments in equity instruments designated as such upon initial recognition in accordance with IFRS 9.5.7.5"
+                },
+                {
+                    "id": "IFRS9-295a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 9.7.1.12, IFRS 9.7.1.13",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that it applies all the amendments at the same time"
+                },
+                {
+                    "id": "IFRS9-295b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 9.7.1.12, IFRS 9.7.1.13",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that it applies only the amendments to the Application Guidance to Section 4.1 (Classification of financial assets) of IFRS 9 for that earlier period"
+                },
+                {
+                    "id": "IFRS9-296a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 9.7.2.49",
+                    "question": "At the date of initial application of the amendments to the Application Guidance to Section 4.1 of IFRS 9 (Classification of financial assets), does the entity disclose for each class of financial assets that changed measurement category as a result of applying the amendments: the measurement category and carrying amount determined immediately before the amendments were applied"
+                },
+                {
+                    "id": "IFRS9-296b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 9.7.2.49",
+                    "question": "At the date of initial application of the amendments to the Application Guidance to Section 4.1 of IFRS 9 (Classification of financial assets), does the entity disclose for each class of financial assets that changed measurement category as a result of applying the amendments: the measurement category and carrying amount determined immediately after the amendments were applied"
+                },
+                {
+                    "id": "IFRS9-297",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 9.7.1.14",
+                    "question": "If an entity applies the Amendments to IFRS 9 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact"
+                },
+                {
+                    "id": "IFRS9-298a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.9, IFRS 7.36(a), IFRS 7.36(b)",
+                    "question": "If the entity has designated a financial asset (or group of financial assets) as measured at fair value through profit or loss that would otherwise be measured at fair value through other comprehensive income or amortised cost, does it disclose the maximum exposure to credit risk (see IFRS 7.36(a)) of the financial asset (or group of financial assets) at the end of the reporting period"
+                },
+                {
+                    "id": "IFRS9-298b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.9, IFRS 7.36(a), IFRS 7.36(b)",
+                    "question": "If the entity has designated a financial asset (or group of financial assets) as measured at fair value through profit or loss that would otherwise be measured at fair value through other comprehensive income or amortised cost, does it disclose the amount by which any related credit derivatives or similar instruments mitigate that maximum exposure to credit risk (see IFRS 7.36(b))"
+                },
+                {
+                    "id": "IFRS9-298c",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.9, IFRS 7.36(a), IFRS 7.36(b)",
+                    "question": "If the entity has designated a financial asset (or group of financial assets) as measured at fair value through profit or loss that would otherwise be measured at fair value through other comprehensive income or amortised cost, does it disclose the amount of change, during the period and cumulatively, in the fair value of the financial asset (or group of financial assets) that is attributable to changes in the credit risk of the financial asset determined either: as the change in its fair value that is not attributable to changes in market conditions that give rise to market risk or using an alternative method that the entity believes more faithfully represents the change in its fair value that is attributable to changes in credit risk of the asset"
+                },
+                {
+                    "id": "IFRS9-298d",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.9, IFRS 7.36(a), IFRS 7.36(b)",
+                    "question": "If the entity has designated a financial asset (or group of financial assets) as measured at fair value through profit or loss that would otherwise be measured at fair value through other comprehensive income or amortised cost, does it disclose the amount of the change in the fair value of any related credit derivatives or similar instruments that has occurred during the reporting period and cumulatively since the financial asset was designated"
+                },
+                {
+                    "id": "IFRS9-299a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.10, IFRS 9.4.2.2, IFRS 9.5.7.7, IFRS 9.B5.7.13, IFRS 9.B5.7.20, IFRS 9.B5.7.5-7, IFRS 9.10-12, IFRS 9.5.7.8",
+                    "question": "If the entity (a) has designated a financial liability as at fair value through profit or loss in accordance with IFRS 9.4.2.2 and (b) is required to present the effects of changes in that liability's credit risk in other comprehensive income (see IFRS 9.5.7.7) does it disclose: a. The amount of change, cumulatively, in the fair value of the financial liability that is attributable to changes in the credit risk of that liability b. The difference between the financial liability’s carrying amount and the amount the entity would be contractually required to pay at maturity to the holder of the obligation c. Any transfers of the cumulative gain or loss within equity during the reporting period, including the reason for such transfers d. If a liability is derecognised during the reporting period, the amount (if any) presented in other comprehensive income that was realised at derecognition"
+                },
+                {
+                    "id": "300",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.10A, IFRS 9.4.2.2, IFRS 9.5.7.7, IFRS 9.5.7.8, IFRS 9.B5.7.13-B5.7.20",
+                    "question": "If the entity (a) has designated a financial liability as at fair value through profit or loss in accordance with IFRS 9.4.2.2 and (b) is required to present all changes in the fair value of that liability (including the effects of changes in the credit risk of the liability) in profit or loss (see IFRS 9.5.7.7-8) does it disclose: a. The amount of change, during the period and cumulatively, in the fair value of the financial liability that is attributable to changes in the credit risk of that liability b. The difference between the financial liability’s carrying amount and the amount the entity would be contractually required to pay at maturity to the holder of the obligation"
+                },
+                {
+                    "id": "301",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.11, IFRS 9.5.7.7 (a), IFRS 7.9(c), IFRS 7.10(a), IFRS 7.10A(a), IFRS 9.B5.7.7, IFRS 9.B5.7.8, IFRS 9.B5.7.6",
+                    "question": "Does the entity disclose: a. A detailed description of the methods used to comply with the requirements in IFRS 7.9(c), 10(a) and 10A(a) and IFRS 9.5.7.7(a), including an explanation of why the method is appropriate b. If the entity believes that the disclosure it has given, either in the statement of financial position or in the notes, to comply with the requirements in IFRS 7.9(c), 10(a) and 10A(a) or IFRS 9.5.7.7(a) does not faithfully represent the change in the fair value of the financial asset or financial liability attributable to changes in its credit risk: ► The reasons for reaching this conclusion ► The factors the entity believes are relevant c. A detailed description of the methodology or methodologies used to determine whether presenting the effects of changes in a liability’s credit risk in other comprehensive income would create or enlarge an accounting mismatch in profit or loss d. If the entity is required to present the effects of changes in a liability’s credit risk in profit or loss (to comply with c. above), the disclosure must include a detailed description of the economic relationship described in IFRS 9.B5.7.6"
+                },
+                {
+                    "id": "302",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.11A, IFRS 9.5.7.5",
+                    "question": "If an entity does not apply the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity designated investments in equity instruments to be measured at fair value through other comprehensive income, as permitted by IFRS 9.5.7.5, does it disclose: a. Which investments in equity instruments have been designated to be measured at fair value through other comprehensive income b. The reasons for using this presentation alternative c. The fair value of each such investment at the end of the reporting period d. Dividends recognised during the period, showing separately: ► Those related to investments derecognised during the reporting period ► Those related to investments held at the end of the reporting period e. Any transfers of the cumulative gain or loss within equity during the reporting period and the reason for such transfers"
+                },
+                {
+                    "id": "303",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.11B",
+                    "question": "If an entity does not apply the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity derecognises investments in equity instruments measured at fair value through other comprehensive income during the reporting period, does it disclose: a. The reasons for disposing of the investments b. The fair value of the investments at the date of derecognition c. The cumulative gain or loss on disposal"
+                },
+                {
+                    "id": "304",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.11A, IFRS 9.5.7.5",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity designated investments in equity instruments to be measured at fair value through other comprehensive income, as permitted by IFRS 9.5.7.5, does it disclose for each class of investment: a. Which investments in equity instruments have been designated to be measured at fair value through other comprehensive income b. The reasons for using this presentation alternative c. The fair value at the end of the reporting period d. Dividends recognised during the period, showing separately: ► Those related to investments derecognised during the reporting period ► Those related to investments held at the end of the reporting period e. Any transfers of the cumulative gain or loss within equity during the reporting period and the reason for such transfers f. The fair value gain or loss presented in other comprehensive income during the period, showing separately the fair value gain or loss related to investments derecognised during the reporting period and the fair value gain or loss related to investments held at the end of the reporting period"
+                },
+                {
+                    "id": "305",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.11B",
+                    "question": "If an entity applies the Amendments to IFRS 9 and IFRS 7 in Amendments to the Classification and Measurement of Financial Instruments, issued May 2024, and the entity derecognises investments in equity instruments measured at fair value through other comprehensive income during the reporting period, does it disclose: a. The reasons for disposing of the investments b. The fair value of the investments at the date of derecognition c. The cumulative gain or loss on disposal d. Any transfers of the cumulative gain or loss within equity during the reporting period related to the investments derecognised during that reporting period"
+                },
+                {
+                    "id": "IFRS9-306a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12B",
+                    "question": "For financial assets reclassified under IFRS 9.4.4.1, does the entity disclose the date of reclassification?"
+                },
+                {
+                    "id": "IFRS9-306b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12B",
+                    "question": "For financial assets reclassified under IFRS 9.4.4.1, does the entity disclose a detailed explanation of the change in business model and its effect on the financial statements?"
+                },
+                {
+                    "id": "IFRS9-306c",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12B",
+                    "question": "For financial assets reclassified under IFRS 9.4.4.1, does the entity disclose the amount reclassified into and out of each category?"
+                },
+                {
+                    "id": "IFRS9-306d",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12B, IAS 1.82(ca), IFRS 18.75(b)(iv)",
+                    "question": "For financial assets reclassified from amortised cost to fair value through profit or loss, does the entity disclose any gain or loss arising from the difference between previous amortised cost and fair value at reclassification?"
+                },
+                {
+                    "id": "IFRS9-306e",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12B, IAS 1.82(cb), IFRS 18.75(b)(v)",
+                    "question": "For financial assets reclassified from fair value through other comprehensive income to fair value through profit or loss, does the entity disclose any cumulative gain or loss previously in OCI that is reclassified to profit or loss?"
+                },
+                {
+                    "id": "IFRS9-307a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12C, IFRS 9.4.4.1",
+                    "question": "For assets reclassified from fair value through profit or loss to amortised cost or fair value through other comprehensive income, does the entity disclose the effective interest rate determined on the date of reclassification?"
+                },
+                {
+                    "id": "IFRS9-307b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12C, IFRS 9.4.4.1",
+                    "question": "For assets reclassified from fair value through profit or loss to amortised cost or fair value through other comprehensive income, does the entity disclose the interest revenue recognised?"
+                },
+                {
+                    "id": "IFRS9-308a",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12D",
+                    "question": "For financial assets reclassified from fair value through OCI to amortised cost or from fair value through profit or loss to amortised cost/FVOCI since last annual reporting date, does the entity disclose their fair value at period end?"
+                },
+                {
+                    "id": "IFRS9-308b",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.12D",
+                    "question": "For such reclassified financial assets, does the entity disclose the fair value gain/loss that would have been recognised in profit or loss or OCI during the period if they had not been reclassified?"
+                },
+                {
+                    "id": "309",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42N, IFRS 9",
+                    "question": "If an entity treats the fair value of a financial asset or liability as its amortised cost at the date of initial application of IFRS 9, does it make the disclosures in IFRS 7.42N for each reporting period until derecognition?"
+                },
+                {
+                    "id": "311",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42A, IFRS 7.42B, IFRS 9.3.2.5",
+                    "question": "Does the entity present the disclosures required by IFRS 7.42B–42H in a single note in its financial statements?"
+                },
+                {
+                    "id": "312.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "For each class of transferred financial assets not derecognised in their entirety, does the entity disclose the nature of the transferred assets?"
+                },
+                {
+                    "id": "312.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "For each class of transferred financial assets not derecognised in their entirety, does the entity disclose the nature of the risks and rewards of ownership to which it remains exposed?"
+                },
+                {
+                    "id": "312.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "For each class of transferred financial assets not derecognised in their entirety, does the entity describe the relationship between the transferred assets and associated liabilities, including restrictions on its use of the transferred assets?"
+                },
+                {
+                    "id": "312.4",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "When the counterparty to the associated liabilities has recourse only to the transferred assets, does the entity provide a schedule of the fair value of transferred assets, fair value of associated liabilities, and the net position?"
+                },
+                {
+                    "id": "312.5",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "When the entity continues to recognise all transferred assets, does it disclose the carrying amounts of the transferred assets and the associated liabilities?"
+                },
+                {
+                    "id": "312.6",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42D, IFRS 9.3.2.6(c)(ii), IFRS 9.3.2.16",
+                    "question": "When the entity continues to recognise assets to the extent of its continuing involvement, does it disclose the total carrying amount of the original assets, the carrying amount it continues to recognise, and the carrying amount of associated liabilities?"
+                },
+                {
+                    "id": "314.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it disclose the carrying amount of assets and liabilities representing that continuing involvement and their line items in the statement of financial position?"
+                },
+                {
+                    "id": "314.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it disclose the fair value of the assets and liabilities representing that continuing involvement?"
+                },
+                {
+                    "id": "314.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it disclose the amount that best represents its maximum exposure to loss from that continuing involvement and how that exposure is determined?"
+                },
+                {
+                    "id": "314.4",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it disclose the undiscounted cash outflows that may be required to repurchase the derecognised assets or amounts payable to the transferee?"
+                },
+                {
+                    "id": "314.5",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it disclose a maturity analysis of those undiscounted cash outflows by contractual maturities?"
+                },
+                {
+                    "id": "314.6",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42E, IFRS 9.3.2.6(a), IFRS 9.3.2.6(c)(i)",
+                    "question": "When the entity derecognises transferred financial assets in their entirety but has continuing involvement, does it provide qualitative information explaining and supporting the quantitative disclosures, including a description of the derecognised assets, the nature and purpose of the continuing involvement, and risk management?"
+                },
+                {
+                    "id": "315.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42G, IFRS 9.3.2.6(a)",
+                    "question": "For each type of continuing involvement, does the entity disclose the gain or loss recognised at the date of transfer of the assets, including whether it arose because the fair values of the components differed from the fair value of the asset as a whole?"
+                },
+                {
+                    "id": "315.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42G, IFRS 9.3.2.6(a)",
+                    "question": "If the gain or loss on derecognition arose because component fair values differed from the asset’s fair value, does the entity disclose whether those fair value measurements included significant unobservable inputs?"
+                },
+                {
+                    "id": "315.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.42G, IFRS 9.3.2.6(a)",
+                    "question": "Does the entity disclose income and expenses recognised, both in the reporting period and cumulatively, from its continuing involvement (e.g., fair value changes in derivatives)?"
+                },
+                {
+                    "id": "317.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.14, IFRS 9.3.2.23(a)",
+                    "question": "Does the entity disclose the carrying amount of financial assets pledged as collateral for liabilities or contingent liabilities, including amounts reclassified under IFRS 9.3.2.23(a)?"
+                },
+                {
+                    "id": "317.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.14, IFRS 9.3.2.23(a)",
+                    "question": "Does the entity disclose the terms and conditions relating to those pledges?"
+                },
+                {
+                    "id": "319",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.16A, IFRS 9.4.1.2A",
+                    "question": "Does the entity disclose the loss allowance for debt instruments measured at fair value through other comprehensive income in the notes?"
+                },
+                {
+                    "id": "323.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a), IFRS 9.6.7.1, IFRS 9.5.7.5, IFRS 9.4.1.2A",
+                    "question": "Does the entity disclose net gains or losses on financial assets or liabilities measured at fair value through profit or loss, showing separately gains or losses on those designated at initial recognition?"
+                },
+                {
+                    "id": "323.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a), IFRS 9.6.7.1",
+                    "question": "Does the entity disclose net gains or losses on financial assets or liabilities mandatorily measured at fair value through profit or loss?"
+                },
+                {
+                    "id": "323.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a), IFRS 9.6.7.1",
+                    "question": "Does the entity disclose net gains or losses on financial liabilities designated at fair value through profit or loss, separately showing the amounts in other comprehensive income and in profit or loss?"
+                },
+                {
+                    "id": "323.4",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a)",
+                    "question": "Does the entity disclose net gains or losses on financial assets measured at amortised cost?"
+                },
+                {
+                    "id": "323.5",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a)",
+                    "question": "Does the entity disclose net gains or losses on financial liabilities measured at amortised cost?"
+                },
+                {
+                    "id": "323.6",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a), IFRS 9.5.7.5",
+                    "question": "Does the entity disclose net gains or losses on equity instruments designated at fair value through other comprehensive income?"
+                },
+                {
+                    "id": "323.7",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(a), IFRS 9.4.1.2A",
+                    "question": "Does the entity disclose net gains or losses on financial assets measured at fair value through other comprehensive income, separately showing amounts recognised in other comprehensive income and amounts reclassified to profit or loss upon derecognition?"
+                },
+                {
+                    "id": "324.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(b), IFRS 9.4.1.2A",
+                    "question": "Does the entity disclose total interest revenue calculated using the effective interest method for financial assets at amortised cost or measured at fair value through other comprehensive income?"
+                },
+                {
+                    "id": "324.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20(b)",
+                    "question": "Does the entity disclose total interest expense for financial liabilities not at fair value through profit or loss?"
+                },
+                {
+                    "id": "326.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20A, IAS 1.82(aa), IFRS 18.75(b)(iii)",
+                    "question": "If the entity derecognised a financial asset measured at amortised cost, does it disclose an analysis of the gain or loss recognised on derecognition, showing separately gains and losses?"
+                },
+                {
+                    "id": "326.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20A, IAS 1.82(aa)",
+                    "question": "If the entity derecognised a financial asset measured at amortised cost, does it disclose the reasons for derecognising those financial assets?"
+                },
+                {
+                    "id": "327.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20B, IFRS 7.20C, IFRS 9",
+                    "question": "If the entity applies the May 2024 amendments to IFRS 9 classification guidance, does it disclose a qualitative description of the nature of each contingent event?"
+                },
+                {
+                    "id": "327.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20B, IFRS 7.20C",
+                    "question": "If the entity applies the May 2024 amendments to IFRS 9 classification guidance, does it disclose quantitative information about possible changes to contractual cash flows that could result from those terms?"
+                },
+                {
+                    "id": "327.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.20B, IFRS 7.20C, IFRS 9",
+                    "question": "If the entity applies the May 2024 amendments to IFRS 9 classification guidance, does it disclose the gross carrying amount of financial assets and the amortised cost of financial liabilities subject to those contractual terms?"
+                },
+                {
+                    "id": "328",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.21, IAS 1.117, IAS 8.27A",
+                    "question": "Does the entity disclose its material accounting policy information, including the measurement basis or bases for financial instruments?"
+                },
+                {
+                    "id": "329.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(a), IFRS 9.4.2.2",
+                    "question": "For financial liabilities designated at fair value through profit or loss, does the entity disclose the nature of those liabilities?"
+                },
+                {
+                    "id": "329.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(a)",
+                    "question": "For financial liabilities designated at fair value through profit or loss, does the entity disclose the criteria for such designation on initial recognition?"
+                },
+                {
+                    "id": "329.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(a), IFRS 9.4.2.2",
+                    "question": "For financial liabilities designated at fair value through profit or loss, does the entity disclose how it satisfied the conditions in IFRS 9.4.2.2 for designation?"
+                },
+                {
+                    "id": "330.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(aa), IFRS 9.4.1.5",
+                    "question": "For financial assets designated at fair value through profit or loss, does the entity disclose the nature of those assets?"
+                },
+                {
+                    "id": "330.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(aa), IFRS 9.4.1.5",
+                    "question": "For financial assets designated at fair value through profit or loss, does the entity disclose how it satisfied the criteria in IFRS 9.4.1.5 for such designation?"
+                },
+                {
+                    "id": "331.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(c), IFRS 9.3.1.2",
+                    "question": "Does the entity disclose whether regular-way purchases and sales of financial assets are accounted for at trade date or settlement date?"
+                },
+                {
+                    "id": "331.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.B5(e), IFRS 7.20(a)",
+                    "question": "Does the entity disclose how it determines net gains or losses on each category of financial instrument, for example, whether those gains or losses include interest or dividend income?"
+                },
+                {
+                    "id": "333.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.21A",
+                    "question": "For hedged risk exposures to which the entity applies hedge accounting, does it disclose its risk management strategy and how it is applied?"
+                },
+                {
+                    "id": "333.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.23A-F",
+                    "question": "For hedged risk exposures to which the entity applies hedge accounting, does it disclose how its hedging activities may affect the amount, timing, and uncertainty of future cash flows?"
+                },
+                {
+                    "id": "333.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24A-F",
+                    "question": "For hedged risk exposures to which the entity applies hedge accounting, does it disclose the effect of hedge accounting on the statement of financial position, comprehensive income, and changes in equity?"
+                },
+                {
+                    "id": "336.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.22C, IFRS 9.6.3.7",
+                    "question": "When the entity designates a specific risk component as a hedged item, does it disclose how it determined the designated risk component and its relationship to the item as a whole?"
+                },
+                {
+                    "id": "336.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.22C, IFRS 9.6.3.7",
+                    "question": "When the entity designates a specific risk component as a hedged item, does it disclose how that risk component relates to the item in its entirety (e.g., historical coverage of fair value changes)?"
+                },
+                {
+                    "id": "344.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(a), IFRS 9.6.5.10",
+                    "question": "For fair value hedges, does the entity disclose the carrying amount of the hedged item in the statement of financial position, presenting assets separately from liabilities?"
+                },
+                {
+                    "id": "344.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(a)",
+                    "question": "For fair value hedges, does the entity disclose the accumulated amount of fair value hedge adjustments included in the carrying amount of the hedged item, presenting assets separately from liabilities?"
+                },
+                {
+                    "id": "344.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(a)",
+                    "question": "For fair value hedges, does the entity disclose the line item in the statement of financial position that includes the hedged item?"
+                },
+                {
+                    "id": "344.4",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(a), IFRS 9.6.5.10",
+                    "question": "For fair value hedges, does the entity disclose the change in value of the hedged item used to measure hedge ineffectiveness for the period?"
+                },
+                {
+                    "id": "344.5",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(a)",
+                    "question": "For fair value hedges, does the entity disclose the accumulated amount of fair value hedge adjustments remaining for hedged items no longer adjusted for hedge gains and losses?"
+                },
+                {
+                    "id": "345.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(b), IFRS 9.6.5.11, IFRS 9.6.5.13(a)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the change in value of the hedged item used to measure hedge ineffectiveness for the period?"
+                },
+                {
+                    "id": "345.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the balances in the cash flow hedge reserve and foreign currency translation reserve for continuing hedges?"
+                },
+                {
+                    "id": "345.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24B(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the balances remaining in those reserves for discontinued hedging relationships?"
+                },
+                {
+                    "id": "346.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(a), IFRS 9.5.7.5",
+                    "question": "For fair value hedges, does the entity disclose hedge ineffectiveness recognised in profit or loss (or other comprehensive income for equity hedges elected under IFRS 9.5.7.5)?"
+                },
+                {
+                    "id": "346.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(a)",
+                    "question": "For fair value hedges, does the entity disclose the line item in the statement of comprehensive income that includes the recognised hedge ineffectiveness?"
+                },
+                {
+                    "id": "347.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b), IAS 1.92, IFRS 18.90, IFRS 9.6.6.4",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose hedging gains or losses recognised in other comprehensive income?"
+                },
+                {
+                    "id": "347.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose hedge ineffectiveness recognised in profit or loss?"
+                },
+                {
+                    "id": "347.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the line item in the statement of comprehensive income that includes the recognised hedge ineffectiveness?"
+                },
+                {
+                    "id": "347.4",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the amount reclassified from reserves into profit or loss as a reclassification adjustment, differentiating between amounts for which hedge accounting is no longer used and amounts transferred because the hedged item affected profit or loss?"
+                },
+                {
+                    "id": "347.5",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b)",
+                    "question": "For cash flow hedges and net investment hedges, does the entity disclose the line item in the statement of comprehensive income that includes the reclassification adjustment?"
+                },
+                {
+                    "id": "347.6",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24C(b), IFRS 9.6.6.4",
+                    "question": "For hedges of net positions, does the entity disclose hedging gains or losses recognised in a separate line item in the statement of comprehensive income?"
+                },
+                {
+                    "id": "349.1",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24E, IFRS 9.6.5.11, IFRS 9.6.5.15, IFRS 9.6.5.16",
+                    "question": "Does the entity provide a reconciliation of each component of equity that differentiates between amounts related to hedge ineffectiveness in IFRS 7.24C(b)(i) and reclassification adjustments in IFRS 7.24C(b)(iv)?"
+                },
+                {
+                    "id": "349.2",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24E",
+                    "question": "Does the entity in that reconciliation differentiate between amounts associated with the time value of options hedging transaction-related items and time-period related items?"
+                },
+                {
+                    "id": "349.3",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 7.24E",
+                    "question": "Does the entity in that reconciliation differentiate between amounts associated with forward elements and foreign currency basis spreads of instruments hedging transaction-related items and time-period related items?"
+                },
+                {
+    "id": "351.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24G, IFRS 9.6.7.1",
+    "question": "For credit derivatives used to manage the credit risk of financial instruments designated at fair value through profit or loss under IFRS 9.6.7.1, does the entity disclose a reconciliation of each nominal amount and fair value at the beginning and end of the period?"
+  },
+  {
+    "id": "351.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24G, IFRS 9.6.7.1",
+    "question": "Does the entity disclose the gain or loss recognised in profit or loss on designation of a financial instrument, or a proportion of it, as measured at fair value through profit or loss in accordance with IFRS 9.6.7.1?"
+  },
+  {
+    "id": "351.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24G, IFRS 9.6.7.4",
+    "question": "On discontinuation of measuring a financial instrument, or a proportion of it, at fair value through profit or loss, does the entity disclose the instrument’s fair value that becomes the new carrying amount in accordance with IFRS 9.6.7.4 and the related nominal or principal amount?"
+  },
+  {
+    "id": "352.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24H, IFRS 9.6.8.4–6.8.12",
+    "question": "Does the entity disclose the significant interest rate benchmarks to which its hedging relationships exposed to benchmark-reform exceptions are exposed?"
+  },
+  {
+    "id": "352.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24H",
+    "question": "Does the entity disclose the extent of the risk exposure it manages that is directly affected by interest rate benchmark reform?"
+  },
+  {
+    "id": "352.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24H",
+    "question": "Does the entity disclose how it is managing the process to transition to alternative benchmark rates?"
+  },
+  {
+    "id": "352.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24H",
+    "question": "Does the entity describe the significant assumptions or judgements made in applying the benchmark-reform exceptions, such as when the uncertainty is no longer present for timing and amount of benchmark-based cash flows?"
+  },
+  {
+    "id": "352.5",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.24H",
+    "question": "Does the entity disclose the nominal amount of the hedging instruments in hedging relationships subject to the benchmark-reform exceptions?"
+  },
+  {
+    "id": "357.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.28, IFRS 9.B5.1.2A",
+    "question": "For financial instruments whose initial fair value is neither evidenced by a quoted price in an active market nor based solely on observable inputs, does the entity disclose, by class, the difference between the transaction price and the fair value at initial recognition and the reason for that difference?"
+  },
+  {
+    "id": "357.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.28",
+    "question": "For those same instruments, does the entity disclose the valuation technique(s) and inputs used to measure the fair value at initial recognition?"
+  },
+  {
+    "id": "361.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35A, IFRS 9",
+    "question": "For trade receivables, contract assets and lease receivables on which lifetime expected credit losses are recognised and that are modified while more than 30 days past due, does IFRS 7.35J(a) apply?"
+  },
+  {
+    "id": "361.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35A",
+    "question": "Does IFRS 7.35K(b) not apply to lease receivables?"
+  },
+  {
+    "id": "363.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F, IFRS 9.5.5.10–11",
+    "question": "Does the entity disclose how it determined whether the credit risk of financial instruments has increased significantly since initial recognition, including its low-credit-risk exemption under IFRS 9.5.5.10 and any rebuttal of the >30 days past due presumption under IFRS 9.5.5.11?"
+  },
+  {
+    "id": "363.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F",
+    "question": "Does the entity disclose its definition of default and the reasons for selecting that definition?"
+  },
+  {
+    "id": "363.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F",
+    "question": "If expected credit losses were measured on a collective basis, does the entity disclose how it grouped financial instruments for that purpose?"
+  },
+  {
+    "id": "363.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F",
+    "question": "Does the entity disclose how it determined that financial assets are credit-impaired?"
+  },
+  {
+    "id": "363.5",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F",
+    "question": "Does the entity disclose its write-off policy, including indicators that there is no reasonable expectation of recovery and the policy for written-off financial assets still subject to enforcement?"
+  },
+  {
+    "id": "363.6",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F, IFRS 9.5.5.12",
+    "question": "Does the entity disclose how it determined, under IFRS 9.5.5.12, that credit risk on a modified financial asset improved enough to revert the loss allowance from lifetime to 12-month expected credit losses?"
+  },
+  {
+    "id": "363.7",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35F, IFRS 9.5.5.3",
+    "question": "Does the entity disclose how it monitors whether the loss allowance on those modified assets is subsequently remeasured back to lifetime expected credit losses?"
+  },
+  {
+    "id": "364.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35G, IFRS 9.5.5",
+    "question": "Does the entity disclose the basis of inputs, assumptions and estimation techniques used to measure 12-month and lifetime expected credit losses and to determine significant increases in credit risk and credit-impaired status?"
+  },
+  {
+    "id": "364.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35G",
+    "question": "Does the entity disclose how forward-looking information, including macroeconomic data, has been incorporated into the determination of expected credit losses?"
+  },
+  {
+    "id": "364.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35G",
+    "question": "Does the entity disclose any changes in estimation techniques or significant assumptions made during the reporting period and the reasons for those changes?"
+  },
+  {
+    "id": "365.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "By class of financial instrument, does the entity provide a reconciliation of the loss allowance for assets measured at 12-month expected credit losses from opening to closing balance?"
+  },
+  {
+    "id": "365.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "By class of financial instrument, does the entity reconcile the loss allowance for assets measured at lifetime expected credit losses (other than purchased or originated credit-impaired) where credit risk increased significantly but are not credit-impaired?"
+  },
+  {
+    "id": "365.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "By class of financial instrument, does the entity reconcile the loss allowance for assets measured at lifetime expected credit losses that are credit-impaired at the reporting date?"
+  },
+  {
+    "id": "365.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "By class of financial instrument, does the entity reconcile the loss allowance for trade receivables, contract assets or lease receivables measured under IFRS 9.5.5.15?"
+  },
+  {
+    "id": "365.5",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "By class of financial instrument, does the entity reconcile the loss allowance for purchased or originated credit-impaired financial assets?"
+  },
+  {
+    "id": "365.6",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35H",
+    "question": "In addition to the reconciliation, does the entity disclose the total amount of undiscounted expected credit losses at initial recognition on financial assets initially recognised during the period?"
+  },
+  {
+    "id": "366",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8E",
+    "question": "For loan commitments and financial guarantee contracts (for which the loss allowance is recognised as a provision), does the entity disclose changes in the loss allowance for those commitments and guarantees separately from changes for financial assets?"
+  },
+  {
+    "id": "368.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35J",
+    "question": "For financial assets modified while the loss allowance was measured at lifetime expected credit losses, does the entity disclose the amortised cost before modification and the net modification gain or loss recognised?"
+  },
+  {
+    "id": "368.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.35J",
+    "question": "Does the entity disclose the gross carrying amount, at period end, of financial assets modified since initial recognition while measured at lifetime expected credit losses and for which the loss allowance reverted to 12-month expected credit losses during the period?"
+  },
+  {
+    "id": "369.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8F",
+    "question": "By class of financial instrument, does the entity disclose the amount that best represents its maximum exposure to credit risk at the end of the period without taking account of collateral or other credit enhancements?"
+  },
+  {
+    "id": "369.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8G",
+    "question": "By class of financial instrument, does the entity disclose quantitative information about collateral held as security and other credit enhancements for financial assets that are credit-impaired at the reporting date?"
+  },
+  {
+    "id": "371.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8H",
+    "question": "By credit-risk rating grade, does the entity disclose the gross carrying amount of financial assets and the exposure to credit risk on loan commitments and financial guarantee contracts for assets with 12-month expected credit losses?"
+  },
+  {
+    "id": "371.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8H",
+    "question": "By credit-risk rating grade, does the entity disclose the same information for financial instruments measured at lifetime expected credit losses that have increased significantly since initial recognition but are not credit-impaired?"
+  },
+  {
+    "id": "371.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8H",
+    "question": "By credit-risk rating grade, does the entity disclose the same information for financial assets that are credit-impaired at the reporting date?"
+  },
+  {
+    "id": "371.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8H",
+    "question": "By credit-risk rating grade, does the entity disclose the same information for trade receivables, contract assets or lease receivables measured under IFRS 9.5.5.15?"
+  },
+  {
+    "id": "371.5",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.B8H",
+    "question": "By credit-risk rating grade, does the entity disclose the same information for purchased or originated credit-impaired financial assets?"
+  },
+  {
+    "id": "372.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.36",
+    "question": "For financial instruments within the scope of IFRS 7 but not subject to IFRS 9 impairment, does the entity, by class, disclose the amount that best represents its maximum exposure to credit risk at period end without collateral or credit enhancements?"
+  },
+  {
+    "id": "372.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 7.36",
+    "question": "For those same instruments, does the entity disclose a description of collateral held and other credit enhancements and their financial effect in mitigating credit risk?"
+  },
+  {
+    "id": "509",
+    "section": "IFRS 15",
+    "reference": "IFRS 15.105",
+    "question": "Does the entity present any unconditional rights to consideration separately from contract assets as a receivable?"
+  },
+  {
+    "id": "510",
+    "section": "IFRS 15",
+    "reference": "IFRS 15.108",
+    "question": "Upon initial recognition of a receivable from a contract with a customer, does the entity present any difference between the IFRS 9 measurement of the receivable and the corresponding amount of revenue as an expense (for example, an impairment loss)?"
+  },
+  {
+    "id": "511",
+    "section": "IFRS 15",
+    "reference": "IFRS 15.107",
+    "question": "If the entity transfers goods or services to a customer before payment is due, does it present the contract as a contract asset, excluding any amounts presented as a receivable?"
+  },
+  {
+    "id": "560.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 9",
+    "question": "If an insurer first applies IFRS 9 in the current period, has it completed Questions 372–381 of the February 2019 Disclosure Checklist for IFRS 9 transition disclosures?"
+  },
+  {
+    "id": "560.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 9",
+    "question": "If an insurer applies IFRS 9 without restating comparatives for classification and measurement, has it completed Questions 287–339 of the February 2018 Disclosure Checklist for the comparative periods?"
+  },
+  {
+    "id": "560.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 9",
+    "question": "If an insurer applies the hedge accounting requirements of IFRS 9 retrospectively, has it completed Questions 142 and 322–343 of this checklist for comparative periods?"
+  },
+  {
+    "id": "563.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C28E",
+    "question": "If an entity applies IFRS 17 paragraphs C28B–C28D, does it disclose the extent to which the classification overlay has been applied?"
+  },
+  {
+    "id": "563.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C28E",
+    "question": "If an entity applies those paragraphs, does it disclose whether and to what extent the impairment requirements in IFRS 9 Section 5.5 have been applied?"
+  },
+  {
+    "id": "564.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C32",
+    "question": "When applying IFRS 17.C29, does the entity disclose its basis for determining which financial assets are eligible to be reclassified?"
+  },
+  {
+    "id": "564.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C32",
+    "question": "When applying IFRS 17.C29, does the entity disclose the measurement category and carrying amount of affected financial assets immediately before initial application of IFRS 17?"
+  },
+  {
+    "id": "564.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C32",
+    "question": "When applying IFRS 17.C29, does the entity disclose the new measurement category and carrying amount of those financial assets after applying paragraph C29?"
+  },
+  {
+    "id": "564.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C32",
+    "question": "If paragraph C29(b) applies, does the entity disclose the carrying amount of financial assets previously designated at fair value through profit or loss that are no longer so designated?"
+  },
+  {
+    "id": "565.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C33",
+    "question": "When applying IFRS 17.C29, does the entity disclose how it applied that paragraph to financial assets whose classification changed on initial application of IFRS 17?"
+  },
+  {
+    "id": "565.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C33",
+    "question": "When applying that paragraph, does the entity disclose the reasons for any designation or de-designation of financial assets at fair value through profit or loss under IFRS 9.4.1.5?"
+  },
+  {
+    "id": "565.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 17.C33",
+    "question": "When applying that paragraph, does the entity disclose why it reached different conclusions under IFRS 9.4.1.2(a) or 9.4.1.2A(a) compared to previous assessments?"
+  },
+  {
+    "id": "566.1",
+    "section": "IFRS 9",
+    "reference": "IFRS 9.7.2.42",
+    "question": "At the transition date to IFRS 17, does the entity disclose, by class of financial asset and liability affected, the measurement category and carrying amount immediately before applying IFRS 17?"
+  },
+  {
+    "id": "566.2",
+    "section": "IFRS 9",
+    "reference": "IFRS 9.7.2.42",
+    "question": "At that date, does the entity disclose the new measurement category and carrying amount after applying the IFRS 17 amendments?"
+  },
+  {
+    "id": "566.3",
+    "section": "IFRS 9",
+    "reference": "IFRS 9.7.2.42",
+    "question": "At that date, does the entity disclose the fair value of financial assets, if different from the carrying amount?"
+  },
+  {
+    "id": "566.4",
+    "section": "IFRS 9",
+    "reference": "IFRS 9.7.2.42",
+    "question": "At that date, does the entity disclose the reasons for any designation or de-designation of financial liabilities as measured at fair value through profit or loss?"
+  },
+  {
+    "id": "696.1",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.53",
+    "question": "If the entity has no specified main business activity, does it classify income and expenses from investments in associates, joint ventures and unconsolidated subsidiaries in the investing category?"
+  },
+  {
+    "id": "696.2",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.53",
+    "question": "Does it classify income and expenses from cash and cash equivalents in the investing category?"
+  },
+  {
+    "id": "696.3",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.53",
+    "question": "Does it classify income and expenses from other assets that generate a return individually and largely independently of the entity’s other resources in the investing category?"
+  },
+  {
+    "id": "697.1",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.55",
+    "question": "If the entity as a main business activity invests in associates, joint ventures and unconsolidated subsidiaries, does it classify related income and expenses in the investing category when those assets are equity-accounted?"
+  },
+  {
+    "id": "697.2",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.55",
+    "question": "Does it classify related income and expenses in the operating category when those assets are not equity-accounted?"
+  },
+  {
+    "id": "698",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.56(a)",
+    "question": "If the entity as a main business activity invests in standalone financial assets, does it classify related income and expenses from cash and cash equivalents in the operating category?"
+  },
+  {
+    "id": "699.1",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.56(b)",
+    "question": "If the entity as a main business activity provides financing to customers and does not meet the criteria in IFRS 18.56(a), does it classify in the operating category income and expenses from cash and cash equivalents related to providing financing?"
+  },
+  {
+    "id": "699.2",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.56(b)",
+    "question": "Does it classify income and expenses from cash and cash equivalents not related to providing financing by policy choice in either the operating or investing category?"
+  },
+  {
+    "id": "699.3",
+    "section": "IFRS 18",
+    "reference": "IFRS 18.56(b)",
+    "question": "If the entity cannot distinguish between financing-related and non-financing-related cash and cash equivalents, does it classify all related income and expenses in the operating category?"
+  },
+                {
+                    "id": "717",
+                    "section": "IFRS 9",
+                    "reference": "IFRS 18.75, IFRS 9.5.5",
+                    "question": "Does the entity present in the statement of profit or loss line items for: a. Amounts required by IFRS 18, namely (i) Revenue, presenting separately the line items described in (b)(i) and (c)(i) (ii) Operating expenses, presenting separately line items as required by IFRS 18.78 and 82(a) (iii) Share of the profit or loss of associates and joint ventures accounted for using the equity method (iv) Income tax expense or income; and (v) A single amount for the total of discontinued operations (see IFRS 5); b. Amounts required by IFRS 9, namely: (i) Interest revenue calculated using the effective interest method (ii) Impairment losses (including reversals of impairment losses or impairment gains) determined in accordance with Section 5.5 of IFRS 9 (iii) Gains and losses arising from the derecognition of financial assets measured at amortised cost (iv) Any gain or loss arising from the difference between the fair value of a financial asset and its previous amortised cost at the date of reclassification from amortised cost measurement to measurement at fair value through profit or loss; and (v) Any cumulative gain or loss previously recognised in other comprehensive income that is reclassified to profit or loss at the date of reclassification of a financial asset from measurement at fair value through other comprehensive income to measurement at fair value through profit or loss; and c. Amounts required by IFRS 17, namely: (i) Insurance revenue (ii) Insurance service expenses from contracts issued within the scope of IFRS 17 (iii) Income or expenses from reinsurance contracts held (iv) Insurance finance income or expenses from contracts issued within the scope of IFRS 17 (v) Finance income or expenses from reinsurance contracts held"
+                }
+            ]
+        }
+    ]
+}

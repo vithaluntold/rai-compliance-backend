@@ -1,0 +1,163 @@
+﻿{
+    "title": "The Effects of Changes in Foreign Exchange Rates (IAS 21) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 21",
+            "title": "The Effects of Changes in Foreign Exchange Rates",
+            "description": "Checklist for presentation and disclosure requirements under IAS 21.",
+            "items": [
+                {
+                    "id": "384.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.52(a)",
+                    "question": "Does the entity disclose the amount of exchange differences recognised in profit or loss except for those arising on financial instruments measured at fair value through profit or loss?"
+                },
+                {
+                    "id": "384.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.52(b)",
+                    "question": "Does the entity disclose net exchange differences recognised in other comprehensive income, accumulated in a separate component of equity, and a reconciliation of the amount of such exchange differences at the beginning and end of the period?"
+                },
+                {
+                    "id": "385.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.53(a)",
+                    "question": "If the presentation currency is different from the functional currency, does the entity disclose that fact?"
+                },
+                {
+                    "id": "385.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.53(b)",
+                    "question": "Does the entity disclose the functional currency?"
+                },
+                {
+                    "id": "385.3",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.53(c)",
+                    "question": "Does the entity disclose the reason for using a different presentation currency?"
+                },
+                {
+                    "id": "386.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.54(a)",
+                    "question": "If there is a change in the functional currency of the reporting entity or a significant foreign operation, does the entity disclose that fact?"
+                },
+                {
+                    "id": "386.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.54(b)",
+                    "question": "Does the entity disclose the reason for the change in functional currency?"
+                },
+                {
+                    "id": "387",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.55, IAS 21.39, IAS 21.42",
+                    "question": "If the entity presents its financial statements in a currency different from its functional currency, does it describe them as complying with IFRS only if they comply with all applicable requirements, including the translation method in IAS 21.39 and IAS 21.42?"
+                },
+                {
+                    "id": "388.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.55(a)",
+                    "question": "When presenting supplementary information in a currency different from functional or presentation currency, does the entity disclose that the information is supplementary?"
+                },
+                {
+                    "id": "388.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.55(b)",
+                    "question": "Does the entity disclose the currency in which the supplementary information is displayed?"
+                },
+                {
+                    "id": "388.3",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.57(c)",
+                    "question": "Does the entity disclose the functional currency and the method of translation used for the supplementary information?"
+                },
+                {
+                    "id": "389.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.57A(a)",
+                    "question": "When estimating a spot exchange rate because a currency is not exchangeable, does the entity disclose the nature and financial effects of the currency not being exchangeable?"
+                },
+                {
+                    "id": "389.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.57A(b)",
+                    "question": "Does the entity disclose the spot exchange rate(s) used?"
+                },
+                {
+                    "id": "389.3",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.57A(c)",
+                    "question": "Does the entity disclose the estimation process?"
+                },
+                {
+                    "id": "389.4",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.57A(d)",
+                    "question": "Does the entity disclose the risks to which it is exposed because of the currency not being exchangeable into the other currency?"
+                },
+                {
+                    "id": "390.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(a)",
+                    "question": "When applying IAS 21.57A, does the entity disclose the currency and describe the restrictions that make it not exchangeable?"
+                },
+                {
+                    "id": "390.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(b)",
+                    "question": "Does the entity disclose a description of affected transactions?"
+                },
+                {
+                    "id": "390.3",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(c)",
+                    "question": "Does the entity disclose the carrying amount of affected assets and liabilities?"
+                },
+                {
+                    "id": "390.4",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(d)",
+                    "question": "Does the entity disclose the spot exchange rates used and whether they are observable without adjustment or estimated using another technique?"
+                },
+                {
+                    "id": "390.5",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(e)",
+                    "question": "Does the entity describe any estimation technique used, and provide qualitative and quantitative information about inputs and assumptions?"
+                },
+                {
+                    "id": "390.6",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A19(f)",
+                    "question": "Does the entity disclose qualitative information about each type of risk and the nature and carrying amount of assets and liabilities exposed?"
+                },
+                {
+                    "id": "391.1",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A20(a)",
+                    "question": "When a foreign operation’s functional currency is not exchangeable, does the entity disclose the name of the foreign operation, its form (subsidiary, joint venture, etc.) and its principal place of business?"
+                },
+                {
+                    "id": "391.2",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A20(b)",
+                    "question": "Does the entity disclose summarised financial information about that foreign operation?"
+                },
+                {
+                    "id": "391.3",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.A20(c)",
+                    "question": "Does the entity disclose the nature and terms of any contractual arrangements that could require financial support to that foreign operation, including events or circumstances that could expose the entity to a loss?"
+                },
+                {
+                    "id": "392",
+                    "section": "IAS 21",
+                    "reference": "IAS 21.60L",
+                    "question": "If the entity applies Amendments to IAS 21 – Lack of Exchangeability, issued August 2023, in financial statements for a period beginning before 1 January 2025, does it disclose that fact?"
+                }
+            ]
+        }
+    ]
+}

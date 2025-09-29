@@ -1,0 +1,31 @@
+﻿{
+    "title": "Earnings per Share (Ind AS 33) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 33",
+            "title": "Earnings per Share",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 33.",
+            "items": [
+                {
+                    "id": "331",
+                    "section": "Ind AS 33",
+                    "reference": "Ind AS 33.64",
+                    "question": "Does the entity disclose the fact that per share calculations reflect changes in the number of ordinary or potential ordinary shares outstanding due to capitalisation, bonus issue, share split, or reverse share split, and are basic and diluted EPS adjusted retrospectively for errors and accounting policy changes?"
+                },
+                {
+                    "id": "332",
+                    "section": "Ind AS 33",
+                    "reference": "Ind AS 33.66",
+                    "question": "Does the entity present basic and diluted earnings per share in the statement of profit and loss for profit or loss from continuing operations attributable to the ordinary equity holders of the parent entity, and for profit or loss attributable to ordinary equity holders for each class of ordinary shares with different rights?"
+                },
+                {
+                    "id": "333",
+                    "section": "Ind AS 33",
+                    "reference": "Ind AS 33.70",
+                    "question": "Does the entity disclose the amounts used as the numerators and the weighted average number of ordinary shares used as the denominators in calculating basic and diluted earnings per share, including reconciliations of these amounts?"
+                }
+            ]
+        }
+    ]
+}

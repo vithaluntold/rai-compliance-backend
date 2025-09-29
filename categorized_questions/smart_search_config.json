@@ -1,0 +1,61 @@
+{
+  "category_weights": {
+    "DISCLOSURE": 0.4,
+    "PRESENTATION": 0.25,
+    "MEASUREMENT": 0.25,
+    "RECOGNITION": 0.1
+  },
+  "topic_priorities": {
+    "FINANCIAL_INSTRUMENTS": 1.0,
+    "PROPERTY_ASSETS": 0.9,
+    "REVENUE_PERFORMANCE": 0.8,
+    "IMPAIRMENT": 0.7,
+    "TAX": 0.6,
+    "LEASES": 0.6,
+    "GENERAL": 0.3
+  },
+  "search_strategies": {
+    "DISCLOSURE": {
+      "chunk_size": 800,
+      "overlap": 100,
+      "focus_sections": [
+        "notes",
+        "disclosures",
+        "additional information"
+      ],
+      "keywords_weight": 0.7,
+      "semantic_weight": 0.3
+    },
+    "MEASUREMENT": {
+      "chunk_size": 600,
+      "overlap": 80,
+      "focus_sections": [
+        "accounting policies",
+        "fair value",
+        "measurement"
+      ],
+      "keywords_weight": 0.6,
+      "semantic_weight": 0.4
+    },
+    "PRESENTATION": {
+      "chunk_size": 400,
+      "overlap": 60,
+      "focus_sections": [
+        "financial statements",
+        "classification"
+      ],
+      "keywords_weight": 0.8,
+      "semantic_weight": 0.2
+    },
+    "RECOGNITION": {
+      "chunk_size": 500,
+      "overlap": 70,
+      "focus_sections": [
+        "accounting policies",
+        "recognition criteria"
+      ],
+      "keywords_weight": 0.7,
+      "semantic_weight": 0.3
+    }
+  }
+}

@@ -1,0 +1,248 @@
+﻿
+{
+    "title": "Indian Accounting Standard (Ind AS) 108: Operating Segments Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 108",
+            "title": "Operating Segments",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 108.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 108",
+                    "reference": "108.20",
+                    "question": "Has the entity disclosed information that enables users of financial statements to evaluate the nature and financial effects of the business activities in which the entity engages and the economic environments in which it operates?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 108",
+                    "reference": "108.21",
+                    "question": "For each period for which a statement of profit and loss is presented, has the entity disclosed general information as described in paragraph 108.22; information about reported segment profit or loss, including specified revenues and expenses, segment assets, segment liabilities and the basis of measurement, as described in paragraphs 108.23–108.27; and reconciliations of the totals of segment revenues, reported segment profit or loss, segment assets, segment liabilities and other material segment items to corresponding entity amounts as described in paragraph 108.28?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 108",
+                    "reference": "108.22",
+                    "question": "Has the entity disclosed general information about factors used to identify the entity’s reportable segments, including the basis of organisation (e.g., product, service, geographical area, regulatory environment, or a combination) and whether operating segments have been aggregated?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 108",
+                    "reference": "108.22",
+                    "question": "Has the entity disclosed general information about the judgment made by management in applying the aggregation criteria in paragraph 108.12, including a brief description of the aggregated operating segments and the economic indicators assessed?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 108",
+                    "reference": "108.22",
+                    "question": "Has the entity disclosed general information about the types of products and services from which each reportable segment derives its revenues?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed the measure of profit or loss for each reportable segment?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed the measure of total assets and liabilities for each reportable segment if such amounts are regularly provided to the chief operating decision maker?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, revenues from external customers if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, revenues from transactions with other operating segments of the same entity if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, interest revenue if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, interest expense if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, depreciation and amortisation if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, material items of income and expense as per paragraph 1.97 of Ind AS 1 if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, its interest in the profit or loss of associates and joint ventures accounted for by the equity method if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, income tax expense or income if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 108",
+                    "reference": "108.23",
+                    "question": "Has the entity disclosed, for each reportable segment, material non-cash items other than depreciation and amortisation if included in the measure of segment profit or loss reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 108",
+                    "reference": "108.24",
+                    "question": "Has the entity disclosed, for each reportable segment, the amount of investment in associates and joint ventures accounted for by the equity method if included in the measure of segment assets reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 108",
+                    "reference": "108.24",
+                    "question": "Has the entity disclosed, for each reportable segment, the amounts of additions to non-current assets (excluding financial instruments, deferred tax assets, post-employment benefit assets and rights under insurance contracts) if included in the measure of segment assets reviewed by the chief operating decision maker, or otherwise regularly provided to them?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of the measurements of segment profit or loss, segment assets, and segment liabilities for each reportable segment, including the basis of accounting for intersegment transactions?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of any differences between the measurements of the reportable segments’ profits or losses and the entity’s profit or loss before income tax expense or income and discontinued operations?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of any differences between the measurements of the reportable segments’ assets and the entity’s assets?"
+                },
+                {
+                    "id": "22",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of any differences between the measurements of the reportable segments’ liabilities and the entity’s liabilities?"
+                },
+                {
+                    "id": "23",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of the nature of any changes from prior periods in the measurement methods used to determine reported segment profit or loss and the effect, if any, of those changes?"
+                },
+                {
+                    "id": "24",
+                    "section": "Ind AS 108",
+                    "reference": "108.27",
+                    "question": "Has the entity provided an explanation of the nature and effect of any asymmetrical allocations to reportable segments?"
+                },
+                {
+                    "id": "25",
+                    "section": "Ind AS 108",
+                    "reference": "108.28",
+                    "question": "Has the entity provided reconciliations of the total of the reportable segments’ revenues to the entity’s revenue, with material reconciling items separately identified and described?"
+                },
+                {
+                    "id": "26",
+                    "section": "Ind AS 108",
+                    "reference": "108.28",
+                    "question": "Has the entity provided reconciliations of the total of the reportable segments’ measures of profit or loss to the entity’s profit or loss before tax expense (tax income) and discontinued operations, with material reconciling items separately identified and described?"
+                },
+                {
+                    "id": "27",
+                    "section": "Ind AS 108",
+                    "reference": "108.28",
+                    "question": "Has the entity provided reconciliations of the total of the reportable segments’ assets to the entity’s assets if segment assets are reported in accordance with paragraph 108.23, with material reconciling items separately identified and described?"
+                },
+                {
+                    "id": "28",
+                    "section": "Ind AS 108",
+                    "reference": "108.28",
+                    "question": "Has the entity provided reconciliations of the total of the reportable segments’ liabilities to the entity’s liabilities if segment liabilities are reported in accordance with paragraph 108.23, with material reconciling items separately identified and described?"
+                },
+                {
+                    "id": "29",
+                    "section": "Ind AS 108",
+                    "reference": "108.28",
+                    "question": "Has the entity provided reconciliations of the total of the reportable segments’ amounts for every other material item of information disclosed to the corresponding amount for the entity, with material reconciling items separately identified and described?"
+                },
+                {
+                    "id": "30",
+                    "section": "Ind AS 108",
+                    "reference": "108.29",
+                    "question": "If the entity changed the structure of its internal organisation, causing a change in reportable segment composition, has the corresponding information for earlier periods, including interim periods, been restated unless impracticable?"
+                },
+                {
+                    "id": "31",
+                    "section": "Ind AS 108",
+                    "reference": "108.29",
+                    "question": "Following a change in the composition of its reportable segments, has the entity disclosed if it has restated the corresponding items of segment information for earlier periods?"
+                },
+                {
+                    "id": "32",
+                    "section": "Ind AS 108",
+                    "reference": "108.30",
+                    "question": "If the entity changed the structure of its internal organisation and segment information for earlier periods is not restated, has the entity disclosed this fact?"
+                },
+                {
+                    "id": "33",
+                    "section": "Ind AS 108",
+                    "reference": "108.30",
+                    "question": "In the year of a change in reportable segment composition, has the entity disclosed segment information for the current period on both the old basis and the new basis of segmentation, unless impracticable?"
+                },
+                {
+                    "id": "34",
+                    "section": "Ind AS 108",
+                    "reference": "108.31",
+                    "question": "Has the entity made the required disclosures even if it has only one reportable segment?"
+                },
+                {
+                    "id": "35",
+                    "section": "Ind AS 108",
+                    "reference": "108.32",
+                    "question": "Has the entity disclosed the revenues from external customers for each product and service, or each group of similar products and services, unless impracticable?"
+                },
+                {
+                    "id": "36",
+                    "section": "Ind AS 108",
+                    "reference": "108.33",
+                    "question": "Has the entity provided geographical information, including revenues from external customers attributed to the entity’s country of domicile and to all foreign countries in total (separately if material for individual countries), unless impracticable?"
+                },
+                {
+                    "id": "37",
+                    "section": "Ind AS 108",
+                    "reference": "108.33",
+                    "question": "Has the entity provided geographical information, including non-current assets (excluding financial instruments, deferred tax assets, post-employment benefit assets and rights under insurance contracts) located in the entity’s country of domicile and in all foreign countries in total (separately if material for individual countries), unless impracticable?"
+                },
+                {
+                    "id": "38",
+                    "section": "Ind AS 108",
+                    "reference": "108.33",
+                    "question": "If the necessary geographical information is not available and the cost to develop it would be excessive, has the entity disclosed this fact?"
+                },
+                {
+                    "id": "39",
+                    "section": "Ind AS 108",
+                    "reference": "108.34",
+                    "question": "If the entity’s revenues from transactions with a single external customer amount to 10 percent or more of its revenues, has the entity disclosed this fact, the total amount of revenues from each such customer, and the identity of the segment(s) reporting the revenues?"
+                }
+            ]
+        }
+    ]
+}

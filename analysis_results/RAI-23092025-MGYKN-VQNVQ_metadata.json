@@ -1,0 +1,34 @@
+{
+  "company_name": {
+    "value": "Phoenix Group",
+    "confidence": 0.8,
+    "extraction_method": "pattern",
+    "context": "Phoenix Group PLC\nDIRECTORS' AND AUDITOR'S REPORTS\nAND CONSOLIDATED FINANCIAL STATEMENTS\nFOR THE YEAR ENDED 31 DECEMBER 2024\nContents Pages\nDirectors' report 1 - 2\nIndependent auditor's report 3 - 8\nConsolidated statement of financial position 9 - 10\nConsolidated statement of profit or loss 11\nConsolidated statement of comprehensive income 12\nConsolidated statement of changes in equity 13\nConsolidated statement of cash flows 14 - 15\nNotes to the consolidated financial statements 16 - 69\n\n--- PAGE BREAK ---\n\nThe Directors have the pleasure in submitting this report, together with the audited consolidated\nfinancial statements of the Phoenix Group PLC (the \"Company\") and its subsidiaries (collectively\nreferred to as the \"Group\") for the year ended 31 December 2024"
+  },
+  "nature_of_business": {
+    "value": "",
+    "confidence": 0.0,
+    "extraction_method": "ai",
+    "context": ""
+  },
+  "operational_demographics": {
+    "value": "",
+    "confidence": 0.0,
+    "extraction_method": "ai",
+    "context": ""
+  },
+  "financial_statements_type": {
+    "value": "Consolidated",
+    "confidence": 0.9,
+    "extraction_method": "ai",
+    "context": "Pattern matched from document content"
+  },
+  "optimization_metrics": {
+    "tokens_used": 0,
+    "extraction_methods_used": [
+      "pattern",
+      "ai"
+    ],
+    "version": "4bb9380_fix_deployed"
+  }
+}

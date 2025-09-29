@@ -1,0 +1,21 @@
+﻿  
+{
+    "title": "International GAAP® Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRIC 19",
+            "title": "Extinguishing financial liabilities with equity instruments",
+            "description": "Checklist for presentation and disclosure requirements under IFRIC 19.",
+            "items": [
+                {
+                    "id": "383",
+                    "section": "IFRIC 19",
+                    "reference": "IFRIC 19.11",
+                    "question": "If the entity settles a dividend payable by distributing non-cash assets, does the entity present any difference between the carrying amount of the assets distributed and the carrying amount of the dividend payable as a separate line item in profit or loss"
+                }
+            ]
+        }
+    ]
+}
+    

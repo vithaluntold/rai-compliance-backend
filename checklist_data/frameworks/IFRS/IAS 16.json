@@ -1,0 +1,133 @@
+﻿{
+    "title": "Property, Plant and Equipment (IAS 16) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 16",
+            "title": "Property, Plant and Equipment",
+            "description": "Checklist for presentation and disclosure requirements under IAS 16.",
+            "items": [
+                {
+                    "id": "484",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.42, IAS 12.65",
+                    "question": "Does the entity disclose the effects of taxes on income, if any, resulting from the revaluation of property, plant and equipment in accordance with IAS 12?"
+                },
+                {
+                    "id": "485.1",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.73, IAS 16.75, IAS 16.31, IAS 16.39, IAS 36.126",
+                    "question": "For each class of property, plant and equipment, does the entity disclose the measurement bases used for determining the gross carrying amount?"
+                },
+                {
+                    "id": "485.2",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.73, IAS 16.75, IAS 16.31, IAS 16.39, IAS 36.126",
+                    "question": "For each class of property, plant and equipment, does the entity disclose the depreciation methods used?"
+                },
+                {
+                    "id": "485.3",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.73, IAS 16.75, IAS 16.31, IAS 16.39, IAS 36.126",
+                    "question": "For each class of property, plant and equipment, does the entity disclose the useful lives or the depreciation rates used?"
+                },
+                {
+                    "id": "485.4",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.73, IAS 16.75, IAS 16.31, IAS 16.39, IAS 36.126",
+                    "question": "For each class of property, plant and equipment, does the entity disclose the gross carrying amount and the accumulated depreciation (aggregated with accumulated impairment losses) at the beginning and end of the period?"
+                },
+                {
+                    "id": "485.5",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.73, IAS 16.75, IAS 16.31, IAS 16.39, IAS 36.126",
+                    "question": "For each class of property, plant and equipment, does the entity provide a reconciliation of the carrying amount at the beginning and end of the period showing additions; assets classified as held for sale or included in a disposal group classified as ‘held for sale’ in accordance with IFRS 5 and other disposals; acquisitions through business combinations; increases or decreases resulting from revaluations and impairment losses recognised or reversed in other comprehensive income under IAS 36 during the reporting period; impairment losses recognised in profit or loss during the period under IAS 36; impairment losses reversed in profit or loss during the period under IAS 36; depreciation (whether recognised in profit or loss or as part of the cost of other assets); the net exchange differences arising on translation of the financial statements from the functional currency into a different presentation currency, including the translation of a foreign operation; and other changes?"
+                },
+                {
+                    "id": "486.1",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.74, IAS 16.74A",
+                    "question": "Does the entity disclose the existence and amounts of restrictions on title, and property, plant and equipment pledged as security for liabilities?"
+                },
+                {
+                    "id": "486.2",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.74, IAS 16.74A",
+                    "question": "Does the entity disclose the amount of expenditures recognised in the carrying amount of an item of property, plant and equipment during its construction?"
+                },
+                {
+                    "id": "486.3",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.74, IAS 16.74A",
+                    "question": "Does the entity disclose the amount of contractual commitments for the acquisition of property, plant and equipment?"
+                },
+                {
+                    "id": "487.1",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.74A",
+                    "question": "If not presented separately in the statement of comprehensive income, does the entity disclose the amount of compensation from third parties for items of property, plant and equipment that were impaired, lost or given up, included in profit or loss?"
+                },
+                {
+                    "id": "487.2",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.74A",
+                    "question": "If not presented separately in the statement of comprehensive income, does the entity disclose the amounts of proceeds and costs included in profit or loss in accordance with paragraph 20A that relate to items produced that are not an output of the entity’s ordinary activities, and which line item(s) include such proceeds and costs?"
+                },
+                {
+                    "id": "488.1",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.77, IFRS 13.5-7",
+                    "question": "If items of property, plant and equipment are stated at revalued amounts under the revaluation model, does the entity disclose the effective date of the revaluation?"
+                },
+                {
+                    "id": "488.2",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.77, IFRS 13.5-7",
+                    "question": "If items of property, plant and equipment are stated at revalued amounts under the revaluation model, does the entity disclose whether an independent valuer was involved?"
+                },
+                {
+                    "id": "488.3",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.77, IFRS 13.5-7",
+                    "question": "If items of property, plant and equipment are stated at revalued amounts under the revaluation model, does the entity disclose the fair value measurement disclosures required by IFRS 13?"
+                },
+                {
+                    "id": "488.4",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.77, IFRS 13.5-7",
+                    "question": "If items of property, plant and equipment are stated at revalued amounts under the revaluation model, does the entity disclose, for each revalued class of assets, the carrying amount that would have been recognised had the assets been carried under the cost model?"
+                },
+                {
+                    "id": "488.5",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.77, IFRS 13.5-7",
+                    "question": "If items of property, plant and equipment are stated at revalued amounts under the revaluation model, does the entity disclose the revaluation surplus, indicating the change for the period and any restrictions on its distribution to shareholders?"
+                },
+                {
+                    "id": "489.1",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.79",
+                    "question": "Does the entity disclose the carrying amount of temporarily idle property, plant and equipment?"
+                },
+                {
+                    "id": "489.2",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.79",
+                    "question": "Does the entity disclose the gross carrying amount of any fully depreciated property, plant and equipment that is still in use?"
+                },
+                {
+                    "id": "489.3",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.79",
+                    "question": "Does the entity disclose the carrying amount of property, plant and equipment retired from active use and not classified as held for sale?"
+                },
+                {
+                    "id": "489.4",
+                    "section": "IAS 16",
+                    "reference": "IAS 16.79",
+                    "question": "If the cost model is used, does the entity disclose the fair value of property, plant and equipment if this is materially different from the carrying amount?"
+                }
+            ]
+        }
+    ]
+}

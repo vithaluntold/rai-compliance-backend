@@ -1,0 +1,140 @@
+﻿
+{
+    "title": "Statement of Cash Flows (Ind AS 7) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 7",
+            "title": "Statement of Cash Flows",
+            "description": "Checklist for presentation and disclosure requirements related to cash flow statements under Ind AS 7. This standard outlines specific requirements for classifying and reporting cash flows to enable users of financial statements to understand an entity's financial position and performance.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 7",
+                    "reference": "7.10",
+                    "question": "Whether the statement of cash flows has reported cash flows during the period classified by operating, investing, and financing activities?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 7",
+                    "reference": "7.18",
+                    "question": "Whether the entity has reported cash flows from operating activities using either: a) the direct method, whereby major classes of gross cash receipts and gross cash payments are disclosed; or b) the indirect method, whereby profit or loss is adjusted for the effects of transactions of a non-cash nature, any deferrals or accruals of past or future operating cash receipts or payments, and items of income or expense associated with investing or financing cash flows?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 7",
+                    "reference": "7.21",
+                    "question": "Whether the entity has reported separately major classes of gross cash receipts and gross cash payments arising from investing and financing activities, except to the extent that cash flows described in paragraphs 7.22 and 7.24 are reported on a net basis?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 7",
+                    "reference": "7.22",
+                    "question": "Whether cash flows arising from the following operating, investing or financing activities are reported on a net basis: a) cash receipts and payments on behalf of customers when the cash flows reflect the activities of the customer rather than those of the entity; and b) cash receipts and payments for items in which the turnover is quick, the amounts are large, and the maturities are short?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 7",
+                    "reference": "7.31",
+                    "question": "Whether cash flows from interest and dividends received and paid have each been disclosed separately, and whether they have been classified appropriately (e.g., as operating for financial institutions, financing for interest paid, and investing for interest and dividends received by other entities, and financing for dividends paid)?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 7",
+                    "reference": "7.35",
+                    "question": "Whether the entity has disclosed the cash flows arising from taxes on income separately and classified as cash flows from operating activities unless they can be specifically identified with financing and investing activities?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 7",
+                    "reference": "7.36",
+                    "question": "If tax cash flow is identified with an individual transaction classified as investing or financing activities, whether it is classified appropriately, and if tax cash flows are allocated over more than one activity, whether the total amount of taxes paid is disclosed?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 7",
+                    "reference": "7.39 and 7.40",
+                    "question": "Whether an entity has made disclosure, in aggregate, in respect of both obtaining and losing control of subsidiaries or other businesses during the period, each of the following: a) the total consideration paid or received; b) the portion of the consideration consisting of cash and cash equivalents; c) the amount of cash and cash equivalents in the subsidiaries or other businesses over which control is obtained or lost; and d) the amount of the assets and liabilities other than cash or cash equivalents in the subsidiaries or other businesses over which control is obtained or lost, summarised by each major category?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 7",
+                    "reference": "7.42A",
+                    "question": "Unless the subsidiary is held by an investment entity and is required to be measured at fair value through profit or loss, whether the cash flows arising from changes in ownership interests in a subsidiary that do not result in a loss of control have been classified as cash flows from financing activities?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 7",
+                    "reference": "7.42B",
+                    "question": "Unless the subsidiary is held by an investment entity and is required to be measured at fair value through profit or loss, whether the changes in ownership interests in a subsidiary that do not result in a loss of control, such as the subsequent purchase or sale by a parent of a subsidiary’s equity instruments, are accounted for as equity transactions?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 7",
+                    "reference": "7.43",
+                    "question": "Whether investing and financing transactions that do not require the use of cash or cash equivalents are excluded from a statement of cash flows, and whether such transactions have been disclosed elsewhere in the Financial Statements in a way that provides all the relevant information about these investing and financing activities?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 7",
+                    "reference": "7.44A",
+                    "question": "Whether the entity has given such disclosures that enable users of financial statements to evaluate changes in liabilities arising from financing activities, including both changes arising from cash flows and non-cash changes?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 7",
+                    "reference": "7.44B",
+                    "question": "To the extent necessary to satisfy the requirement in paragraph 7.44A, whether the entity has given disclosure of the following changes in liabilities arising from financing activities: a) changes from financing cash flows; b) changes arising from obtaining or losing control of subsidiaries or other businesses; c) the effect of changes in foreign exchange rates; d) changes in fair values; and e) other changes?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 7",
+                    "reference": "7.44C",
+                    "question": "Whether the disclosure requirement in paragraph 7.44A also applies to changes in financial assets if cash flows from those financial assets were, or future cash flows will be, included in cash flows from financing activities?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 7",
+                    "reference": "7.44D",
+                    "question": "Where an entity has disclosed a reconciliation between the opening and closing balances in the balance sheet for liabilities arising from financing activities, whether it has provided sufficient information to enable users of the financial statements to link items included in the reconciliation to the balance sheet and the statement of cash flows?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 7",
+                    "reference": "7.44E",
+                    "question": "If an entity provides the disclosure required by paragraph 7.44A in combination with disclosures of changes in other assets and liabilities, whether the entity has disclosed the changes in liabilities arising from financing activities separately from changes in those other assets and liabilities?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 7",
+                    "reference": "7.45",
+                    "question": "Whether the entity has disclosed the components of cash and cash equivalents?"
+                },
+                {
+                    "id": "18",
+                    "section": "Ind AS 7",
+                    "reference": "7.46",
+                    "question": "Whether the entity has disclosed the policy adopted to determine the composition of cash and cash equivalents in order to comply with Ind AS 1 Presentation of Financial Statements?"
+                },
+                {
+                    "id": "19",
+                    "section": "Ind AS 7",
+                    "reference": "7.48",
+                    "question": "Whether an entity has made disclosure, together with a commentary by management, of the amount of significant cash and cash equivalent balances held by the entity that are not available for use by the group?"
+                },
+                {
+                    "id": "20",
+                    "section": "Ind AS 7",
+                    "reference": "7.50",
+                    "question": "Whether optional disclosure of additional information (such as undrawn borrowing facilities, increases in operating capacity, or segmental cash flows) and a commentary by management has been provided to enhance user understanding of financial position and liquidity?"
+                },
+                {
+                    "id": "21",
+                    "section": "Ind AS 7",
+                    "reference": "7.52",
+                    "question": "Whether the entity has given disclosure of segmental cash flows to enable users to obtain a better understanding of the relationship between the cash flows of the business as a whole and those of its component parts and the availability and variability of segmental cash flows?"
+                }
+            ]
+        }
+    ]
+}

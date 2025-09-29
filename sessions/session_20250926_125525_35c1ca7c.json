@@ -1,0 +1,24 @@
+{
+  "session_id": "session_20250926_125525_35c1ca7c",
+  "title": "Simple Test Session",
+  "description": "Basic session test",
+  "created_at": "2025-09-26T12:55:25.594550",
+  "updated_at": "2025-09-26T12:55:25.594550",
+  "document_count": 0,
+  "last_document_id": null,
+  "status": "active",
+  "owner": "current_user",
+  "shared_with": [],
+  "chat_state": null,
+  "conversation_history": [],
+  "user_choices": [],
+  "ai_responses": [],
+  "uploaded_files": [],
+  "documents": [],
+  "analysis_context": {
+    "accounting_standard": null,
+    "custom_instructions": null,
+    "selected_frameworks": [],
+    "analysis_preferences": {}
+  }
+}

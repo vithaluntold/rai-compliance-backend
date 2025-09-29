@@ -1,0 +1,31 @@
+﻿{
+    "title": "Interim Financial Reporting (Ind AS 34) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 34",
+            "title": "Interim Financial Reporting",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 34.",
+            "items": [
+                {
+                    "id": "341",
+                    "section": "Ind AS 34",
+                    "reference": "Ind AS 34.8",
+                    "question": "Does the interim financial report include, at a minimum, a condensed Balance Sheet, a condensed statement of profit and loss, a condensed Statement of Changes in Equity, a condensed statement of cash flows, and selected explanatory notes?"
+                },
+                {
+                    "id": "342",
+                    "section": "Ind AS 34",
+                    "reference": "Ind AS 34.15",
+                    "question": "Does the entity provide an explanation of events and transactions that are significant to an understanding of the changes in financial position and performance of the entity since the end of the last annual reporting period, updating relevant information?"
+                },
+                {
+                    "id": "343",
+                    "section": "Ind AS 34",
+                    "reference": "Ind AS 34.16A(a)",
+                    "question": "Does the entity disclose whether the same accounting policies and methods of computation are followed in the interim financial statements as compared with the most recent annual financial statements, or, if changed, provide a description of the nature and effect of the change?"
+                }
+            ]
+        }
+    ]
+}

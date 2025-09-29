@@ -1,0 +1,116 @@
+﻿
+{
+    "title": "Income Taxes (Ind AS 12) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 12",
+            "title": "Income Taxes",
+            "description": "Checklist for presentation and disclosure requirements related to income taxes under Ind AS 12. This standard prescribes the accounting treatment for income taxes.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 12",
+                    "reference": "12.71",
+                    "question": "Whether the entity has offset the current tax assets and current tax liabilities only in case where the following conditions have met: (a) the entity has a legally enforceable right to set off the recognised amounts; and (b) the entity intends either to settle on a net basis, or to realise the asset and settle the liability simultaneously?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 12",
+                    "reference": "12.74",
+                    "question": "Whether the entity has offset deferred tax assets and deferred tax liabilities only in case where following conditions have met: (a) the entity has a legally enforceable right to set off current tax assets against current tax liabilities; and (b) the deferred tax assets and the deferred tax liabilities relate to income taxes levied by the same taxation authority on either: (i) the same taxable entity; or (ii) different taxable entities which intend either to settle current tax liabilities and assets on a net basis, or to realize the assets and settle the liabilities simultaneously, in each future period in which significant amounts of deferred tax liabilities or assets are expected to be settled or recovered?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 12",
+                    "reference": "12.78",
+                    "question": "Whether the exchange differences on deferred foreign tax liabilities or assets are recognized in the statement of profit and loss, are classified as deferred tax expense (income), if that presentation is considered to be the most useful to financial statement users?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 12",
+                    "reference": "12.79-12.80",
+                    "question": "Whether the disclosures of following major components of tax expense (income) have been made separately: (a) current tax expense (income); (b) any adjustments recognised in the period for current tax of prior periods; (c) the amount of deferred tax expense (income) relating to the origination and reversal of temporary differences; (d) the amount of deferred tax expense (income) relating to changes in tax rates or the imposition of new taxes; (e) the amount of the benefit arising from a previously unrecognised tax loss, tax credit or temporary difference of a prior period that is used to reduce current tax expense; (f) the amount of the benefit from a previously unrecognised tax loss, tax credit or temporary difference of a prior period that is used to reduce deferred tax expense; (g) deferred tax expense arising from the write-down, or reversal of a previous write-down, of a deferred tax asset in accordance with paragraph 56 of this Standard; and (h) the amount of tax expense (income) relating to those changes in accounting policies and errors that are included in profit or loss in accordance with Ind AS 8, Accounting Policies, Changes in Accounting Estimates and Errors, because they cannot be accounted for retrospectively?"
+                },
+                {
+                    "id": "5",
+                    "section": "Ind AS 12",
+                    "reference": "12.81",
+                    "question": "Whether the entity has made separate disclosure of the following: (a) the aggregate current and deferred tax relating to items that are charged or credited directly to equity (see paragraph 12.62A); (b) the amount of income tax relating to each component of other comprehensive income (paragraph 12.62 and Ind AS 1, Presentation of Financial Statements); (c) an explanation of the relationship between tax expense (income) and accounting profit in either or both of the following forms: (i) a numerical reconciliation between tax expense (income) and the product of accounting profit multiplied by the applicable tax rate(s), disclosing also the basis on which the applicable tax rate(s) is (are) computed; or (ii) a numerical reconciliation between the average effective tax rate and the applicable tax rate, disclosing also the basis on which the applicable tax rate is computed; (d) an explanation of changes in the applicable tax rate(s) compared to the previous accounting period; (e) the amount (and expiry date, if any) of deductible temporary differences, unused tax losses, and unused tax credits for which no deferred tax asset is recognised in the balance sheet; (f) the aggregate amount of temporary differences associated with investments in subsidiaries, branches and associates and interests in joint arrangements, for which deferred tax liabilities have not been recognised (see paragraph 12.39); (g) in respect of each type of temporary difference, and in respect of each type of unused tax losses and unused tax credits: (i) the amount of the deferred tax assets and liabilities recognised in the balance sheet for each period presented; (ii) the amount of the deferred tax income or expense recognised in profit or loss, if this is not apparent from the changes in the amounts recognised in the balance sheet; (h) in respect of discontinued operations, the tax expense relating to: (i) the gain or loss on discontinuance; and (ii) the profit or loss from the ordinary activities of the discontinued operation for the period, together with the corresponding amounts for each prior period presented; (i) the amount of income tax consequences of dividends to shareholders of the entity that were proposed or declared before the financial statements were approved for issue, but are not recognised as a liability in the financial statements; (j) if a business combination in which the entity is the acquirer causes a change in the amount recognised for its pre-acquisition deferred tax asset (paragraph 12.67), the amount of that change; and (k) if the deferred tax benefits acquired in a business combination are not recognised at the acquisition date but are recognised after the acquisition date (paragraph 12.68), a description of the event or change in circumstances that caused the deferred tax benefits to be recognised?"
+                },
+                {
+                    "id": "6",
+                    "section": "Ind AS 12",
+                    "reference": "12.82",
+                    "question": "Whether the entity has made disclosure of the amount of a deferred tax asset and the nature of the evidence supporting its recognition, when: (a) the utilisation of the deferred tax asset is dependent on future taxable profits in excess of the profits arising from the reversal of existing taxable temporary differences; and (b) the entity has suffered a loss in either the current or preceding period in the tax jurisdiction to which the deferred tax asset relates?"
+                },
+                {
+                    "id": "7",
+                    "section": "Ind AS 12",
+                    "reference": "12.82A",
+                    "question": "Whether the entity has given disclosure of the nature of the potential income tax consequences that would result from the payment of dividends to its shareholders, when income taxes are payable at a higher or lower rate or may be refundable/payable if part or all of the net profit or retained earnings is paid out as a dividend to shareholders (as per paragraph 12.52A)? In addition, whether the entity has provided disclosures of the amounts of the potential income tax consequences practicably determinable and whether there are any potential income tax consequences not practicably determinable?"
+                },
+                {
+                    "id": "8",
+                    "section": "Ind AS 12",
+                    "reference": "12.87C",
+                    "question": "Whether entity provided disclosures related to temporary differences associated with investments in subsidiaries, branches and associates or interests in joint arrangements?"
+                },
+                {
+                    "id": "9",
+                    "section": "Ind AS 12",
+                    "reference": "12.87",
+                    "question": "Whether the entity has disclosed the aggregate amount of the underlying temporary differences, if it is impracticable to compute the amount of unrecognised deferred tax liabilities arising from investments in subsidiaries, branches and associates and interests in joint arrangements (refer paragraph 12.39)? Further, whether the entity has disclosed the amounts of the unrecognised deferred tax liabilities, where practicable?"
+                },
+                {
+                    "id": "10",
+                    "section": "Ind AS 12",
+                    "reference": "12.87A",
+                    "question": "Whether the entity discloses the important features of the income tax systems and the factors that will affect the amount of the potential income tax consequences of dividends?"
+                },
+                {
+                    "id": "11",
+                    "section": "Ind AS 12",
+                    "reference": "12.87B",
+                    "question": "Whether the entity has disclosed that it is reasonably possible to determine some portions of the total amount of potential income tax consequences of dividends, even if the total amount is not practicable to compute? If applicable, whether the entity also disclosed that there are additional potential income tax consequences not practicably determinable? In the parent’s separate financial statements, if any, whether the entity has disclosed the potential income tax consequences relates to the parent’s retained earnings?"
+                },
+                {
+                    "id": "12",
+                    "section": "Ind AS 12",
+                    "reference": "12.88",
+                    "question": "Whether the entity has disclosed any tax-related contingent liabilities and contingent assets in accordance with Ind AS 37, Provisions, Contingent Liabilities and Contingent Assets? Where changes in tax rates or tax laws are enacted or announced after the reporting period, whether the entity has disclosed any significant effect of those changes on its current and deferred tax assets and liabilities (see Ind AS 10, Events after the Reporting Period)?"
+                },
+                {
+                    "id": "13",
+                    "section": "Ind AS 12",
+                    "reference": "12.98H",
+                    "question": "Whether the entity has disclosed that it applied the relief for initial application of Recognition of Deferred Tax Assets for Unrealised Losses (Amendments to Ind AS 12), where the change in the opening equity of the earliest comparative period may be recognised in opening retained earnings (or in another component of equity, as appropriate), without allocating the change between opening retained earnings and other components of equity?"
+                },
+                {
+                    "id": "14",
+                    "section": "Ind AS 12",
+                    "reference": "12.C.A 4",
+                    "question": "When there is uncertainty over income tax treatments and an entity has determined that the disclosure of the following information should be given then whether such information has been disclosed: (a) judgements made in determining taxable profit (tax loss), tax bases, unused tax losses, unused tax credits and tax rates applying paragraph 1.122; and (b) information about the assumptions and estimates made in determining taxable profit (tax loss), tax bases, unused tax losses, unused tax credits and tax rates applying paragraphs 1.125–1.129?"
+                },
+                {
+                    "id": "15",
+                    "section": "Ind AS 12",
+                    "reference": "12.C.A 5",
+                    "question": "If an entity concludes it is probable that a taxation authority will accept an uncertain tax treatment and the entity has determined to disclose the potential effect of the uncertainty as a tax-related contingency applying paragraph 12.88 then whether such disclosure has been provided?"
+                },
+                {
+                    "id": "16",
+                    "section": "Ind AS 12",
+                    "reference": "12.C13.A4",
+                    "question": "When there is uncertainty over income tax treatments, whether an entity has disclosed: (a) judgements made in determining taxable profit (tax loss), tax bases, unused tax losses, unused tax credits and tax rates applying paragraph 1.122, and (b) information about the assumptions and estimates made in determining taxable profit (tax loss), tax bases, unused tax losses, unused tax credits and tax rates applying paragraphs 1.125–1.129?"
+                },
+                {
+                    "id": "17",
+                    "section": "Ind AS 12",
+                    "reference": "12.C13.A5",
+                    "question": "If an entity concludes that it is probable that a taxation authority will accept an uncertain tax treatment, has the entity determined whether to disclose the potential effect of the uncertainty as a tax-related contingency applying paragraph 12.88 or not. If in case it has decided to disclose so, then check such disclosure?"
+                }
+            ]
+        }
+    ]
+}

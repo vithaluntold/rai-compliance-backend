@@ -1,0 +1,37 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 106: Exploration for and Evaluation of Mineral Resources Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 106",
+            "title": "Exploration for and Evaluation of Mineral Resources",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 106.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 106",
+                    "reference": "106.18",
+                    "question": "In case, on assessment, facts and circumstances suggest that the carrying amount of exploration and evaluation assets exceeds its recoverable amount, whether the entity has made disclosure of any resulting impairment loss in accordance with Ind AS 36, except as provided by paragraph 106.21?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 106",
+                    "reference": "106.23",
+                    "question": "Whether the entity has disclosed the information that identifies and explains the amounts recognised in its financial statements arising from the exploration for and evaluation of mineral resources?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 106",
+                    "reference": "106.24",
+                    "question": "To comply with paragraph 106.23, whether the entity has provided the disclosure of: (a) its accounting policies for exploration and evaluation expenditures including the recognition of exploration and evaluation assets; (b) the amounts of assets, liabilities, income and expense and operating and investing cash flows arising from the exploration for and evaluation of mineral resources?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 106",
+                    "reference": "106.25",
+                    "question": "Whether the entity has treated exploration and evaluation of assets as a separate class of assets and makes the disclosures required by either Ind AS 16 or Ind AS 38 consistent with how the assets are classified?"
+                }
+            ]
+        }
+    ]
+}

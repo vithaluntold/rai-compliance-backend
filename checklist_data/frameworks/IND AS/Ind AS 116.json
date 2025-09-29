@@ -1,0 +1,148 @@
+﻿{
+    "title": "Indian Accounting Standards (Ind AS) 116: Leases Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 116",
+            "title": "Leases",
+            "description": "Checklist for presentation and disclosure requirements under Ind AS 116.",
+            "items": [
+                {
+                    "id": "1",
+                    "reference": "Ind AS 116.47 & 116.48",
+                    "question": "Whether the lessee has either presented in the balance sheet or disclosed in the notes the following: (a) Right-of-use assets separately from other assets, and (b) lease liabilities separately from other liabilities [1, 2]."
+                },
+                {
+                    "id": "2",
+                    "reference": "Ind AS 116.52",
+                    "question": "Whether the lessee has disclosed information about its leases for which it is a lessee in a single note or separate section in its financial statements [2]."
+                },
+                {
+                    "id": "3",
+                    "reference": "Ind AS 116.53",
+                    "question": "Whether the disclosure of the following amounts for the reporting period has been given: (a) depreciation charge for right-of-use assets by class of underlying asset; (b) interest expense on lease liabilities; (c) the expense relating to short-term leases accounted for applying paragraph 116.6 (this expense need not include the expense relating to leases with a lease term of one month or less); (d) the expense relating to leases of low-value assets accounted for applying paragraph 116.6 (this expense shall not include the expense relating to short-term leases of low-value assets included in paragraph 116.53(c)); (e) the expense relating to variable lease payments not included in the measurement of lease liabilities; (f) income from subleasing right-of-use assets; (g) total cash outflow for leases; (h) additions to right-of-use assets; (i) gains or losses arising from sale and leaseback transactions; and (j) the carrying amount of right-of-use assets at the end of the reporting period by class of underlying asset [2, 3]."
+                },
+                {
+                    "id": "4",
+                    "reference": "Ind AS 116.54",
+                    "question": "Whether the disclosures specified in paragraph 116.53 have been provided in a tabular format, unless another format is more appropriate, and whether the amounts disclosed include costs that a lessee has included in the carrying amount of another asset during the reporting period [3]."
+                },
+                {
+                    "id": "5",
+                    "reference": "Ind AS 116.55",
+                    "question": "Whether the lessee has provided disclosure of the amount of lessees’ lease commitments for short-term leases accounted for applying paragraph 116.6 if the portfolio of short-term leases to which it is committed at the end of the reporting period is dissimilar to the portfolio of short-term leases to which the short-term lease expense disclosed applying paragraph 116.53(c) relates [3, 4]."
+                },
+                {
+                    "id": "6",
+                    "reference": "Ind AS 116.56",
+                    "question": "If right-of-use assets meet the definition of investment property, whether the lessee has applied the disclosure requirements in Ind AS 40 [4]."
+                },
+                {
+                    "id": "7",
+                    "reference": "Ind AS 116.57",
+                    "question": "If a lessee measures right-of-use assets at revalued amounts applying Ind AS 16, then whether the lessee has disclosed the information required by paragraph 16.77 for those right-of-use assets [4]."
+                },
+                {
+                    "id": "8",
+                    "reference": "Ind AS 116.58",
+                    "question": "Whether the lessee has provided disclosure of a maturity analysis of lease liabilities applying paragraphs 107.39 and 107.B11 separately from the maturity analyses of other financial liabilities [5]."
+                },
+                {
+                    "id": "9",
+                    "reference": "Ind AS 116.59",
+                    "question": "In addition to the disclosures required in paragraphs 116.53–116.58, whether the disclosure of additional qualitative and quantitative information about leasing activities necessary to meet the disclosure objective in paragraph 116.51 (as described in paragraph 116.B48) has been given [5]."
+                },
+                {
+                    "id": "10",
+                    "reference": "Ind AS 116.60",
+                    "question": "In case, a lessee accounts for short-term leases or leases of low-value assets applying paragraph 116.6, whether the lessee has disclosed that fact [6]."
+                },
+                {
+                    "id": "11",
+                    "reference": "Ind AS 116.60A",
+                    "question": "If a lessee applies the practical expedient in paragraph 46A, whether it has provided the following disclosures: (a) that it has applied the practical expedient to all rent concessions that meet the conditions in paragraph 46B or, if not applied to all such rent concessions, information about the nature of the contracts to which it has applied the practical expedient (see paragraph 2 of Ind AS 116); and (b) the amount recognised in profit or loss for the reporting period to reflect changes in lease payments that arise from rent concessions to which the lessee has applied the practical expedient in paragraph 46A [6]."
+                },
+                {
+                    "id": "12",
+                    "reference": "Ind AS 116.90",
+                    "question": "Whether the entity has provided disclosure of the following amounts for the reporting period: (a) for finance leases: (i) selling profit or loss; (ii) finance income on the net investment in the lease; and (iii) income relating to variable lease payments not included in the measurement of the net investment in the lease. (b) for operating leases, lease income, separately disclosing income relating to variable lease payments that do not depend on an index or a rate [6, 7]."
+                },
+                {
+                    "id": "13",
+                    "reference": "Ind AS 116.91",
+                    "question": "Whether disclosures specified in paragraph 116.90 has been provided in a tabular format, unless another format is more appropriate [7]."
+                },
+                {
+                    "id": "14",
+                    "reference": "Ind AS 116.92",
+                    "question": "Whether the entity has given disclosure of the additional qualitative and quantitative information about leasing activities necessary to meet the disclosure objective in paragraph 116.89 [7]."
+                },
+                {
+                    "id": "15",
+                    "reference": "Ind AS 116.93",
+                    "question": "Whether a lessor has provided the qualitative and quantitative explanation of the significant changes in the carrying amount of the net investment in finance leases [8]."
+                },
+                {
+                    "id": "16",
+                    "reference": "Ind AS 116.94",
+                    "question": "Whether the entity has given disclosure of a maturity analysis of the lease payments receivable, showing the undiscounted lease payments to be received on an annual basis for a minimum of each of the first five years and a total of the amounts for the remaining years. Whether a lessor has reconciled the undiscounted lease payments to the net investment in the lease [8]."
+                },
+                {
+                    "id": "17",
+                    "reference": "Ind AS 116.95",
+                    "question": "Whether for items of property, plant and equipment subject to an operating lease, the disclosure requirements of Ind AS 16 has been applied. In applying the disclosure requirements in Ind AS 16, whether a lessor has disaggregated each class of property, plant and equipment into assets subject to operating leases and assets not subject to operating leases. Accordingly, whether the disclosures required by Ind AS 16 for assets subject to an operating lease (by class of underlying asset) has been provided separately from owned assets held and used by the lessor [8, 9]."
+                },
+                {
+                    "id": "18",
+                    "reference": "Ind AS 116.96",
+                    "question": "Whether the entity has applied disclosure requirements in Ind AS 36, Ind AS 38, Ind AS 40 and Ind AS 41 for assets subject to operating leases [9]."
+                },
+                {
+                    "id": "19",
+                    "reference": "Ind AS 116.97",
+                    "question": "Whether the entity has disclosed a maturity analysis of lease payments, showing the undiscounted lease payments to be received on an annual basis for a minimum of each of the first five years and a total of the amounts for the remaining years [9]."
+                },
+                {
+                    "id": "20",
+                    "reference": "Ind AS 116.B49",
+                    "question": "Whether additional information has been provided relating to variable lease payments that, depending on the circumstances, may be needed to satisfy the disclosure objective in paragraph 116.51 [9, 10]."
+                },
+                {
+                    "id": "21",
+                    "reference": "Ind AS 116.B50",
+                    "question": "Whether additional information have been provided relating to extension options or termination options that, depending on the circumstances, may be needed to satisfy the disclosure objective in paragraph 116.51 [10]."
+                },
+                {
+                    "id": "22",
+                    "reference": "Ind AS 116.B51",
+                    "question": "Whether additional information have been provided relating to residual value guarantees that, depending on the circumstances, may be needed to satisfy the disclosure objective in paragraph 116.51 [10]."
+                },
+                {
+                    "id": "23",
+                    "reference": "Ind AS 116.B52",
+                    "question": "Whether additional information have been provided relating to sale and leaseback transactions that, depending on the circumstances, may be needed to satisfy the disclosure objective in paragraph 51 [10, 11]."
+                },
+                {
+                    "id": "24",
+                    "reference": "Ind AS 116.C4",
+                    "question": "If the practical expedient in paragraph 116.C3 is chosen, whether the lessee has given disclosure of that fact [11]."
+                },
+                {
+                    "id": "25",
+                    "reference": "Ind AS 116.C10 (c)",
+                    "question": "A lessee may use one or more of the following practical expedients when applying this standard retrospectively in accordance with paragraph 116.C5(b) to lessee previously classified as operating leases applying Ind AS 17. A lessee is permitted to apply these practical expedients on a lease-by-lease basis: (c) a lessee may elect not to apply the requirements in paragraph 116.C8 to lease for which the lease term ends within 12 months of the date of initial application. In this case, whether the lease has: (ii) included the cost associated with those leases within the disclosure of short-term lease expense in the annual reporting period that includes the date of initial application [11]."
+                },
+                {
+                    "id": "26",
+                    "reference": "Ind AS 116.C12",
+                    "question": "If a lessee elects to apply this Standard in accordance with paragraph 116.C5(b), whether the lessee has provided disclosure of information about initial application required by paragraph 8.28, except for the information specified in paragraph 8.28(f). Instead of the information specified in paragraph 8.28(f), whether the lessee has disclosed: (a) the weighted average lessee’s incremental borrowing rate applied to lease liabilities recognised in the balance sheet at the date of initial application; and (b) an explanation of any difference between: (i) operating lease commitments disclosed applying Ind AS 17 at the end of the annual reporting period immediately preceding the date of initial application, discounted using the incremental borrowing rate at the date of initial application as described in paragraph C8(a); and (ii) lease liabilities recognised in the balance sheet at the date of initial application [11, 12]."
+                },
+                {
+                    "id": "27",
+                    "reference": "Ind AS 116.C13",
+                    "question": "If a lessee uses one or more of the specified practical expedients in paragraph 116.C10, whether the lessee has provided disclosure of that fact [12]."
+                }
+            ]
+        }
+    ]
+}

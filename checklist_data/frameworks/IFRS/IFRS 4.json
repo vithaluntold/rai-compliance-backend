@@ -1,0 +1,73 @@
+{
+    "title": "IFRS 4 Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IFRS 4",
+            "title": "Insurance Contracts",
+            "description": "Checklist for presentation and disclosure requirements under IFRS 4.",
+            "items": [
+                {
+                    "id": "4.1",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.36(a)",
+                    "question": "Has the entity disclosed its accounting policies for insurance contracts and related assets, liabilities, income and expense?"
+                },
+                {
+                    "id": "4.2",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.36(b)",
+                    "question": "Has the entity disclosed the recognised assets, liabilities, income and expense arising from insurance contracts?"
+                },
+                {
+                    "id": "4.3",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.36(c)",
+                    "question": "If the entity is a cedant, has it disclosed gains and losses recognised on buying reinsurance?"
+                },
+                {
+                    "id": "4.4",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.36(d)",
+                    "question": "Has the entity disclosed the process used to determine the assumptions that have the greatest effect on the measurement of recognised amounts?"
+                },
+                {
+                    "id": "4.5",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.37(a)",
+                    "question": "Has the entity disclosed information about the nature and extent of risks arising from insurance contracts?"
+                },
+                {
+                    "id": "4.6",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.37(b)",
+                    "question": "Has the entity disclosed information about risk management objectives and policies for mitigating risks arising from insurance contracts?"
+                },
+                {
+                    "id": "4.7",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.37(c)",
+                    "question": "Has the entity disclosed information about the terms and conditions of insurance contracts that have a material effect on the amount, timing and uncertainty of future cash flows?"
+                },
+                {
+                    "id": "4.8",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.38",
+                    "question": "Has the entity disclosed information to identify and explain the amounts in its financial statements arising from insurance contracts?"
+                },
+                {
+                    "id": "4.9",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.39(a)(i)",
+                    "question": "Has the entity disclosed its accounting policies for insurance contracts and related assets, liabilities, income and expense, including how it determines the carrying amount of financial assets and insurance liabilities?"
+                },
+                {
+                    "id": "4.10",
+                    "section": "IFRS 4",
+                    "reference": "IFRS 4.39(a)(ii)",
+                    "question": "Has the entity disclosed how the assumptions used in the measurement relate to observable market prices or rates?"
+                }
+            ]
+        }
+    ]
+}

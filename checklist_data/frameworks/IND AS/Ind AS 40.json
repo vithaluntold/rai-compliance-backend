@@ -1,0 +1,37 @@
+﻿{
+    "title": "Investment Property (Ind AS 40) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "Ind AS 40",
+            "title": "Investment Property",
+            "description": "Checklist for disclosure requirements under Ind AS 40.",
+            "items": [
+                {
+                    "id": "1",
+                    "section": "Ind AS 40",
+                    "reference": "40.74",
+                    "question": "Does the entity disclose the following in addition to the disclosures required by Ind AS 116:\n  a) as an owner of an investment property - lessors’ disclosures about leases into which it has entered; and\n  b) a lessee that holds investment property as a right-of-use asset provides - lessees’ disclosures as required by Ind AS 116 and lessors’ disclosures as required by Ind AS 116 for any operating leases into which it has entered?"
+                },
+                {
+                    "id": "2",
+                    "section": "Ind AS 40",
+                    "reference": "40.75",
+                    "question": "Does the entity provide disclosure of the following:\n  a) accounting policy for measurement of investment property;\n  b) when classification is difficult, the criteria used to distinguish the investment property from owner-occupied property and from property held for sale in the ordinary course of business;\n  c) the extent to which the fair value of investment property (as measured or disclosed in the financial statements) is based on a valuation by an independent valuer who holds a recognised and relevant professional qualification and has recent experience in the location and category of the investment property being valued, and if there has been no such valuation, that fact;\n  d) the amounts recognised in profit or loss for:\n    i) rental income from investment property;\n    ii) direct operating expenses (including repairs and maintenance) arising from investment property that generated rental income during the period; and\n    iii) direct operating expenses (including repairs and maintenance) arising from investment property that did not generate rental income during the period;\n  e) the existence and amounts of restrictions on the realisability of investment property or the remittance of income and proceeds of disposal; and\n  f) contractual obligations to purchase, construct or develop investment property or for repairs, maintenance or enhancements?"
+                },
+                {
+                    "id": "3",
+                    "section": "Ind AS 40",
+                    "reference": "40.79",
+                    "question": "Does the entity provide disclosures of the following:\n  a) the depreciation methods used;\n  b) the useful lives or the depreciation rates used;\n  c) the gross carrying amount and the accumulated depreciation (aggregated with accumulated impairment losses) at the beginning and end of the period;\n  d) a reconciliation of the carrying amount of investment property at the beginning and end of the period, showing the following:\n    i) additions, disclosing separately those additions resulting from acquisitions and those resulting from subsequent expenditure recognised as an asset;\n    ii) additions resulting from acquisitions through business combinations;\n    iii) assets classified as held for sale or included in a disposal group classified as held for sale in accordance with Ind AS 105 and other disposals;\n    iv) depreciation;\n    v) the amount of impairment losses recognised, and the amount of impairment losses reversed, during the period in accordance with Ind AS 36;\n    vi) the net exchange differences arising on the translation of the financial statements into a different presentation currency, and on translation of a foreign operation into the presentation currency of the reporting entity; and\n    vii) transfers to and from inventories and owner-occupied property; and\n    viii) other changes;\n  e) the fair value of investment property, and in exceptional cases where fair value cannot be measured reliably, disclosure of:\n    i) a description of the investment property;\n    ii) an explanation of why fair value cannot be measured reliably; and\n    iii) if possible, the range of estimates within which fair value is highly likely to lie?"
+                },
+                {
+                    "id": "4",
+                    "section": "Ind AS 40",
+                    "reference": "40.84E (b)",
+                    "question": "If, in accordance with paragraph 40.84C, an entity reclassifies property at the date of initial application, does the entity provide disclosure of the amounts reclassified to, or from, investment property?"
+                }
+            ]
+        }
+    ]
+}
