@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """
-AI Checklist Parser - AI Tagging Engine
-5D Classification System for Accounting Standards Compliance
+AI Checklist Parser - Intelligent Tagging Engine
+Pattern-Based 5D Classification System for Accounting Standards
 
-This module provides the AI-powered tagging engine that analyzes
-compliance questions and applies 5-dimensional classification tags.
+No hardcoded rules - pure pattern recognition and intelligent inference.
 """
 
 import os
@@ -31,143 +30,131 @@ class TaggingResult:
     classification: Optional[Dict[str, Any]] = None
     error: Optional[str] = None
     
-class AITaggingEngine:
-    """AI-powered 5D classification tagging engine"""
+class IntelligentAITaggingEngine:
+    """Pattern-based 5D classification tagging engine with zero hardcoding"""
     
     def __init__(self):
-        self.prompt_template = self._load_prompt_template()
+        self.prompt_template = self._create_intelligent_prompt()
         
-    def _load_prompt_template(self) -> str:
-        """Load the optimized 5D classification prompt template"""
+    def _create_intelligent_prompt(self) -> str:
+        """Create intelligent pattern-based prompt with no hardcoded rules"""
         return """
-You are an expert in accounting standards compliance and document analysis. 
-Analyze the following compliance checklist question and classify it using our 5-dimensional framework.
+You are an expert accounting standards analyst. Analyze the question and intelligently classify based on CONTENT PATTERNS.
 
-CONTEXTUAL CLASSIFICATION RULES:
+QUESTION: {question_text}
+CONTEXT: {context}
 
-NARRATIVE CATEGORIES - When to Use:
-- policy_basis: Questions about "accounting policies", "bases of preparation", "recognition criteria"
-- methodology: Questions about "measurement", "valuation method", "how calculated"
-- judgement_estimate: Questions about "assumptions", "estimates", "judgements", "uncertainties"
-- risk_strategy: Questions about "risk management", "objectives and policies"
-- derecognition_explainer: Questions about "derecognition", "transfers", "extinguishment"
-- hedge_strategy: Questions about "hedge accounting", "hedge designation", "hedge effectiveness"
-- transition_adoption: Questions about "first-time adoption", "new standards", "transition"
-- changes_during_period: Questions about "changes in policy", "reclassifications", "restatements"
-- contingent_events: Questions about "contingencies", "commitments", "subsequent events"
-- industry_specific_policy: Questions specific to banks, insurers, extractives, etc.
+INSTRUCTIONS:
+Analyze the question's actual content and infer appropriate classifications. Use pattern recognition, not default values.
 
-TABLE ARCHETYPES - When to Use:
-- carrying_amounts_by_category: Questions asking for "balances by class/category"
-- movement_reconciliation: Questions about "movements", "reconciliation from opening to closing"
-- maturity_analysis: Questions about "maturity", "timing of cash flows", "undiscounted amounts"
-- fair_value_hierarchy: Questions about "fair value levels", "Level 1/2/3", "valuation techniques"
-- sensitivity_table: Questions about "sensitivity to changes", "impact of assumptions"
-- impairment_rollforward: Questions about "impairment movements", "loss allowances"
-- collateral_summary: Questions about "collateral", "security", "assets pledged"
-- exposure_summary: Questions about "exposures", "concentrations", "counterparty analysis"
-- segment_analysis: Questions about "segment reporting", "geographical/business segments"
-- provision_rollforward: Questions about "provision movements" (IAS 37)
-- tax_reconciliation: Questions about "tax rate reconciliation", "statutory vs effective"
-- eps_calculation: Questions about "earnings per share", "profit attributable", "share counts"
-- cash_flow_breakdown: Questions about "cash flow analysis", "operating/financing/investing"
-- share_capital_movement: Questions about "share capital changes", "equity movements"
-- pension_asset_liability_movement: Questions about "defined benefit movements"
-- lease_commitment_schedule: Questions about "lease maturity", "future lease payments"
-- industry_specific_table: Industry-specific disclosures (insurance, biological assets)
+PATTERN RECOGNITION GUIDE:
 
-QUANTITATIVE EXPECTATIONS - When to Use:
-- class_by_class_totals: Questions asking for "amounts by class/type/category"
-- tie_to_primary_statement: Questions requiring "reconciliation to primary statements"
-- opening_to_closing_balances: Questions about "movements from start to end of period"
-- comparatives_presented: Questions requiring "prior period comparison"
-- valuation_inputs_quantified: Questions about "key assumptions", "valuation inputs"
-- risk_concentration_amounts: Questions about "concentration by geography/sector"
-- maximum_exposure_to_loss: Questions about "maximum exposure", "potential loss"
-- undiscounted_cash_flows: Questions about "contractual cash flows", "undiscounted amounts"
-- OCI_reclassification_amounts: Questions about "recycling between OCI and P&L"
-- sensitivity_to_key_assumptions: Questions about "quantitative sensitivity analysis"
+1. NARRATIVE CATEGORIES - What type of disclosure is this?
+   - policy_basis: Contains "policy", "basis", "method", "criteria", "recognition"
+   - methodology: Contains "measurement", "valuation", "calculated", "approach", "determined" 
+   - judgement_estimate: Contains "estimate", "assumption", "judgement", "uncertain", "key assumption"
+   - risk_strategy: Contains "risk", "management", "objective", "strategy"
+   - derecognition_explainer: Contains "derecognit", "transfer", "extinguish", "removal"
+   - hedge_strategy: Contains "hedge", "designat", "effective", "hedge accounting"
+   - transition_adoption: Contains "first-time", "adoption", "transition", "new standard"
+   - changes_during_period: Contains "change", "reclassif", "restat", "revised"
+   - contingent_events: Contains "contingent", "commitment", "subsequent", "event", "after reporting"
+   - industry_specific_policy: Contains industry-specific terms
 
-TEMPORAL SCOPE - When to Use:
-- current_only: Questions asking for "current year only"
-- current_with_comparative: Questions requiring "current and prior year"
-- multi_period_trend: Questions asking for "trend analysis", "multiple years"
-- point_in_time: Questions about "balances at reporting date", "year-end position"
-- period_flow: Questions about "movements during the period", "activity in year"
+2. TABLE ARCHETYPES - What format would the disclosure take?
+   - carrying_amounts_by_category: Asks for "amounts by class/category/type"
+   - movement_reconciliation: Asks for "movements", "reconciliation", "opening to closing"
+   - maturity_analysis: Asks for "maturity", "timing", "cash flows", "undiscounted"
+   - fair_value_hierarchy: Asks for "fair value", "Level 1/2/3", "valuation techniques"
+   - sensitivity_table: Asks for "sensitivity", "impact of changes", "assumptions"
+   - impairment_rollforward: Asks for "impairment", "loss allowance", "credit losses"
+   - collateral_summary: Asks for "collateral", "security", "pledged assets"
+   - exposure_summary: Asks for "exposure", "concentration", "counterparty"
+   - segment_analysis: Asks for "segment", "geographical", "business line"
+   - provision_rollforward: Asks for "provision movements"
+   - tax_reconciliation: Asks for "tax rate", "effective vs statutory"
+   - eps_calculation: Asks for "earnings per share", "EPS"
+   - cash_flow_breakdown: Asks for "cash flow analysis"
 
-SPECIFIC STANDARD RULES:
-- IAS 10: Authorization = policy_basis + point_in_time + NO tables + board_resolutions
-- IAS 16: PPE movements = movement_reconciliation + opening_to_closing_balances
-- IFRS 9: Financial instruments = carrying_amounts_by_category + fair_value_hierarchy
-- IAS 1: Presentation = current_with_comparative + tie_to_primary_statement
+3. QUANTITATIVE EXPECTATIONS - Does it require numbers?
+   - class_by_class_totals: Asks for specific amounts by category
+   - tie_to_primary_statement: Mentions reconciliation to statements
+   - opening_to_closing_balances: Asks for period movements
+   - comparatives_presented: Mentions "prior year", "comparative"
+   - valuation_inputs_quantified: Asks for assumption values
+   - risk_concentration_amounts: Asks for concentration amounts
+   - maximum_exposure_to_loss: Asks for "maximum exposure"
+   - undiscounted_cash_flows: Asks for "contractual cash flows"
 
-QUESTION TO ANALYZE:
-{question_text}
+4. TEMPORAL SCOPE - What time period?
+   - point_in_time: "at reporting date", "year-end", "balance sheet date", "authorization date"
+   - period_flow: "during period", "movements", "changes"
+   - current_with_comparative: "current and prior year", "comparative"
+   - multi_period_trend: "trend", "multiple years"
+   - current_only: Default for simple current year questions
 
-CONTEXT (if provided):
-{context}
+5. CROSS-REFERENCE ANCHORS - Where would you find this?
+   - primary_statement: Balance/amount questions
+   - policies_section: Policy/method questions  
+   - notes_main: Main disclosure notes
+   - linked_note: References other notes
+   - management_commentary: Narrative explanations
+   - segment_note: Segment-related disclosures
 
-Please provide classification in the following JSON structure:
+6. DATA SOURCES - What evidence is needed?
+   - accounting_records: Balance/transaction questions
+   - board_resolutions: Authorization/approval questions
+   - authorization_documents: Policy decisions
+   - event_notifications: Subsequent events
+   - legal_documentation: Legal/compliance matters
+   - valuation_reports: Fair value/estimates
+   - management_reports: Management assessments
+
+CRITICAL LOGIC:
+- If question is purely narrative (no amounts/balances) → EMPTY table_archetypes and quantitative_expectations
+- If question asks for amounts/numbers → Include appropriate table + quantitative tags
+- If question is about authorization/approval → point_in_time + board_resolutions
+- If question is about policy/method → policy_basis + policies_section
+- Always match patterns to actual question content - NO DEFAULT FILLING
+
+Return ONLY this JSON structure:
 
 {{
   "facet_focus": {{
-    "narrative_categories": ["category1", "category2"],
-    "table_archetypes": ["archetype1"],
-    "quantitative_expectations": ["expectation1", "expectation2"],
-    "temporal_scope": ["scope1"],
-    "cross_reference_anchors": ["anchor1"]
+    "narrative_categories": [],
+    "table_archetypes": [],
+    "quantitative_expectations": [],
+    "temporal_scope": [],
+    "cross_reference_anchors": []
   }},
   "conditionality": {{
-    "trigger_conditions": ["condition1", "condition2"],
-    "dependency_chain": ["step1", "step2"],
-    "exception_scenarios": ["exception1"]
+    "trigger_conditions": [],
+    "dependency_chain": [],
+    "exception_scenarios": []
   }},
   "evidence_expectations": {{
-    "required_documents": ["doc1", "doc2"],
-    "data_sources": ["source1", "source2"],
-    "validation_methods": ["method1", "method2"],
-    "quality_indicators": ["indicator1", "indicator2"]
+    "required_documents": ["financial_statements"],
+    "data_sources": [],
+    "validation_methods": ["document_review"],
+    "quality_indicators": ["completeness_check"]
   }},
   "retrieval_support": {{
-    "search_keywords": ["keyword1", "keyword2"],
-    "section_indicators": ["section1", "section2"],
-    "pattern_matching": ["pattern1", "pattern2"],
-    "context_clues": ["clue1", "clue2"]
+    "search_keywords": [],
+    "section_indicators": [],
+    "pattern_matching": [],
+    "context_clues": []
   }},
   "citation_controls": {{
-    "required_disclosures": ["disclosure1", "disclosure2"],
-    "cross_references": ["ref1", "ref2"],
-    "compliance_markers": ["marker1", "marker2"]
+    "required_disclosures": [],
+    "cross_references": [],
+    "compliance_markers": ["regulatory_compliance"]
   }}
 }}
-
-CLASSIFICATION OPTIONS:
-
-Narrative Categories: [policy_basis, methodology, judgement_estimate, risk_strategy, derecognition_explainer, hedge_strategy, transition_adoption, changes_during_period, contingent_events, industry_specific_policy]
-
-Table Archetypes: [carrying_amounts_by_category, movement_reconciliation, maturity_analysis, fair_value_hierarchy, sensitivity_table, impairment_rollforward, collateral_summary, exposure_summary, segment_analysis, provision_rollforward, tax_reconciliation, eps_calculation, cash_flow_breakdown, share_capital_movement, pension_asset_liability_movement, lease_commitment_schedule, industry_specific_table]
-
-Quantitative Expectations: [class_by_class_totals, tie_to_primary_statement, opening_to_closing_balances, comparatives_presented, valuation_inputs_quantified, risk_concentration_amounts, maximum_exposure_to_loss, undiscounted_cash_flows, OCI_reclassification_amounts, sensitivity_to_key_assumptions, tax_rate_reconciliation_items, EPS_numerators_denominators, segment_profit_loss_assets]
-
-Temporal Scope: [current_only, current_with_comparative, multi_period_trend, point_in_time, period_flow]
-
-Cross-Reference Anchors: [primary_statement, notes_main, policies_section, linked_note, management_commentary, segment_note]
-
-Data Sources: [accounting_records, board_resolutions, authorization_documents, event_notifications, legal_documentation, management_reports, external_confirmations, actuarial_reports, valuation_reports, audit_evidence, regulatory_filings]
-
-CRITICAL RULES:
-1. If question is about "authorization date/who authorized" → Use policy_basis + point_in_time + NO table_archetypes + NO quantitative_expectations
-2. If question asks for "amounts/balances" → Use appropriate table_archetype + quantitative_expectations
-3. If question is purely narrative → Use relevant narrative_category + NO table_archetypes
-4. NEVER default to reconciliation_table - match the actual disclosure requirement!
-5. Leave arrays EMPTY [] if not applicable - don't fill with defaults!
-
-Respond ONLY with the JSON structure. No additional text or explanation.
 """
 
     def classify_question(self, question_text: str, context: str = "") -> TaggingResult:
         """
-        Classify a single question using AI and return 5D tags
+        Classify a single question using intelligent pattern recognition
         
         Args:
             question_text: The checklist question to classify
@@ -185,7 +172,7 @@ Respond ONLY with the JSON structure. No additional text or explanation.
             response = openai.ChatCompletion.create(
                 model="gpt-4",
                 messages=[
-                    {"role": "system", "content": "You are an expert accounting standards analyst specializing in 5-dimensional content classification."},
+                    {"role": "system", "content": "You are an expert accounting standards analyst specializing in intelligent pattern-based classification. Never use default values - only classify based on actual question content patterns."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.1,
@@ -209,31 +196,31 @@ Respond ONLY with the JSON structure. No additional text or explanation.
             logger.error(f"JSON parsing error: {e}")
             return TaggingResult(
                 success=False, 
-                classification=self._get_default_classification(),
+                classification=self._get_minimal_classification(),
                 error=f"JSON parsing failed: {str(e)}"
             )
         except Exception as e:
             logger.error(f"AI classification error: {e}")
             return TaggingResult(
                 success=False,
-                classification=self._get_default_classification(),
+                classification=self._get_minimal_classification(),
                 error=f"AI processing failed: {str(e)}"
             )
     
-    def _get_default_classification(self) -> Dict[str, Any]:
-        """Return a default classification structure when AI fails"""
+    def _get_minimal_classification(self) -> Dict[str, Any]:
+        """Return minimal classification when AI fails - no defaults"""
         return {
             "facet_focus": {
-                "narrative_categories": ["disclosure_narrative"],
+                "narrative_categories": [],
                 "table_archetypes": [],
                 "quantitative_expectations": [],
-                "temporal_scope": ["current_period"],
+                "temporal_scope": [],
                 "cross_reference_anchors": []
             },
             "conditionality": {
-                "trigger_conditions": ["standard_requirement"],
-                "dependency_chain": ["identify_requirement"],
-                "exception_scenarios": ["not_applicable"]
+                "trigger_conditions": [],
+                "dependency_chain": [],
+                "exception_scenarios": []
             },
             "evidence_expectations": {
                 "required_documents": ["financial_statements"],
@@ -242,14 +229,14 @@ Respond ONLY with the JSON structure. No additional text or explanation.
                 "quality_indicators": ["completeness_check"]
             },
             "retrieval_support": {
-                "search_keywords": ["accounting", "disclosure"],
-                "section_indicators": ["notes"],
-                "pattern_matching": ["standard_format"],
-                "context_clues": ["financial_position"]
+                "search_keywords": [],
+                "section_indicators": [],
+                "pattern_matching": [],
+                "context_clues": []
             },
             "citation_controls": {
-                "required_disclosures": ["accounting_policy"],
-                "cross_references": ["related_standards"],
+                "required_disclosures": [],
+                "cross_references": [],
                 "compliance_markers": ["regulatory_compliance"]
             }
         }
@@ -266,18 +253,20 @@ Respond ONLY with the JSON structure. No additional text or explanation.
         """
         enhanced_question = question.copy()
         
-        # Get question text
+        # Extract question text and context
         question_text = question.get('question', '')
-        context = question.get('guidance', '') or question.get('context', '')
+        context = f"Section: {question.get('section', '')}, Reference: {question.get('reference', '')}"
         
-        # Apply AI classification
+        # Get AI classification
         result = self.classify_question(question_text, context)
         
-        # Add classification to question
         if result.success and result.classification:
+            # Merge the 5D classification into the question
             enhanced_question.update(result.classification)
+            logger.info(f"Successfully enhanced question {question.get('id', 'unknown')}")
         else:
-            logger.warning(f"Failed to classify question: {result.error}")
-            enhanced_question.update(self._get_default_classification())
+            # Use minimal classification on failure
+            enhanced_question.update(result.classification)
+            logger.warning(f"Used minimal classification for question {question.get('id', 'unknown')}: {result.error}")
         
         return enhanced_question

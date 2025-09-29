@@ -16,7 +16,7 @@ from dataclasses import dataclass, asdict
 import queue
 import threading
 
-from .ai_tagging_engine import AITaggingEngine
+from .ai_tagging_engine import IntelligentAITaggingEngine
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ class FileProcessor:
     def __init__(self, socketio_app=None):
         self.socketio = socketio_app
         self.is_processing = False
-        self.ai_engine = AITaggingEngine()
+        self.ai_engine = IntelligentAITaggingEngine()
         
     def process_file(self, job: ProcessingJob, download_links: Dict) -> bool:
         """
