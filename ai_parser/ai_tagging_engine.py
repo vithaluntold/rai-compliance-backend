@@ -25,113 +25,125 @@ class TaggingResult:
     error: Optional[str] = None
     
 class IntelligentAITaggingEngine:
-    """Pattern-based 5D classification tagging engine with zero hardcoding"""
+    """Master dictionary-based IFRS/IAS classification engine"""
     
     def __init__(self):
+        self.master_dictionary = self._load_master_dictionary()
         self.prompt_template = self._create_intelligent_prompt()
+    
+    def _load_master_dictionary(self) -> Dict[str, Any]:
+        """Load the master dictionary for controlled vocabularies"""
+        try:
+            dictionary_path = os.path.join(os.path.dirname(__file__), 'master_dictionary.json')
+            with open(dictionary_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            logger.warning(f"Could not load master dictionary: {e}")
+            return {}
         
     def _create_intelligent_prompt(self) -> str:
-        """Create comprehensive classification prompt with controlled vocabularies"""
+        """Create master dictionary-based classification prompt"""
         return """
-You are given JSON objects containing disclosure checklist items from IFRS/IAS standards. 
-Each item has fields such as:
-- section (e.g., IAS 2, IAS 10, IFRS 7)
-- reference (paragraph number)
-- question (the disclosure requirement in plain text)
+You are an AI assistant responsible for classifying IFRS/IAS disclosure checklist questions into structured tags.
+Your output must always be valid JSON with the same schema.
+You must use the controlled vocabulary (master dictionary) provided below.
+Do not invent new values. Do not leave fields empty unless truly not applicable.
 
-Your task: Categorize each checklist item into structured tags under:
-- facet_focus
-- conditionality
-- evidence_expectations
-- retrieval_support
-- citation_controls
+MASTER DICTIONARY
 
----
+narrative_categories:
+• accounting_policies_note → questions on accounting policies, methods, measurement bases
+• event_based → questions on specific events (subsequent events, acquisitions, restructuring)
+• measurement_basis → fair value, amortised cost, impairment
+• risk_exposure → credit risk, liquidity risk, market risk, sensitivity analysis
+• estimates_judgements → estimates, assumptions, sources of estimation uncertainty
+• related_party → transactions or balances with related parties
+• going_concern → disclosures on going concern assumption
+• disclosure_narrative → general narrative disclosures not fitting other categories
 
-### Controlled Vocabularies (and when to use them)
+table_archetypes:
+• reconciliation_table → movement schedules (opening/closing balances)
+• roll_forward_table → carrying amounts by class across periods
+• sensitivity_table → sensitivity or stress-test tables
+• segmental_analysis → by business/geographic segment
+• carrying_amounts_by_category → totals by category (inventories, PPE, instruments)
+• maturity_analysis → maturity profile tables (risk, cash flows)
 
-**facet_focus → classification**
-- narrative_categories:
-  - policy_basis → Use when requirement asks about accounting policies or bases (e.g., cost formulas, recognition criteria).
-  - disclosure_narrative → Use when requirement asks for descriptive disclosure (e.g., authorisation date, nature of event).
-  - rights_and_amendments → Use for questions about rights to amend FS or approvals.
-  - adjusting_events → Use when condition existed at reporting date.
-  - non_adjusting_events → Use when event occurs after reporting date, does not affect reporting date conditions.
-  - risks → Use when risk exposures are the subject.
-  - measurement_basis → Use when valuation methods or fair value are required.
-  - recognition_criteria → Use when disclosure is about when/if to recognise.
+quantitative_expectations:
+• absolute_amounts → single amounts or totals
+• class_by_class_totals → breakdown by class or category
+• estimate_of_financial_effect → estimates, ranges, financial effects of events
+• comparative_amounts → disclosures requiring prior year comparatives
+• qualitative_only → narrative without amounts
 
-- table_archetypes:
-  - carrying_amounts_by_category → Use when requirement wants carrying values by class (e.g., inventories, loans).
-  - reconciliation_table → Use when rollforward or reconciliation is expected.
-  - maturity_analysis → Use for liquidity analysis.
-  - sensitivity_analysis → Use for market/credit risk sensitivity.
-  - rollforward → Use when movements across periods must be shown.
-  - impact_summary_if_available → Use when requirement asks for "effect/impact" of something.
+temporal_scope:
+• current_period → applies to current reporting period
+• comparative_period → requires prior period comparison
+• multiple_periods → spans several years
+• subsequent_events → events after the reporting date
+• opening_balance → beginning of period disclosures
 
-- quantitative_expectations:
-  - absolute_amounts → Use for single numbers (e.g., write-downs, expense recognised).
-  - class_by_class_totals → Use for breakdowns by class/category.
-  - adjustment_amounts → Use for reversals, write-downs, adjustments.
-  - estimate_of_financial_effect → Use for estimated impacts of non-adjusting events.
-  - ranges → Use for disclosures expressed in bands/intervals.
-  - qualitative_only → Use if requirement is narrative with no numbers.
+cross_reference_anchors:
+• notes_main → general notes to financial statements
+• policies → accounting policies section
+• primary_statement → SoFP, P&L, OCI, etc.
+• segment_note → segment reporting
+• risk_note → risk disclosures
+• related_standards → cross-references to other IFRS/IAS
 
-- temporal_scope:
-  - current_period → Use when requirement is this year only.
-  - current_with_comparative → Use when comparative disclosure required.
-  - event_based → Use when requirement is tied to a specific event (e.g., subsequent event).
-  - multi_period → Use when multiple reporting periods must be shown.
-  - forecast_or_forwardlooking → Use when future effects must be estimated.
+CLASSIFICATION RULES:
+• If about policies/methods → use accounting_policies_note
+• If about specific events after reporting period → use event_based + subsequent_events
+• If about measurement basis → use measurement_basis
+• If about risk → use risk_exposure + sensitivity_table if numbers expected
+• If about estimates/judgements → use estimates_judgements
+• If table implied (movements, balances, maturity) → choose correct table_archetype
+• If numbers required → pick absolute_amounts or class_by_class_totals
+• If only narrative needed → set quantitative_expectations = qualitative_only
 
-- cross_reference_anchors:
-  - notes_main → Use when disclosure is expected in main notes.
-  - subsequent_events_note → Use for IAS 10 non-adjusting disclosures.
-  - front_matter → Use for authorisation, signatures, approval blocks.
-  - signing_approval_note → Use when identifying board/management approval.
-  - SoFP, PnL, cash_flows, equity_statement → Use when tied to statements.
-  - related_line_items → Use when disclosure links to line items in statements.
-  - other_standards → Use when cross-referenced to another IFRS/IAS.
-
----
-
-**conditionality → logic**
-- trigger_conditions: standard_requirement, event_occurred, conditional_requirement, voluntary_disclosure
-- dependency_chain: identify_requirement, determine_adjusting, determine_non_adjusting, identify_authorisation_date, identify_authorising_body_or_individuals, estimate_financial_effect
-- exception_scenarios: not_applicable, cannot_estimate_effect, jurisdictional_override
-
----
-
-**evidence_expectations → evidence types**
-- required_documents: financial_statements, accounting_policies, board_minutes_if_referenced, management_reports, press_releases_if_referenced
-- data_sources: accounting_records, corporate_secretariat_records, management_estimates, external_valuations_if_any
-- validation_methods: document_review, cross_check, recalculation
-- quality_indicators: completeness_check, explicit_date_statement, specificity_of_event_description, clear_adjusting_vs_non_adjusting_classification
-
----
-
-**retrieval_support → AI assistance**
-- search_keywords: Extract keywords from question (e.g., "inventory write-down", "subsequent events").
-- section_indicators: Likely disclosure location (e.g., notes, subsequent events, approval block).
-- pattern_matching: Regex fragments (e.g., "authorised for issue", "write-down reversal").
-- context_clues: Additional hints (e.g., "signature block", "impairment triggers").
-
----
-
-**citation_controls → compliance checks**
-- required_disclosures: accounting_policy, authorisation_date, amendment_rights_statement_if_applicable, nature, financial_effect
-- cross_references: related_standards, IAS 1, IAS 37, IFRS 3, IAS 33
-- compliance_markers: regulatory_compliance, jurisdictional_requirement, voluntary_best_practice
-
----
+MINIMUM TAGGING MUST INCLUDE:
+• 1 narrative_categories
+• 1 temporal_scope
+• 1 citation_controls.compliance_markers
 
 QUESTION: {question_text}
 CONTEXT: {context}
 
-### Final Rule
-If unsure, **prefer broader categories** (e.g., disclosure_narrative + qualitative_only) over leaving fields empty. Only leave arrays blank if the category is truly irrelevant.
+Return EXACTLY this JSON format with proper classifications from the master dictionary:
 
-Return the classification in exact JSON format with all fields filled appropriately.
+{{
+  "facet_focus": {{
+    "narrative_categories": ["select_from_master_dictionary"],
+    "table_archetypes": ["select_if_applicable"],
+    "quantitative_expectations": ["select_from_master_dictionary"],
+    "temporal_scope": ["select_from_master_dictionary"],
+    "cross_reference_anchors": ["select_from_master_dictionary"]
+  }},
+  "conditionality": {{
+    "trigger_conditions": ["standard_requirement"],
+    "dependency_chain": ["identify_requirement"],
+    "exception_scenarios": ["not_applicable"]
+  }},
+  "evidence_expectations": {{
+    "required_documents": ["financial_statements"],
+    "data_sources": ["accounting_records"],
+    "validation_methods": ["document_review"],
+    "quality_indicators": ["completeness_check"]
+  }},
+  "retrieval_support": {{
+    "search_keywords": ["extract_relevant_keywords"],
+    "section_indicators": ["notes"],
+    "pattern_matching": ["standard_format"],
+    "context_clues": ["financial_position"]
+  }},
+  "citation_controls": {{
+    "required_disclosures": ["select_if_applicable"],
+    "cross_references": ["related_standards"],
+    "compliance_markers": ["regulatory_compliance"]
+  }}
+}}
+
+CRITICAL: Always follow master dictionary values. Do not invent new categories. Be consistent across all questions.
 """
 
     def classify_question(self, question_text: str, context: str = "") -> TaggingResult:
@@ -193,7 +205,7 @@ Return the classification in exact JSON format with all fields filled appropriat
             )
     
     def _get_default_classification(self) -> Dict[str, Any]:
-        """Return default classification structure when AI fails"""
+        """Return default classification using master dictionary values"""
         return {
             "facet_focus": {
                 "narrative_categories": ["disclosure_narrative"],
@@ -216,8 +228,8 @@ Return the classification in exact JSON format with all fields filled appropriat
             "retrieval_support": {
                 "search_keywords": [],
                 "section_indicators": ["notes"],
-                "pattern_matching": [],
-                "context_clues": []
+                "pattern_matching": ["standard_format"],
+                "context_clues": ["financial_position"]
             },
             "citation_controls": {
                 "required_disclosures": [],

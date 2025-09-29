@@ -1,0 +1,85 @@
+{
+  "narrative_categories": {
+    "accounting_policies_note": "questions on accounting policies, methods, measurement bases",
+    "event_based": "questions on specific events (subsequent events, acquisitions, restructuring)",
+    "measurement_basis": "fair value, amortised cost, impairment",
+    "risk_exposure": "credit risk, liquidity risk, market risk, sensitivity analysis",
+    "estimates_judgements": "estimates, assumptions, sources of estimation uncertainty",
+    "related_party": "transactions or balances with related parties",
+    "going_concern": "disclosures on going concern assumption",
+    "disclosure_narrative": "general narrative disclosures not fitting other categories"
+  },
+  "table_archetypes": {
+    "reconciliation_table": "movement schedules (opening/closing balances)",
+    "roll_forward_table": "carrying amounts by class across periods",
+    "sensitivity_table": "sensitivity or stress-test tables",
+    "segmental_analysis": "by business/geographic segment",
+    "carrying_amounts_by_category": "totals by category (inventories, PPE, instruments)",
+    "maturity_analysis": "maturity profile tables (risk, cash flows)"
+  },
+  "quantitative_expectations": {
+    "absolute_amounts": "single amounts or totals",
+    "class_by_class_totals": "breakdown by class or category",
+    "estimate_of_financial_effect": "estimates, ranges, financial effects of events",
+    "comparative_amounts": "disclosures requiring prior year comparatives",
+    "qualitative_only": "narrative without amounts"
+  },
+  "temporal_scope": {
+    "current_period": "applies to current reporting period",
+    "comparative_period": "requires prior period comparison",
+    "multiple_periods": "spans several years",
+    "subsequent_events": "events after the reporting date",
+    "opening_balance": "beginning of period disclosures"
+  },
+  "cross_reference_anchors": {
+    "notes_main": "general notes to financial statements",
+    "policies": "accounting policies section",
+    "primary_statement": "SoFP, P&L, OCI, etc.",
+    "segment_note": "segment reporting",
+    "risk_note": "risk disclosures",
+    "related_standards": "cross-references to other IFRS/IAS"
+  },
+  "conditionality": {
+    "trigger_conditions": ["standard_requirement", "materiality", "policy_choice"],
+    "dependency_chain": ["identify_requirement", "apply_policy_choice"],
+    "exception_scenarios": ["not_applicable", "immaterial", "voluntary_disclosure"]
+  },
+  "evidence_expectations": {
+    "required_documents": ["financial_statements", "management_report", "supporting_schedules"],
+    "data_sources": ["accounting_records", "management_estimates", "external_valuations"],
+    "validation_methods": ["document_review", "cross_check", "calculation_reperformance"],
+    "quality_indicators": ["completeness_check", "consistency_check", "accuracy_check"]
+  },
+  "retrieval_support": {
+    "search_keywords": "key IFRS/IAS words (don't invent new taxonomies)",
+    "section_indicators": ["notes", "policies", "statements", "disclosures"],
+    "pattern_matching": ["standard_format", "keyword_highlight"],
+    "context_clues": ["financial_position", "performance", "cash_flow"]
+  },
+  "citation_controls": {
+    "required_disclosures": ["accounting_policy", "significant_judgement", "quantitative_detail"],
+    "cross_references": ["related_standards", "appendix_reference"],
+    "compliance_markers": ["regulatory_compliance", "best_practice"]
+  },
+  "classification_rules": {
+    "policies_methods": "use accounting_policies_note",
+    "specific_events_after_reporting": "use event_based + subsequent_events",
+    "measurement_basis_questions": "use measurement_basis",
+    "risk_questions": "use risk_exposure + sensitivity_table if numbers expected",
+    "estimates_judgements_questions": "use estimates_judgements",
+    "table_implications": "choose correct table_archetype for movements, balances, maturity",
+    "numbers_required": "pick absolute_amounts or class_by_class_totals",
+    "narrative_only": "set quantitative_expectations = qualitative_only",
+    "temporal_mapping": {
+      "during_the_year": "current_period",
+      "with_comparatives": "comparative_period",
+      "subsequent_events": "subsequent_events",
+      "opening_balance": "opening_balance"
+    },
+    "minimum_tagging": [
+      "1 narrative_categories",
+      "1 temporal_scope", 
+      "1 citation_controls.compliance_markers"
+    ]
+  }
+}
