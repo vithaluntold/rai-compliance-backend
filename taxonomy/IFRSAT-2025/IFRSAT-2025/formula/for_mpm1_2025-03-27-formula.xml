@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IFRS Accounting Taxonomy 2025.**********************         Copyright (c) 2025 IFRS Foundation        All rights reserved. Reproduction and use rights are strictly limited.For more information on the IFRS Foundation's copyright and the terms and conditions of use for these files, please refer to https://www.ifrs.org/legal/terms-and-conditions/. The IFRS Foundation has trade marks registered around the world (Marks) including 'IAS', 'IASB', the IASB logo, 'IFRIC', 'IFRS', the IFRS logo, 'IFRS for SMEs', the IFRS for SMEs logo, the 'Hexagon Device', 'International Accounting Standards', 'International Financial Reporting Standards', 'NIIF' and 'SIC'. Further details of the IFRS Foundation's Marks are available from the IFRS Foundation on request.        ********************** -->
+<link:linkbase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xbrl.org/2003/linkbase http://www.xbrl.org/2003/xbrl-linkbase-2003-12-31.xsd http://xbrl.org/2008/generic http://www.xbrl.org/2008/generic-link.xsd http://xbrl.org/2008/formula http://www.xbrl.org/2008/formula.xsd http://xbrl.org/2008/label http://www.xbrl.org/2008/generic-label.xsd http://xbrl.org/2008/reference http://www.xbrl.org/2008/generic-reference.xsd http://xbrl.org/2008/filter/concept http://www.xbrl.org/2008/concept-filter.xsd http://xbrl.org/2008/filter/dimension http://www.xbrl.org/2008/dimension-filter.xsd http://xbrl.org/2008/filter/entity http://www.xbrl.org/2008/entity-filter.xsd http://xbrl.org/2008/filter/general http://www.xbrl.org/2008/general-filter.xsd http://xbrl.org/2008/filter/match http://www.xbrl.org/2008/match-filter.xsd http://xbrl.org/2008/filter/period http://www.xbrl.org/2008/period-filter.xsd http://xbrl.org/2008/filter/relative http://www.xbrl.org/2008/relative-filter.xsd http://xbrl.org/2008/filter/segment-scenario http://www.xbrl.org/2008/segment-scenario-filter.xsd http://xbrl.org/2008/filter/tuple http://www.xbrl.org/2008/tuple-filter.xsd http://xbrl.org/2008/filter/unit http://www.xbrl.org/2008/unit-filter.xsd http://xbrl.org/2008/filter/value http://www.xbrl.org/2008/value-filter.xsd http://xbrl.org/2008/assertion/consistency http://www.xbrl.org/2008/consistency-assertion.xsd http://xbrl.org/2008/assertion/existence http://www.xbrl.org/2008/existence-assertion.xsd http://xbrl.org/2008/assertion/value http://www.xbrl.org/2008/value-assertion.xsd http://xbrl.org/2010/filter/concept-relation http://www.xbrl.org/2010/concept-relation-filter.xsd http://xbrl.org/2010/message http://www.xbrl.org/2010/generic-message.xsd http://xbrl.org/2010/message/validation http://www.xbrl.org/2010/validation-message.xsd http://xbrl.org/2008/variable http://www.xbrl.org/2008/variable.xsd https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs-full https://xbrl.ifrs.org/taxonomy/2025-03-27/full_ifrs/full_ifrs-cor_2025-03-27.xsd" xmlns:ca="http://xbrl.org/2008/assertion/consistency" xmlns:ifrs-full="https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs-full" xmlns:xff="http://www.xbrl.org/2010/function/formula" xmlns:gen="http://xbrl.org/2008/generic" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:sf="http://xbrl.org/2008/filter/segment-scenario" xmlns:variable="http://xbrl.org/2008/variable" xmlns:xfi="http://www.xbrl.org/2008/function/instance" xmlns:cf="http://xbrl.org/2008/filter/concept" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:valm="http://xbrl.org/2010/message/validation" xmlns:mf="http://xbrl.org/2008/filter/match" xmlns:link="http://www.xbrl.org/2003/linkbase" xmlns:ea="http://xbrl.org/2008/assertion/existence" xmlns:df="http://xbrl.org/2008/filter/dimension" xmlns:num="http://www.xbrl.org/dtr/type/numeric" xmlns:uf="http://xbrl.org/2008/filter/unit" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rf="http://xbrl.org/2008/filter/relative" xmlns:validation="http://xbrl.org/2008/validation" xmlns:pf="http://xbrl.org/2008/filter/period" xmlns:tf="http://xbrl.org/2008/filter/tuple" xmlns:formula="http://xbrl.org/2008/formula" xmlns:msg="http://xbrl.org/2010/message" xmlns:va="http://xbrl.org/2008/assertion/value" xmlns:vf="http://xbrl.org/2008/filter/value" xmlns:label="http://xbrl.org/2008/label" xmlns:gf="http://xbrl.org/2008/filter/general" xmlns:crf="http://xbrl.org/2010/filter/concept-relation" xmlns:xbrli="http://www.xbrl.org/2003/instance">
+  <link:roleRef roleURI="http://www.xbrl.org/2008/role/label" xlink:type="simple" xlink:href="http://www.xbrl.org/2008/generic-label.xsd#standard-label"/>
+  <link:roleRef roleURI="http://www.xbrl.org/2008/role/link" xlink:type="simple" xlink:href="http://www.xbrl.org/2008/generic-link.xsd#standard-link-role"/>
+  <link:roleRef roleURI="http://www.xbrl.org/2010/role/message" xlink:type="simple" xlink:href="http://www.xbrl.org/2010/generic-message.xsd#standard-message"/>
+  <link:arcroleRef arcroleURI="http://xbrl.org/arcrole/2010/assertion-unsatisfied-message" xlink:type="simple" xlink:href="http://www.xbrl.org/2010/validation-message.xsd#assertion-unsatisfied-message"/>
+  <link:arcroleRef arcroleURI="http://xbrl.org/arcrole/2016/assertion-unsatisfied-severity" xlink:type="simple" xlink:href="http://www.xbrl.org/2016/assertion-severity.xsd#assertion-unsatisfied-severity"/>  
+  <link:roleRef roleURI="http://xbrl.ifrs.org/role/ifrs/for_ifrs_mpm1_2025-03-27_role" xlink:type="simple" xlink:href="rol_for_ifrs_2025-03-27.xsd#for_ifrs_mpm1_2025-03-27_role"/>
+  <link:arcroleRef arcroleURI="http://xbrl.org/arcrole/2008/variable-filter" xlink:type="simple" xlink:href="http://www.xbrl.org/2008/variable.xsd#variable-filter"/>
+  <link:arcroleRef arcroleURI="http://xbrl.org/arcrole/2008/variable-set" xlink:type="simple" xlink:href="http://www.xbrl.org/2008/variable.xsd#variable-set"/>
+  <link:arcroleRef arcroleURI="http://xbrl.org/arcrole/2008/variable-set-filter" xlink:type="simple" xlink:href="http://www.xbrl.org/2008/variable.xsd#variable-set-filter"/>
+  <gen:link xlink:type="extended" xlink:role="http://xbrl.ifrs.org/role/ifrs/for_ifrs_mpm1_2025-03-27_role">
+    <va:valueAssertion xlink:type="resource" xlink:label="valueAssertion" xlink:title="valueAssertion" id="valueAssertion" implicitFiltering="true" aspectModel="dimensional" test="(if (xff:has-fallback-value(QName('','IFRS'))) then $IFRS_no_mpm_axis else $IFRS) + (sum($adjustments)) eq $MPM "/>
+    <msg:message xlink:type="resource" xlink:label="res_msg_1" xlink:role="http://www.xbrl.org/2010/role/message" xml:lang="en">Facts with inconsistent values have been reported in the calculation from IFRS measure to the related MPM, please review selected entries.</msg:message>
+	<gen:arc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2010/assertion-unsatisfied-message" xlink:from="valueAssertion" xlink:to="res_msg_1" priority="0" order="1.0"/>
+    <link:loc xlink:type="locator" xlink:href="http://www.xbrl.org/2016/severities.xml#WARNING" xlink:label="sev_1"/>
+    <gen:arc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2016/assertion-unsatisfied-severity" xlink:from="valueAssertion" xlink:to="sev_1" priority="0" order="1.0"/>	
+	<variable:factVariable xlink:type="resource" xlink:label="factVariable" xlink:title="factVariable" id="fv_mpm" bindAsSequence="false"/>
+    <variable:variableArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-set" xlink:from="valueAssertion" xlink:to="factVariable" xlink:title="valueAssertion to factVariable" priority="0" order="1.0" name="MPM"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension" xlink:title="explicitDimension" id="explicitDimension">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ValueOfManagementdefinedPerformanceMeasureMember</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="factVariable" xlink:to="explicitDimension" xlink:title="factVariable to explicitDimension" priority="0" order="2.0" cover="true" complement="false"/>
+    <cf:conceptDataType xlink:type="resource" xlink:label="conceptDataType" xlink:title="conceptDataType" id="conceptDataType" strict="false">
+      <cf:type>
+        <cf:qname>xbrli:monetaryItemType</cf:qname>
+      </cf:type>
+    </cf:conceptDataType>
+    <variable:variableSetFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-set-filter" xlink:from="valueAssertion" xlink:to="conceptDataType" xlink:title="valueAssertion to conceptDataType" priority="0" order="1.0" complement="false"/>
+    <variable:factVariable xlink:type="resource" xlink:label="factVariable_2" xlink:title="factVariable_2" id="fv_ifrs" bindAsSequence="false" fallbackValue="0"/>
+    <variable:variableArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-set" xlink:from="valueAssertion" xlink:to="factVariable_2" xlink:title="valueAssertion to factVariable_2" priority="0" order="2.0" name="IFRS"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_2" xlink:title="explicitDimension_2" id="explicitDimension_2">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="factVariable_2" xlink:to="explicitDimension_2" xlink:title="factVariable_2 to explicitDimension_2" priority="0" order="2.0" complement="false" cover="true"/>
+    <variable:factVariable xlink:type="resource" xlink:label="factVariable_3" xlink:title="factVariable_3" id="fv_adjustments_to_ifrs" bindAsSequence="true" fallbackValue="0"/>
+    <variable:variableArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-set" xlink:from="valueAssertion" xlink:to="factVariable_3" xlink:title="valueAssertion to factVariable_3" priority="0" order="3.0" name="adjustments"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_3" xlink:title="explicitDimension_3" id="explicitDimension_3">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="factVariable_3" xlink:to="explicitDimension_3" xlink:title="factVariable_3 to explicitDimension_3" priority="0" order="1.0" complement="true" cover="true"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_6" xlink:title="explicitDimension_6" id="explicitDimension_6">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ValueOfManagementdefinedPerformanceMeasureMember</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="factVariable_3" xlink:to="explicitDimension_6" xlink:title="factVariable_3 to explicitDimension_6" priority="0" order="3.0" cover="true" complement="true"/>
+        <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_7" xlink:title="explicitDimension_7" id="explicitDimension_7">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:AllReconcilingItemsMember</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="factVariable_3" xlink:to="explicitDimension_7" xlink:title="factVariable_3 to explicitDimension_7" priority="0" order="4.0" cover="true" complement="true"/>
+    <variable:factVariable xlink:type="resource" xlink:label="fv_unmatched_op" xlink:title="fv_unmatched_op" id="fv_ifrs_without_mpm_axis" bindAsSequence="false" fallbackValue="0"/>
+    <variable:variableArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-set" xlink:from="valueAssertion" xlink:to="fv_unmatched_op" xlink:title="valueAssertion to fv_unmatched_op" priority="0" order="4.0" name="IFRS_no_mpm_axis"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_4" xlink:title="explicitDimension_4" id="explicitDimension_4">
+      <df:dimension>
+        <df:qname>ifrs-full:ManagementdefinedPerformanceMeasuresAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ManagementdefinedPerformanceMeasuresDomain</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="fv_unmatched_op" xlink:to="explicitDimension_4" xlink:title="fv_unmatched_op to explicitDimension_4" priority="0" order="1.0" cover="true" complement="false"/>
+    <df:explicitDimension xlink:type="resource" xlink:label="explicitDimension_5" xlink:title="explicitDimension_5" id="explicitDimension_5">
+      <df:dimension>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis</df:qname>
+      </df:dimension>
+      <df:member>
+        <df:qname>ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain</df:qname>
+      </df:member>
+    </df:explicitDimension>
+    <variable:variableFilterArc xlink:type="arc" xlink:arcrole="http://xbrl.org/arcrole/2008/variable-filter" xlink:from="fv_unmatched_op" xlink:to="explicitDimension_5" xlink:title="fv_unmatched_op to explicitDimension_5" priority="0" order="2.0" cover="true" complement="false"/>
+  </gen:link>
+</link:linkbase>

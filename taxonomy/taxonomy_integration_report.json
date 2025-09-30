@@ -1,0 +1,115 @@
+{
+  "success": true,
+  "timestamp": "1759147169.3240137",
+  "taxonomy_summary": {
+    "total_concepts": 5512,
+    "categories": [
+      "abstract",
+      "boolean",
+      "monetary",
+      "estimate_judgement",
+      "text",
+      "other",
+      "risk_disclosure",
+      "accounting_policy"
+    ],
+    "standards_covered": [
+      "IAS 10",
+      "IAS 8",
+      "IFRS 13",
+      "IAS 12",
+      "IAS 1",
+      "IFRS 7",
+      "IFRS 16",
+      "IFRS 3",
+      "IAS 41",
+      "IAS 38",
+      "IAS 40",
+      "IAS 37",
+      "IAS 16",
+      "IFRS 17",
+      "IAS 19",
+      "IAS 26",
+      "IFRS 14",
+      "IFRS 12",
+      "IFRS 2",
+      "IFRS 8",
+      "IAS 27",
+      "IAS 33",
+      "IFRS 1",
+      "IAS 7",
+      "IAS 36",
+      "IFRS 9",
+      "IFRS 15",
+      "IAS 24",
+      "IFRS 10",
+      "IAS 21",
+      "IFRS 6",
+      "IAS 23",
+      "IFRS 5",
+      "IAS 2",
+      "IFRS 19",
+      "IAS 34",
+      "IAS 20",
+      "IAS 29",
+      "SIC 29",
+      "IFRIC 17",
+      "IFRIC 5",
+      "IFRIC 2",
+      "IAS 32",
+      "IFRIC 14",
+      "IFRIC 19",
+      "IFRS 11"
+    ],
+    "concept_types": {
+      "dtr-2022:domainItemType": 665,
+      "xbrli:stringItemType": 1744,
+      "xbrli:booleanItemType": 66,
+      "xbrli:monetaryItemType": 2320,
+      "dtr-2022:percentItemType": 78,
+      "xbrli:durationItemType": 13,
+      "xbrli:decimalItemType": 35,
+      "dtr-2022:textBlockItemType": 493,
+      "xbrli:sharesItemType": 21,
+      "enum2:enumerationItemType": 23,
+      "dtr-2022:areaItemType": 1,
+      "dtr-2022:perShareItemType": 40,
+      "xbrli:dateItemType": 9,
+      "enum2:enumerationSetItemType": 1,
+      "xbrli:pureItemType": 3
+    }
+  },
+  "framework_validation": {
+    "total_files": 42,
+    "validated_files": 42,
+    "validation_errors": [],
+    "suggestions": [
+      {
+        "file": "enhanced_IAS 28",
+        "suggestion": "Standard IAS 28 not in taxonomy: May be superseded or integrated into other standards in this taxonomy version",
+        "type": "known_missing"
+      },
+      {
+        "file": "enhanced_IFRS 18",
+        "suggestion": "Standard IFRS 18 not in taxonomy: Published after March 2025 taxonomy cutoff date",
+        "type": "known_missing"
+      },
+      {
+        "file": "enhanced_IFRS 4",
+        "suggestion": "Standard IFRS 4 not in taxonomy: Superseded by IFRS 17 (Insurance Contracts) in 2023",
+        "type": "known_missing"
+      }
+    ],
+    "standard_coverage": {}
+  },
+  "integration_metrics": {
+    "validation_success_rate": 100.0,
+    "standards_with_concepts": 46,
+    "total_keywords_indexed": 1714
+  },
+  "next_steps": [
+    "Review 3 improvement suggestions",
+    "Begin content tagging using validated taxonomy",
+    "Implement real-time taxonomy validation in AI parser"
+  ]
+}

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IFRS Accounting Taxonomy 2025.**********************         Copyright (c) 2025 IFRS Foundation        All rights reserved. Reproduction and use rights are strictly limited.For more information on the IFRS Foundation's copyright and the terms and conditions of use for these files, please refer to https://www.ifrs.org/legal/terms-and-conditions/. The IFRS Foundation has trade marks registered around the world (Marks) including 'IAS', 'IASB', the IASB logo, 'IFRIC', 'IFRS', the IFRS logo, 'IFRS for SMEs', the IFRS for SMEs logo, the 'Hexagon Device', 'International Accounting Standards', 'International Financial Reporting Standards', 'NIIF' and 'SIC'. Further details of the IFRS Foundation's Marks are available from the IFRS Foundation on request.        ********************** -->
+<link:linkbase xmlns:link="http://www.xbrl.org/2003/linkbase" xmlns:xbrldt="http://xbrl.org/2005/xbrldt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xbrl.org/2003/linkbase http://www.xbrl.org/2003/xbrl-linkbase-2003-12-31.xsd http://www.w3.org/1999/xlink http://www.xbrl.org/2003/xlink-2003-12-31.xsd">
+	<link:labelLink xlink:role="http://www.xbrl.org/2003/role/link" xlink:type="extended">
+		<link:label id="ifrs-full_AllReconcilingItemsMember_commentaryGuidance" xlink:label="res_1" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">This member should be used only to tag amounts representing the ‘total of all reconciling items’ for a given MPM. It should NOT be used to tag (an) individual reconciling item(s). (An) extension(s) should be created for (an) individual reconciling item(s) under this member.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_AllReconcilingItemsMember" xlink:label="loc_1" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_1" xlink:to="res_1" xlink:type="arc"/>
+		<link:label id="ifrs-full_BorrowingCostsRecognisedAsExpense_commentaryGuidance" xlink:label="res_2" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">Do not use this line-item element for the statement of profit or loss. This element is used only to tag information in the notes. If no suitable element is included in the IFRS Accounting Taxonomy, an extension element needs to be created. The label of that extension element should reflect the category of the element in its label.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_BorrowingCostsRecognisedAsExpense" xlink:label="loc_2" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_2" xlink:to="res_2" xlink:type="arc"/>
+		<link:label id="ifrs-full_DividendsClassifiedAsExpense_commentaryGuidance" xlink:label="res_3" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">Do not use this line-item element for the statement of profit or loss. This element is used only to tag information in the notes. The IFRS Accounting Taxonomy includes (an) element(s) that could be used for the statement of profit or loss (or for the notes if the element(s) more closely represent(s) the amount(s) disclosed). If no suitable element is included in the IFRS Accounting Taxonomy, an extension element needs to be created. The label of that extension element should reflect the category of the element in its label.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_DividendsClassifiedAsExpense" xlink:label="loc_3" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_3" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ExpenseFromContinuingInvolvementInDerecognisedFinancialAssets" xlink:label="loc_4" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_4" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_FairValueGainLossThatWouldHaveBeenRecognisedInOtherComprehensiveIncomeIfFinancialAssetsHadNotBeenReclassified" xlink:label="loc_5" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_5" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_FairValueGainsOrLossThatWouldHaveBeenRecognisedInProfitOrLossIfFinancialAssetsHadNotBeenReclassified" xlink:label="loc_6" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_6" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_FinanceIncomeOnNetInvestmentInFinanceLease" xlink:label="loc_7" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_7" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ForeignExchangeGain" xlink:label="loc_8" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_8" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ForeignExchangeLoss" xlink:label="loc_9" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_9" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossArisingFromDifferenceBetweenCarryingAmountOfFinancialLiabilityExtinguishedAndConsiderationPaid" xlink:label="loc_10" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_10" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOfDerecognisedFinancialAssetsAtDateOfTransfer" xlink:label="loc_11" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_11" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOfDerecognisedFinancialAssetsRepresentingGreatestTransferActivity" xlink:label="loc_12" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_12" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOnChangeInFairValueOfHedgedItemUsedAsBasisForRecognisingHedgeIneffectiveness" xlink:label="loc_13" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_13" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOnChangeInFairValueOfHedgingInstrumentUsedAsBasisForRecognisingHedgeIneffectiveness" xlink:label="loc_14" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_14" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOnHedgeIneffectiveness" xlink:label="loc_15" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_15" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOnHedgeIneffectivenessRecognisedInProfitOrLoss" xlink:label="loc_16" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_16" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost" xlink:label="loc_17" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_17" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnChangeInFairValueOfDerivatives" xlink:label="loc_18" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_18" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnDisposalsOfInvestmentPropertyCarriedAtCostOrInAccordanceWithIFRS16WithinFairValueModel" xlink:label="loc_19" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_19" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnDisposalsOfInvestments" xlink:label="loc_20" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_20" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnDisposalsOfNoncurrentAssets" xlink:label="loc_21" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_21" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialAssetsAtAmortisedCost" xlink:label="loc_22" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_22" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialAssetsAtFairValueThroughProfitOrLoss" xlink:label="loc_23" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_23" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialAssetsAtFairValueThroughProfitOrLossDesignatedAsUponInitialRecognition" xlink:label="loc_24" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_24" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialLiabilitiesAtAmortisedCost" xlink:label="loc_25" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_25" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialLiabilitiesAtFairValueThroughProfitOrLoss" xlink:label="loc_26" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_26" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialLiabilitiesAtFairValueThroughProfitOrLossClassifiedAsHeldForTrading" xlink:label="loc_27" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_27" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialLiabilitiesAtFairValueThroughProfitOrLossDesignatedAsUponInitialRecognition" xlink:label="loc_28" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_28" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnSubsequentIncreaseInFairValueLessCostsToSellNotInExcessOfRecognisedCumulativeImpairmentLoss" xlink:label="loc_29" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_29" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossAttributableToChangeInUnrealisedGainsOrLossesForAssetsHeldAtEndOfPeriodFairValueMeasurement" xlink:label="loc_30" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_30" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossAttributableToChangeInUnrealisedGainsOrLossesForLiabilitiesHeldAtEndOfPeriodFairValueMeasurement" xlink:label="loc_31" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_31" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossOnFinancialLiabilitiesAtFairValueThroughProfitOrLossDesignatedUponInitialRecognitionOrSubsequently" xlink:label="loc_32" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_32" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsOnChangeInFairValueOfDerivatives" xlink:label="loc_33" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_33" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsOnDisposalsOfInvestments" xlink:label="loc_34" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_34" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsOnDisposalsOfNoncurrentAssets" xlink:label="loc_35" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_35" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossRecognisedInProfitOrLoss" xlink:label="loc_36" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_36" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_IncomeFromContinuingInvolvementInDerecognisedFinancialAssets" xlink:label="loc_37" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_37" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_IncomeFromStructuredEntities" xlink:label="loc_38" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_38" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_IncomeFromSubleasingRightofuseAssets" xlink:label="loc_39" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_39" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_IncomeRelatingToVariableLeasePaymentsForOperatingLeasesThatDoNotDependOnIndexOrRate" xlink:label="loc_40" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_40" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_IncomeRelatingToVariableLeasePaymentsNotIncludedInMeasurementOfNetInvestmentInFinanceLease" xlink:label="loc_41" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_41" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpense" xlink:label="loc_42" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_42" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseForFinancialLiabilitiesNotAtFairValueThroughProfitOrLoss" xlink:label="loc_43" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_43" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnBankLoansAndOverdrafts" xlink:label="loc_44" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_44" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnBonds" xlink:label="loc_45" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_45" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnBorrowings" xlink:label="loc_46" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_46" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnDebtInstrumentsIssued" xlink:label="loc_47" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_47" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnDepositsFromBanks" xlink:label="loc_48" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_48" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnDepositsFromCustomers" xlink:label="loc_49" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_49" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss" xlink:label="loc_50" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_50" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnFinancialLiabilitiesHeldForTrading" xlink:label="loc_51" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_51" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnLiabilitiesDueToCentralBanks" xlink:label="loc_52" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_52" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnOtherFinancialLiabilities" xlink:label="loc_53" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_53" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestExpenseOnRepurchaseAgreementsAndCashCollateralOnSecuritiesLent" xlink:label="loc_54" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_54" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeExpenseRecognisedForAssetsReclassifiedIntoMeasuredAtAmortisedCost" xlink:label="loc_55" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_55" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeExpenseRecognisedForFinancialAssetsReclassifiedIntoMeasuredAtAmortisedCostFirstApplicationOfIFRS9" xlink:label="loc_56" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_56" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeExpenseRecognisedForFinancialLiabilitiesReclassifiedIntoMeasuredAtAmortisedCostFirstApplicationOfIFRS9" xlink:label="loc_57" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_57" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeForFinancialAssetsMeasuredAtAmortisedCost" xlink:label="loc_58" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_58" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnCashAndBankBalancesAtCentralBanks" xlink:label="loc_59" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_59" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnCashAndCashEquivalents" xlink:label="loc_60" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_60" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnDebtInstrumentsHeld" xlink:label="loc_61" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_61" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnDeposits" xlink:label="loc_62" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_62" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss" xlink:label="loc_63" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_63" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnFinancialAssetsHeldForTrading" xlink:label="loc_64" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_64" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnLoansAndAdvancesToBanks" xlink:label="loc_65" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_65" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnLoansAndAdvancesToCustomers" xlink:label="loc_66" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_66" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnOtherFinancialAssets" xlink:label="loc_67" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_67" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestIncomeOnReverseRepurchaseAgreementsAndCashCollateralOnSecuritiesBorrowed" xlink:label="loc_68" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_68" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InvestmentIncome" xlink:label="loc_69" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_69" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_LossesArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost" xlink:label="loc_70" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_70" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_LossesIncurredInRelationToInterestsInStructuredEntities" xlink:label="loc_71" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_71" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_LossesOnChangeInFairValueOfDerivatives" xlink:label="loc_72" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_72" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_LossesOnDisposalsOfInvestments" xlink:label="loc_73" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_73" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_LossesOnDisposalsOfNoncurrentAssets" xlink:label="loc_74" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_74" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_OperatingLeaseIncome" xlink:label="loc_75" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_75" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ProfitLossRecognisedOnExchangingConstructionServicesForFinancialAsset2011" xlink:label="loc_76" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_76" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ProfitLossRecognisedOnExchangingConstructionServicesForIntangibleAsset2011" xlink:label="loc_77" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_77" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_RentalIncomeFromInvestmentProperty" xlink:label="loc_78" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_78" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_RevenueFromInterest" xlink:label="loc_79" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_79" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ReversalOfImpairmentLossRecognisedInProfitOrLoss" xlink:label="loc_80" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_80" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_SalesFairValueMeasurementAssets" xlink:label="loc_81" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_81" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_SellingProfitLossOnFinanceLeases" xlink:label="loc_82" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_82" xlink:to="res_2" xlink:type="arc"/>
+		<link:label id="ifrs-full_GainsLossesOnFairValueAdjustmentInvestmentProperty_commentaryGuidance" xlink:label="res_4" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">Do not use this line-item element for the statement of profit or loss. This element is used only to tag information in the notes. If no suitable element is included in the IFRS Accounting Taxonomy, an extension element needs to be created. The label of that extension element should reflect the category of the element in its label. A positive or negative XBRL value can be entered for this element. Refer to the standard element label to determine the correct sign. Use a negative value for terms in brackets.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFairValueAdjustmentInvestmentProperty" xlink:label="loc_83" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_83" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossExcludingExchangeDifferencesFairValueMeasurementAssets" xlink:label="loc_84" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_84" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossExcludingExchangeDifferencesFairValueMeasurementLiabilities" xlink:label="loc_85" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_85" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossFairValueMeasurementAssets" xlink:label="loc_86" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_86" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossFairValueMeasurementLiabilities" xlink:label="loc_87" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_87" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossOnExchangeDifferencesFairValueMeasurementAssets" xlink:label="loc_88" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_88" xlink:to="res_4" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedInProfitOrLossOnExchangeDifferencesFairValueMeasurementLiabilities" xlink:label="loc_89" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_89" xlink:to="res_4" xlink:type="arc"/>
+		<link:label id="ifrs-full_AmortisationIntangibleAssetsOtherThanGoodwill_commentaryGuidance" xlink:label="res_5" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">Do not use this line-item element for the statement of profit or loss. This element is used only to tag information in the notes. If no suitable element is included in the IFRS Accounting Taxonomy, an extension element needs to be created. The label of that extension element should reflect the category of the element in its label. A positive XBRL value should normally be entered for this element. A negative XBRL value may need to be entered if this element is used with the members referenced. [Refer: Accumulated depreciation and amortisation [member]; Accumulated depreciation, amortisation and impairment [member]; Accumulated impairment [member]; Aggregate adjustment to carrying amounts reported under previous GAAP [member]; Effect of asset ceiling [member]; Effect of transition to IFRSs [member]; Elimination of intersegment amounts [member]; Financial forecast of cash inflows (outflows) for cash-generating unit, measurement input [member]; Financial forecast of profit (loss) for cash-generating unit, measurement input [member]; Increase (decrease) due to changes in accounting policy [member]; Increase (decrease) due to changes in accounting policy and corrections of prior period errors [member]; Increase (decrease) due to changes in accounting policy required by IFRSs [member]; Increase (decrease) due to corrections of prior period errors [member]; Increase (decrease) due to departure from requirement of IFRS [member]; Increase (decrease) due to voluntary changes in accounting policy [member]; Material reconciling items [member]; Plan assets [member]; Present value of defined benefit obligation [member]; Redesignated amount [member]; Risk diversification effect [member]; Treasury shares [member]]</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_AmortisationIntangibleAssetsOtherThanGoodwill" xlink:label="loc_90" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_90" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_DepreciationInvestmentProperty" xlink:label="loc_91" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_91" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_DepreciationRightofuseAssets" xlink:label="loc_92" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_92" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossRecognisedInProfitOrLossIntangibleAssetsAndGoodwill" xlink:label="loc_93" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_93" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill" xlink:label="loc_94" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_94" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossRecognisedInProfitOrLossInvestmentProperty" xlink:label="loc_95" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_95" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ReversalOfImpairmentLossRecognisedInProfitOrLossIntangibleAssetsOtherThanGoodwill" xlink:label="loc_96" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_96" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ReversalOfImpairmentLossRecognisedInProfitOrLossInvestmentProperty" xlink:label="loc_97" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_97" xlink:to="res_5" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLoss" xlink:label="loc_98" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_98" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ReversalOfImpairmentLoss" xlink:label="loc_99" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_99" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_FinancialAssetsWithContractualCashFlowsModifiedDuringReportingPeriodWhileLossAllowanceMeasuredAtLifetimeExpectedCreditLossesModificationGainLoss" xlink:label="loc_100" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_100" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossOnDesignationOfFinancialInstrumentAsMeasuredAtFairValueThroughProfitOrLossBecauseCreditDerivativeIsUsedToManageCreditRisk" xlink:label="loc_101" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_101" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnExchangeDifferencesOnTranslationRecognisedInProfitOrLoss" xlink:label="loc_102" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_102" xlink:to="res_3" xlink:type="arc"/>
+		<link:label id="ifrs-full_NetForeignExchangeLoss_commentaryGuidance" xlink:label="res_6" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">Do not use this line-item element for the statement of profit or loss. This element is used only to tag information in the notes. If no suitable element is included in the IFRS Accounting Taxonomy, an extension element needs to be created. The label of that extension element should reflect the category of the element in its label. Only use this line item when net exchange gains (losses) are included in different line items in the statement of profit or loss depending on whether the amount reported for the period represents a net gain or a net loss. For example, Entity X states in its 20X1 financial statements that finance income includes a net exchange gain of CU 100 in the year 20X1 (20X0 nil) and that finance expenses include a net exchange loss of nil in 20X1 (CU 70 in 20X0). In other cases, use the line item 'Foreign exchange gain (loss), operating', 'Foreign exchange gain (loss), investing' or 'Foreign exchange gain (loss), financing' instead to tag net foreign exchange losses.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_NetForeignExchangeLoss" xlink:label="loc_103" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_103" xlink:to="res_6" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_NetForeignExchangeGain" xlink:label="loc_104" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_104" xlink:to="res_6" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnNetMonetaryPosition" xlink:label="loc_105" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_105" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss" xlink:label="loc_106" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_106" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_CumulativeGainLossPreviouslyRecognisedInOtherComprehensiveIncomeArisingFromReclassificationOfFinancialAssetsOutOfFairValueThroughOtherComprehensiveIncomeIntoFairValueThroughProfitOrLossMeasurementCategory" xlink:label="loc_107" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_107" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost" xlink:label="loc_108" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_108" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesArisingFromDifferenceBetweenPreviousCarryingAmountAndFairValueOfFinancialAssetsReclassifiedAsMeasuredAtFairValue" xlink:label="loc_109" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_109" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ImpairmentLossImpairmentGainAndReversalOfImpairmentLossDeterminedInAccordanceWithIFRS9" xlink:label="loc_110" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_110" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_InterestRevenueCalculatedUsingEffectiveInterestMethod" xlink:label="loc_111" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_111" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainLossRecognisedAsResultOfRemeasuringToFairValueEquityInterestInAcquireeHeldByAcquirerBeforeBusinessCombination" xlink:label="loc_112" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_112" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ProfitsLossesOnDisposalOfInvestmentsAndChangesInValueOfInvestments" xlink:label="loc_113" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_113" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_SalesFairValueMeasurementLiabilities" xlink:label="loc_114" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_114" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ExpenseRecognisedDuringPeriodForBadAndDoubtfulDebtsForRelatedPartyTransaction" xlink:label="loc_115" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_115" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesRecognisedWhenControlInSubsidiaryIsLost" xlink:label="loc_116" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_116" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_PortionOfGainsLossesRecognisedWhenControlOfSubsidiaryIsLostAttributableToRecognisingInvestmentRetainedInFormerSubsidiary" xlink:label="loc_117" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_117" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_GainsLossesOnFinancialAssetsAtFairValueThroughProfitOrLossMandatorilyMeasuredAtFairValue" xlink:label="loc_118" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_118" xlink:to="res_2" xlink:type="arc"/>
+		<link:label id="ifrs-full_RestatedComparativeInformationForMPMsNotDisclosedBecauseOfImpracticability_commentaryGuidance" xlink:label="res_7" xlink:role="http://www.xbrl.org/2003/role/commentaryGuidance" xlink:type="resource" xml:lang="en">When using this element to communicate information that meets the disclosure requirement, the entity should also use the parent text element to capture the related narrative disclosure if provided in the financial statements.</link:label>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_RestatedComparativeInformationForMPMsNotDisclosedBecauseOfImpracticability" xlink:label="loc_119" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_119" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_EntityInvestsInAssetsAsAMainBusinessActivity" xlink:label="loc_120" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_120" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_EntityProvidesFinancingToCustomersAsAMainBusinessActivity" xlink:label="loc_121" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_121" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_EntityChangedAssessmentOfWhetherItInvestsInAssetsOrProvidesFinancingToCustomersAsAMainBusinessActivity" xlink:label="loc_122" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_122" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_AmountAndClassificationNotDisclosedBecauseOfImpracticabilityForItemsForWhichClassificationHasChangedBecauseOfChangedAssessmentOfSpecifiedMainBusinessActivities" xlink:label="loc_123" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_123" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_EntityCalculatedMPMOtherThanByUsingAccountingPoliciesItUsedForLineItemsInStatementsOfFinancialPerformance" xlink:label="loc_124" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_124" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_CalculationOfMPMDiffersFromAccountingPoliciesRequiredOrPermittedByIFRSs" xlink:label="loc_125" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_125" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ClassificationOfIncomeAndExpensesFromCashAndCashEquivalentsThatDoNotRelateToProvidingFinancingToCustomers" xlink:label="loc_126" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_126" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_ClassificationOfIncomeAndExpensesFromLiabilitiesThatAriseFromTransactionsThatInvolveOnlyRaisingOfFinanceAndDoNotRelateToProvidingFinancingToCustomers" xlink:label="loc_127" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_127" xlink:to="res_7" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_DepreciationAndAmortisationExpense" xlink:label="loc_128" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_128" xlink:to="res_3" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_Depreciation" xlink:label="loc_129" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_129" xlink:to="res_2" xlink:type="arc"/>
+		<link:loc xlink:href="../full_ifrs-cor_2025-03-27.xsd#ifrs-full_Amortisation" xlink:label="loc_130" xlink:type="locator"/>
+		<link:labelArc xlink:arcrole="http://www.xbrl.org/2003/arcrole/concept-label" xlink:from="loc_130" xlink:to="res_2" xlink:type="arc"/>
+	</link:labelLink>
+</link:linkbase>

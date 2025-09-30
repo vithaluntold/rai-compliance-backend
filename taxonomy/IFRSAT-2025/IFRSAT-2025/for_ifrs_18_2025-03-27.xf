@@ -1,0 +1,32 @@
+namespace ifrs-full = "https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs-full";
+namespace xbrli = "http://www.xbrl.org/2003/instance";
+namespace xff = "http://www.xbrl.org/2010/function/formula";
+
+assertion valueAssertion {
+   unsatisfied-message (en) "Facts with inconsistent values have been reported in the calculation from IFRS measure to the related MPM, please review selected entries.";
+   unsatisfied-severity warning;
+   concept-data-type non-strict xbrli:monetaryItemType;
+   variable $MPM {
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:ValueOfManagementdefinedPerformanceMeasureMember;
+   };
+   variable $IFRS {
+      fallback {0}
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain;
+   };
+   variable $adjustments {
+      as-sequence
+      fallback {0}
+      not
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain;
+      not
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:ValueOfManagementdefinedPerformanceMeasureMember
+      not
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:AllReconcilingItemsMember;
+   };
+   variable $IFRS_no_mpm_axis {
+      fallback {0}
+      explicit-dimension ifrs-full:ManagementdefinedPerformanceMeasuresAxis member ifrs-full:ManagementdefinedPerformanceMeasuresDomain;
+      explicit-dimension ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis member ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureDomain;
+   };
+   test {(if (xff:has-fallback-value(QName('','IFRS'))) then $IFRS_no_mpm_axis else $IFRS) + (sum($adjustments)) eq $MPM };
+};
