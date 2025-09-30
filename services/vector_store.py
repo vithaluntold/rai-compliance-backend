@@ -115,8 +115,14 @@ class VectorStore:
         """Process a single chunk with retries."""
         for attempt in range(MAX_RETRIES):
             try:
+                # Truncate text to fit within token limits (approximately 6000 chars = 8000 tokens max)
+                chunk_text = chunk["text"]
+                if len(chunk_text) > 6000:
+                    chunk_text = chunk_text[:6000] + "..."
+                    logger.warning(f"Truncated chunk text from {len(chunk['text'])} to 6000 characters")
+                    
                 response = self.ai_client.embeddings.create(
-                    model=self.deployment_id, input=chunk["text"]
+                    model=self.deployment_id, input=chunk_text
                 )
                 embedding = np.array(response.data[0].embedding, dtype=np.float32)
                 return embedding, chunk

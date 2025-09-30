@@ -203,10 +203,22 @@ class XBRLTaxonomyParser:
                 
     def _load_standard_linkbases(self):
         """Load individual IAS/IFRS standard linkbases to map concepts to standards"""
-        linkbases_dir = self.taxonomy_dir / "linkbases"
+        # Try multiple possible linkbases directories
+        possible_dirs = [
+            self.taxonomy_dir / "linkbases",
+            self.taxonomy_dir / "IFRSAT-2025" / "IFRSAT-2025" / "full_ifrs",
+            self.taxonomy_dir / "IFRSAT-2025" / "full_ifrs",
+            self.taxonomy_dir / "full_ifrs"
+        ]
         
-        if not linkbases_dir.exists():
-            logger.warning(f"Linkbases directory not found: {linkbases_dir}")
+        linkbases_dir = None
+        for dir_path in possible_dirs:
+            if dir_path.exists():
+                linkbases_dir = dir_path
+                break
+                
+        if not linkbases_dir:
+            logger.info(f"No linkbases directory found, using pattern-based taxonomy validation")
             return
             
         logger.info(f"Processing linkbases from: {linkbases_dir}")

@@ -565,7 +565,12 @@ class SmartMetadataExtractor:
 
         except Exception as _e:
             error_msg = str(_e)
-            logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {error_msg}")
+            
+            # Check if it's a 500 error and reduce log level to info (server issue, not our code)
+            if "500" in error_msg or "Internal server error" in error_msg:
+                logger.info(f"AI service temporary error for {field_name}: {error_msg}")
+            else:
+                logger.error(f"Error in keyword→semantic→AI extraction for {field_name}: {error_msg}")
             
             # Provide fallback values based on field type instead of empty strings
             fallback_value = ""
