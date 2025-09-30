@@ -275,7 +275,9 @@ def _process_document_chunks(document_id: str) -> list:
         try:
             # Use NLP pipeline for enhanced document processing
             from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
-            nlp_pipeline = CompleteNLPValidationPipeline()
+            import os
+            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy")
+            nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
             nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
             
             if not nlp_result.success:
@@ -293,7 +295,9 @@ def _process_document_chunks(document_id: str) -> list:
         try:
             # Use NLP pipeline for enhanced document processing
             from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
-            nlp_pipeline = CompleteNLPValidationPipeline()
+            import os
+            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy")
+            nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
             nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
             
             if not nlp_result.success:
@@ -352,15 +356,28 @@ def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:
             structure = nlp_result.structure_parsing
             if isinstance(structure, dict) and "sections" in structure:
                 for i, section in enumerate(structure["sections"], 1):
-                    content_text = section.get("content", "")
+                    # Handle both dict and string sections
+                    if isinstance(section, dict):
+                        content_text = section.get("content", "")
+                        section_type = section.get("type", "unknown")
+                        section_id = section.get("id", f"section_{i}")
+                    elif isinstance(section, str):
+                        content_text = section
+                        section_type = "text"
+                        section_id = f"section_{i}"
+                    else:
+                        content_text = str(section)
+                        section_type = "unknown"
+                        section_id = f"section_{i}"
+                        
                     legacy_chunk = {
                         "id": f"{document_id}_section_{i}",
                         "content": content_text,  # For frontend/analysis compatibility  
                         "text": content_text,     # For SmartMetadataExtractor compatibility
                         "metadata": {
-                            "section_type": section.get("type", "unknown"),
+                            "section_type": section_type,
                             "processing_method": "structure_parsing",
-                            "original_section_id": section.get("id", f"section_{i}")
+                            "original_section_id": section_id
                         }
                     }
                     chunks.append(legacy_chunk)
@@ -731,6 +748,17 @@ async def process_upload_tasks(
 
         # Process document chunks directly
         chunks = _process_document_chunks(document_id)
+        
+        # Create vector index for the chunks
+        try:
+            vs_svc = get_vector_store()
+            index_created = await vs_svc.create_index(document_id, chunks)
+            if index_created:
+                logger.info(f"✅ Vector index created successfully for document {document_id}")
+            else:
+                logger.warning(f"⚠️ Vector index creation failed for document {document_id}")
+        except Exception as e:
+            logger.warning(f"⚠️ Vector index creation error for document {document_id}: {e}")
 
         # Update status to indicate chunking is complete and metadata extraction starting
         chunking_complete_status = {
@@ -913,11 +941,15 @@ async def upload_document(
         logger.info(f"⚙️  Processing mode validation: {processing_mode}")
 
         # Validate processing mode
-        valid_modes = ["zap", "smart", "comparison"]
+        valid_modes = ["zap", "smart", "comparison", "enhanced"]
         if processing_mode not in valid_modes:
             logger.warning(
                 f"Invalid processing mode '{processing_mode}', defaulting to 'smart'"
             )
+            processing_mode = "smart"
+            
+        # Map enhanced mode to smart for backend processing
+        if processing_mode == "enhanced":
             processing_mode = "smart"
 
         logger.info(f"📤 UPLOAD STEP 4: Starting background processing for document {document_id}")

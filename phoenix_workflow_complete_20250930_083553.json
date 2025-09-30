@@ -1,0 +1,1001 @@
+{
+  "test_summary": {
+    "document": "Phoenix_Financial_Statement_2024.txt",
+    "document_id": "phoenix_test_f79b14f3",
+    "completion_time": "2025-09-30T08:35:53.991398",
+    "total_duration": "~3 minutes",
+    "success": false
+  },
+  "chat_messages": [
+    {
+      "timestamp": "08:35:32",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "Welcome to Audricc! Please upload your financial statement."
+    },
+    {
+      "timestamp": "08:35:32",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "File selected: Phoenix_Financial_Statement_2024.txt"
+    },
+    {
+      "timestamp": "08:35:32",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "Uploading document... Please wait."
+    },
+    {
+      "timestamp": "08:35:32",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Document uploaded successfully! Processing will begin shortly."
+    },
+    {
+      "timestamp": "08:35:33",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcc4 Starting intelligent document analysis..."
+    },
+    {
+      "timestamp": "08:35:33",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udd0d Analyzing document structure and content..."
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Document analysis complete! Created 12 intelligent segments."
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udd2c Extracting financial statement metadata..."
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Metadata extraction completed successfully!"
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "Please review the extracted metadata and click 'Confirm & Proceed' when ready."
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "CHAT",
+      "sender": "USER",
+      "message": "Metadata looks correct, proceeding with analysis."
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Metadata confirmed! Moving to framework selection."
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "Please select your compliance analysis framework:"
+    },
+    {
+      "timestamp": "08:35:41",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 IFRS framework selected! Preparing 1379 compliance questions."
+    },
+    {
+      "timestamp": "08:35:41",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83e\udd16 AI is analyzing your document to suggest optimal analysis parameters..."
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83c\udfaf AI Analysis Complete! Here are my recommendations:"
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2022 Focus on Revenue Recognition Compliance"
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2022 Medium risk detected in Inventory Valuation"
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2022 Comprehensive analysis recommended"
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "CHAT",
+      "sender": "USER",
+      "message": "AI suggestions look good, let's proceed with comprehensive analysis."
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Starting comprehensive compliance analysis..."
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udd0d Starting comprehensive compliance analysis using NLP pipeline..."
+    },
+    {
+      "timestamp": "08:35:45",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Loading Enhanced-Basic Question Mapping... (10%)"
+    },
+    {
+      "timestamp": "08:35:46",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Processing Balance Sheet Compliance... (25%)"
+    },
+    {
+      "timestamp": "08:35:47",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Analyzing Income Statement Standards... (40%)"
+    },
+    {
+      "timestamp": "08:35:48",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Reviewing Cash Flow Accuracy... (55%)"
+    },
+    {
+      "timestamp": "08:35:49",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Checking Disclosure Requirements... (70%)"
+    },
+    {
+      "timestamp": "08:35:50",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Validating Audit Compliance... (85%)"
+    },
+    {
+      "timestamp": "08:35:51",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Compiling Final Results... (95%)"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcca Analysis Complete... (100%)"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83c\udf89 Compliance analysis completed successfully!"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcc8 Overall Compliance: High (87%)"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 1203 items compliant"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u26a0\ufe0f 87 items need attention"
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "Analysis complete! Click 'View Detailed Results' to see the full report."
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\ud83d\udcc4 Opening detailed compliance report..."
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "CHAT",
+      "sender": "SYSTEM",
+      "message": "\u2705 Detailed results are now available for review and export."
+    }
+  ],
+  "backend_calls": [
+    {
+      "timestamp": "08:35:32",
+      "type": "BACKEND",
+      "endpoint": "/api/upload",
+      "method": "POST",
+      "payload": {
+        "file_name": "Phoenix_Financial_Statement_2024.txt",
+        "file_size": 178770,
+        "document_id": "phoenix_test_f79b14f3"
+      },
+      "response": {
+        "success": true,
+        "document_id": "phoenix_test_f79b14f3",
+        "message": "Document uploaded successfully",
+        "processing_status": "queued"
+      }
+    },
+    {
+      "timestamp": "08:35:33",
+      "type": "BACKEND",
+      "endpoint": "/api/process_chunks",
+      "method": "POST",
+      "payload": {
+        "document_id": "phoenix_test_f79b14f3",
+        "file_path": "test_files/Phoenix_Financial_Statement_2024.txt"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "BACKEND",
+      "endpoint": "/api/process_chunks",
+      "method": "POST",
+      "payload": null,
+      "response": {
+        "success": true,
+        "chunks_created": 12,
+        "processing_time": "1.24s",
+        "chunks": [
+          {
+            "chunk_id": "phoenix_chunk_001",
+            "text": "Phoenix Industries Ltd. Annual Financial Report 2024 STATEMENT OF FINANCIAL POSITION",
+            "content": "Phoenix Industries Ltd. Annual Financial Report 2024 STATEMENT OF FINANCIAL POSITION",
+            "chunk_type": "header",
+            "financial_statement_type": "balance_sheet"
+          },
+          {
+            "chunk_id": "phoenix_chunk_002",
+            "text": "Current Assets: Cash and cash equivalents $2,450,000 Trade receivables $1,890,000",
+            "content": "Current Assets: Cash and cash equivalents $2,450,000 Trade receivables $1,890,000",
+            "chunk_type": "financial_data",
+            "financial_statement_type": "balance_sheet"
+          },
+          {
+            "chunk_id": "phoenix_chunk_003",
+            "text": "Revenue $25,600,000 Cost of goods sold ($18,200,000) Gross profit $7,400,000",
+            "content": "Revenue $25,600,000 Cost of goods sold ($18,200,000) Gross profit $7,400,000",
+            "chunk_type": "financial_data",
+            "financial_statement_type": "income_statement"
+          },
+          {
+            "chunk_id": "phoenix_chunk_004",
+            "text": "Net cash from operating activities $3,100,000 Net cash used in investing activities ($3,050,000)",
+            "content": "Net cash from operating activities $3,100,000 Net cash used in investing activities ($3,050,000)",
+            "chunk_type": "financial_data",
+            "financial_statement_type": "cash_flow"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "BACKEND",
+      "endpoint": "/api/extract_metadata",
+      "method": "POST",
+      "payload": {
+        "document_id": "phoenix_test_f79b14f3"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "BACKEND",
+      "endpoint": "/api/extract_metadata",
+      "method": "POST",
+      "payload": null,
+      "response": {
+        "success": true,
+        "document_info": {
+          "company_name": "Phoenix Industries Ltd.",
+          "financial_year": "2024",
+          "reporting_date": "December 31, 2024",
+          "currency": "USD",
+          "audit_status": "Audited",
+          "auditor": "XYZ Chartered Accountants"
+        },
+        "financial_statements": {
+          "balance_sheet": {
+            "present": true,
+            "total_assets": "$30,440,000",
+            "total_liabilities": "$15,700,000",
+            "total_equity": "$14,740,000"
+          },
+          "income_statement": {
+            "present": true,
+            "revenue": "$25,600,000",
+            "net_profit": "$1,267,000",
+            "gross_profit": "$7,400,000"
+          },
+          "cash_flow": {
+            "present": true,
+            "operating_cash_flow": "$3,100,000",
+            "investing_cash_flow": "($3,050,000)",
+            "financing_cash_flow": "($180,000)"
+          },
+          "notes": {
+            "present": true,
+            "count": 6
+          }
+        },
+        "compliance_indicators": {
+          "ifrs_compliance": true,
+          "audit_opinion": "Unqualified",
+          "key_audit_matters": 3
+        }
+      }
+    },
+    {
+      "timestamp": "08:35:41",
+      "type": "BACKEND",
+      "endpoint": "/api/select_framework",
+      "method": "POST",
+      "payload": {
+        "document_id": "phoenix_test_f79b14f3",
+        "selected_framework": "ifrs"
+      },
+      "response": {
+        "success": true,
+        "framework": "IFRS",
+        "framework_questions": 1379,
+        "estimated_analysis_time": "2-3 minutes"
+      }
+    },
+    {
+      "timestamp": "08:35:41",
+      "type": "BACKEND",
+      "endpoint": "/api/get_ai_suggestions",
+      "method": "POST",
+      "payload": {
+        "document_id": "phoenix_test_f79b14f3",
+        "metadata": {
+          "success": true,
+          "document_info": {
+            "company_name": "Phoenix Industries Ltd.",
+            "financial_year": "2024",
+            "reporting_date": "December 31, 2024",
+            "currency": "USD",
+            "audit_status": "Audited",
+            "auditor": "XYZ Chartered Accountants"
+          },
+          "financial_statements": {
+            "balance_sheet": {
+              "present": true,
+              "total_assets": "$30,440,000",
+              "total_liabilities": "$15,700,000",
+              "total_equity": "$14,740,000"
+            },
+            "income_statement": {
+              "present": true,
+              "revenue": "$25,600,000",
+              "net_profit": "$1,267,000",
+              "gross_profit": "$7,400,000"
+            },
+            "cash_flow": {
+              "present": true,
+              "operating_cash_flow": "$3,100,000",
+              "investing_cash_flow": "($3,050,000)",
+              "financing_cash_flow": "($180,000)"
+            },
+            "notes": {
+              "present": true,
+              "count": 6
+            }
+          },
+          "compliance_indicators": {
+            "ifrs_compliance": true,
+            "audit_opinion": "Unqualified",
+            "key_audit_matters": 3
+          }
+        },
+        "framework": "ifrs"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "BACKEND",
+      "endpoint": "/api/get_ai_suggestions",
+      "method": "POST",
+      "payload": null,
+      "response": {
+        "success": true,
+        "suggestions": {
+          "focus_areas": [
+            "Revenue Recognition Compliance",
+            "Asset Valuation Methods",
+            "Cash Flow Statement Accuracy",
+            "Related Party Disclosures"
+          ],
+          "risk_indicators": [
+            {
+              "area": "Inventory Valuation",
+              "risk_level": "Medium",
+              "reason": "Large inventory balance ($3.2M) requires detailed analysis"
+            },
+            {
+              "area": "Intangible Assets",
+              "risk_level": "Low",
+              "reason": "Standard accounting treatment observed"
+            }
+          ],
+          "recommended_depth": "Comprehensive",
+          "estimated_time": "180 seconds"
+        }
+      }
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "BACKEND",
+      "endpoint": "/api/start_compliance_analysis",
+      "method": "POST",
+      "payload": {
+        "document_id": "phoenix_test_f79b14f3",
+        "framework": "ifrs",
+        "ai_suggestions": {
+          "success": true,
+          "suggestions": {
+            "focus_areas": [
+              "Revenue Recognition Compliance",
+              "Asset Valuation Methods",
+              "Cash Flow Statement Accuracy",
+              "Related Party Disclosures"
+            ],
+            "risk_indicators": [
+              {
+                "area": "Inventory Valuation",
+                "risk_level": "Medium",
+                "reason": "Large inventory balance ($3.2M) requires detailed analysis"
+              },
+              {
+                "area": "Intangible Assets",
+                "risk_level": "Low",
+                "reason": "Standard accounting treatment observed"
+              }
+            ],
+            "recommended_depth": "Comprehensive",
+            "estimated_time": "180 seconds"
+          }
+        },
+        "metadata": {
+          "success": true,
+          "document_info": {
+            "company_name": "Phoenix Industries Ltd.",
+            "financial_year": "2024",
+            "reporting_date": "December 31, 2024",
+            "currency": "USD",
+            "audit_status": "Audited",
+            "auditor": "XYZ Chartered Accountants"
+          },
+          "financial_statements": {
+            "balance_sheet": {
+              "present": true,
+              "total_assets": "$30,440,000",
+              "total_liabilities": "$15,700,000",
+              "total_equity": "$14,740,000"
+            },
+            "income_statement": {
+              "present": true,
+              "revenue": "$25,600,000",
+              "net_profit": "$1,267,000",
+              "gross_profit": "$7,400,000"
+            },
+            "cash_flow": {
+              "present": true,
+              "operating_cash_flow": "$3,100,000",
+              "investing_cash_flow": "($3,050,000)",
+              "financing_cash_flow": "($180,000)"
+            },
+            "notes": {
+              "present": true,
+              "count": 6
+            }
+          },
+          "compliance_indicators": {
+            "ifrs_compliance": true,
+            "audit_opinion": "Unqualified",
+            "key_audit_matters": 3
+          }
+        }
+      },
+      "response": null
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "BACKEND",
+      "endpoint": "/api/start_compliance_analysis",
+      "method": "POST",
+      "payload": null,
+      "response": {
+        "success": true,
+        "analysis_id": "analysis_phoenix_test_f79b14f3",
+        "completion_time": "2025-09-30T08:35:52.985962",
+        "summary": {
+          "overall_compliance": "High (87%)",
+          "total_questions": 1379,
+          "compliant_items": 1203,
+          "non_compliant_items": 89,
+          "requires_attention": 87
+        },
+        "key_findings": [
+          {
+            "area": "Revenue Recognition",
+            "status": "Compliant",
+            "confidence": "95%",
+            "details": "IFRS 15 standards properly applied"
+          },
+          {
+            "area": "Asset Valuation",
+            "status": "Requires Attention",
+            "confidence": "78%",
+            "details": "Inventory valuation method needs clarification"
+          },
+          {
+            "area": "Cash Flow Classification",
+            "status": "Compliant",
+            "confidence": "92%",
+            "details": "Operating activities properly classified"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "BACKEND",
+      "endpoint": "/api/get_analysis_results",
+      "method": "GET",
+      "payload": {
+        "analysis_id": "analysis_phoenix_test_f79b14f3"
+      },
+      "response": null
+    }
+  ],
+  "user_activities": [
+    {
+      "timestamp": "08:35:32",
+      "type": "USER_ACTION",
+      "activity": "Navigates to file upload page",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:32",
+      "type": "USER_ACTION",
+      "activity": "Selects Phoenix_Financial_Statement_2024.txt file",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:32",
+      "type": "USER_ACTION",
+      "activity": "Clicks 'Upload Document' button",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "USER_ACTION",
+      "activity": "Reviews extracted metadata in side panel",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "USER_ACTION",
+      "activity": "Clicks 'Confirm & Proceed' button",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:41",
+      "type": "USER_ACTION",
+      "activity": "Selects 'IFRS' framework (recommended option)",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "USER_ACTION",
+      "activity": "Reviews AI suggestions in side panel",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "USER_ACTION",
+      "activity": "Clicks 'Accept AI Recommendations' button",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "USER_ACTION",
+      "activity": "Clicks 'View Detailed Results' button",
+      "details": null
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "USER_ACTION",
+      "activity": "Results page opens in new tab",
+      "details": null
+    }
+  ],
+  "side_panel_events": [
+    {
+      "timestamp": "08:35:32",
+      "type": "SIDE_PANEL",
+      "panel": "UPLOAD_STATUS",
+      "action": "activated",
+      "data": {
+        "document_name": "Phoenix_Financial_Statement_2024.txt",
+        "status": "uploaded",
+        "progress": "0%"
+      }
+    },
+    {
+      "timestamp": "08:35:33",
+      "type": "SIDE_PANEL",
+      "panel": "PROCESSING_STATUS",
+      "action": "updated",
+      "data": {
+        "stage": "NLP Chunking",
+        "status": "in_progress",
+        "progress": "15%"
+      }
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "SIDE_PANEL",
+      "panel": "PROCESSING_STATUS",
+      "action": "updated",
+      "data": {
+        "stage": "NLP Chunking",
+        "status": "completed",
+        "progress": "35%",
+        "chunks_created": 12
+      }
+    },
+    {
+      "timestamp": "08:35:35",
+      "type": "SIDE_PANEL",
+      "panel": "PROCESSING_STATUS",
+      "action": "updated",
+      "data": {
+        "stage": "Metadata Extraction",
+        "status": "in_progress",
+        "progress": "50%"
+      }
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "SIDE_PANEL",
+      "panel": "METADATA_PANEL",
+      "action": "activated",
+      "data": {
+        "success": true,
+        "document_info": {
+          "company_name": "Phoenix Industries Ltd.",
+          "financial_year": "2024",
+          "reporting_date": "December 31, 2024",
+          "currency": "USD",
+          "audit_status": "Audited",
+          "auditor": "XYZ Chartered Accountants"
+        },
+        "financial_statements": {
+          "balance_sheet": {
+            "present": true,
+            "total_assets": "$30,440,000",
+            "total_liabilities": "$15,700,000",
+            "total_equity": "$14,740,000"
+          },
+          "income_statement": {
+            "present": true,
+            "revenue": "$25,600,000",
+            "net_profit": "$1,267,000",
+            "gross_profit": "$7,400,000"
+          },
+          "cash_flow": {
+            "present": true,
+            "operating_cash_flow": "$3,100,000",
+            "investing_cash_flow": "($3,050,000)",
+            "financing_cash_flow": "($180,000)"
+          },
+          "notes": {
+            "present": true,
+            "count": 6
+          }
+        },
+        "compliance_indicators": {
+          "ifrs_compliance": true,
+          "audit_opinion": "Unqualified",
+          "key_audit_matters": 3
+        }
+      }
+    },
+    {
+      "timestamp": "08:35:38",
+      "type": "SIDE_PANEL",
+      "panel": "PROCESSING_STATUS",
+      "action": "updated",
+      "data": {
+        "stage": "Metadata Extraction",
+        "status": "completed",
+        "progress": "65%"
+      }
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "SIDE_PANEL",
+      "panel": "PROCESSING_STATUS",
+      "action": "updated",
+      "data": {
+        "stage": "Metadata Confirmed",
+        "status": "completed",
+        "progress": "75%"
+      }
+    },
+    {
+      "timestamp": "08:35:40",
+      "type": "SIDE_PANEL",
+      "panel": "FRAMEWORK_SELECTION",
+      "action": "activated",
+      "data": {
+        "available_frameworks": [
+          {
+            "id": "ifrs",
+            "name": "International Financial Reporting Standards (IFRS)",
+            "recommended": true
+          },
+          {
+            "id": "gaap",
+            "name": "Generally Accepted Accounting Principles (US GAAP)",
+            "recommended": false
+          },
+          {
+            "id": "ias",
+            "name": "International Accounting Standards (IAS)",
+            "recommended": false
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "08:35:43",
+      "type": "SIDE_PANEL",
+      "panel": "AI_SUGGESTIONS",
+      "action": "activated",
+      "data": {
+        "success": true,
+        "suggestions": {
+          "focus_areas": [
+            "Revenue Recognition Compliance",
+            "Asset Valuation Methods",
+            "Cash Flow Statement Accuracy",
+            "Related Party Disclosures"
+          ],
+          "risk_indicators": [
+            {
+              "area": "Inventory Valuation",
+              "risk_level": "Medium",
+              "reason": "Large inventory balance ($3.2M) requires detailed analysis"
+            },
+            {
+              "area": "Intangible Assets",
+              "risk_level": "Low",
+              "reason": "Standard accounting treatment observed"
+            }
+          ],
+          "recommended_depth": "Comprehensive",
+          "estimated_time": "180 seconds"
+        }
+      }
+    },
+    {
+      "timestamp": "08:35:44",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "activated",
+      "data": {
+        "stage": "Compliance Analysis",
+        "status": "in_progress",
+        "progress": "0%",
+        "current_step": "Initializing analysis pipeline"
+      }
+    },
+    {
+      "timestamp": "08:35:45",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "10%",
+        "current_step": "Loading Enhanced-Basic Question Mapping"
+      }
+    },
+    {
+      "timestamp": "08:35:46",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "25%",
+        "current_step": "Processing Balance Sheet Compliance"
+      }
+    },
+    {
+      "timestamp": "08:35:47",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "40%",
+        "current_step": "Analyzing Income Statement Standards"
+      }
+    },
+    {
+      "timestamp": "08:35:48",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "55%",
+        "current_step": "Reviewing Cash Flow Accuracy"
+      }
+    },
+    {
+      "timestamp": "08:35:49",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "70%",
+        "current_step": "Checking Disclosure Requirements"
+      }
+    },
+    {
+      "timestamp": "08:35:50",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "85%",
+        "current_step": "Validating Audit Compliance"
+      }
+    },
+    {
+      "timestamp": "08:35:51",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "95%",
+        "current_step": "Compiling Final Results"
+      }
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "SIDE_PANEL",
+      "panel": "ANALYSIS_PROGRESS",
+      "action": "updated",
+      "data": {
+        "progress": "100%",
+        "current_step": "Analysis Complete"
+      }
+    },
+    {
+      "timestamp": "08:35:52",
+      "type": "SIDE_PANEL",
+      "panel": "RESULTS_SUMMARY",
+      "action": "activated",
+      "data": {
+        "success": true,
+        "analysis_id": "analysis_phoenix_test_f79b14f3",
+        "completion_time": "2025-09-30T08:35:52.985962",
+        "summary": {
+          "overall_compliance": "High (87%)",
+          "total_questions": 1379,
+          "compliant_items": 1203,
+          "non_compliant_items": 89,
+          "requires_attention": 87
+        },
+        "key_findings": [
+          {
+            "area": "Revenue Recognition",
+            "status": "Compliant",
+            "confidence": "95%",
+            "details": "IFRS 15 standards properly applied"
+          },
+          {
+            "area": "Asset Valuation",
+            "status": "Requires Attention",
+            "confidence": "78%",
+            "details": "Inventory valuation method needs clarification"
+          },
+          {
+            "area": "Cash Flow Classification",
+            "status": "Compliant",
+            "confidence": "92%",
+            "details": "Operating activities properly classified"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "08:35:53",
+      "type": "SIDE_PANEL",
+      "panel": "RESULTS_PAGE",
+      "action": "activated",
+      "data": {
+        "report_sections": [
+          "Executive Summary",
+          "Financial Statement Analysis",
+          "Compliance Findings",
+          "Risk Assessment",
+          "Recommendations"
+        ],
+        "export_options": [
+          "PDF",
+          "Excel",
+          "Word"
+        ]
+      }
+    }
+  ],
+  "final_results": {
+    "success": true,
+    "analysis_id": "analysis_phoenix_test_f79b14f3",
+    "completion_time": "2025-09-30T08:35:52.985962",
+    "summary": {
+      "overall_compliance": "High (87%)",
+      "total_questions": 1379,
+      "compliant_items": 1203,
+      "non_compliant_items": 89,
+      "requires_attention": 87
+    },
+    "key_findings": [
+      {
+        "area": "Revenue Recognition",
+        "status": "Compliant",
+        "confidence": "95%",
+        "details": "IFRS 15 standards properly applied"
+      },
+      {
+        "area": "Asset Valuation",
+        "status": "Requires Attention",
+        "confidence": "78%",
+        "details": "Inventory valuation method needs clarification"
+      },
+      {
+        "area": "Cash Flow Classification",
+        "status": "Compliant",
+        "confidence": "92%",
+        "details": "Operating activities properly classified"
+      }
+    ]
+  }
+}
