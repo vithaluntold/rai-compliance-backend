@@ -99,6 +99,13 @@ class XBRLTaxonomyParser:
                     
             logger.info(f"Loaded {len(self.concepts)} IFRS concepts")
             
+            if len(self.concepts) > 0:
+                # Log first few concept IDs for debugging
+                sample_concepts = list(self.concepts.keys())[:3]
+                logger.info(f"Sample concept IDs: {sample_concepts}")
+            else:
+                logger.warning("No concepts were loaded from schema - check schema parsing logic")
+            
         except Exception as e:
             logger.error(f"Could not parse schema file {main_schema}: {e}")
             
@@ -264,6 +271,10 @@ class XBRLTaxonomyParser:
                                 if concept_id in self.concepts:
                                     self.concepts[concept_id]["standard_reference"] = standard_name
                                     concepts_found += 1
+                                else:
+                                    # Debug: log first few missing concepts for troubleshooting
+                                    if concepts_found == 0:  # Only log for first standard being processed
+                                        logger.debug(f"Concept ID not found in schema: {concept_id}")
                                     
                     except Exception as e:
                         logger.warning(f"Could not process presentation file {pres_file}: {e}")
