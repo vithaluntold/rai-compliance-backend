@@ -186,7 +186,7 @@ class VectorStore:
             chunks_path = self.index_dir / f"{document_id}_chunks.json"
 
             if not index_path.exists() or not chunks_path.exists():
-                logger.warning(f"Index files not found for document {document_id}")
+                logger.debug(f"Index files not yet created for document {document_id}")
                 return None
 
             # Load FAISS index
@@ -217,7 +217,7 @@ class VectorStore:
             if document_id not in self.index_cache:
                 loaded = self.load_index(document_id)
                 if not loaded:
-                    logger.warning(f"Index files not found for document {document_id}")
+                    logger.debug(f"Index files not yet available for document {document_id}")
                     return []
                 self.index_cache[document_id] = loaded
 

@@ -766,19 +766,31 @@ async def process_upload_tasks(
         # Process document chunks directly
         chunks = _process_document_chunks(document_id)
         
-        # Create vector index for the chunks
+        # Create vector index for the chunks BEFORE metadata extraction
+        vector_index_ready = False
         try:
             from services.vector_store import get_vector_store
             vs_svc = get_vector_store()
             index_created = await vs_svc.create_index(document_id, chunks)
             if index_created:
                 logger.info(f"✅ Vector index created successfully for document {document_id}")
+                
+                # Verify the index is actually accessible
+                try:
+                    test_results = vs_svc.search("test", document_id, top_k=1)
+                    vector_index_ready = True
+                    logger.info(f"✅ Vector index verified and ready for document {document_id}")
+                except Exception as ve:
+                    logger.warning(f"⚠️ Vector index created but not accessible for document {document_id}: {ve}")
             else:
                 logger.warning(f"⚠️ Vector index creation failed for document {document_id}")
         except ImportError as ie:
             logger.warning(f"⚠️ Vector store import error for document {document_id}: {ie}")
         except Exception as e:
             logger.warning(f"⚠️ Vector index creation error for document {document_id}: {e}")
+            
+        if not vector_index_ready:
+            logger.warning(f"⚠️ Proceeding with metadata extraction without vector search for document {document_id}")
 
         # Update status to indicate chunking is complete and metadata extraction starting
         chunking_complete_status = {
