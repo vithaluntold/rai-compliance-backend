@@ -513,7 +513,7 @@ class SmartMetadataExtractor:
             relevant_sentences = self._find_sentences_with_keywords(text, keywords)
 
             if not relevant_sentences:
-                logger.warning(f"No sentences found with keywords for {field_name}")
+                logger.info(f"No sentences found with keywords for {field_name}")
                 return "", ""
 
             # Step 2: Semantic search to find most relevant chunks

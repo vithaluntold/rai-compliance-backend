@@ -18,6 +18,7 @@ from services.ai import AIService, get_ai_service
 from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
 # Document chunking now handled by NLP pipeline - see nlp_tools/
 from services.smart_metadata_extractor import SmartMetadataExtractor
+from services.vector_store import get_vector_store
 from services.staged_storage import staged_storage
 
 
@@ -334,16 +335,32 @@ def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:
             for standard_key, chunks_dict in nlp_result.validated_mega_chunks.items():
                 if isinstance(chunks_dict, dict):
                     for chunk_id, chunk_data in chunks_dict.items():
+                        # Handle both dict and string chunk_data
+                        if isinstance(chunk_data, dict):
+                            content_text = chunk_data.get("content", "")
+                            accounting_standard = chunk_data.get("accounting_standard", "")
+                            confidence_score = chunk_data.get("confidence_score", 0.0)
+                            classification_tags = chunk_data.get("classification_tags", {})
+                        elif isinstance(chunk_data, str):
+                            content_text = chunk_data
+                            accounting_standard = ""
+                            confidence_score = 0.0
+                            classification_tags = {}
+                        else:
+                            content_text = str(chunk_data)
+                            accounting_standard = ""
+                            confidence_score = 0.0
+                            classification_tags = {}
+                            
                         # Create legacy chunk format compatible with SmartMetadataExtractor
-                        content_text = chunk_data.get("content", "")
                         legacy_chunk = {
                             "id": f"{document_id}_chunk_{chunk_counter}",
                             "content": content_text,  # For frontend/analysis compatibility
                             "text": content_text,     # For SmartMetadataExtractor compatibility
                             "metadata": {
-                                "accounting_standard": chunk_data.get("accounting_standard", ""),
-                                "confidence_score": chunk_data.get("confidence_score", 0.0),
-                                "classification_tags": chunk_data.get("classification_tags", {}),
+                                "accounting_standard": accounting_standard,
+                                "confidence_score": confidence_score,
+                                "classification_tags": classification_tags,
                                 "original_chunk_id": chunk_id,
                                 "processing_method": "nlp_pipeline"
                             }
@@ -751,12 +768,15 @@ async def process_upload_tasks(
         
         # Create vector index for the chunks
         try:
+            from services.vector_store import get_vector_store
             vs_svc = get_vector_store()
             index_created = await vs_svc.create_index(document_id, chunks)
             if index_created:
                 logger.info(f"✅ Vector index created successfully for document {document_id}")
             else:
                 logger.warning(f"⚠️ Vector index creation failed for document {document_id}")
+        except ImportError as ie:
+            logger.warning(f"⚠️ Vector store import error for document {document_id}: {ie}")
         except Exception as e:
             logger.warning(f"⚠️ Vector index creation error for document {document_id}: {e}")
 
