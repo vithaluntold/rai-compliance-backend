@@ -16,7 +16,7 @@ from pydantic import BaseModel
 
 from services.ai import AIService, get_ai_service
 from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
-from services.document_chunker import document_chunker
+# Document chunking now handled by NLP pipeline - see nlp_tools/
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.staged_storage import staged_storage
 
@@ -271,21 +271,39 @@ def _process_document_chunks(document_id: str) -> list:
     logger.info(f"📄 CHUNKING EXT: File extension detected: {ext}")
     
     if ext == ".pdf":
-        logger.info(f"🔧 CHUNKING PDF: Calling document_chunker.chunk_pdf for {document_id}")
+        logger.info(f"🔧 CHUNKING PDF: Processing with NLP pipeline for {document_id}")
         try:
-            chunks = document_chunker.chunk_pdf(str(file_path), document_id)
-            logger.info(f"✅ CHUNKING PDF SUCCESS: chunk_pdf returned {len(chunks) if chunks else 0} chunks")
+            # Use NLP pipeline for enhanced document processing
+            from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
+            nlp_pipeline = CompleteNLPValidationPipeline()
+            nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
+            
+            if not nlp_result.success:
+                raise ValueError(f"NLP processing failed: {nlp_result.error}")
+            
+            # Convert NLP result to legacy chunk format for compatibility
+            chunks = _convert_nlp_to_chunks(nlp_result, document_id)
+            logger.info(f"✅ CHUNKING PDF SUCCESS: NLP pipeline returned {len(chunks) if chunks else 0} chunks")
         except Exception as e:
-            logger.error(f"❌ CHUNKING PDF ERROR: chunk_pdf failed with error: {str(e)}")
+            logger.error(f"❌ CHUNKING PDF ERROR: NLP pipeline failed with error: {str(e)}")
             logger.error(f"❌ CHUNKING PDF TRACEBACK: {traceback.format_exc()}")
             raise
     elif ext == ".docx":
-        logger.info(f"🔧 CHUNKING DOCX: Calling document_chunker.chunk_docx for {document_id}")
+        logger.info(f"🔧 CHUNKING DOCX: Processing with NLP pipeline for {document_id}")
         try:
-            chunks = document_chunker.chunk_docx(str(file_path), document_id)
-            logger.info(f"✅ CHUNKING DOCX SUCCESS: chunk_docx returned {len(chunks) if chunks else 0} chunks")
+            # Use NLP pipeline for enhanced document processing
+            from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
+            nlp_pipeline = CompleteNLPValidationPipeline()
+            nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
+            
+            if not nlp_result.success:
+                raise ValueError(f"NLP processing failed: {nlp_result.error}")
+            
+            # Convert NLP result to legacy chunk format for compatibility
+            chunks = _convert_nlp_to_chunks(nlp_result, document_id)
+            logger.info(f"✅ CHUNKING DOCX SUCCESS: NLP pipeline returned {len(chunks) if chunks else 0} chunks")
         except Exception as e:
-            logger.error(f"❌ CHUNKING DOCX ERROR: chunk_docx failed with error: {str(e)}")
+            logger.error(f"❌ CHUNKING DOCX ERROR: NLP pipeline failed with error: {str(e)}")
             logger.error(f"❌ CHUNKING DOCX TRACEBACK: {traceback.format_exc()}")
             raise
     else:
@@ -297,6 +315,72 @@ def _process_document_chunks(document_id: str) -> list:
         raise ValueError("No chunks generated from document")
 
     logger.info(f"Generated {len(chunks)} chunks for document {document_id}")
+    return chunks
+
+
+def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:
+    """Convert NLP pipeline result to legacy chunk format for backward compatibility."""
+    chunks = []
+    
+    try:
+        # Extract validated mega chunks from NLP result
+        if hasattr(nlp_result, 'validated_mega_chunks') and nlp_result.validated_mega_chunks:
+            chunk_counter = 1
+            
+            for standard_key, chunks_dict in nlp_result.validated_mega_chunks.items():
+                if isinstance(chunks_dict, dict):
+                    for chunk_id, chunk_data in chunks_dict.items():
+                        # Create legacy chunk format compatible with SmartMetadataExtractor
+                        content_text = chunk_data.get("content", "")
+                        legacy_chunk = {
+                            "id": f"{document_id}_chunk_{chunk_counter}",
+                            "content": content_text,  # For frontend/analysis compatibility
+                            "text": content_text,     # For SmartMetadataExtractor compatibility
+                            "metadata": {
+                                "accounting_standard": chunk_data.get("accounting_standard", ""),
+                                "confidence_score": chunk_data.get("confidence_score", 0.0),
+                                "classification_tags": chunk_data.get("classification_tags", {}),
+                                "original_chunk_id": chunk_id,
+                                "processing_method": "nlp_pipeline"
+                            }
+                        }
+                        chunks.append(legacy_chunk)
+                        chunk_counter += 1
+        
+        # Fallback: use basic structure parsing if available
+        if not chunks and hasattr(nlp_result, 'structure_parsing'):
+            structure = nlp_result.structure_parsing
+            if isinstance(structure, dict) and "sections" in structure:
+                for i, section in enumerate(structure["sections"], 1):
+                    content_text = section.get("content", "")
+                    legacy_chunk = {
+                        "id": f"{document_id}_section_{i}",
+                        "content": content_text,  # For frontend/analysis compatibility  
+                        "text": content_text,     # For SmartMetadataExtractor compatibility
+                        "metadata": {
+                            "section_type": section.get("type", "unknown"),
+                            "processing_method": "structure_parsing",
+                            "original_section_id": section.get("id", f"section_{i}")
+                        }
+                    }
+                    chunks.append(legacy_chunk)
+        
+        logger.info(f"Converted NLP result to {len(chunks)} legacy chunks for {document_id}")
+        
+    except Exception as e:
+        logger.error(f"Error converting NLP result to chunks: {e}")
+        # Create a single chunk with the full document as fallback
+        fallback_text = "Error in NLP processing - using fallback chunk"
+        chunks = [{
+            "id": f"{document_id}_chunk_1",
+            "content": fallback_text,  # For frontend/analysis compatibility
+            "text": fallback_text,     # For SmartMetadataExtractor compatibility
+            "metadata": {
+                "error": str(e),
+                "processing_method": "fallback"
+            }
+        }]
+    
     return chunks
 
 
