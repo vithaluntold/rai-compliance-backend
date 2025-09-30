@@ -6,7 +6,7 @@ from datetime import datetime
 from routes import analysis_router, documents_router, sessions_router
 from routes.ai_parser_router import router as ai_parser_router
 
-# Initialize FastAPI app
+# Initialize FastAPI app with taxonomy module deployment fix
 app = FastAPI(
     title="RAi Compliance Engine",
     description="Fully functional AI-powered financial compliance analysis platform",
