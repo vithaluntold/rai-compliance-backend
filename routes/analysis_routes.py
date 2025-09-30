@@ -278,7 +278,7 @@ def _process_document_chunks(document_id: str) -> list:
             # Use NLP pipeline for enhanced document processing
             from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
             import os
-            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy")
+            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy", "IFRSAT-2025", "IFRSAT-2025", "full_ifrs")
             nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
             nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
             
@@ -298,7 +298,7 @@ def _process_document_chunks(document_id: str) -> list:
             # Use NLP pipeline for enhanced document processing
             from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
             import os
-            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy")
+            taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy", "IFRSAT-2025", "IFRSAT-2025", "full_ifrs")
             nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
             nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
             
@@ -870,6 +870,18 @@ async def process_upload_tasks(
 
         # Archive uploaded file for audit trail
         _archive_document_file(document_id)
+
+        # UPDATE SESSION STATUS: Metadata extraction completed, ready for framework selection
+        try:
+            from routes.sessions_routes import update_session_processing_status
+            await update_session_processing_status(
+                f"session_{document_id}", 
+                "metadata_complete", 
+                {"last_updated": datetime.now().isoformat()}
+            )
+            logger.info(f"✅ SESSION STATUS UPDATED: Metadata complete for session_{document_id}")
+        except Exception as session_error:
+            logger.error(f"❌ Failed to update session status: {session_error}")
 
         logger.info(f"Metadata extraction completed for document {document_id}")
 
@@ -1656,7 +1668,7 @@ async def get_analysis_progress(
         raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
 
 
-@router.get("/rate - limit - status", response_model=None)
+@router.get("/rate-limit-status", response_model=None)
 async def get_rate_limit_status() -> Dict[str, Any]:
     """
     Get current rate limiting status and system health metrics.
@@ -2355,6 +2367,72 @@ async def _get_document_results_legacy(document_id: str) -> Dict[str, Any]:
         }
 
 
+@router.get("/documents/{document_id}/keywords")
+async def get_document_keywords(document_id: str) -> Dict[str, Any]:
+    """Get keyword extraction progress for a document analysis."""
+    try:
+        # Check if analysis is in progress
+        from services.progress_tracker import get_progress_tracker
+        tracker = get_progress_tracker()
+        
+        progress = tracker.get_progress(document_id)
+        
+        if progress:
+            # Extract keyword-related progress
+            keywords_discovered = []
+            current_step = "Keyword extraction in progress"
+            progress_percentage = progress.overall_progress
+            current_keyword = None
+            
+            # Try to extract keywords from standards progress
+            if hasattr(progress, 'standards_progress'):
+                for std_progress in progress.standards_progress.values():
+                    if hasattr(std_progress, 'questions_progress'):
+                        keywords_discovered.extend(std_progress.questions_progress.keys())
+            
+            return {
+                "keywords_discovered": list(set(keywords_discovered)),
+                "current_step": current_step,
+                "progress_percentage": progress_percentage,
+                "current_keyword": current_keyword
+            }
+        else:
+            # No active progress, check if completed
+            from services.persistent_storage_enhanced import get_persistent_storage_manager
+            storage_manager = get_persistent_storage_manager()
+            
+            results = await storage_manager.get_analysis_results(document_id)
+            if results:
+                # Extract keywords from completed analysis
+                keywords = []
+                if results.get("sections"):
+                    for section in results.get("sections", []):
+                        if section.get("items"):
+                            keywords.extend([item.get("id", "") for item in section.get("items", [])])
+                
+                return {
+                    "keywords_discovered": list(set(filter(None, keywords))),
+                    "current_step": "Keyword extraction completed",
+                    "progress_percentage": 100,
+                    "current_keyword": None
+                }
+            else:
+                return {
+                    "keywords_discovered": [],
+                    "current_step": "No keyword extraction found",
+                    "progress_percentage": 0,
+                    "current_keyword": None
+                }
+                
+    except Exception as e:
+        logger.error(f"Error getting keywords for document {document_id}: {e}")
+        return {
+            "keywords_discovered": [],
+            "current_step": "Error retrieving keywords",
+            "progress_percentage": 0,
+            "current_keyword": None
+        }
+
 @router.get("/documents/{document_id}/extract")
 async def get_document_extract(document_id: str) -> Dict[str, Any]:
     """Get the extracted metadata from document analysis. Alias for /results endpoint."""
@@ -2454,6 +2532,69 @@ async def update_compliance_item(
                 "message": f"Error updating compliance item: {str(_e)}",
                 "bulletproof": False
             },
+        )
+
+
+@router.get("/documents/{document_id}/report")
+async def get_document_analysis_report(document_id: str):
+    """Get comprehensive analysis report for a document"""
+    try:
+        storage = PersistentStorage()
+        
+        # Get document metadata
+        metadata = storage.load_document_metadata(document_id)
+        if not metadata:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Get document analysis results 
+        compliance_results = storage.load_compliance_results(document_id)
+        if not compliance_results:
+            compliance_results = {}
+            
+        # Get extracted content
+        extracted_content = storage.load_extracted_content(document_id)
+        if not extracted_content:
+            extracted_content = {}
+        
+        # Build comprehensive report
+        report = {
+            "document_id": document_id,
+            "document_name": metadata.get("filename", "Unknown"),
+            "upload_date": metadata.get("upload_date", "Unknown"),
+            "analysis_status": metadata.get("status", "unknown"),
+            "total_pages": extracted_content.get("total_pages", 0),
+            "word_count": extracted_content.get("word_count", 0),
+            "compliance_results": compliance_results,
+            "framework_analysis": metadata.get("framework_analysis", {}),
+            "key_findings": compliance_results.get("key_findings", []),
+            "compliance_score": compliance_results.get("overall_score", 0),
+            "recommendations": compliance_results.get("recommendations", []),
+            "extracted_sections": extracted_content.get("sections", {}),
+            "metadata": metadata
+        }
+        
+        logger.info(f"✅ Generated comprehensive report for document {document_id}")
+        return JSONResponse(
+            status_code=200,
+            content={
+                "success": True,
+                "report": report,
+                "message": "Report generated successfully"
+            }
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error generating report for document {document_id}: {str(e)}")
+        logger.error(traceback.format_exc())
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "Report generation failed",
+                "message": f"Error generating report: {str(e)}",
+                "success": False
+            }
         )
 
 
