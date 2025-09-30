@@ -68,9 +68,25 @@ class XBRLTaxonomyParser:
             elements = root.findall(".//xsd:element", namespaces)
             logger.info(f"Found {len(elements)} IFRS elements")
             
+            # Debug: log first few elements to see structure
+            if len(elements) > 0:
+                logger.info(f"First element sample: tag={elements[0].tag}, attrib={dict(elements[0].attrib)}")
+            else:
+                logger.warning("No elements found - checking root structure")
+                logger.info(f"Root tag: {root.tag}, Root attrib: {dict(root.attrib)}")
+                # Try without namespace
+                elements_no_ns = root.findall(".//element")
+                logger.info(f"Elements without namespace: {len(elements_no_ns)}")
+            
             for element in elements:
                 concept_id = element.get("id", "")
                 concept_name = element.get("name", "")
+                
+                # Debug: log why concepts might be skipped
+                if not concept_id:
+                    logger.debug(f"Element missing id: {element.tag} {dict(element.attrib)}")
+                if not concept_name:
+                    logger.debug(f"Element missing name: {element.tag} {dict(element.attrib)}")
                 
                 if concept_id and concept_name:
                     # Parse IFRS-specific attributes
