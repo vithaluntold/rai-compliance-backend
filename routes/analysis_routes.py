@@ -38,8 +38,9 @@ try:
     from services.persistent_storage_enhanced import get_persistent_storage_manager
     logger.info("✅ Using enhanced persistent storage with PostgreSQL support")
 except ImportError:
-    from services.persistent_storage import get_persistent_storage_manager
-    logger.info("📁 Using basic SQLite persistent storage")
+    # Force use of enhanced storage - should not fall back to old version
+    logger.error("❌ Enhanced storage import failed - this should not happen")
+    raise
 
 
 class PerformanceTracker:
@@ -1437,7 +1438,7 @@ async def get_analysis_progress(
     """
     try:
         # Import persistent storage
-        from services.persistent_storage import get_persistent_storage_manager
+        from services.persistent_storage_enhanced import get_persistent_storage_manager
         storage_manager = get_persistent_storage_manager()
         
         # FIRST: Check if analysis is completed in persistent storage
@@ -1972,7 +1973,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
     
     try:
         # Import persistent storage
-        from services.persistent_storage import get_persistent_storage_manager
+        from services.persistent_storage_enhanced import get_persistent_storage_manager
         storage_manager = get_persistent_storage_manager()
         
         # Try to get analysis results from persistent storage first
@@ -3992,7 +3993,7 @@ async def _initialize_analysis_tracking(
 
     # Also create processing lock in persistent storage for Render deployment
     try:
-        from services.persistent_storage import get_persistent_storage_manager
+        from services.persistent_storage_enhanced import get_persistent_storage_manager
         storage_manager = get_persistent_storage_manager()
         await storage_manager.set_processing_lock(document_id, {
             "status": "PROCESSING",
@@ -4305,7 +4306,7 @@ def _handle_analysis_error(
         
         # Remove processing lock from persistent storage on error
         try:
-            from services.persistent_storage import get_persistent_storage_manager
+            from services.persistent_storage_enhanced import get_persistent_storage_manager
             storage_manager = get_persistent_storage_manager()
             # Note: Using asyncio to call async function in sync context
             import asyncio
@@ -4417,7 +4418,7 @@ async def process_compliance_analysis(
         
         # Remove processing lock from persistent storage
         try:
-            from services.persistent_storage import get_persistent_storage_manager
+            from services.persistent_storage_enhanced import get_persistent_storage_manager
             storage_manager = get_persistent_storage_manager()
             await storage_manager.remove_processing_lock(document_id)
             logger.info(f"🔓 Removed processing lock from persistent storage: {document_id}")
