@@ -72,7 +72,11 @@ class PersistentStorageManager:
                             document_id VARCHAR(255) PRIMARY KEY,
                             filename VARCHAR(255) NOT NULL,
                             content BYTEA NOT NULL,
-                            stored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                            mime_type VARCHAR(255),
+                            upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            stored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            file_size INTEGER,
+                            metadata TEXT DEFAULT '{}'
                         )
                     """)
                     
@@ -113,7 +117,11 @@ class PersistentStorageManager:
                         document_id TEXT PRIMARY KEY,
                         filename TEXT NOT NULL,
                         content BLOB NOT NULL,
-                        stored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        mime_type TEXT,
+                        upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        stored_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        file_size INTEGER,
+                        metadata TEXT DEFAULT '{}'
                     )
                 """)
                 
@@ -342,3 +350,8 @@ def get_persistent_storage_manager() -> PersistentStorageManager:
             _storage_manager = PersistentStorageManager()
         
         return _storage_manager
+
+# Alias for compatibility with old imports
+def get_persistent_storage() -> PersistentStorageManager:
+    """Alias for get_persistent_storage_manager for backward compatibility"""
+    return get_persistent_storage_manager()
