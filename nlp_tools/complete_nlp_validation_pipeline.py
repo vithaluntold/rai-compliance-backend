@@ -20,6 +20,7 @@ from nlp_tools.taxonomy_validation_engine import EnhancedTaxonomyValidator, Vali
 logger = logging.getLogger(__name__)
 
 @dataclass
+@dataclass
 class CompleteProcessingResult:
     """Complete processing result with all validation stages"""
     document_path: str
@@ -77,20 +78,36 @@ class CompleteNLPValidationPipeline:
             logger.info("Stage 1: Document structure parsing...")
             
             try:
+                logger.info("DEBUG: About to call structure_parser.parse_document_structure...")
                 structure_result = self.structure_parser.parse_document_structure(pdf_path)
+                logger.info("DEBUG: structure_parser.parse_document_structure call completed")
+                
+                # DEBUG: Log detailed structure result
+                logger.info(f"DEBUG: Structure result type: {type(structure_result)}")
+                logger.info(f"DEBUG: Structure result keys: {list(structure_result.keys()) if isinstance(structure_result, dict) else 'Not a dict'}")
+                logger.info(f"DEBUG: Structure success value: {structure_result.get('success', 'KEY_NOT_FOUND')}")
+                logger.info(f"DEBUG: Structure error value: {structure_result.get('error', 'KEY_NOT_FOUND')}")
                 
                 if not structure_result.get('success', False):
+                    logger.error(f"DEBUG: Structure parsing check FAILED - returning error result")
                     return CompleteProcessingResult(
                         document_path=pdf_path,
                         success=False,
                         structure_parsing=structure_result,
                         error=f"Structure parsing failed: {structure_result.get('error', 'Unknown error')}"
                     )
+                
+                logger.info(f"DEBUG: Structure parsing check PASSED - continuing pipeline")
                     
             except Exception as e:
                 # Handle case where actual PDF parsing isn't available
+                logger.error(f"DEBUG: EXCEPTION CAUGHT during structure parsing: {e}")
+                logger.error(f"DEBUG: Exception type: {type(e)}")
+                import traceback
+                logger.error(f"DEBUG: Full traceback: {traceback.format_exc()}")
                 logger.warning(f"Structure parsing not available, using simulation mode: {e}")
                 structure_result = self._simulate_structure_parsing(pdf_path)
+                logger.info(f"DEBUG: Simulation result: {structure_result}")
                 
             logger.info(f"Structure parsing complete: {structure_result.get('total_pages', 0)} pages, {len(structure_result.get('segments', []))} segments")
             
