@@ -224,8 +224,14 @@ class XBRLTaxonomyParser:
         logger.info(f"Processing linkbases from: {linkbases_dir}")
         processed_standards = 0
         
-        # Process each standard directory
-        for standard_dir in linkbases_dir.iterdir():
+        # Process each standard directory - only look in linkbases-ea subfolder
+        linkbases_ea_dir = linkbases_dir / "linkbases-ea"
+        if not linkbases_ea_dir.exists():
+            logger.warning(f"linkbases-ea directory not found in {linkbases_dir}")
+            return
+            
+        # Process each standard directory inside linkbases-ea
+        for standard_dir in linkbases_ea_dir.iterdir():
             if standard_dir.is_dir():
                 standard_name = self._normalize_standard_name(standard_dir.name)
                 logger.info(f"Processing standard: {standard_name}")
