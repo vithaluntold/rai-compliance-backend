@@ -34,9 +34,10 @@ app.add_middleware(
 
 # Include routers - ONLY ROUTERS, NO HARDCODED ENDPOINTS
 app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"])
-app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
-app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
 app.include_router(ai_parser_router, prefix="/api/v1/ai-parser", tags=["ai-parser"])
+
+# Note: documents_router and sessions_router are aliases to analysis_router
+# All endpoints are available under /api/v1/analysis/
 
 # Initialize AI Parser queue on startup
 @app.on_event("startup")
