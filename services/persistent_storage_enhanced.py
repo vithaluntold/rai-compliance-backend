@@ -336,6 +336,90 @@ class PersistentStorageManager:
                     "INSERT INTO document_audit_logs (document_id, audit_data) VALUES (?, ?)",
                     (document_id, json.dumps(audit_data))
                 )
+    
+    async def set_processing_lock(self, document_id: str, lock_data: Dict[str, Any]) -> bool:
+        """Set a processing lock for a document."""
+        try:
+            lock_json = json.dumps(lock_data)
+            
+            if self.use_postgres and self.postgres_conn:
+                with self.postgres_conn.cursor() as cursor:
+                    cursor.execute("""
+                        INSERT INTO processing_locks (document_id, lock_data, created_at)
+                        VALUES (%s, %s, NOW())
+                        ON CONFLICT (document_id) DO UPDATE SET 
+                            lock_data = EXCLUDED.lock_data,
+                            created_at = NOW()
+                    """, (document_id, lock_json))
+                    self.postgres_conn.commit()
+            else:
+                with self.lock:
+                    with sqlite3.connect(self.sqlite_path) as conn:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO processing_locks 
+                            (document_id, lock_data, created_at) 
+                            VALUES (?, ?, CURRENT_TIMESTAMP)
+                        """, (document_id, lock_json))
+            
+            logger.info(f"🔒 Set processing lock in persistent storage: {document_id}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to set processing lock {document_id}: {str(e)}")
+            return False
+    
+    async def get_processing_lock(self, document_id: str) -> Optional[Dict[str, Any]]:
+        """Get processing lock data for a document."""
+        try:
+            if self.use_postgres and self.postgres_conn:
+                with self.postgres_conn.cursor() as cursor:
+                    cursor.execute("""
+                        SELECT lock_data, created_at FROM processing_locks 
+                        WHERE document_id = %s
+                    """, (document_id,))
+                    row = cursor.fetchone()
+            else:
+                with self.lock:
+                    with sqlite3.connect(self.sqlite_path) as conn:
+                        cursor = conn.execute("""
+                            SELECT lock_data, created_at FROM processing_locks 
+                            WHERE document_id = ?
+                        """, (document_id,))
+                        row = cursor.fetchone()
+            
+            if row:
+                lock_json, created_at = row
+                lock_data = json.loads(lock_json)
+                lock_data['_created_at'] = created_at
+                return lock_data
+            return None
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to get processing lock {document_id}: {str(e)}")
+            return None
+    
+    async def remove_processing_lock(self, document_id: str) -> bool:
+        """Remove a processing lock for a document."""
+        try:
+            if self.use_postgres and self.postgres_conn:
+                with self.postgres_conn.cursor() as cursor:
+                    cursor.execute("DELETE FROM processing_locks WHERE document_id = %s", (document_id,))
+                    removed = cursor.rowcount > 0
+                    self.postgres_conn.commit()
+            else:
+                with self.lock:
+                    with sqlite3.connect(self.sqlite_path) as conn:
+                        cursor = conn.execute("DELETE FROM processing_locks WHERE document_id = ?", (document_id,))
+                        conn.commit()
+                        removed = cursor.rowcount > 0
+            
+            if removed:
+                logger.info(f"🔓 Removed processing lock from persistent storage: {document_id}")
+            return removed
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to remove processing lock {document_id}: {str(e)}")
+            return False
 
 # Global instance
 _storage_manager = None
