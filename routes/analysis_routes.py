@@ -3142,6 +3142,31 @@ async def start_metadata_extraction(
                 with open(main_results_file, 'w', encoding='utf-8') as f:
                     json.dump(results_data, f, indent=2, ensure_ascii=False)
 
+                # 🔧 CRITICAL FIX: Update persistent storage with metadata completion status
+                try:
+                    from services.persistent_storage_enhanced import get_persistent_storage_manager
+                    persistent_storage = get_persistent_storage_manager()
+                    
+                    # Get current persistent results
+                    current_results = await persistent_storage.get_analysis_results(document_id)
+                    if current_results:
+                        # Update with metadata extraction completion
+                        current_results.update({
+                            "metadata_extraction": "COMPLETED",
+                            "metadata_completed_at": datetime.now().isoformat(),
+                            "metadata_file": metadata_file
+                        })
+                        
+                        # Save back to persistent storage
+                        await persistent_storage.store_analysis_results(document_id, current_results)
+                        logger.info(f"🗄️ Updated persistent storage with metadata completion for {document_id}")
+                    else:
+                        logger.warning(f"⚠️ No existing persistent results found to update for {document_id}")
+                        
+                except Exception as persistent_error:
+                    logger.error(f"❌ Failed to update persistent storage for {document_id}: {persistent_error}")
+                    # Don't fail the whole operation, just log the error
+                
                 logger.info(f"✅ Metadata extraction completed for {document_id}")
 
             except Exception as e:
