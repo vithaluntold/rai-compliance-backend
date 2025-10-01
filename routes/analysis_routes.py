@@ -3147,9 +3147,12 @@ async def start_metadata_extraction(
                     from services.persistent_storage_enhanced import get_persistent_storage_manager
                     persistent_storage = get_persistent_storage_manager()
                     
+                    logger.info(f"🗄️ ATTEMPTING: Persistent storage update for {document_id}")
+                    
                     # Get current persistent results
                     current_results = await persistent_storage.get_analysis_results(document_id)
                     if current_results:
+                        logger.info(f"🗄️ FOUND: Existing persistent results for {document_id}")
                         # Update with metadata extraction completion
                         current_results.update({
                             "metadata_extraction": "COMPLETED",
@@ -3158,13 +3161,30 @@ async def start_metadata_extraction(
                         })
                         
                         # Save back to persistent storage
-                        await persistent_storage.store_analysis_results(document_id, current_results)
-                        logger.info(f"🗄️ Updated persistent storage with metadata completion for {document_id}")
+                        success = await persistent_storage.store_analysis_results(document_id, current_results)
+                        if success:
+                            logger.info(f"✅ SUCCESS: Updated persistent storage with metadata completion for {document_id}")
+                        else:
+                            logger.error(f"❌ FAILED: Persistent storage update returned False for {document_id}")
                     else:
-                        logger.warning(f"⚠️ No existing persistent results found to update for {document_id}")
+                        logger.warning(f"⚠️ NOT FOUND: No existing persistent results to update for {document_id}")
+                        # Create new persistent results with metadata completion
+                        new_results = {
+                            "document_id": document_id,
+                            "status": "metadata_extraction_completed",
+                            "metadata_extraction": "COMPLETED", 
+                            "metadata_completed_at": datetime.now().isoformat(),
+                            "metadata_file": metadata_file,
+                            "compliance_analysis": "PENDING"
+                        }
+                        success = await persistent_storage.store_analysis_results(document_id, new_results)
+                        if success:
+                            logger.info(f"✅ CREATED: New persistent storage entry for {document_id}")
+                        else:
+                            logger.error(f"❌ FAILED: Could not create persistent storage entry for {document_id}")
                         
                 except Exception as persistent_error:
-                    logger.error(f"❌ Failed to update persistent storage for {document_id}: {persistent_error}")
+                    logger.error(f"❌ EXCEPTION: Failed to update persistent storage for {document_id}: {persistent_error}", exc_info=True)
                     # Don't fail the whole operation, just log the error
                 
                 logger.info(f"✅ Metadata extraction completed for {document_id}")
