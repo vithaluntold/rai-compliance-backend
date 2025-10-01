@@ -329,48 +329,100 @@ def _process_document_chunks(document_id: str) -> list:
 
 def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> None:
     """Store document chunks in categorized_content database for smart categorization."""
-    logger.info(f"📚 SMART STORAGE: Storing {len(chunks)} chunks for smart categorization")
+    logger.info(f"📚 SMART STORAGE: Starting to store {len(chunks)} chunks for document {document_id}")
+    
+    if not chunks:
+        logger.warning(f"⚠️  SMART STORAGE: No chunks provided for document {document_id}")
+        return
     
     try:
+        # Import and initialize storage
         from services.intelligent_chunk_accumulator import get_global_storage
+        logger.info(f"🔧 SMART STORAGE: Importing storage for document {document_id}")
+        
         storage = get_global_storage()
+        logger.info(f"🔧 SMART STORAGE: Storage initialized for document {document_id}")
+        
+        # Verify storage is working by checking database
+        try:
+            # Test database connection
+            test_result = storage._test_database_connection()
+            logger.info(f"🔧 SMART STORAGE: Database connection test result: {test_result}")
+        except Exception as db_test_error:
+            logger.warning(f"⚠️  SMART STORAGE: Database test failed: {db_test_error}")
         
         stored_count = 0
+        failed_count = 0
+        
         for i, chunk in enumerate(chunks):
             try:
                 # Extract text content from chunk
                 if isinstance(chunk, dict):
                     content = chunk.get("text") or chunk.get("content", "")
+                    chunk_info = f"dict with keys: {list(chunk.keys())}"
                 else:
                     content = str(chunk)
+                    chunk_info = f"string of length {len(content)}"
                 
-                if content.strip():
-                    # Store with basic categorization - AI service can enhance later
-                    category = "financial_document"  # Basic category
-                    subcategory = "content_chunk"
-                    confidence = 0.8  # Good confidence for processed chunks
-                    keywords = []  # Can be enhanced by AI later
-                    
-                    success = storage.store_categorized_chunk(
-                        document_id=document_id,
-                        chunk=content,
-                        category=category,
-                        subcategory=subcategory,
-                        confidence=confidence,
-                        keywords=keywords
-                    )
-                    
-                    if success:
-                        stored_count += 1
+                if not content or not content.strip():
+                    logger.warning(f"⚠️  SMART STORAGE: Chunk {i} is empty for document {document_id}")
+                    failed_count += 1
+                    continue
+                
+                # Store with basic categorization - AI service can enhance later
+                category = "financial_document"  # Basic category
+                subcategory = "content_chunk"
+                confidence = 0.8  # Good confidence for processed chunks
+                keywords = []  # Can be enhanced by AI later
+                
+                logger.debug(f"📝 SMART STORAGE: Storing chunk {i} ({chunk_info[:100]}) for document {document_id}")
+                
+                success = storage.store_categorized_chunk(
+                    document_id=document_id,
+                    chunk=content,
+                    category=category,
+                    subcategory=subcategory,
+                    confidence=confidence,
+                    keywords=keywords
+                )
+                
+                if success:
+                    stored_count += 1
+                    logger.debug(f"✅ SMART STORAGE: Successfully stored chunk {i} for document {document_id}")
+                else:
+                    failed_count += 1
+                    logger.warning(f"⚠️  SMART STORAGE: Failed to store chunk {i} (storage returned False) for document {document_id}")
                         
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to store chunk {i}: {e}")
+            except Exception as chunk_error:
+                failed_count += 1
+                logger.error(f"❌ SMART STORAGE: Failed to store chunk {i} for document {document_id}: {chunk_error}")
+                logger.error(f"❌ SMART STORAGE: Chunk {i} traceback: {traceback.format_exc()}")
                 continue
         
-        logger.info(f"✅ SMART STORAGE: Stored {stored_count}/{len(chunks)} chunks successfully")
+        # Final verification - check if chunks were actually stored
+        try:
+            total_stored = storage.debug_chunk_count(document_id)
+            logger.info(f"🔍 SMART STORAGE: Verification - {total_stored} total chunks found in database for document {document_id}")
+            
+            # Also show all documents for debugging
+            logger.info(f"🔍 SMART STORAGE: All documents summary:")
+            all_docs = storage.debug_all_documents()
+            for doc_id, count in all_docs.items():
+                logger.info(f"  📄 {doc_id}: {count} chunks")
+                
+        except Exception as verify_error:
+            logger.warning(f"⚠️  SMART STORAGE: Could not verify chunk count: {verify_error}")
         
+        if stored_count > 0:
+            logger.info(f"✅ SMART STORAGE: Successfully stored {stored_count}/{len(chunks)} chunks for document {document_id} (failed: {failed_count})")
+        else:
+            logger.error(f"❌ SMART STORAGE: Failed to store any chunks for document {document_id} (failed: {failed_count})")
+        
+    except ImportError as import_error:
+        logger.error(f"❌ SMART STORAGE: Import error for document {document_id}: {import_error}")
     except Exception as e:
-        logger.error(f"❌ SMART STORAGE ERROR: Failed to store chunks: {e}")
+        logger.error(f"❌ SMART STORAGE: Failed to store chunks for document {document_id}: {e}")
+        logger.error(f"❌ SMART STORAGE: Traceback: {traceback.format_exc()}")
 
 
 def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:

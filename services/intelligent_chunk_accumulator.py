@@ -268,6 +268,61 @@ class CategoryAwareContentStorage:
             logger.error(f"❌ Failed to get document summary: {e}")
             return {'total_chunks': 0, 'total_categories': 0, 'avg_confidence': 0.0, 'category_distribution': {}}
 
+    def debug_chunk_count(self, document_id: str) -> int:
+        """Debug method to count chunks for a specific document"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM categorized_content WHERE document_id = ?", (document_id,))
+                count = cursor.fetchone()[0]
+                logger.info(f"🔍 DEBUG: Document '{document_id}' has {count} chunks in database")
+                return count
+        except Exception as e:
+            logger.error(f"❌ Debug chunk count failed: {e}")
+            return 0
+
+    def debug_all_documents(self) -> dict:
+        """Debug method to show all documents and their chunk counts"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT document_id, COUNT(*) as chunk_count
+                    FROM categorized_content 
+                    GROUP BY document_id 
+                    ORDER BY document_id
+                """)
+                results = cursor.fetchall()
+                doc_summary = {}
+                for doc_id, count in results:
+                    doc_summary[doc_id] = count
+                    logger.info(f"🔍 DEBUG: Document '{doc_id}' has {count} chunks")
+                return doc_summary
+        except Exception as e:
+            logger.error(f"❌ Debug all documents failed: {e}")
+            return {}
+
+    def _test_database_connection(self) -> bool:
+        """Test database connection and table existence"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='categorized_content'")
+                table_exists = cursor.fetchone() is not None
+                
+                if table_exists:
+                    cursor.execute("SELECT COUNT(*) FROM categorized_content")
+                    total_rows = cursor.fetchone()[0]
+                    logger.info(f"🔧 DB TEST: Table exists with {total_rows} total rows")
+                    return True
+                else:
+                    logger.warning(f"⚠️  DB TEST: Table 'categorized_content' does not exist")
+                    return False
+                    
+        except Exception as e:
+            logger.error(f"❌ DB TEST: Database connection failed: {e}")
+            return False
+
 
 class IntelligentChunkAccumulator:
     """Intelligent content accumulator for smart compliance analysis"""
