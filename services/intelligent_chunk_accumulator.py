@@ -120,8 +120,13 @@ class CategoryAwareContentStorage:
     def store_categorized_chunk(self, document_id: str, chunk: str, category: str, 
                                subcategory: str = None, confidence: float = 0.0, 
                                keywords: List[str] = None) -> bool:
-        """Store a categorized content chunk"""
+        """Store a categorized content chunk with 4500 character limit validation"""
         try:
+            # ENFORCE 4500 CHARACTER LIMIT
+            if len(chunk) > 4500:
+                logger.warning(f"🚫 CHUNK TOO LARGE: Truncating chunk from {len(chunk)} to 4500 characters")
+                chunk = chunk[:4500] + "..."
+            
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 keywords_json = json.dumps(keywords or [])
@@ -131,13 +136,14 @@ class CategoryAwareContentStorage:
                     VALUES (?, ?, ?, ?, ?, ?)
                 ''', (document_id, chunk, category, subcategory, confidence, keywords_json))
                 conn.commit()
+                logger.info(f"✅ STORED CHUNK: {len(chunk)} chars for document {document_id}")
                 return True
         except Exception as e:
             logger.error(f"❌ Failed to store categorized chunk: {e}")
             return False
     
     def get_content_by_category(self, document_id: str, category: str, 
-                               max_chunks: int = 10) -> List[Dict[str, Any]]:
+                               max_chunks: int = 1) -> List[Dict[str, Any]]:  # One chunk per category
         """Retrieve content chunks by category"""
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -172,7 +178,7 @@ class CategoryAwareContentStorage:
             return []
     
     def search_relevant_content(self, document_id: str, keywords: List[str], 
-                               max_chunks: int = 5) -> List[Dict[str, Any]]:
+                               max_chunks: int = 1) -> List[Dict[str, Any]]:  # One chunk per question
         """Search for content chunks containing relevant keywords"""
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -359,7 +365,7 @@ class IntelligentChunkAccumulator:
         return keywords
     
     def accumulate_relevant_content(self, question: str, document_id: str, 
-                                  max_content_length: int = 3000) -> Dict[str, Any]:
+                                  max_content_length: int = 4500) -> Dict[str, Any]:  # Single chunk 4500 char limit
         """Accumulate relevant content for a compliance question"""
         try:
             logger.info(f"🎯 Accumulating content for question: {question[:50]}...")
@@ -368,11 +374,11 @@ class IntelligentChunkAccumulator:
             keywords = self.extract_question_keywords(question)
             logger.info(f"🔍 CHUNK QUALITY: Question keywords extracted: {keywords}")
             
-            # Search for relevant content
+            # Search for relevant content - ONE CHUNK PER QUESTION
             relevant_chunks = self.storage.search_relevant_content(
                 document_id=document_id,
                 keywords=keywords,
-                max_chunks=10
+                max_chunks=1  # Only one chunk per question
             )
             
             # DETAILED CHUNK QUALITY LOGGING
