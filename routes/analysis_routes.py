@@ -3048,8 +3048,8 @@ async def start_metadata_extraction(
                 with open(error_file, 'w') as f:
                     f.write(str(e))
 
-        # Run metadata extraction in background
-        background_tasks.add_task(lambda: asyncio.run(run_metadata_extraction()))
+        # Run metadata extraction in background (fix: remove asyncio.run to prevent event loop conflict)
+        background_tasks.add_task(run_metadata_extraction)
 
         response = {
             "status": "processing",
