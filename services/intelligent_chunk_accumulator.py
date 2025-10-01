@@ -75,20 +75,9 @@ class CategoryAwareContentStorage:
                     missing_columns = expected_columns - set(columns.keys())
                     
                     if missing_columns or 'content_chunk' not in columns:
-                        logger.info(f"🔄 MAJOR MIGRATION: Recreating table due to schema mismatch. Missing: {missing_columns}")
+                        logger.info(f"🔄 DEFINITIVE MIGRATION: Recreating table with correct schema. Missing: {missing_columns}")
                         
-                        # Backup existing data if table has content_chunk column or similar
-                        backup_data = []
-                        try:
-                            if 'content_chunk' in columns or 'content' in columns or 'chunk' in columns:
-                                content_col = 'content_chunk' if 'content_chunk' in columns else ('content' if 'content' in columns else 'chunk')
-                                cursor.execute(f"SELECT document_id, {content_col}, category, subcategory FROM categorized_content")
-                                backup_data = cursor.fetchall()
-                                logger.info(f"📋 Backing up {len(backup_data)} existing records")
-                        except Exception as e:
-                            logger.warning(f"⚠️  Could not backup existing data: {e}")
-                        
-                        # Drop and recreate table
+                        # ONE SOURCE OF TRUTH: Drop and recreate table - no backup attempts
                         cursor.execute("DROP TABLE categorized_content")
                         cursor.execute('''
                             CREATE TABLE categorized_content (
@@ -102,16 +91,7 @@ class CategoryAwareContentStorage:
                                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             )
                         ''')
-                        
-                        # Restore backed up data
-                        if backup_data:
-                            for row in backup_data:
-                                doc_id, content, category, subcategory = row
-                                cursor.execute('''
-                                    INSERT INTO categorized_content (document_id, content_chunk, category, subcategory, confidence_score, keywords)
-                                    VALUES (?, ?, ?, ?, 0.0, '[]')
-                                ''', (doc_id, content, category, subcategory))
-                            logger.info(f"✅ Restored {len(backup_data)} records to new schema")
+                        logger.info("✅ DEFINITIVE SCHEMA: Recreated categorized_content table with correct schema")
                     else:
                         # Add missing columns if schema is mostly correct
                         if 'confidence_score' not in columns:
