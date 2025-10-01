@@ -841,11 +841,12 @@ async def process_upload_tasks(
             storage_manager = StagedStorageManager()
             storage_manager.save_metadata(document_id, metadata)
             
-            # Update the main results file with actual metadata
+            # Update the main results file with actual metadata and completion status
             basic_result.update({
+                "status": "COMPLETED",  # FIX: Update main status to show completion
                 "metadata_extraction": "COMPLETED",
                 "metadata": _transform_metadata_for_frontend(metadata),
-                "message": "Document processing completed successfully"
+                "message": "Metadata extraction completed successfully. Ready for framework selection."
             })
             save_analysis_results(document_id, basic_result)
             
