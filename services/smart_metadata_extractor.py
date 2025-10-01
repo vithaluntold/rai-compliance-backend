@@ -62,17 +62,44 @@ class SmartMetadataExtractor:
     ) -> Dict[str, Any]:
         """Core extraction logic separated for error handling"""
 
-        # Combine all chunks for pattern analysis - extract text from chunk dictionaries
+        # Combine all chunks for pattern analysis - ROBUST extraction from chunk dictionaries
         if chunks and isinstance(chunks[0], dict):
-            # Chunks are dictionaries with 'text' key
-            full_text = " ".join([
-                chunk.get("text", "") for chunk in chunks
-                if isinstance(chunk, dict)
-            ])
+            # Chunks are dictionaries - try multiple possible text keys for maximum compatibility
+            chunk_texts = []
+            for chunk in chunks:
+                if isinstance(chunk, dict):
+                    # Try multiple possible keys to extract text - this prevents breaking when chunk structure changes
+                    text_content = (
+                        chunk.get("text", "") or 
+                        chunk.get("content", "") or 
+                        chunk.get("chunk_text", "") or
+                        chunk.get("text_content", "") or
+                        str(chunk.get("data", ""))
+                    )
+                    if text_content.strip():  # Only add non-empty text
+                        chunk_texts.append(text_content.strip())
+                    else:
+                        logger.warning(f"📝 Empty chunk found in document {document_id}: {chunk}")
+                else:
+                    chunk_texts.append(str(chunk))
+            
+            full_text = " ".join(chunk_texts)
+            logger.info(f"📄 Successfully extracted text from {len(chunk_texts)} chunks")
         else:
             # Chunks are strings (fallback)
-            full_text = " ".join([str(chunk) for chunk in chunks])
+            full_text = " ".join([str(chunk) for chunk in chunks if str(chunk).strip()])
         logger.info(f"📄 Combined text length: {len(full_text)} characters")
+        
+        # SAFETY CHECK: Handle empty text scenario
+        if not full_text.strip():
+            logger.error(f"❌ CRITICAL: No text content extracted from chunks for document {document_id}")
+            return {
+                "company_name": {"value": "No content available for extraction", "confidence": 0.0, "extraction_method": "fallback", "context": "Empty document content"},
+                "nature_of_business": {"value": "Unable to determine - no content", "confidence": 0.0, "extraction_method": "fallback", "context": "Empty document content"},
+                "operational_demographics": {"value": "Geographic data not available - no content", "confidence": 0.0, "extraction_method": "fallback", "context": "Empty document content"},
+                "financial_statements_type": {"value": "Statement type not determinable - no content", "confidence": 0.0, "extraction_method": "fallback", "context": "Empty document content"},
+                "optimization_metrics": {"tokens_used": 0, "extraction_methods_used": ["fallback"], "version": "no_content_fallback"}
+            }
 
         # Tier 1: Pattern - based extraction
         logger.info("⚡ Tier 1: Pattern - based extraction")
