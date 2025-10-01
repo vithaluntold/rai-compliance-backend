@@ -22,43 +22,115 @@ class CategoryAwareContentStorage:
             db_path = str(backend_dir / "categorized_content.db")
         
         self.db_path = db_path
-        self.init_database()
+        
+        # Ensure database directory exists
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+        
+        # Initialize database with retry logic
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                self.init_database()
+                break
+            except Exception as e:
+                logger.error(f"❌ Database initialization attempt {attempt + 1} failed: {e}")
+                if attempt == max_retries - 1:
+                    raise
+                import time
+                time.sleep(0.1 * (attempt + 1))  # Progressive delay
     
     def init_database(self):
-        """Initialize the categorized content database"""
+        """Initialize the categorized content database with proper migration logic"""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS categorized_content (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        document_id TEXT NOT NULL,
-                        content_chunk TEXT NOT NULL,
-                        category TEXT NOT NULL,
-                        subcategory TEXT,
-                        confidence_score REAL DEFAULT 0.0,
-                        keywords TEXT,  -- JSON array of extracted keywords
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                    )
-                ''')
                 
-                # MIGRATION: Check if confidence_score column exists and add it if missing
-                try:
-                    cursor.execute("SELECT confidence_score FROM categorized_content LIMIT 1")
-                    logger.info("✅ confidence_score column already exists in categorized_content table")
-                except sqlite3.OperationalError as e:
-                    if "no such column: confidence_score" in str(e):
-                        logger.info("🔄 MIGRATION: Adding missing confidence_score column to categorized_content table")
-                        cursor.execute("ALTER TABLE categorized_content ADD COLUMN confidence_score REAL DEFAULT 0.0")
-                        conn.commit()
-                        logger.info("✅ MIGRATION: Successfully added confidence_score column")
+                # Check if table exists
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='categorized_content'")
+                table_exists = cursor.fetchone() is not None
+                
+                if not table_exists:
+                    # Create new table with correct schema
+                    cursor.execute('''
+                        CREATE TABLE categorized_content (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            document_id TEXT NOT NULL,
+                            content_chunk TEXT NOT NULL,
+                            category TEXT NOT NULL,
+                            subcategory TEXT,
+                            confidence_score REAL DEFAULT 0.0,
+                            keywords TEXT,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )
+                    ''')
+                    logger.info("✅ Created new categorized_content table with correct schema")
+                else:
+                    # Migrate existing table - check current schema
+                    cursor.execute("PRAGMA table_info(categorized_content)")
+                    columns = {row[1]: row[2] for row in cursor.fetchall()}
+                    logger.info(f"🔍 Existing table columns: {list(columns.keys())}")
+                    
+                    # Check if we need to recreate the table with correct schema
+                    expected_columns = {'id', 'document_id', 'content_chunk', 'category', 'subcategory', 'confidence_score', 'keywords', 'created_at'}
+                    missing_columns = expected_columns - set(columns.keys())
+                    
+                    if missing_columns or 'content_chunk' not in columns:
+                        logger.info(f"🔄 MAJOR MIGRATION: Recreating table due to schema mismatch. Missing: {missing_columns}")
+                        
+                        # Backup existing data if table has content_chunk column or similar
+                        backup_data = []
+                        try:
+                            if 'content_chunk' in columns or 'content' in columns or 'chunk' in columns:
+                                content_col = 'content_chunk' if 'content_chunk' in columns else ('content' if 'content' in columns else 'chunk')
+                                cursor.execute(f"SELECT document_id, {content_col}, category, subcategory FROM categorized_content")
+                                backup_data = cursor.fetchall()
+                                logger.info(f"📋 Backing up {len(backup_data)} existing records")
+                        except Exception as e:
+                            logger.warning(f"⚠️  Could not backup existing data: {e}")
+                        
+                        # Drop and recreate table
+                        cursor.execute("DROP TABLE categorized_content")
+                        cursor.execute('''
+                            CREATE TABLE categorized_content (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                document_id TEXT NOT NULL,
+                                content_chunk TEXT NOT NULL,
+                                category TEXT NOT NULL,
+                                subcategory TEXT,
+                                confidence_score REAL DEFAULT 0.0,
+                                keywords TEXT,
+                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                            )
+                        ''')
+                        
+                        # Restore backed up data
+                        if backup_data:
+                            for row in backup_data:
+                                doc_id, content, category, subcategory = row
+                                cursor.execute('''
+                                    INSERT INTO categorized_content (document_id, content_chunk, category, subcategory, confidence_score, keywords)
+                                    VALUES (?, ?, ?, ?, 0.0, '[]')
+                                ''', (doc_id, content, category, subcategory))
+                            logger.info(f"✅ Restored {len(backup_data)} records to new schema")
                     else:
-                        raise
+                        # Add missing columns if schema is mostly correct
+                        if 'confidence_score' not in columns:
+                            cursor.execute("ALTER TABLE categorized_content ADD COLUMN confidence_score REAL DEFAULT 0.0")
+                            logger.info("🔄 MIGRATION: Added confidence_score column")
+                        
+                        if 'keywords' not in columns:
+                            cursor.execute("ALTER TABLE categorized_content ADD COLUMN keywords TEXT")
+                            logger.info("🔄 MIGRATION: Added keywords column")
+                        
+                        if 'created_at' not in columns:
+                            cursor.execute("ALTER TABLE categorized_content ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+                            logger.info("🔄 MIGRATION: Added created_at column")
                 
-                # Create indexes separately (correct SQLite syntax)
+                # Create indexes (always safe with IF NOT EXISTS)
                 cursor.execute('CREATE INDEX IF NOT EXISTS idx_document_id ON categorized_content(document_id)')
                 cursor.execute('CREATE INDEX IF NOT EXISTS idx_category ON categorized_content(category)')  
                 cursor.execute('CREATE INDEX IF NOT EXISTS idx_confidence ON categorized_content(confidence_score)')
+                
                 conn.commit()
                 logger.info(f"✅ CategoryAwareContentStorage database initialized: {self.db_path}")
         except Exception as e:
