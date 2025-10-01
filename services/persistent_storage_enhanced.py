@@ -342,7 +342,7 @@ class PersistentStorageManager:
         try:
             lock_json = json.dumps(lock_data)
             
-            if self.use_postgres and self.postgres_conn:
+            if self.use_postgresql and self.postgres_conn:
                 with self.postgres_conn.cursor() as cursor:
                     cursor.execute("""
                         INSERT INTO processing_locks (document_id, lock_data, created_at)
@@ -371,7 +371,7 @@ class PersistentStorageManager:
     async def get_processing_lock(self, document_id: str) -> Optional[Dict[str, Any]]:
         """Get processing lock data for a document."""
         try:
-            if self.use_postgres and self.postgres_conn:
+            if self.use_postgresql and self.postgres_conn:
                 with self.postgres_conn.cursor() as cursor:
                     cursor.execute("""
                         SELECT lock_data, created_at FROM processing_locks 
@@ -401,7 +401,7 @@ class PersistentStorageManager:
     async def remove_processing_lock(self, document_id: str) -> bool:
         """Remove a processing lock for a document."""
         try:
-            if self.use_postgres and self.postgres_conn:
+            if self.use_postgresql and self.postgres_conn:
                 with self.postgres_conn.cursor() as cursor:
                     cursor.execute("DELETE FROM processing_locks WHERE document_id = %s", (document_id,))
                     removed = cursor.rowcount > 0

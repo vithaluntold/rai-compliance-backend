@@ -563,14 +563,13 @@ class AIService:
                     question, self.current_document_id, max_content_length=3000
                 )
                 
-                if smart_result['total_pieces'] == 0:
+                if smart_result['total_chunks'] == 0:
                     logger.error(f"❌ AI STEP 3 FAILED: No relevant content found for question: {question}")
                     raise RuntimeError(f"Smart categorization failed: No relevant categorized content found for question. Document may not be properly processed with smart categorization.")
                 
                 enhanced_evidence = smart_result['content']
-                citations_info = smart_result['citations']
-                logger.info(f"✅ AI STEP 3 COMPLETE: Found {smart_result['total_pieces']} relevant pieces with {smart_result['confidence']:.2f} confidence")
-                logger.info(f"📄 Content summary: {len(enhanced_evidence)} chars, {len(citations_info)} citations")
+                logger.info(f"✅ AI STEP 3 COMPLETE: Found {smart_result['total_chunks']} relevant chunks with {smart_result['confidence']:.2f} confidence")
+                logger.info(f"📄 Content summary: {len(enhanced_evidence)} chars, categories: {smart_result['categories']}")
                 
             except ImportError as import_error:
                 logger.error(f"❌ AI STEP 2 FAILED: Smart categorization system unavailable: {import_error}")
