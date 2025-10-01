@@ -260,8 +260,8 @@ class IntelligentChunkAccumulator:
                            f"Subcategory='{chunk.get('subcategory', 'N/A')}', "
                            f"Confidence={chunk['confidence']:.3f}, "
                            f"Length={len(chunk['content'])} chars, "
-                           f"Keywords={chunk.get('keywords', [])} "
-                           f"Preview: {chunk['content'][:100]}...")
+                           f"Keywords={chunk.get('keywords', [])}")
+                logger.info(f"📄 FULL CANDIDATE CHUNK #{i+1} CONTENT:\n{chunk['content']}\n" + "="*100)
             
             if not relevant_chunks:
                 logger.warning(f"⚠️  No relevant content found for document {document_id}")
@@ -289,8 +289,10 @@ class IntelligentChunkAccumulator:
                     # Try to add partial content
                     remaining_space = max_content_length - len(combined_content)
                     if remaining_space > 100:  # Only add if meaningful space left
-                        combined_content += chunk_content[:remaining_space] + "..."
+                        truncated_content = chunk_content[:remaining_space] + "..."
+                        combined_content += truncated_content
                         logger.info(f"✂️  CHUNK {i+1}: TRUNCATED to fit limit (added {remaining_space} chars)")
+                        logger.info(f"📄 TRUNCATED CHUNK CONTENT #{i+1}:\n{truncated_content}\n" + "="*100)
                     else:
                         logger.info(f"🚫 CHUNK {i+1}: SKIPPED (would exceed limit)")
                     break
@@ -300,6 +302,7 @@ class IntelligentChunkAccumulator:
                 categories.add(chunk['category'])
                 total_confidence += chunk['confidence']
                 logger.info(f"✅ CHUNK {i+1}: SELECTED (confidence: {chunk['confidence']:.3f}, category: {chunk['category']})")
+                logger.info(f"📄 FULL CHUNK CONTENT #{i+1}:\n{chunk_content}\n" + "="*100)
             
             avg_confidence = total_confidence / used_chunks if used_chunks > 0 else 0.0
             
