@@ -320,8 +320,57 @@ def _process_document_chunks(document_id: str) -> list:
         logger.error(f"❌ CHUNKING ERROR: No chunks generated from document {document_id}")
         raise ValueError("No chunks generated from document")
 
+    # CRITICAL FIX: Store chunks in categorized_content database for smart categorization
+    _store_chunks_for_smart_categorization(document_id, chunks)
+
     logger.info(f"Generated {len(chunks)} chunks for document {document_id}")
     return chunks
+
+
+def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> None:
+    """Store document chunks in categorized_content database for smart categorization."""
+    logger.info(f"📚 SMART STORAGE: Storing {len(chunks)} chunks for smart categorization")
+    
+    try:
+        from services.intelligent_chunk_accumulator import get_global_storage
+        storage = get_global_storage()
+        
+        stored_count = 0
+        for i, chunk in enumerate(chunks):
+            try:
+                # Extract text content from chunk
+                if isinstance(chunk, dict):
+                    content = chunk.get("text") or chunk.get("content", "")
+                else:
+                    content = str(chunk)
+                
+                if content.strip():
+                    # Store with basic categorization - AI service can enhance later
+                    category = "financial_document"  # Basic category
+                    subcategory = "content_chunk"
+                    confidence = 0.8  # Good confidence for processed chunks
+                    keywords = []  # Can be enhanced by AI later
+                    
+                    success = storage.store_categorized_chunk(
+                        document_id=document_id,
+                        chunk=content,
+                        category=category,
+                        subcategory=subcategory,
+                        confidence=confidence,
+                        keywords=keywords
+                    )
+                    
+                    if success:
+                        stored_count += 1
+                        
+            except Exception as e:
+                logger.warning(f"⚠️  Failed to store chunk {i}: {e}")
+                continue
+        
+        logger.info(f"✅ SMART STORAGE: Stored {stored_count}/{len(chunks)} chunks successfully")
+        
+    except Exception as e:
+        logger.error(f"❌ SMART STORAGE ERROR: Failed to store chunks: {e}")
 
 
 def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:
