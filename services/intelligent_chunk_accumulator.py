@@ -42,6 +42,19 @@ class CategoryAwareContentStorage:
                     )
                 ''')
                 
+                # MIGRATION: Check if confidence_score column exists and add it if missing
+                try:
+                    cursor.execute("SELECT confidence_score FROM categorized_content LIMIT 1")
+                    logger.info("✅ confidence_score column already exists in categorized_content table")
+                except sqlite3.OperationalError as e:
+                    if "no such column: confidence_score" in str(e):
+                        logger.info("🔄 MIGRATION: Adding missing confidence_score column to categorized_content table")
+                        cursor.execute("ALTER TABLE categorized_content ADD COLUMN confidence_score REAL DEFAULT 0.0")
+                        conn.commit()
+                        logger.info("✅ MIGRATION: Successfully added confidence_score column")
+                    else:
+                        raise
+                
                 # Create indexes separately (correct SQLite syntax)
                 cursor.execute('CREATE INDEX IF NOT EXISTS idx_document_id ON categorized_content(document_id)')
                 cursor.execute('CREATE INDEX IF NOT EXISTS idx_category ON categorized_content(category)')  

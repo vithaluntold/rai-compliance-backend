@@ -355,7 +355,7 @@ class PersistentStorageManager:
                     (document_id, json.dumps(audit_data))
                 )
     
-    async def set_processing_lock(self, document_id: str, lock_data: Dict[str, Any]) -> bool:
+    async def set_processing_lock(self, document_id: str, lock_data: Dict[str, Any], lock_type: str = "compliance_analysis") -> bool:
         """Set a processing lock for a document."""
         try:
             lock_json = json.dumps(lock_data)
@@ -363,21 +363,22 @@ class PersistentStorageManager:
             if self.use_postgresql and self.postgres_conn:
                 with self.postgres_conn.cursor() as cursor:
                     cursor.execute("""
-                        INSERT INTO processing_locks (document_id, lock_data, created_at)
-                        VALUES (%s, %s, NOW())
+                        INSERT INTO processing_locks (document_id, lock_type, lock_data, created_at)
+                        VALUES (%s, %s, %s, NOW())
                         ON CONFLICT (document_id) DO UPDATE SET 
+                            lock_type = EXCLUDED.lock_type,
                             lock_data = EXCLUDED.lock_data,
                             created_at = NOW()
-                    """, (document_id, lock_json))
+                    """, (document_id, lock_type, lock_json))
                     self.postgres_conn.commit()
             else:
                 with self.lock:
                     with sqlite3.connect(self.sqlite_path) as conn:
                         conn.execute("""
                             INSERT OR REPLACE INTO processing_locks 
-                            (document_id, lock_data, created_at) 
-                            VALUES (?, ?, CURRENT_TIMESTAMP)
-                        """, (document_id, lock_json))
+                            (document_id, lock_type, lock_data, created_at) 
+                            VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+                        """, (document_id, lock_type, lock_json))
             
             logger.info(f"🔒 Set processing lock in persistent storage: {document_id}")
             return True

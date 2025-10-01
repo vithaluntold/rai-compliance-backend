@@ -4143,7 +4143,7 @@ async def _initialize_analysis_tracking(
             "standards": standards,
             "special_instructions": special_instructions,
             "extensive_search": extensive_search
-        })
+        }, "compliance_analysis")
         logger.info(f"🔐 Created processing lock in persistent storage: {document_id}")
     except Exception as e:
         logger.error(f"❌ Failed to create persistent storage lock for {document_id}: {str(e)}")
