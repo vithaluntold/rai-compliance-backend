@@ -2589,7 +2589,8 @@ async def update_compliance_item(
 async def get_document_analysis_report(document_id: str):
     """Get comprehensive analysis report for a document"""
     try:
-        storage = PersistentStorage()
+        from services.persistent_storage import PersistentStorageManager
+        storage = PersistentStorageManager()
         
         # Get document metadata
         metadata = storage.load_document_metadata(document_id)
