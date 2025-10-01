@@ -38,12 +38,14 @@ class CategoryAwareContentStorage:
                         subcategory TEXT,
                         confidence_score REAL DEFAULT 0.0,
                         keywords TEXT,  -- JSON array of extracted keywords
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        INDEX(document_id),
-                        INDEX(category),
-                        INDEX(confidence_score)
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
+                
+                # Create indexes separately (correct SQLite syntax)
+                cursor.execute('CREATE INDEX IF NOT EXISTS idx_document_id ON categorized_content(document_id)')
+                cursor.execute('CREATE INDEX IF NOT EXISTS idx_category ON categorized_content(category)')  
+                cursor.execute('CREATE INDEX IF NOT EXISTS idx_confidence ON categorized_content(confidence_score)')
                 conn.commit()
                 logger.info(f"✅ CategoryAwareContentStorage database initialized: {self.db_path}")
         except Exception as e:

@@ -94,9 +94,18 @@ class PersistentStorageManager:
                         CREATE TABLE IF NOT EXISTS processing_locks (
                             document_id VARCHAR(255) PRIMARY KEY,
                             lock_type VARCHAR(100) NOT NULL,
+                            lock_data TEXT,
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                         )
                     """)
+                    
+                    # Migration: Add lock_data column if it doesn't exist
+                    try:
+                        cursor.execute("ALTER TABLE processing_locks ADD COLUMN lock_data TEXT")
+                        logger.info("🔄 Added missing lock_data column to processing_locks table")
+                    except Exception:
+                        # Column already exists, ignore
+                        pass
                     
                     conn.commit()
                     logger.info("✅ PostgreSQL tables initialized successfully")
@@ -137,9 +146,18 @@ class PersistentStorageManager:
                     CREATE TABLE IF NOT EXISTS processing_locks (
                         document_id TEXT PRIMARY KEY,
                         lock_type TEXT NOT NULL,
+                        lock_data TEXT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
                 """)
+                
+                # Migration: Add lock_data column if it doesn't exist
+                try:
+                    conn.execute("ALTER TABLE processing_locks ADD COLUMN lock_data TEXT")
+                    logger.info("🔄 Added missing lock_data column to processing_locks table")
+                except Exception:
+                    # Column already exists, ignore
+                    pass
                 
                 conn.commit()
                 logger.info("✅ SQLite database initialized successfully")
