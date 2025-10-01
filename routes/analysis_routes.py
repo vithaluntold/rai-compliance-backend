@@ -3189,6 +3189,76 @@ async def start_metadata_extraction(
                 
                 logger.info(f"✅ Metadata extraction completed for {document_id}")
 
+                # 🚀 AUTO-START COMPLIANCE ANALYSIS: Start compliance analysis immediately after metadata extraction
+                try:
+                    logger.info(f"🚀 AUTO-COMPLIANCE: Starting automatic compliance analysis for {document_id}")
+                    
+                    # Use default IFRS framework with common standards
+                    default_framework = "IFRS"
+                    default_standards = ["IAS_1", "IAS_16", "IAS_40", "IFRS_15"]
+                    
+                    # Prepare compliance analysis request
+                    compliance_request = {
+                        "framework": default_framework,
+                        "standards": default_standards,
+                        "special_instructions": "Automated compliance analysis triggered after metadata extraction completion.",
+                        "extensive_search": True,
+                        "processing_mode": "smart"
+                    }
+                    
+                    # Get text for compliance analysis
+                    from pathlib import Path
+                    chunks_file_path = Path(f"analysis_results/{document_id}_chunks.json")
+                    if chunks_file_path.exists():
+                        with open(chunks_file_path, 'r', encoding='utf-8') as f:
+                            chunks_data = json.load(f)
+                        
+                        # Extract text from chunks
+                        combined_text = ""
+                        for chunk in chunks_data:
+                            chunk_text = chunk.get('text') or chunk.get('content') or chunk.get('chunk_text', '')
+                            if chunk_text and chunk_text.strip():
+                                combined_text += chunk_text + "\n"
+                        
+                        if combined_text.strip():
+                            logger.info(f"🚀 AUTO-COMPLIANCE: Starting background compliance analysis for {document_id} with {len(default_standards)} standards")
+                            
+                            # Import AI service and start compliance analysis  
+                            from services.ai_service import get_ai_service
+                            ai_svc = get_ai_service()
+                            
+                            # Start compliance analysis in background
+                            import asyncio
+                            
+                            # Create background task for compliance analysis
+                            async def run_auto_compliance():
+                                try:
+                                    await process_compliance_analysis(
+                                        document_id=document_id,
+                                        text=combined_text,
+                                        framework=default_framework,
+                                        standards=default_standards,
+                                        special_instructions=compliance_request["special_instructions"],
+                                        extensive_search=compliance_request["extensive_search"],
+                                        ai_svc=ai_svc,
+                                        processing_mode=compliance_request["processing_mode"]
+                                    )
+                                    logger.info(f"✅ AUTO-COMPLIANCE: Completed for {document_id}")
+                                except Exception as auto_error:
+                                    logger.error(f"❌ AUTO-COMPLIANCE: Failed for {document_id}: {auto_error}")
+                            
+                            # Schedule the background task
+                            asyncio.create_task(run_auto_compliance())
+                            
+                        else:
+                            logger.warning(f"⚠️ AUTO-COMPLIANCE: No text content found for {document_id}")
+                    else:
+                        logger.warning(f"⚠️ AUTO-COMPLIANCE: Chunks file not found for {document_id}")
+                        
+                except Exception as auto_compliance_error:
+                    logger.error(f"❌ AUTO-COMPLIANCE: Setup failed for {document_id}: {auto_compliance_error}")
+                    # Don't fail metadata extraction if auto-compliance fails
+
             except Exception as e:
                 logger.error(f"❌ Metadata extraction failed for {document_id}: {e}")
                 # Mark as failed
