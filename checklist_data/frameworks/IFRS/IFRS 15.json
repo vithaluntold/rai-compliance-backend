@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "framework": "IFRS",
+  "standard": "IFRS 15",
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "IFRS 15 - Disclosure Requirements",
+      "items": [
+        {
+          "id": "item-1",
+          "question": "Does the entity comply with the disclosure requirements of IFRS 15?",
+          "reference": "IFRS 15.1",
+          "status": "NO",
+          "adequacy": "medium",
+          "confidence": 0.5,
+          "ai_explanation": "",
+          "evidence": "",
+          "user_comment": ""
+        }
+      ]
+    }
+  ]
+}

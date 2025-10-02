@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "framework": "IFRS",
+  "standard": "IFRS 16",
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "IFRS 16 - Disclosure Requirements",
+      "items": [
+        {
+          "id": "item-1",
+          "question": "Does the entity comply with the disclosure requirements of IFRS 16?",
+          "reference": "IFRS 16.1",
+          "status": "NO",
+          "adequacy": "medium",
+          "confidence": 0.5,
+          "ai_explanation": "",
+          "evidence": "",
+          "user_comment": ""
+        }
+      ]
+    }
+  ]
+}

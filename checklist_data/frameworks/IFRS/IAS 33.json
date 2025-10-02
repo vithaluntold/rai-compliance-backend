@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "framework": "IFRS",
+  "standard": "IAS 33",
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "IAS 33 - Disclosure Requirements",
+      "items": [
+        {
+          "id": "item-1",
+          "question": "Does the entity comply with the disclosure requirements of IAS 33?",
+          "reference": "IAS 33.1",
+          "status": "NO",
+          "adequacy": "medium",
+          "confidence": 0.5,
+          "ai_explanation": "",
+          "evidence": "",
+          "user_comment": ""
+        }
+      ]
+    }
+  ]
+}
