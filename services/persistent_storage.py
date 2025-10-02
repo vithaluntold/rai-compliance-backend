@@ -367,9 +367,66 @@ def _add_sync_methods():
             logger.error(f"❌ Failed to retrieve analysis results (sync) {document_id}: {e}")
             return None
     
+    def get_uploaded_file_sync(self, document_id: str) -> Optional[Dict[str, Any]]:
+        """Sync version of get_uploaded_file"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.execute("""
+                    SELECT document_id, filename, content, upload_date, file_size, mime_type, file_hash
+                    FROM uploaded_files WHERE document_id = ?
+                """, (document_id,))
+                
+                row = cursor.fetchone()
+                if row:
+                    return {
+                        'document_id': row['document_id'],
+                        'filename': row['filename'],
+                        'content': row['content'],
+                        'upload_date': row['upload_date'],
+                        'file_size': row['file_size'],
+                        'mime_type': row['mime_type'],
+                        'file_hash': row['file_hash']
+                    }
+                return None
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to retrieve file (sync) {document_id}: {e}")
+            return None
+    
+    def write_file_to_temp_sync(self, document_id: str, temp_dir: Path = None) -> Optional[Path]:
+        """Sync version of write_file_to_temp"""
+        try:
+            file_data = self.get_uploaded_file_sync(document_id)
+            if not file_data:
+                return None
+            
+            if temp_dir is None:
+                temp_dir = Path('/tmp/processing')
+            
+            temp_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Determine file extension from filename
+            filename = file_data['filename']
+            file_extension = Path(filename).suffix or '.pdf'
+            
+            temp_file = temp_dir / f"{document_id}{file_extension}"
+            
+            with open(temp_file, 'wb') as f:
+                f.write(file_data['content'])
+                
+            logger.info(f"✅ Temporary file written (sync): {temp_file}")
+            return temp_file
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to write temp file (sync) {document_id}: {e}")
+            return None
+
     # Add methods to class
     PersistentStorageManager.save_analysis_results_sync = save_analysis_results_sync
     PersistentStorageManager.get_analysis_results_sync = get_analysis_results_sync
+    PersistentStorageManager.get_uploaded_file_sync = get_uploaded_file_sync
+    PersistentStorageManager.write_file_to_temp_sync = write_file_to_temp_sync
 
 # Call the function to add sync methods
 _add_sync_methods()

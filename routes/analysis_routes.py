@@ -183,19 +183,11 @@ def get_document_file_path(document_id: str) -> Optional[Path]:
     
     # 🔧 FIX: If not found locally, try to restore from persistent storage
     try:
-        import asyncio
-        storage = get_persistent_storage()
-        
-        # Use asyncio to run the async function in sync context
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        try:
-            temp_file = loop.run_until_complete(storage.write_file_to_temp(document_id))
-            if temp_file and temp_file.exists():
-                logger.info(f"✅ Restored file from persistent storage: {document_id} -> {temp_file}")
-                return temp_file
-        finally:
-            loop.close()
+        storage_manager = get_persistent_storage_manager()
+        temp_file = storage_manager.write_file_to_temp_sync(document_id)
+        if temp_file and temp_file.exists():
+            logger.info(f"✅ Restored file from persistent storage: {document_id} -> {temp_file}")
+            return temp_file
             
     except Exception as e:
         logger.warning(f"⚠️ Failed to restore file from persistent storage: {document_id}: {e}")
