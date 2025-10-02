@@ -581,18 +581,10 @@ async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Transform metadata from smart extractor format to enhanced frontend presentation with correct field names."""
+    """Transform metadata from smart extractor format to enhanced presentation."""
     transformed_metadata = {}
 
-    # CRITICAL FIX: Map backend field names to frontend camelCase field names
-    field_mapping = {
-        "company_name": "companyName",
-        "nature_of_business": "natureOfBusiness", 
-        "operational_demographics": "operationalDemographics",
-        "financial_statements_type": "financialStatementsType"
-    }
-    
-    # Fields that need to be transformed
+    # Fields that need to be transformed - BACKEND USES SNAKE_CASE AS STANDARD
     metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
 
     for field in metadata_fields:
@@ -650,13 +642,11 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
 
                     transformed_field["geography_of_operations"] = geography_value
 
-                # CRITICAL FIX: Use camelCase field names that frontend expects
-                frontend_field_name = field_mapping.get(field, field)
-                transformed_metadata[frontend_field_name] = transformed_field
+                # BACKEND STANDARD: Use snake_case field names consistently
+                transformed_metadata[field] = transformed_field
             else:
                 # Handle legacy string format
-                frontend_field_name = field_mapping.get(field, field)
-                transformed_metadata[frontend_field_name] = {
+                transformed_metadata[field] = {
                     "value": str(value) if value is not None else "",
                     "confidence": 0.85,
                     "extraction_method": "legacy",
@@ -2333,15 +2323,15 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
                             logger.error(f"[POLLING FIX] Failed to load legacy metadata file: {e}")
                 
                 if extracted_metadata:
-                    # Transform metadata to frontend format with proper camelCase field mapping
+                    # Transform metadata to proper backend format with snake_case field names
                     frontend_metadata = {
-                        "companyName": "",
-                        "natureOfBusiness": "", 
-                        "operationalDemographics": "",
-                        "financialStatementsType": ""
+                        "company_name": "",
+                        "nature_of_business": "", 
+                        "operational_demographics": "",
+                        "financial_statements_type": ""
                     }
                     
-                    # Extract values from confidence structure and map to frontend camelCase fields
+                    # Extract values from confidence structure - BACKEND MAINTAINS SNAKE_CASE STANDARD
                     for key, metadata_obj in extracted_metadata.items():
                         if key == "optimization_metrics":
                             continue  # Skip metrics
@@ -2351,19 +2341,19 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
                         else:
                             value = metadata_obj
                         
-                        # CRITICAL FIX: Map backend fields to frontend camelCase fields
+                        # Map to backend standard snake_case field names
                         if key in ["company_name", "companyName"]:
                             if value and value != "":
-                                frontend_metadata["companyName"] = value
+                                frontend_metadata["company_name"] = value
                         elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
                             if value and value != "":
-                                frontend_metadata["natureOfBusiness"] = value
+                                frontend_metadata["nature_of_business"] = value
                         elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
                             if value and value != "":
-                                frontend_metadata["operationalDemographics"] = value
+                                frontend_metadata["operational_demographics"] = value
                         elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
                             if value and value != "":
-                                frontend_metadata["financialStatementsType"] = value
+                                frontend_metadata["financial_statements_type"] = value
                     
                     # Only update if we have actual extracted values
                     has_extracted_data = any(v for v in frontend_metadata.values() if v)
