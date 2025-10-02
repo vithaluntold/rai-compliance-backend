@@ -29,7 +29,7 @@ from services.checklist_utils import (
     is_standard_available,
     load_checklist,
 )
-from services.persistent_storage import get_persistent_storage
+from services.persistent_storage import get_persistent_storage, get_persistent_storage_manager
 from services.document_chunker import document_chunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
@@ -158,20 +158,13 @@ def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
         
         # 🔧 FIX: Also save to persistent storage (survives Render restarts)
         try:
-            import asyncio
-            storage = get_persistent_storage()
-            
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            try:
-                success = loop.run_until_complete(storage.save_analysis_results(document_id, results))
-                if success:
-                    logger.info(f"✅ Analysis results saved to persistent storage: {document_id}")
-                else:
-                    logger.warning(f"⚠️ Failed to save analysis results to persistent storage: {document_id}")
-            finally:
-                loop.close()
-                
+            # Use sync version instead of async to avoid event loop conflicts
+            storage_manager = get_persistent_storage_manager()
+            success = storage_manager.save_analysis_results_sync(document_id, results)
+            if success:
+                logger.info(f"✅ Analysis results saved to persistent storage: {document_id}")
+            else:
+                logger.warning(f"⚠️ Failed to save analysis results to persistent storage: {document_id}")
         except Exception as e:
             logger.warning(f"⚠️ Error saving to persistent storage: {e}")
         

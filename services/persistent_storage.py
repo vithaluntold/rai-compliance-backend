@@ -306,3 +306,70 @@ async def get_results(document_id: str) -> Optional[Dict[str, Any]]:
     """Get analysis results using persistent storage"""
     storage = get_persistent_storage()
     return await storage.get_analysis_results(document_id)
+
+# Sync versions to avoid event loop conflicts in FastAPI
+def get_persistent_storage_manager() -> PersistentStorageManager:
+    """Get persistent storage manager instance (sync version)"""
+    return get_persistent_storage()
+
+# Add sync methods to the PersistentStorageManager class
+def _add_sync_methods():
+    """Add sync wrapper methods to PersistentStorageManager class"""
+    
+    def save_analysis_results_sync(self, document_id: str, results: Dict[str, Any]) -> bool:
+        """Sync version of save_analysis_results"""
+        try:
+            results_json = json.dumps(results, ensure_ascii=False, default=str)
+            status = results.get('status', 'PROCESSING')
+            processing_mode = results.get('processing_mode', 'smart')
+            
+            with sqlite3.connect(self.db_path) as conn:
+                conn.execute("""
+                    INSERT OR REPLACE INTO analysis_results 
+                    (document_id, results_json, status, created_at, updated_at, processing_mode)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    document_id, results_json, status,
+                    datetime.now().isoformat(), datetime.now().isoformat(),
+                    processing_mode
+                ))
+                
+            logger.info(f"✅ Analysis results saved to database (sync): {document_id} (status: {status})")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to save analysis results (sync) {document_id}: {e}")
+            return False
+    
+    def get_analysis_results_sync(self, document_id: str) -> Optional[Dict[str, Any]]:
+        """Sync version of get_analysis_results"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.execute("""
+                    SELECT results_json, status, created_at, updated_at, processing_mode
+                    FROM analysis_results WHERE document_id = ?
+                """, (document_id,))
+                
+                row = cursor.fetchone()
+                if row:
+                    results = json.loads(row['results_json'])
+                    results.update({
+                        'status': row['status'],
+                        'created_at': row['created_at'],
+                        'updated_at': row['updated_at'],
+                        'processing_mode': row['processing_mode']
+                    })
+                    return results
+                return None
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to retrieve analysis results (sync) {document_id}: {e}")
+            return None
+    
+    # Add methods to class
+    PersistentStorageManager.save_analysis_results_sync = save_analysis_results_sync
+    PersistentStorageManager.get_analysis_results_sync = get_analysis_results_sync
+
+# Call the function to add sync methods
+_add_sync_methods()
