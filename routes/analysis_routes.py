@@ -153,6 +153,39 @@ AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
 smart_metadata_extractor = SmartMetadataExtractor()
 
 
+async def _start_keepalive_task(document_id: str) -> None:
+    """Start a background task that keeps the server alive after metadata extraction."""
+    import asyncio
+    
+    async def keepalive_worker():
+        """Background worker that keeps server alive by logging periodically."""
+        logger.info(f"🟢 KEEPALIVE: Started for document {document_id}")
+        
+        # Keep alive for 30 minutes (enough time for user to select framework)
+        for i in range(180):  # 30 minutes = 180 * 10 seconds
+            await asyncio.sleep(10)  # Wait 10 seconds
+            
+            # Check if framework has been selected (compliance analysis started)
+            try:
+                status_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
+                if status_file.exists():
+                    with open(status_file, 'r', encoding='utf-8') as f:
+                        status_data = json.load(f)
+                        
+                    if status_data.get("compliance_analysis") in ["IN_PROGRESS", "COMPLETED"]:
+                        logger.info(f"🟢 KEEPALIVE: Framework selected for {document_id}, ending keepalive")
+                        break
+                        
+                logger.info(f"🟢 KEEPALIVE: Ping {i+1}/180 for document {document_id}")
+            except Exception as e:
+                logger.error(f"🟢 KEEPALIVE: Error checking status for {document_id}: {e}")
+        
+        logger.info(f"🟢 KEEPALIVE: Ended for document {document_id}")
+    
+    # Start the keepalive task in the background
+    asyncio.create_task(keepalive_worker())
+
+
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """
     SIMPLE FILE SAVE: Direct file storage only, no dual storage complexity.
@@ -986,6 +1019,11 @@ async def process_upload_tasks(
             logger.error(f"❌ Failed to update session status: {session_error}")
 
         logger.info(f"Metadata extraction completed for document {document_id}")
+        
+        # CRITICAL FIX: Keep server alive by starting a keep-alive background task
+        # This prevents Render from shutting down the service after metadata extraction
+        logger.info(f"🟢 SERVER CONTINUITY: Starting keep-alive task to prevent shutdown")
+        await _start_keepalive_task(document_id)
 
     except Exception as _e:
         # Handle error
