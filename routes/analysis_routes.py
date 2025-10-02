@@ -581,9 +581,17 @@ async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Transform metadata from smart extractor format to enhanced frontend presentation."""
+    """Transform metadata from smart extractor format to enhanced frontend presentation with correct field names."""
     transformed_metadata = {}
 
+    # CRITICAL FIX: Map backend field names to frontend camelCase field names
+    field_mapping = {
+        "company_name": "companyName",
+        "nature_of_business": "natureOfBusiness", 
+        "operational_demographics": "operationalDemographics",
+        "financial_statements_type": "financialStatementsType"
+    }
+    
     # Fields that need to be transformed
     metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
 
@@ -642,10 +650,13 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
 
                     transformed_field["geography_of_operations"] = geography_value
 
-                transformed_metadata[field] = transformed_field
+                # CRITICAL FIX: Use camelCase field names that frontend expects
+                frontend_field_name = field_mapping.get(field, field)
+                transformed_metadata[frontend_field_name] = transformed_field
             else:
                 # Handle legacy string format
-                transformed_metadata[field] = {
+                frontend_field_name = field_mapping.get(field, field)
+                transformed_metadata[frontend_field_name] = {
                     "value": str(value) if value is not None else "",
                     "confidence": 0.85,
                     "extraction_method": "legacy",
@@ -875,6 +886,8 @@ async def process_upload_tasks(
     document_id: str, ai_svc: AIService, text: str = "", processing_mode: str = "smart"
 ) -> None:
     """Run document processing tasks up to metadata extraction."""
+    import traceback
+    
     # Check for duplicate processing
     if _check_processing_locks(document_id):
         return
@@ -971,18 +984,46 @@ async def process_upload_tasks(
             metadata = await _extract_document_metadata(document_id, chunks)
             
             # Save metadata using staged storage for isolation
-            from services.staged_storage import StagedStorageManager
-            storage_manager = StagedStorageManager()
-            storage_manager.save_metadata(document_id, metadata)
+            try:
+                logger.info(f"💾 STAGED: Starting staged storage save for {document_id}")
+                from services.staged_storage import StagedStorageManager
+                storage_manager = StagedStorageManager()
+                storage_manager.save_metadata(document_id, metadata)
+                logger.info(f"✅ STAGED: Staged storage save completed for {document_id}")
+            except Exception as staged_error:
+                logger.error(f"❌ STAGED STORAGE ERROR for {document_id}: {str(staged_error)}")
+                logger.error(f"❌ STAGED STORAGE TRACEBACK: {traceback.format_exc()}")
+                # Continue processing even if staged storage fails
             
             # Update the main results file with actual metadata and completion status
-            basic_result.update({
-                "status": "COMPLETED",  # FIX: Update main status to show completion
-                "metadata_extraction": "COMPLETED",
-                "metadata": _transform_metadata_for_frontend(metadata),
-                "message": "Metadata extraction completed successfully. Ready for framework selection."
-            })
-            save_analysis_results(document_id, basic_result)
+            try:
+                logger.info(f"🔄 TRANSFORM: Starting metadata transformation for {document_id}")
+                transformed_metadata = _transform_metadata_for_frontend(metadata)
+                logger.info(f"✅ TRANSFORM: Metadata transformation completed for {document_id}")
+                
+                basic_result.update({
+                    "status": "COMPLETED",  # FIX: Update main status to show completion
+                    "metadata_extraction": "COMPLETED", 
+                    "metadata": transformed_metadata,
+                    "message": "Metadata extraction completed successfully. Ready for framework selection."
+                })
+                
+                logger.info(f"💾 SAVE: Starting results save for {document_id}")
+                save_analysis_results(document_id, basic_result)
+                logger.info(f"✅ SAVE: Results saved successfully for {document_id}")
+                
+            except Exception as transform_error:
+                logger.error(f"❌ TRANSFORM/SAVE ERROR for {document_id}: {str(transform_error)}")
+                logger.error(f"❌ TRANSFORM/SAVE TRACEBACK: {traceback.format_exc()}")
+                
+                # Fallback: save with raw metadata if transformation fails
+                basic_result.update({
+                    "status": "COMPLETED",
+                    "metadata_extraction": "COMPLETED",
+                    "metadata": metadata,  # Use raw metadata as fallback
+                    "message": "Metadata extraction completed (fallback mode)."
+                })
+                save_analysis_results(document_id, basic_result)
             
             # NOW create metadata completion lock file (after actual extraction)
             metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
@@ -2292,15 +2333,15 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
                             logger.error(f"[POLLING FIX] Failed to load legacy metadata file: {e}")
                 
                 if extracted_metadata:
-                    # Transform metadata to frontend format with proper field mapping
+                    # Transform metadata to frontend format with proper camelCase field mapping
                     frontend_metadata = {
-                        "company_name": "",
-                        "nature_of_business": "", 
-                        "operational_demographics": "",
-                        "financial_statements_type": ""
+                        "companyName": "",
+                        "natureOfBusiness": "", 
+                        "operationalDemographics": "",
+                        "financialStatementsType": ""
                     }
                     
-                    # Extract values from confidence structure and map to frontend fields
+                    # Extract values from confidence structure and map to frontend camelCase fields
                     for key, metadata_obj in extracted_metadata.items():
                         if key == "optimization_metrics":
                             continue  # Skip metrics
@@ -2310,19 +2351,19 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
                         else:
                             value = metadata_obj
                         
-                        # Map backend fields to frontend fields with fallbacks
+                        # CRITICAL FIX: Map backend fields to frontend camelCase fields
                         if key in ["company_name", "companyName"]:
                             if value and value != "":
-                                frontend_metadata["company_name"] = value
+                                frontend_metadata["companyName"] = value
                         elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
                             if value and value != "":
-                                frontend_metadata["nature_of_business"] = value
+                                frontend_metadata["natureOfBusiness"] = value
                         elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
                             if value and value != "":
-                                frontend_metadata["operational_demographics"] = value
+                                frontend_metadata["operationalDemographics"] = value
                         elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
                             if value and value != "":
-                                frontend_metadata["financial_statements_type"] = value
+                                frontend_metadata["financialStatementsType"] = value
                     
                     # Only update if we have actual extracted values
                     has_extracted_data = any(v for v in frontend_metadata.values() if v)

@@ -1,0 +1,12 @@
+{
+  "status": "error",
+  "document_id": "RAI-02102025-LO2VA-EJWIA",
+  "timestamp": "2025-10-02T08:47:28.871476",
+  "error": "No chunks generated from document",
+  "error_timestamp": "2025-10-02T08:47:28.871476",
+  "metadata": {},
+  "sections": [],
+  "metadata_extraction": "ERROR",
+  "compliance_analysis": "PENDING",
+  "message": "Document processing failed: No chunks generated from document"
+}
