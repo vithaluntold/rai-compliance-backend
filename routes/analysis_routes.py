@@ -753,19 +753,20 @@ async def upload_document(
             )
             processing_mode = "smart"
 
-        # No need to chunk here, just start background processing
+        # 🔧 FIX: Process immediately instead of using broken background tasks
         try:
-            background_tasks.add_task(
-                process_upload_tasks,
+            # Start processing immediately to ensure it actually happens
+            await process_upload_tasks(
                 document_id=document_id,
                 ai_svc=ai_svc,
                 processing_mode=processing_mode,
             )
+            
             response = {
-                "status": "processing",
+                "status": "completed",
                 "document_id": document_id,
                 "processing_mode": processing_mode,
-                "message": f"Document uploaded with {processing_mode} mode, processing started",
+                "message": f"Document uploaded and processed successfully with {processing_mode} mode",
             }
             logger.info(f"Returning success response: {json.dumps(response)}")
             return response
