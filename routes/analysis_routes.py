@@ -2731,9 +2731,10 @@ async def select_framework(
 ) -> Union[Dict[str, Any], JSONResponse]:
     try:
         logger.info(
-            f"Selecting framework {request.framework} and standards "
+            f"🚀 FRAMEWORK SELECTION STARTED: {request.framework} and standards "
             f"{request.standards} for document {document_id}"
         )
+        logger.info(f"🔍 REQUEST DETAILS: specialInstructions='{request.specialInstructions}', extensiveSearch={request.extensiveSearch}")
 
         # Validate framework exists
         framework_error = _validate_framework_exists(request.framework)
@@ -2790,6 +2791,9 @@ async def select_framework(
             return text
 
         # Start compliance analysis in the background
+        logger.info(f"✅ VALIDATION PASSED: Starting compliance analysis for {document_id}")
+        logger.info(f"📝 TEXT EXTRACTED: {len(text)} characters for analysis")
+        
         background_tasks.add_task(
             process_compliance_analysis,
             document_id,
@@ -2801,8 +2805,10 @@ async def select_framework(
             ai_svc,
             request.processingMode,  # Pass the processing mode
         )
+        
+        logger.info(f"🎯 COMPLIANCE ANALYSIS TASK SCHEDULED: Background task added for {document_id}")
 
-        return {
+        response_data = {
             "status": "PROCESSING",
             "document_id": document_id,
             "framework": request.framework,
@@ -2814,6 +2820,9 @@ async def select_framework(
                 "for all selected standards"
             ),
         }
+        
+        logger.info(f"✅ FRAMEWORK SELECTION COMPLETED: Returning response for {document_id}")
+        return response_data
     except Exception as _e:
         logger.error(f"Error selecting framework: {str(_e)}", exc_info=True)
         return JSONResponse(
@@ -4628,6 +4637,9 @@ async def process_compliance_analysis(
     performance_tracker = None  # Initialize to avoid NameError in exception handler
 
     try:
+        logger.info(f"🎯 COMPLIANCE ANALYSIS BACKGROUND TASK STARTED: {document_id}")
+        logger.info(f"🎯 PARAMETERS: framework={framework}, standards={standards}, processing_mode={processing_mode}")
+        logger.info(f"🎯 TEXT LENGTH: {len(text)} chars, extensive_search={extensive_search}")
         # CRITICAL: Limit text content to 4000 characters to prevent Azure OpenAI API 500 errors
         MAX_TEXT_LENGTH = 4000
         if len(text) > MAX_TEXT_LENGTH:
