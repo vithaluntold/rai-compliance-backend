@@ -1,0 +1,147 @@
+{
+  "title": "Financial Instruments: Presentation (IAS 32) Disclosure Checklist",
+  "version": "1.0",
+  "sections": [
+    {
+      "section": "IAS 32",
+      "title": "Financial Instruments: Presentation",
+      "description": "Checklist for presentation and disclosure requirements under IAS 32.",
+      "items": [
+        {
+          "id": "136",
+          "section": "IAS 32",
+          "reference": "IAS 32.39, IAS 1.109",
+          "question": "Does the entity separately disclose the amount of transaction costs accounted for as a deduction from equity in the reporting period in the statement of changes in equity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "137",
+          "section": "IAS 32",
+          "reference": "IAS 32.39, IAS 12.81",
+          "question": "Does the entity include the amount of income taxes associated with transaction costs accounted for as a deduction from equity in the aggregate amount of current and deferred tax credited or charged directly to equity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

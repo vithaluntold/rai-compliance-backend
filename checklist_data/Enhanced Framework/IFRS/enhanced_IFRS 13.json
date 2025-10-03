@@ -1,0 +1,1956 @@
+{
+  "title": "IFRS 13 Disclosure Checklist",
+  "version": "1.0",
+  "sections": [
+    {
+      "section": "IFRS 13",
+      "title": "Fair value measurement",
+      "description": "Checklist for presentation and disclosure requirements under IFRS 13.",
+      "items": [
+        {
+          "id": "278.1",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.91(a)",
+          "question": "For assets and liabilities that are measured at fair value on a recurring or non-recurring basis after initial recognition, does the entity disclose the valuation techniques and inputs used to develop those measurements?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "278.2",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.91(b)",
+          "question": "For recurring fair value measurements using significant unobservable inputs (Level 3), does the entity disclose the effect of those measurements on profit or loss or other comprehensive income for the period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "279",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.92",
+          "question": "If the disclosures provided in accordance with IFRS 13 and other IFRS accounting standards are insufficient to meet the objectives in IFRS 13.91, does the entity disclose additional information to meet those objectives?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "280",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.95, IFRS 13.93(c)",
+          "question": "Does the entity disclose its policy for determining when transfers between levels of the fair value hierarchy are deemed to have occurred?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "281",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.96, IFRS 13.48, IFRS 13.51",
+          "question": "If an entity makes an accounting policy decision to use the exception in IFRS 13.48, does the entity disclose that policy, including its policy for allocating bid-ask spread adjustments and credit adjustments?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "282.1",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.94(a)",
+          "question": "Does the entity classify assets and liabilities under the scope of IFRS 13 based on the nature, characteristics and risks of the asset or liability?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "282.2",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.94(b)",
+          "question": "Does the entity classify assets and liabilities under the scope of IFRS 13 based on the level of the fair value hierarchy within which the fair value measurement is categorised?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "283",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.94",
+          "question": "Does the entity provide sufficient information to permit reconciliation between the classes of assets and liabilities and the line items presented in the statement of financial position?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "284",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.99",
+          "question": "Does the entity present the quantitative disclosures required by IFRS 13 in tabular format, unless another format is more appropriate?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "285",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.98",
+          "question": "For a liability measured at fair value and issued with an inseparable third-party credit enhancement, does the entity disclose the existence of that credit enhancement and whether it is reflected in the fair value measurement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "286.1",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.97",
+          "question": "For assets and liabilities not measured at fair value in the statement of financial position but for which fair value is disclosed, does the entity disclose the level of the fair value hierarchy within which the fair value measurement(s) are categorised in their entirety?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "286.2",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(b), IFRS 13.93(d)",
+          "question": "For fair value measurements categorised within Levels 2 and 3 of the hierarchy, does the entity disclose a description of the valuation technique(s) and inputs used, and if there has been a change in valuation technique, the change and the reason(s) for making it?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "286.3",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(i)",
+          "question": "If the highest and best use of a non-financial asset differs from its current use, does the entity disclose that fact and explain why the asset is being used in a manner that differs from its highest and best use?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.1",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(a)",
+          "question": "For each class of assets and liabilities measured at fair value on a recurring basis, does the entity disclose the fair value measurement at the end of the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.2",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(b)",
+          "question": "For each class of assets and liabilities measured at fair value on a recurring basis, does the entity disclose the level of the fair value hierarchy (Level 1, 2 or 3) within which the measurements are categorised in their entirety?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.3",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(c)",
+          "question": "For assets and liabilities held at the end of the reporting period, does the entity disclose the amount of any transfers between Level 1 and Level 2, separately disclosing transfers into each level from transfers out of each level, and the reasons for those transfers?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.4",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(d)",
+          "question": "For fair value measurements categorised within Level 2 and 3, does the entity disclose a description of the valuation technique(s) and inputs used, any change in technique and the reasons, and for Level 3, quantitative information about the significant unobservable inputs used?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.5",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(e)",
+          "question": "For fair value measurements categorised within Level 3, does the entity provide a reconciliation from opening to closing balances, separately disclosing changes attributable to: total gains or losses recognised in profit or loss and the line item(s) in which they are recognised; total gains or losses recognised in other comprehensive income and the line item(s) in which they are recognised; purchases, sales, issues and other settlements; and transfers into or out of Level 3 and the reasons for those transfers?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.6",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(f)",
+          "question": "For total gains and losses recognised during the period in profit or loss under IFRS 13.93(e)(i), does the entity disclose the amount attributable to the change in unrealised gains or losses relating to those assets and liabilities held at period end and the line item(s) in which those unrealised gains or losses are recognised?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.7",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(g)",
+          "question": "For fair value measurements categorised within Level 3, does the entity disclose a description of the valuation processes used, including how it decides its valuation policies and procedures and analyses changes period to period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.8",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(h)",
+          "question": "For fair value measurements categorised within Level 3, does the entity disclose a narrative description of the sensitivity if a change in an unobservable input might result in a significantly higher or lower fair value measurement, and if there are interrelationships between significant unobservable inputs and other inputs, a narrative description of those interrelationships and how they might magnify or mitigate the effect of changes?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.9",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(h)",
+          "question": "For financial assets and liabilities measured at fair value in Level 3, if changing one or more unobservable inputs to reflect reasonably possible alternative assumptions would change fair value significantly, does the entity disclose that fact, the effect of those changes and how the effect was calculated?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "287.10",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(i)",
+          "question": "If the highest and best use of a non-financial asset differs from its current use, does the entity disclose that fact and the reason for using the asset in a manner that differs from its highest and best use?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.1",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(a)",
+          "question": "For each class of assets and liabilities measured at fair value on a non-recurring basis, does the entity disclose the fair value measurement at the end of the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.2",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(b)",
+          "question": "For assets and liabilities measured at fair value on a non-recurring basis, does the entity disclose the reasons for the fair value measurement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.3",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(c)",
+          "question": "For assets and liabilities measured at fair value on a non-recurring basis, does the entity disclose the level of the fair value hierarchy within which the fair value measurements are categorised?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.4",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(d)",
+          "question": "For fair value measurements categorised within Level 2 and 3 on a non-recurring basis, does the entity disclose a description of the valuation technique(s) and inputs used, any change in technique and the reasons, and for Level 3, quantitative information about the significant unobservable inputs used?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.5",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(e)",
+          "question": "For fair value measurements categorised within Level 3 on a non-recurring basis, does the entity disclose a description of the valuation processes used?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "288.6",
+          "section": "IFRS 13",
+          "reference": "IFRS 13.93(f)",
+          "question": "For assets and liabilities measured at fair value on a non-recurring basis, if the highest and best use of a non-financial asset differs from its current use, does the entity disclose that fact and explain why the asset is being used in a manner that differs from its highest and best use?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

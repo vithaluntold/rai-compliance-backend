@@ -1,0 +1,25 @@
+﻿{
+    "title": "Financial Instruments: Presentation (IAS 32) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 32",
+            "title": "Financial Instruments: Presentation",
+            "description": "Checklist for presentation and disclosure requirements under IAS 32.",
+            "items": [
+                {
+                    "id": "136",
+                    "section": "IAS 32",
+                    "reference": "IAS 32.39, IAS 1.109",
+                    "question": "Does the entity separately disclose the amount of transaction costs accounted for as a deduction from equity in the reporting period in the statement of changes in equity?"
+                },
+                {
+                    "id": "137",
+                    "section": "IAS 32",
+                    "reference": "IAS 32.39, IAS 12.81",
+                    "question": "Does the entity include the amount of income taxes associated with transaction costs accounted for as a deduction from equity in the aggregate amount of current and deferred tax credited or charged directly to equity?"
+                }
+            ]
+        }
+    ]
+}

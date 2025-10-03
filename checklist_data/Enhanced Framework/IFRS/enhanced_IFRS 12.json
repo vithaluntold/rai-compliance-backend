@@ -1,0 +1,5708 @@
+{
+  "title": "IFRS 12 Disclosure Checklist",
+  "version": "1.0",
+  "sections": [
+    {
+      "section": "IFRS 12",
+      "title": "Disclosure of Interests in Other Entities",
+      "description": "Checklist for presentation and disclosure requirements under IFRS 12.",
+      "items": [
+        {
+          "id": "176",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.7",
+          "question": "Does the entity disclose information about significant judgements and assumptions it has made (and changes to those judgements and assumptions) in determining that it has control of another entity, i.e., an investee?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "177",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.8",
+          "question": "Does the entity include under the significant judgements and assumptions disclosed in IFRS 12.7 those made when changes in facts and circumstances are such that the conclusion about whether it has control changes during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "178.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9(a)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it does not control another entity even though it holds more than half of the voting rights of that entity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "178.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9(b)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it controls another entity even though it holds less than half of the voting rights of that entity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "178.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9(c)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it is an agent or a principal?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "180.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.10–12.12",
+          "question": "Does the entity disclose enough information to understand the composition of the group, including the group’s composition and the interest that non-controlling interests have in the group’s activities and cash flows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "180.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.13",
+          "question": "Does the entity disclose enough information to evaluate the nature and extent of significant restrictions on its ability to access or use group assets and to settle group liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "180.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.14–12.17",
+          "question": "Does the entity disclose enough information to evaluate the nature of, and changes in, the risks associated with its interests in consolidated structured entities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "180.4",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.18",
+          "question": "Does the entity disclose enough information to evaluate the consequences of changes in its ownership interest in a subsidiary that do not result in a loss of control?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "180.5",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19",
+          "question": "Does the entity disclose enough information to evaluate the consequences of losing control of a subsidiary during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "181.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.11(a)",
+          "question": "When a subsidiary’s financial statements used for consolidation are as of a different date or for a different period, does the entity disclose the date of that subsidiary’s reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "181.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.11(b)",
+          "question": "When a subsidiary’s financial statements used for consolidation are as of a different date or for a different period, does the entity disclose the reason for using that different date or period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.12(a)",
+          "question": "Does the entity disclose the name of each subsidiary with material non-controlling interests?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.12(b)",
+          "question": "Does the entity disclose the principal place of business (and country of incorporation, if different) of each subsidiary with material non-controlling interests?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.12(c)",
+          "question": "Does the entity disclose the proportion of ownership interests held by non-controlling interests in each subsidiary?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.4",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.12(d)",
+          "question": "Does the entity disclose the proportion of voting rights held by non-controlling interests, if different from the proportion of ownership interests?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.5",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B10",
+          "question": "Does the entity disclose dividends paid to non-controlling interests in each subsidiary?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "182.6",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B10",
+          "question": "Does the entity disclose summarised financial information for each subsidiary with material non-controlling interests, including current assets, non-current assets, current liabilities, non-current liabilities, revenue, profit or loss and total comprehensive income?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "183.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.13(a)(i)",
+          "question": "Does the entity disclose restrictions that limit a parent or its subsidiaries from transferring cash or other assets to or from other group entities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "183.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.13(a)(ii)",
+          "question": "Does the entity disclose guarantees or other requirements that may restrict dividends, capital distributions, loans or advances between group entities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "184",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.13(b)",
+          "question": "Does the entity disclose the nature and extent to which protective rights of non-controlling interests can restrict access to or use of group assets and settlement of group liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "185",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.13(c)",
+          "question": "Does the entity disclose the carrying amounts in its consolidated financial statements of the assets and liabilities subject to those restrictions?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "187",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.18",
+          "question": "Does the entity present a schedule showing the effects on equity attributable to owners of the parent of any changes in its ownership interest in a subsidiary that do not result in a loss of control?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "188.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19(a)",
+          "question": "When an entity loses control of a subsidiary, does it disclose the gain or loss calculated in accordance with IFRS 10.25?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "188.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19(c)",
+          "question": "When an entity loses control of a subsidiary, does it disclose the line item(s) in profit or loss in which the gain or loss is recognised if not presented separately?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "189",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9A",
+          "question": "When a parent determines that it is an investment entity in accordance with IFRS 10.27, does it disclose significant judgements and assumptions made in making that determination?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "190",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9A",
+          "question": "If the investment entity lacks one or more typical characteristics (see IFRS 10.28), does it disclose its reasons for concluding that it is nevertheless an investment entity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "191",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9B",
+          "question": "When an entity becomes or ceases to be an investment entity, does it disclose the change in status and the reasons for the change?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "192.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9B(a)",
+          "question": "When an entity becomes an investment entity, does it disclose the total fair value, as of the date of change of status, of the subsidiaries that cease to be consolidated?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "192.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9B(b)",
+          "question": "When an entity becomes an investment entity, does it disclose the total gain or loss, if any, calculated in accordance with IFRS 10.B101?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "192.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9B(c)",
+          "question": "When an entity becomes an investment entity, does it disclose the line item(s) in profit or loss in which the gain or loss is recognised if not presented separately?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "193",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19A",
+          "question": "Does an investment entity that applies the consolidation exception and accounts for a subsidiary at fair value through profit or loss disclose that fact?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "194.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19B(a)",
+          "question": "For each unconsolidated subsidiary, does an investment entity disclose the subsidiary’s name?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "194.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19B(b)",
+          "question": "For each unconsolidated subsidiary, does an investment entity disclose the principal place of business (and country of incorporation, if different)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "194.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19B(c)",
+          "question": "For each unconsolidated subsidiary, does an investment entity disclose the proportion of ownership interest held and, if different, the proportion of voting rights held?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "195",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19C",
+          "question": "If an investment entity is the parent of another investment entity, does it provide the disclosures in IFRS 12.19B for investments controlled by its investment entity subsidiary?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "196.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19D(a)",
+          "question": "Does an investment entity disclose the nature and extent of any significant restrictions on an unconsolidated subsidiary’s ability to transfer funds to the investment entity as dividends or to repay loans or advances?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "196.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19D(b)",
+          "question": "Does an investment entity disclose any current commitments or intentions to provide financial or other support to an unconsolidated subsidiary, including assistance in obtaining financial support?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "197.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19E(a)",
+          "question": "If, without contractual obligation, an investment entity or its subsidiaries provided support to an unconsolidated subsidiary, does it disclose the type and amount of support provided to each subsidiary?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "197.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19E(b)",
+          "question": "If, without contractual obligation, an investment entity or its subsidiaries provided support to an unconsolidated subsidiary, does it disclose the reasons for providing that support?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "198",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19F",
+          "question": "Does an investment entity disclose the terms of any contractual arrangements that could require it or its unconsolidated subsidiaries to provide financial support to a controlled structured entity, including events or circumstances that could expose it to a loss?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "199",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.19G",
+          "question": "If, without contractual obligation, an investment entity or its unconsolidated subsidiaries provided support to a structured entity they did not control and that support resulted in control, does the entity disclose an explanation of the factors leading to that decision?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "201.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.7(a)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it has joint control of an arrangement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "201.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.7(b)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining the type of joint arrangement (joint operation or joint venture) when structured through a separate vehicle?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "202",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.8",
+          "question": "Does the entity include under those judgements and assumptions any made when changes in facts and circumstances cause the conclusion about joint control to change during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "203.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.20(a)",
+          "question": "Does the entity disclose information to evaluate the nature, extent and financial effects of its interests in joint arrangements, including the nature and effects of its contractual relationship with other investors with joint control?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "203.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.20(b)",
+          "question": "Does the entity disclose information to evaluate the nature of, and changes in, the risks associated with its interests in joint ventures?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "204.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(i)",
+          "question": "For each material joint arrangement, does the entity disclose the name of the joint arrangement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "204.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(ii)",
+          "question": "For each material joint arrangement, does the entity describe the nature of its relationship with the arrangement (e.g., nature of activities and strategic importance)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "204.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(iii)",
+          "question": "For each material joint arrangement, does the entity disclose the principal place of business (and country of incorporation, if different)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "204.4",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(iv)",
+          "question": "For each material joint arrangement, does the entity disclose the proportion of ownership interest or participating share and, if different, the proportion of voting rights held?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "206.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(b)(i)",
+          "question": "For each material joint venture, does the entity disclose whether the investment is measured using the equity method or at fair value?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "206.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(b)(ii) & B12–B13",
+          "question": "For each material joint venture, does the entity disclose financial information including dividends received and summarised financial information (current assets, non-current assets, current liabilities, non-current liabilities, revenue, profit or loss, depreciation and amortisation, interest income, interest expense, income tax expense or income), and, if equity-accounted, fair value if a quoted market price exists?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "207",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "Does the summarised financial information reflect the amounts in the joint venture’s IFRS financial statements and not the entity’s share of those amounts?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "208",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "If equity-accounted, are the joint venture’s IFRS statement amounts adjusted for fair value adjustments at acquisition and accounting policy differences?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "209",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "Does the entity provide a reconciliation of the summarised financial information to the carrying amount of its interest in the joint venture?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "210.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B15(a)",
+          "question": "If the entity measures its interest in a joint venture at fair value, does it disclose the basis on which the summarised financial information has been prepared?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "210.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B15(b)",
+          "question": "If the joint venture does not prepare IFRS financial statements and preparation is impracticable or costly, does the entity disclose the basis on which the summarised financial information has been prepared?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "211",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B16",
+          "question": "Does the entity disclose, in aggregate, the carrying amount of its interests in all individually immaterial joint ventures accounted for using the equity method?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "212.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(c)(i)",
+          "question": "Does the entity disclose the aggregate share of profit or loss from continuing operations for all individually immaterial joint ventures?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "212.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(c)(ii)",
+          "question": "Does the entity disclose the aggregate share of post-tax profit or loss from discontinued operations for all individually immaterial joint ventures?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "212.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(c)(iii)",
+          "question": "Does the entity disclose the aggregate share of other comprehensive income for all individually immaterial joint ventures?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "212.4",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(c)(iv)",
+          "question": "Does the entity disclose the aggregate share of total comprehensive income for all individually immaterial joint ventures?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "213.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.23(a)(i), B18–B19",
+          "question": "Does the entity disclose, separately from other commitments, unrecognised commitments to contribute funding or resources that may give rise to future outflows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "213.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.23(a)(ii), B18–B19",
+          "question": "Does the entity disclose, separately from other commitments, unrecognised commitments to acquire another party’s ownership interest in a joint venture if a specified event occurs or does not occur?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "214",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.23(b)",
+          "question": "Does the entity disclose contingent liabilities relating to its interests in joint ventures, including its share of jointly incurred contingent liabilities, separately from other contingent liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "215.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.22(a)",
+          "question": "Does the entity disclose the nature and extent of significant restrictions on joint ventures’ ability to transfer funds as dividends or to repay loans or advances?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "215.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.22(b)",
+          "question": "Does the entity disclose when a joint venture’s financial statements used for equity accounting are as of a date or for a period different from the entity’s?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "218",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.7",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining if it has significant influence over another entity?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "219",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.8",
+          "question": "Does the entity include under those judgements and assumptions any made when facts or circumstances change such that the conclusion about significant influence changes during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "220.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9(a)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it does not have significant influence even though it holds 20% or more of the voting rights?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "220.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.9(b)",
+          "question": "Does the entity disclose significant judgements and assumptions made in determining that it has significant influence even though it holds less than 20% of the voting rights?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "221.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.20(a)",
+          "question": "Does the entity disclose information to evaluate the nature, extent and financial effects of its interests in associates, including the nature and effects of its contractual relationship with other investors with significant influence?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "221.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.23",
+          "question": "Does the entity disclose information to evaluate the nature of, and changes in, the risks associated with its interests in associates?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "222.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(i)",
+          "question": "For each material associate, does the entity disclose the associate’s name?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "222.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(ii)",
+          "question": "For each material associate, does the entity describe the nature of its relationship with the associate (e.g., nature of activities and strategic importance)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "222.3",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(iii)",
+          "question": "For each material associate, does the entity disclose the principal place of business (and country of incorporation, if different)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "222.4",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(a)(iv)",
+          "question": "For each material associate, does the entity disclose the proportion of ownership interest or participating share and, if different, the proportion of voting rights held?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "223.1",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.21(b)",
+          "question": "For each material associate, does the entity disclose whether the investment is measured using the equity method or at fair value?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "223.2",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B12",
+          "question": "If the associate is equity-accounted, does the entity disclose the fair value of its investment if there is a quoted market price?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "224",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "Does the summarised financial information reflect the amounts in the associate’s IFRS financial statements and not the entity’s share of those amounts?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "225",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "If equity-accounted, are the associate’s IFRS statement amounts adjusted for fair value adjustments at acquisition and accounting policy differences?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "226",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B14",
+          "question": "Does the entity provide a reconciliation of the summarised financial information to the carrying amount of its interest in the associate?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "227",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B15",
+          "question": "If the entity presents information on the basis of the associate’s financial statements because it measures the investment at fair value or preparation of IFRS statements is impracticable, does it disclose the basis on which the summarised information has been prepared?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "228",
+          "section": "IFRS 12",
+          "reference": "IFRS 12.B16",
+          "question": "Does the entity disclose, in aggregate, the carrying amount of its interests in all individually immaterial associates accounted for using the equity method?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

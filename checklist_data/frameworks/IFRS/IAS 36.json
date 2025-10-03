@@ -1,0 +1,259 @@
+﻿{
+    "title": "Impairment of Assets (IAS 36) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 36",
+            "title": "Impairment of Assets",
+            "description": "Checklist for presentation and disclosure requirements under IAS 36.",
+            "items": [
+                {
+                    "id": "400.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.126(a)",
+                    "question": "Does the entity disclose the amount of impairment losses recognised in profit or loss during the period and the line item(s) of the statement of comprehensive income in which those impairment losses are included?"
+                },
+                {
+                    "id": "400.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.126(b)",
+                    "question": "Does the entity disclose the amount of reversals of impairment losses recognised in profit or loss during the period and the line item(s) in which those reversals are included?"
+                },
+                {
+                    "id": "400.3",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.126(c)",
+                    "question": "Does the entity disclose the amount of impairment losses on revalued assets recognised in other comprehensive income during the reporting period?"
+                },
+                {
+                    "id": "400.4",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.126(d)",
+                    "question": "Does the entity disclose the amount of reversals of impairment losses on revalued assets recognised in other comprehensive income during the reporting period?"
+                },
+                {
+                    "id": "401.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.129(a)",
+                    "question": "If the entity reports segment information under IFRS 8 Operating Segments, does it disclose the amount of impairment losses recognised in profit or loss and in other comprehensive income during the reporting period for each reportable segment?"
+                },
+                {
+                    "id": "401.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.129(b)",
+                    "question": "If the entity reports segment information, does it disclose the amount of reversals of impairment losses recognised in profit or loss and in other comprehensive income during the reporting period for each reportable segment?"
+                },
+                {
+                    "id": "402.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(a)",
+                    "question": "If an impairment loss or reversal for an individual asset or cash-generating unit is recognised or reversed during the period, does the entity disclose the events and circumstances that led to that recognition or reversal?"
+                },
+                {
+                    "id": "402.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(b)",
+                    "question": "Does the entity disclose the amount of the impairment loss recognised or reversed?"
+                },
+                {
+                    "id": "402.3",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(c)(i)",
+                    "question": "For an individual asset, does the entity disclose the nature of the asset?"
+                },
+                {
+                    "id": "402.4",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(c)(ii)",
+                    "question": "If the entity reports segment information, does it disclose the reportable segment to which the impaired or reversed asset belongs?"
+                },
+                {
+                    "id": "402.5",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(d)(i)",
+                    "question": "For a cash-generating unit, does the entity provide a description of that unit (such as product line, plant, business operation, geographical area or reportable segment)?"
+                },
+                {
+                    "id": "402.6",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(d)(ii)",
+                    "question": "Does the entity disclose the amount of the impairment loss recognised or reversed by class of assets and, if applicable, by reportable segment?"
+                },
+                {
+                    "id": "402.7",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(d)(iii)",
+                    "question": "If the way assets are aggregated for identifying the cash-generating unit has changed since the previous estimate, does the entity describe the current and former aggregation and explain the reasons for the change?"
+                },
+                {
+                    "id": "402.8",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(e)",
+                    "question": "Does the entity disclose the recoverable amount of the asset or cash-generating unit and whether it is fair value less costs of disposal or value in use?"
+                },
+                {
+                    "id": "402.9",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(f)(i)",
+                    "question": "If the recoverable amount is fair value less costs of disposal, does the entity disclose the level of the fair value hierarchy within which that measurement is categorised?"
+                },
+                {
+                    "id": "402.10",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(f)(ii)",
+                    "question": "For fair value measurements categorised within Level 2 or 3, does the entity describe the valuation technique(s) used and any changes in technique with reasons?"
+                },
+                {
+                    "id": "402.11",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(f)(iii)",
+                    "question": "For fair value measurements within Level 2 or 3, does the entity disclose each key assumption and the discount rate(s) used?"
+                },
+                {
+                    "id": "402.12",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.130(g)",
+                    "question": "If the recoverable amount is value in use, does the entity disclose the discount rate(s) used in the current and previous estimates?"
+                },
+                {
+                    "id": "403.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.131(a)",
+                    "question": "For the aggregate impairment losses and reversals for which no individual disclosures under IAS 36.130 are provided, does the entity disclose the main classes of assets affected by impairment losses and the main classes affected by reversals?"
+                },
+                {
+                    "id": "403.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.131(b)",
+                    "question": "Does the entity disclose the main events and circumstances that led to recognition of those impairment losses and reversals?"
+                },
+                {
+                    "id": "404.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(a)",
+                    "question": "For each cash-generating unit with significant goodwill or indefinite-life intangibles, does the entity disclose the carrying amount of goodwill allocated to that unit?"
+                },
+                {
+                    "id": "404.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(b)",
+                    "question": "Does the entity disclose the carrying amount of intangible assets with indefinite useful lives allocated to that unit?"
+                },
+                {
+                    "id": "404.3",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(c)",
+                    "question": "Does the entity disclose the basis on which the unit’s recoverable amount has been determined (value in use or fair value less costs of disposal)?"
+                },
+                {
+                    "id": "404.4",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(d)(i)",
+                    "question": "If the recoverable amount is value in use, does the entity disclose each key assumption used in cash flow projections?"
+                },
+                {
+                    "id": "404.5",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(d)(ii)",
+                    "question": "Does the entity describe management’s approach to determining the values assigned to each key assumption, including consistency with past experience or external sources?"
+                },
+                {
+                    "id": "404.6",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(d)(iii)",
+                    "question": "Does the entity disclose the discount rate(s) applied to the cash flow projections?"
+                },
+                {
+                    "id": "404.7",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(e)(i)",
+                    "question": "If the recoverable amount is fair value less costs of disposal, does the entity disclose the valuation technique(s) used?"
+                },
+                {
+                    "id": "404.8",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(e)(ii)",
+                    "question": "If fair value less costs of disposal is not based on a quoted price, does the entity disclose each key assumption to which the recoverable amount is most sensitive?"
+                },
+                {
+                    "id": "404.9",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(e)(iii)",
+                    "question": "Does the entity describe management’s approach to determining the values assigned to those key assumptions?"
+                },
+                {
+                    "id": "404.10",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(e)(iv)",
+                    "question": "Does the entity disclose the fair value hierarchy level within which the fair value measurement is categorised?"
+                },
+                {
+                    "id": "404.11",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(e)(v)",
+                    "question": "If there has been a change in valuation technique, does the entity disclose the change and the reasons for it?"
+                },
+                {
+                    "id": "404.12",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(f)(i)",
+                    "question": "If fair value less costs of disposal is measured using discounted cash flow projections, does the entity disclose the period over which cash flows are projected?"
+                },
+                {
+                    "id": "404.13",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(f)(ii)",
+                    "question": "Does the entity disclose the value assigned to the key assumption in those projections?"
+                },
+                {
+                    "id": "404.14",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.134(f)(iii)",
+                    "question": "Does the entity disclose the amount by which the key assumption must change, after considering any consequential effects, for the recoverable amount to equal the carrying amount?"
+                },
+                {
+                    "id": "405.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(a)",
+                    "question": "If goodwill or indefinite-life intangibles are allocated across multiple units and allocations to each are not individually significant, does the entity disclose that fact?"
+                },
+                {
+                    "id": "405.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(b)",
+                    "question": "Does the entity disclose the aggregate carrying amount of goodwill or indefinite-life intangibles allocated to those units?"
+                },
+                {
+                    "id": "406.1",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(a)",
+                    "question": "If recoverable amounts of multiple units are based on the same key assumptions and their aggregate carrying amount is significant, does the entity disclose that fact?"
+                },
+                {
+                    "id": "406.2",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(b)",
+                    "question": "Does the entity disclose the aggregate carrying amount of goodwill allocated to those units?"
+                },
+                {
+                    "id": "406.3",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(c)",
+                    "question": "Does the entity disclose the aggregate carrying amount of intangible assets with indefinite useful lives allocated to those units?"
+                },
+                {
+                    "id": "406.4",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(d)",
+                    "question": "Does the entity describe the key assumption(s) common to those units?"
+                },
+                {
+                    "id": "406.5",
+                    "section": "IAS 36",
+                    "reference": "IAS 36.135(e)",
+                    "question": "Does the entity describe management’s approach to determining the values assigned to the key assumption(s), including consistency with past experience or external sources and any consequential effects for the recoverable amounts to equal carrying amounts?"
+                }
+            ]
+        }
+    ]
+}

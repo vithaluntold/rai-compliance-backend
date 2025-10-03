@@ -1,0 +1,3028 @@
+{
+  "title": "International GAAP® Disclosure Checklist",
+  "version": "1.0",
+  "sections": [
+    {
+      "section": "IAS 7",
+      "title": "Statement of Cash Flows",
+      "description": "Checklist for presentation and disclosure requirements under IAS 7.",
+      "items": [
+        {
+          "id": "106",
+          "section": "IAS 7",
+          "reference": "IAS 7.65",
+          "question": "If an entity applies the Amendments to IAS 7 in Annual Improvements to IFRS Accounting Standards – Volume 11, issued July 2024, in its financial statements for a period beginning before 1 January 2026, does it disclose that fact?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "107",
+          "section": "IAS 7",
+          "reference": "IAS 7.10, IAS 7.6, IAS 7.14-17",
+          "question": "Are the cash flows during the period classified by operating, investing and financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "108",
+          "section": "IAS 7",
+          "reference": "IAS 7.33A",
+          "question": "Does the entity classify dividends paid as cash flows from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "109.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.34A(a), IAS 7.34D(a)",
+          "question": "Does the entity classify interest paid (as described in IAS 7.32) as cash flows from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "109.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.34A(b), IAS 7.34D(b)",
+          "question": "Does the entity classify interest and dividends received as cash flows from investing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "110",
+          "section": "IAS 7",
+          "reference": "IAS 7.34B, IAS 7.34C",
+          "question": "Does such an entity classify the total of each of these cash flows in a single category in the statement of cash flows (that is, either as operating, investing or financing activities), associated with the categories of the statement of profit or loss?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "111.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.18(a)",
+          "question": "Does the entity report cash flows from operating activities using the direct method, disclosing major classes of gross cash receipts and gross cash payments (this method is encouraged)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "111.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.18(b)",
+          "question": "Does the entity report cash flows from operating activities using the indirect method, in which the entity adjusts profit or loss (or operating profit or loss, if the entity early adopts IFRS 18) for cash flows from operating activities for which the associated income or expenses are not classified in the operating category of the statement of profit or loss?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "112",
+          "section": "IAS 7",
+          "reference": "IAS 7.21",
+          "question": "Does the entity report major classes of gross cash receipts and gross cash payments arising from investing and financing activities separately, except as described in IAS 7.22 below?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "113.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.22(a), IAS 7.24(a)",
+          "question": "Are cash receipts and payments on behalf of customers, if the cash flows reflect the activities of the customer rather than those of the entity, reported on a net basis?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "113.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.22(b), IAS 7.24(b)",
+          "question": "Are cash receipts and payments for items in which the turnover is quick, the amounts are large and the maturities are short reported on a net basis?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "114",
+          "section": "IAS 7",
+          "reference": "IAS 7.45",
+          "question": "Does the entity disclose the components of cash and cash equivalents?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "115",
+          "section": "IAS 7",
+          "reference": "IAS 7.46",
+          "question": "Does the entity disclose the policy for determining the composition of cash and cash equivalents?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "116",
+          "section": "IAS 7",
+          "reference": "IAS 7.45",
+          "question": "Does the entity reconcile the amounts of cash and cash equivalents in the statement of cash flows with the equivalent items in the statement of financial position?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "117",
+          "section": "IAS 7",
+          "reference": "IAS 7.39",
+          "question": "Have the aggregate cash flows arising from obtaining control of subsidiaries or other businesses been presented separately and classified as investing activities in the statement of cash flows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "118.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(a), IAS 7.42A(a)",
+          "question": "Does the entity disclose the total consideration paid or received for obtaining control of subsidiaries or other businesses during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "118.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(b), IAS 7.42A(b)",
+          "question": "Does the entity disclose the portion of the consideration consisting of cash and cash equivalents?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "118.3",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(c), IAS 7.42A(c)",
+          "question": "Does the entity disclose the amount of cash and cash equivalents in the subsidiaries or other businesses over which control is obtained?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "118.4",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(d), IAS 7.42A(d)",
+          "question": "Does the entity disclose the amount of the assets and liabilities other than cash or cash equivalents in the subsidiaries or businesses over which control is obtained, summarised by each major category?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "119",
+          "section": "IAS 7",
+          "reference": "IAS 7.39",
+          "question": "Have the aggregate cash flows arising from losing control of subsidiaries or other businesses been presented separately and classified as investing activities in the statement of cash flows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "120.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(a), IAS 7.40A(a)",
+          "question": "Does the entity disclose the total consideration paid or received for losing control of subsidiaries or other businesses during the reporting period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "120.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(b), IAS 7.40A(b)",
+          "question": "Does the entity disclose the portion of the consideration consisting of cash and cash equivalents?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "120.3",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(c), IAS 7.40A(c)",
+          "question": "Does the entity disclose the amount of cash and cash equivalents in the subsidiaries or other businesses over which control is lost?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "120.4",
+          "section": "IAS 7",
+          "reference": "IAS 7.40(d), IAS 7.40A(d)",
+          "question": "Does the entity disclose the amount of the assets and liabilities other than cash or cash equivalents in the subsidiaries or businesses over which control is lost, summarised by each major category?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "121",
+          "section": "IAS 7",
+          "reference": "IAS 7.28",
+          "question": "Does the entity separately present the effect of exchange rate changes on cash and cash equivalents held or due in a foreign currency in the statement of cash flows in order to reconcile cash and cash equivalents at the beginning and the end of the period?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "122.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.31(a)",
+          "question": "Does the entity separately disclose the cash inflow from interest?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "122.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.31(b)",
+          "question": "Does the entity separately disclose the cash outflow from interest?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "122.3",
+          "section": "IAS 7",
+          "reference": "IAS 7.31(c)",
+          "question": "Does the entity separately disclose the cash inflow from dividends?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "122.4",
+          "section": "IAS 7",
+          "reference": "IAS 7.31(d)",
+          "question": "Does the entity separately disclose the cash outflow from dividends?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "123",
+          "section": "IAS 7",
+          "reference": "IAS 7.35, IAS 7.36",
+          "question": "Cash flows arising from taxes on income must be separately disclosed and must be classified as cash flows from operating activities unless they can be specifically identified with financing and investing activities. If the entity allocates tax cash flows to more than one class of activity, does the entity disclose the total amount of taxes paid?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "124.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.43(a)",
+          "question": "Are investing and financing transactions that do not require the use of cash or cash equivalents excluded from the statement of cash flows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "124.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.43(b)",
+          "question": "Are investing and financing transactions that do not require the use of cash or cash equivalents disclosed elsewhere in the financial statements in a way that provides all the relevant information about these investing and financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "125.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.48(a)",
+          "question": "Does the entity disclose the amount of significant cash and cash equivalent balances held that are not available for use by the group?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "125.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.48(b)",
+          "question": "Does the entity provide a commentary by management regarding significant cash and cash equivalent balances held that are not available for use by the group?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "126",
+          "section": "IAS 7",
+          "reference": "IAS 7.50",
+          "question": "Does the entity disclose the amount of undrawn borrowing facilities that may be available in the future for operating activities and settling capital commitments, and indicate any restrictions on the use of these facilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "127.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.44A(a), IAS 7.44B(a)",
+          "question": "Does the entity disclose changes from financing cash flows affecting liabilities arising from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "127.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.44A(b), IAS 7.44B(b)",
+          "question": "Does the entity disclose changes arising from obtaining or losing control of subsidiaries or other businesses affecting liabilities arising from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "127.3",
+          "section": "IAS 7",
+          "reference": "IAS 7.44A(c), IAS 7.44B(c)",
+          "question": "Does the entity disclose the effect of changes in foreign exchange rates on liabilities arising from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "127.4",
+          "section": "IAS 7",
+          "reference": "IAS 7.44A(d), IAS 7.44B(d)",
+          "question": "Does the entity disclose changes in fair values affecting liabilities arising from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "127.5",
+          "section": "IAS 7",
+          "reference": "IAS 7.44A(e), IAS 7.44B(e)",
+          "question": "Does the entity disclose other non-cash changes affecting liabilities arising from financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "128",
+          "section": "IAS 7",
+          "reference": "IAS 7.44D",
+          "question": "If the entity discloses the information required by IAS 7.44A by providing a reconciliation between the opening and closing balances in the statement of financial position for liabilities arising from financing activities, does it provide sufficient information to enable users of the financial statements to link items included in the reconciliation to the statement of financial position and the statement of cash flows?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "129",
+          "section": "IAS 7",
+          "reference": "IAS 7.44E",
+          "question": "If the entity provides the disclosure required by IAS 7.44A in combination with disclosures of changes in other assets and liabilities, does it disclose the changes in liabilities arising from financing activities separately from changes in those other assets and liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "130.1",
+          "section": "IAS 7",
+          "reference": "IAS 7.44H(a)",
+          "question": "To meet the objectives in paragraph 44F, does the entity disclose the terms and conditions of its supplier finance arrangements, and disclose separately the terms and conditions of arrangements that have dissimilar terms and conditions?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "130.2",
+          "section": "IAS 7",
+          "reference": "IAS 7.44H(b)",
+          "question": "To meet the objectives in paragraph 44F, does the entity disclose, as at the beginning and end of the reporting period, the carrying amounts and associated line items presented in the entity’s statement of financial position of the financial liabilities that are part of a supplier finance arrangement; the carrying amounts and associated line items of the financial liabilities disclosed under (i) for which suppliers have already received payment from the finance providers; and the range of payment due dates (for example, 30–40 days after the invoice date) for both the financial liabilities disclosed under (i) and comparable trade payables that are not part of a supplier finance arrangement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "130.3",
+          "section": "IAS 7",
+          "reference": "IAS 7.44H(c)",
+          "question": "To meet the objectives in paragraph 44F, does the entity disclose the type and effect of non-cash changes in the carrying amounts of the financial liabilities disclosed under (b)(i)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

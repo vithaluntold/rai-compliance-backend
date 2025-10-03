@@ -1,0 +1,3229 @@
+{
+  "title": "IFRS 16 Disclosure Checklist",
+  "version": "1.0",
+  "sections": [
+    {
+      "section": "IFRS 16",
+      "title": "Leases",
+      "description": "Checklist for presentation and disclosure requirements under IFRS 16.",
+      "items": [
+        {
+          "id": "432",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.47(a)",
+          "question": "Does the entity present right-of-use assets separately from other assets in the statement of financial position (or disclose in the notes)?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "433.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.47(a)(i)",
+          "question": "If the entity does not present right-of-use assets separately, does it include them within the same line item as that in which the corresponding underlying assets would be presented if owned?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "433.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.47(a)(ii)",
+          "question": "If the entity does not present right-of-use assets separately, does it disclose which line items include those right-of-use assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "434.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.47(b)",
+          "question": "Does the entity present lease liabilities separately from other liabilities in the statement of financial position?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "434.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.47(b)",
+          "question": "If lease liabilities are not presented separately, does it disclose which line items include those liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "435",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.49",
+          "question": "In the statement of profit or loss and other comprehensive income, does the entity present interest expense on lease liabilities separately from the depreciation charge for right-of-use assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "436.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.50(a)",
+          "question": "In the statement of cash flows, does the entity classify cash payments for the principal portion of lease liabilities within financing activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "436.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.50(b)",
+          "question": "In the statement of cash flows, does the entity classify cash payments for the interest portion of lease liabilities applying IAS 7 requirements for interest paid?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "436.3",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.50(c)",
+          "question": "In the statement of cash flows, does the entity classify short-term lease payments, low-value lease payments, and variable lease payments not included in lease liabilities within operating activities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "437",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.52",
+          "question": "Does the entity disclose information about its leases (as lessee) in a single note or separate section of its financial statements?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(a)",
+          "question": "Does the entity disclose the depreciation charge for right-of-use assets by class of underlying asset?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(b)",
+          "question": "Does the entity disclose interest expense on lease liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.3",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(c)",
+          "question": "Does the entity disclose the expense relating to short-term leases accounted for under IFRS 16.6?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.4",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(d)",
+          "question": "Does the entity disclose the expense relating to leases of low-value assets accounted for under IFRS 16.6?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.5",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(e)",
+          "question": "Does the entity disclose the expense relating to variable lease payments not included in lease liability measurements?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.6",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(f)",
+          "question": "Does the entity disclose income from subleasing right-of-use assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.7",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(g)",
+          "question": "Does the entity disclose total cash outflow for leases?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.8",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(h)",
+          "question": "Does the entity disclose additions to right-of-use assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.9",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(i)",
+          "question": "Does the entity disclose gains or losses arising from sale and leaseback transactions?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "438.10",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.53(j)",
+          "question": "Does the entity disclose the carrying amount of right-of-use assets at period end by class of underlying asset?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "439",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.55 & IFRS 16.6",
+          "question": "If the portfolio of short-term leases at period end is dissimilar to that reflected in IFRS 16.53(c), does the entity disclose its lease commitments for short-term leases accounted under IFRS 16.6?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "440",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.56",
+          "question": "If right-of-use assets meet the definition of investment property, does the entity apply IAS 40 disclosure requirements?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "441",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.57 & IAS 16.77",
+          "question": "If right-of-use assets are measured at revalued amounts under IAS 16, does the entity disclose the information required by IAS 16.77 for those assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "442",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.58 & IFRS 7.39, IFRS 7.B11",
+          "question": "Does the entity disclose a maturity analysis of lease liabilities separately from other financial liabilities?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(a)",
+          "question": "Does the entity disclose qualitative information about the nature of its leasing activities necessary to meet IFRS 16.51?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(b)(i)",
+          "question": "Does the entity disclose exposure to future cash outflows not reflected in lease liabilities, including variable lease payments?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.3",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(b)(ii)",
+          "question": "Does the entity disclose exposure from extension and termination options?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.4",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(b)(iii)",
+          "question": "Does the entity disclose exposure from residual value guarantees?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.5",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(b)(iv)",
+          "question": "Does the entity disclose exposure from leases not yet commenced to which it is committed?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.6",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(c)",
+          "question": "Does the entity disclose restrictions or covenants imposed by leases?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "443.7",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.59(d)",
+          "question": "Does the entity disclose information about sale and leaseback transactions?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "444",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.60",
+          "question": "If the entity applies IFRS 16.6 to short-term leases or low-value assets, does it disclose that fact?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "445.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.60A(a)",
+          "question": "If applying the practical expedient in IFRS 16.46A, does the entity disclose that it has applied it to all eligible rent concessions or, if not, the nature of the contracts to which it applied it?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "445.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.60A(b)",
+          "question": "If applying the practical expedient in IFRS 16.46A, does the entity disclose the amount recognised in profit or loss for changes in lease payments from those rent concessions?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "446",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.67",
+          "question": "Does the entity present assets held under finance leases as a receivable at the net investment amount?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "447",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.88",
+          "question": "Does the entity present underlying assets subject to operating leases in its statement of financial position according to the nature of the underlying asset?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "448.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.90(a)",
+          "question": "For finance leases, does the entity disclose selling profit or loss?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "448.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.90(b)",
+          "question": "For finance leases, does the entity disclose finance income on the net investment in the lease?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "448.3",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.90(c)",
+          "question": "For finance leases, does the entity disclose income relating to variable lease payments not included in the net investment measurement?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "448.4",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.90(d)",
+          "question": "For operating leases, does the entity disclose lease income, separately disclosing income from variable lease payments not dependent on an index or rate?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "449.1",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.92(a)",
+          "question": "Does the entity disclose qualitative information about the nature of its leasing activities as lessor?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "449.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.92(b)",
+          "question": "Does the entity disclose its risk management strategy for rights it retains in underlying assets?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "450",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.93",
+          "question": "Does the entity explain significant changes in the carrying amount of net investment in finance leases with qualitative and quantitative information?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "451",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.94(a)",
+          "question": "Does the entity disclose a maturity analysis of lease payments receivable showing undiscounted lease payments on an annual basis for at least the first five years and a total for remaining years?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "451.2",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.94(b)",
+          "question": "Does the entity reconcile undiscounted lease payments to the net investment in the lease, identifying unearned finance income and any discounted unguaranteed residual value?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "452",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.95",
+          "question": "For items of property, plant and equipment under operating leases, does the entity apply IAS 16 disclosure requirements?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "453",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.96",
+          "question": "Does the entity apply the disclosure requirements in IAS 36, IAS 38, IAS 40 and IAS 41 for assets subject to operating leases?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        },
+        {
+          "id": "454",
+          "section": "IFRS 16",
+          "reference": "IFRS 16.97",
+          "question": "Does the entity disclose a maturity analysis of lease payments showing undiscounted lease payments on an annual basis for at least the first five years and a total for remaining years?",
+          "facet_focus": {
+            "narrative_categories": [
+              "disclosure_narrative"
+            ],
+            "table_archetypes": [],
+            "quantitative_expectations": [
+              "qualitative_only"
+            ],
+            "temporal_scope": [
+              "current_period"
+            ],
+            "cross_reference_anchors": [
+              "notes_main"
+            ]
+          },
+          "conditionality": {
+            "trigger_conditions": [
+              "standard_requirement"
+            ],
+            "dependency_chain": [
+              "identify_requirement"
+            ],
+            "exception_scenarios": [
+              "not_applicable"
+            ]
+          },
+          "evidence_expectations": {
+            "required_documents": [
+              "financial_statements"
+            ],
+            "data_sources": [
+              "accounting_records"
+            ],
+            "validation_methods": [
+              "document_review"
+            ],
+            "quality_indicators": [
+              "completeness_check"
+            ]
+          },
+          "retrieval_support": {
+            "search_keywords": [],
+            "section_indicators": [
+              "notes"
+            ],
+            "pattern_matching": [
+              "standard_format"
+            ],
+            "context_clues": [
+              "financial_position"
+            ]
+          },
+          "citation_controls": {
+            "required_disclosures": [],
+            "cross_references": [
+              "related_standards"
+            ],
+            "compliance_markers": [
+              "regulatory_compliance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+﻿{
+    "title": "Provisions, Contingent Liabilities and Contingent Assets (IAS 37) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 37",
+            "title": "Provisions, contingent liabilities and contingent assets",
+            "description": "Checklist for presentation and disclosure requirements under IAS 37.",
+            "items": [
+                {
+                    "id": "490.1",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.84(a)",
+                    "question": "For each class of provision, does the entity disclose the carrying amount at the beginning and end of the reporting period?"
+                },
+                {
+                    "id": "490.2",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.84(b)",
+                    "question": "For each class of provision, does the entity disclose additional provisions made in the reporting period, including increases to existing provisions?"
+                },
+                {
+                    "id": "490.3",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.84(c)",
+                    "question": "For each class of provision, does the entity disclose amounts used (incurred and charged against the provision) during the reporting period?"
+                },
+                {
+                    "id": "490.4",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.84(d)",
+                    "question": "For each class of provision, does the entity disclose unused amounts reversed during the reporting period?"
+                },
+                {
+                    "id": "490.5",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.84(e)",
+                    "question": "For each class of provision, does the entity disclose the increase during the reporting period in the discounted amount arising from the passage of time and the effect of any change in the discount rate?"
+                },
+                {
+                    "id": "491.1",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.85(a)",
+                    "question": "For each class of provision, does the entity disclose the nature of the obligation and the expected timing of any resulting outflows of economic benefits?"
+                },
+                {
+                    "id": "491.2",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.85(b)",
+                    "question": "For each class of provision, does the entity disclose the uncertainties about the amount or timing of those outflows?"
+                },
+                {
+                    "id": "491.3",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.85(c)",
+                    "question": "For each class of provision, does the entity disclose, if necessary to provide adequate information, the major assumptions made concerning future events?"
+                },
+                {
+                    "id": "491.4",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.85(d)",
+                    "question": "For each class of provision, does the entity disclose the amount of any expected reimbursement, stating the amount of any asset recognised for that expected reimbursement?"
+                },
+                {
+                    "id": "492.1",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.86(a)",
+                    "question": "Unless the possibility of any outflow in settlement is remote, does the entity disclose the nature of each contingent liability at the end of the reporting period?"
+                },
+                {
+                    "id": "492.2",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.86(b)",
+                    "question": "Does the entity disclose an estimate of the financial effect of each contingent liability, measured in accordance with IAS 37.36–52?"
+                },
+                {
+                    "id": "492.3",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.86(c)",
+                    "question": "Does the entity disclose the uncertainties relating to the amount or timing of any outflow for each contingent liability?"
+                },
+                {
+                    "id": "492.4",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.86(d)",
+                    "question": "Does the entity disclose the possibility of any reimbursement for each contingent liability?"
+                },
+                {
+                    "id": "492.5",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.86(e)",
+                    "question": "If the entity does not disclose information in (a)–(d), does it disclose the fact that it is not practicable to do so?"
+                },
+                {
+                    "id": "493",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.88",
+                    "question": "If a provision and a contingent liability arise from the same circumstances, does the entity disclose the information required by IAS 37.84–86 in a way that shows the link between the provision and the contingent liability?"
+                },
+                {
+                    "id": "494.1",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.89(a)",
+                    "question": "If an inflow of economic benefits is probable, does the entity disclose the nature of each contingent asset at the end of the reporting period?"
+                },
+                {
+                    "id": "494.2",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.89(b)",
+                    "question": "Does the entity disclose an estimate of the financial effect of each contingent asset, measured in accordance with IAS 37.36–52?"
+                },
+                {
+                    "id": "494.3",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.89(c)",
+                    "question": "If the entity does not disclose information in (a) and (b), does it disclose the fact that it is not practicable to do so?"
+                },
+                {
+                    "id": "495.1",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.92(a)",
+                    "question": "In extremely rare cases where disclosures would prejudice the entity’s position in a dispute, does the entity disclose the general nature of the dispute?"
+                },
+                {
+                    "id": "495.2",
+                    "section": "IAS 37",
+                    "reference": "IAS 37.92(b)",
+                    "question": "Does the entity disclose the fact that the required information is not disclosed and the reason why?"
+                }
+            ]
+        }
+    ]
+}

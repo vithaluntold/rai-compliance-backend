@@ -1,0 +1,235 @@
+﻿{
+    "title": "Accounting and Reporting by Retirement Benefit Plans (IAS 26) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 26",
+            "title": "Financial Statements of Retirement Benefit Plans",
+            "description": "Checklist for presentation and disclosure requirements under IAS 26.",
+            "items": [
+                {
+                    "id": "643.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(a)",
+                    "question": "Do the financial statements of the retirement benefit plan contain a statement of net assets available for benefits disclosing assets at the end of the period suitably classified?"
+                },
+                {
+                    "id": "643.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(a)",
+                    "question": "Do the financial statements of the retirement benefit plan contain a statement of net assets available for benefits disclosing the basis of valuation of assets?"
+                },
+                {
+                    "id": "643.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(a)",
+                    "question": "Do the financial statements of the retirement benefit plan contain a statement of net assets available for benefits disclosing details of any single investment exceeding either 5% of?"
+                },
+                {
+                    "id": "644.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(a)",
+                    "question": "Does the report of a retirement benefit plan disclose the names of the employers and the employee groups covered?"
+                },
+                {
+                    "id": "644.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(b)",
+                    "question": "Does the report of a retirement benefit plan disclose the number of participants receiving benefits?"
+                },
+                {
+                    "id": "644.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(c)",
+                    "question": "Does the report of a retirement benefit plan disclose the number of other participants, classified as appropriate?"
+                },
+                {
+                    "id": "644.4",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(d)",
+                    "question": "Does the report of a retirement benefit plan disclose the type of plan – defined contribution?"
+                },
+                {
+                    "id": "644.5",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(e)",
+                    "question": "Does the report of a retirement benefit plan note whether participants contribute to the plan?"
+                },
+                {
+                    "id": "644.6",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(f)",
+                    "question": "Does the report of a retirement benefit plan describe the retirement benefits promised to participants?"
+                },
+                {
+                    "id": "644.7",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(g)",
+                    "question": "Does the report of a retirement benefit plan describe any plan termination terms?"
+                },
+                {
+                    "id": "644.8",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(h)",
+                    "question": "Does the report of a retirement benefit plan describe changes in items (a)–(g) during the period covered by the report?"
+                },
+                {
+                    "id": "645",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.32",
+                    "question": "If plan investments are held for which an estimate of fair value is not possible, does the entity disclose the reason it does not use fair value?"
+                },
+                {
+                    "id": "646.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.16(a)",
+                    "question": "Do the financial statements of a defined contribution plan contain the significant activities for the period and the effect of any changes relating to the plan, its membership and terms and conditions?"
+                },
+                {
+                    "id": "646.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.16(b)",
+                    "question": "Do the financial statements of a defined contribution plan contain statements reporting on the transactions and investment performance for the period and the financial position of the plan at the end of the period?"
+                },
+                {
+                    "id": "646.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.16(c)",
+                    "question": "Do the financial statements of a defined contribution plan contain a description of the investment policies?"
+                },
+                {
+                    "id": "647.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(a)",
+                    "question": "Do the financial statements of the retirement benefit plan contain a statement of net assets available for benefits disclosing assets at the end of the period, the basis of valuation of assets, details of any single investment exceeding either 5% of the net assets available for benefits or 5% of any class or type of security, and details of any investment in the employer?"
+                },
+                {
+                    "id": "647.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(f)",
+                    "question": "Do the financial statements contain a description of the method used to calculate the actuarial present value of promised retirement benefits?"
+                },
+                {
+                    "id": "647.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(g)",
+                    "question": "Do the financial statements contain the actuarial present value of promised retirement benefits, distinguishing between vested and non-vested benefits, based on benefits promised under the terms of the plan, service rendered to date, and using either current salary levels or projected salary levels?"
+                },
+                {
+                    "id": "647.4",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.34-35(h)",
+                    "question": "Do the financial statements contain a description of the plan and the effect of any changes in the plan during the period?"
+                },
+                {
+                    "id": "648.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(a)",
+                    "question": "Does the report of a retirement benefit plan disclose the names of the employers and the employee groups covered?"
+                },
+                {
+                    "id": "648.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(b)",
+                    "question": "Does the report of a retirement benefit plan disclose the number of participants receiving benefits?"
+                },
+                {
+                    "id": "648.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(c)",
+                    "question": "Does the report of a retirement benefit plan disclose the number of other participants, classified as appropriate?"
+                },
+                {
+                    "id": "648.4",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(d)",
+                    "question": "Does the report of a retirement benefit plan disclose the type of plan — defined benefit?"
+                },
+                {
+                    "id": "648.5",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(e)",
+                    "question": "Does the report of a retirement benefit plan note whether participants contribute to the plan?"
+                },
+                {
+                    "id": "648.6",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(f)",
+                    "question": "Does the report of a retirement benefit plan describe the retirement benefits promised to participants?"
+                },
+                {
+                    "id": "648.7",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(g)",
+                    "question": "Does the report of a retirement benefit plan describe any plan termination terms?"
+                },
+                {
+                    "id": "648.8",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.36(h)",
+                    "question": "Does the report of a retirement benefit plan describe changes in items (a)–(g) during the period covered by the report?"
+                },
+                {
+                    "id": "649",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.17",
+                    "question": "If an actuarial valuation is not prepared at the date of the financial statements of the plan, does the entity disclose the date of the valuation?"
+                },
+                {
+                    "id": "650",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.18",
+                    "question": "Does the entity disclose the effects of any change in actuarial assumptions that had a significant effect on the actuarial present value of promised retirement benefits?"
+                },
+                {
+                    "id": "651",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.18",
+                    "question": "Does the entity disclose the basis used — either current salary levels or projected salary levels — to calculate the actuarial present value of promised retirement benefits?"
+                },
+                {
+                    "id": "652",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.32",
+                    "question": "If plan investments are held for which an estimate of fair value is not possible, does the entity disclose the reason why fair value is not used?"
+                },
+                {
+                    "id": "653.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.17(a)",
+                    "question": "Do the financial statements of a defined benefit plan contain a statement that shows the net assets available for benefits?"
+                },
+                {
+                    "id": "654",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.19",
+                    "question": "Do the financial statements explain the relationship between the actuarial present value of promised retirement benefits and the net assets available for benefits, and the policy for the funding of promised benefits?"
+                },
+                {
+                    "id": "655.1",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.22(a)",
+                    "question": "Do the financial statements of a defined benefit plan contain the significant activities for the period and the effect of any changes relating to the plan, its membership and terms and conditions?"
+                },
+                {
+                    "id": "655.2",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.22(b)",
+                    "question": "Do the financial statements of a defined benefit plan contain statements reporting on the transactions and investment performance for the period and the financial position of the plan at the end of the period?"
+                },
+                {
+                    "id": "655.3",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.22(c)",
+                    "question": "Do the financial statements of a defined benefit plan contain actuarial information either as part of the statements or by way of a separate report?"
+                },
+                {
+                    "id": "655.4",
+                    "section": "IAS 26",
+                    "reference": "IAS 26.22(d)",
+                    "question": "Do the financial statements of a defined benefit plan contain a description of the investment policies?"
+                }
+            ]
+        }
+    ]
+}

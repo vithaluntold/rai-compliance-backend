@@ -1,0 +1,171 @@
+﻿{
+
+  "standard_id": "IAS_39",    "KeyProvisions":  [
+
+  "title": "Financial Instruments: Recognition and Measurement", 
+
+  "sections": [                      ],
+
+    {    "Standard":  "IAS 39",
+
+      "section_name": "Recognition and Derecognition",    "References":  [
+
+      "items": [
+
+        {                   ],
+
+          "id": "IAS39_001",    "EffectiveDate":  "",
+
+          "requirement": "Does the entity recognize financial assets and financial liabilities in its statement of financial position when it becomes a party to the contractual provisions of the instrument?",    "Summary":  "",
+
+          "paragraph": "IAS 39.14"    "Title":  "",
+
+        },    "Examples":  [
+
+        {
+
+          "id": "IAS39_002",                  ]
+
+          "requirement": "Does the entity derecognize financial assets only when the contractual rights to cash flows expire or are transferred with substantially all risks and rewards?",}
+
+          "paragraph": "IAS 39.15-37"
+        },
+        {
+          "id": "IAS39_003",
+          "requirement": "Does the entity apply the derecognition criteria to transfers that qualify for derecognition?",
+          "paragraph": "IAS 39.20"
+        },
+        {
+          "id": "IAS39_004",
+          "requirement": "Does the entity derecognize financial liabilities only when obligations are discharged, cancelled or expire?",
+          "paragraph": "IAS 39.39"
+        }
+      ]
+    },
+    {
+      "section_name": "Classification and Measurement",
+      "items": [
+        {
+          "id": "IAS39_005",
+          "requirement": "Does the entity classify financial assets into appropriate categories (held-to-maturity, loans and receivables, available-for-sale, fair value through profit or loss)?",
+          "paragraph": "IAS 39.45-46"
+        },
+        {
+          "id": "IAS39_006",
+          "requirement": "Does the entity measure financial assets at fair value on initial recognition plus transaction costs (except for FVTPL)?",
+          "paragraph": "IAS 39.43"
+        },
+        {
+          "id": "IAS39_007",
+          "requirement": "Does the entity apply appropriate subsequent measurement for each category of financial assets?",
+          "paragraph": "IAS 39.45-70"
+        },
+        {
+          "id": "IAS39_008",
+          "requirement": "Does the entity measure financial liabilities at amortized cost using the effective interest method (except for trading liabilities)?",
+          "paragraph": "IAS 39.47"
+        },
+        {
+          "id": "IAS39_009",
+          "requirement": "Does the entity designate financial instruments as at fair value through profit or loss only when strict criteria are met?",
+          "paragraph": "IAS 39.9-12"
+        }
+      ]
+    },
+    {
+      "section_name": "Impairment",
+      "items": [
+        {
+          "id": "IAS39_010",
+          "requirement": "Does the entity assess at each reporting date whether there is objective evidence of impairment for financial assets?",
+          "paragraph": "IAS 39.58-62"
+        },
+        {
+          "id": "IAS39_011",
+          "requirement": "Does the entity recognize impairment losses for financial assets when objective evidence of impairment exists?",
+          "paragraph": "IAS 39.63-65"
+        },
+        {
+          "id": "IAS39_012",
+          "requirement": "Does the entity measure impairment losses for loans and receivables as the difference between carrying amount and present value of estimated future cash flows?",
+          "paragraph": "IAS 39.63"
+        },
+        {
+          "id": "IAS39_013",
+          "requirement": "Does the entity reverse impairment losses for available-for-sale debt instruments when the fair value increases?",
+          "paragraph": "IAS 39.65"
+        },
+        {
+          "id": "IAS39_014",
+          "requirement": "Does the entity prohibit reversal of impairment losses for available-for-sale equity instruments?",
+          "paragraph": "IAS 39.66"
+        }
+      ]
+    },
+    {
+      "section_name": "Hedge Accounting",
+      "items": [
+        {
+          "id": "IAS39_015",
+          "requirement": "Does the entity apply hedge accounting only when strict criteria are met, including formal documentation?",
+          "paragraph": "IAS 39.88"
+        },
+        {
+          "id": "IAS39_016",
+          "requirement": "Does the entity test hedge effectiveness at inception and on an ongoing basis?",
+          "paragraph": "IAS 39.88"
+        },
+        {
+          "id": "IAS39_017",
+          "requirement": "Does the entity discontinue hedge accounting when effectiveness criteria are no longer met?",
+          "paragraph": "IAS 39.88"
+        },
+        {
+          "id": "IAS39_018",
+          "requirement": "Does the entity account for fair value hedges by recognizing hedge gains/losses in profit or loss?",
+          "paragraph": "IAS 39.89-94"
+        },
+        {
+          "id": "IAS39_019",
+          "requirement": "Does the entity account for cash flow hedges by recognizing effective hedge gains/losses in other comprehensive income?",
+          "paragraph": "IAS 39.95-101"
+        },
+        {
+          "id": "IAS39_020",
+          "requirement": "Does the entity account for net investment hedges similar to cash flow hedges?",
+          "paragraph": "IAS 39.102"
+        }
+      ]
+    },
+    {
+      "section_name": "Disclosure Requirements",
+      "items": [
+        {
+          "id": "IAS39_021",
+          "requirement": "Does the entity disclose the significance of financial instruments for its financial position and performance?",
+          "paragraph": "IAS 39.170"
+        },
+        {
+          "id": "IAS39_022",
+          "requirement": "Does the entity disclose accounting policies for financial instruments including recognition and measurement policies?",
+          "paragraph": "IAS 39.170"
+        },
+        {
+          "id": "IAS39_023",
+          "requirement": "Does the entity provide disclosures about hedge accounting including hedge relationships and hedge effectiveness?",
+          "paragraph": "IAS 39.170"
+        },
+        {
+          "id": "IAS39_024",
+          "requirement": "Does the entity disclose fair value information for financial instruments?",
+          "paragraph": "IAS 39.170"
+        },
+        {
+          "id": "IAS39_025",
+          "requirement": "Does the entity disclose impairment losses and reversals for each class of financial asset?",
+          "paragraph": "IAS 39.170"
+        }
+      ]
+    }
+  ]
+}

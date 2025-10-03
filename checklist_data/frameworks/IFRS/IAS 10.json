@@ -1,0 +1,49 @@
+﻿{
+    "title": "Events After The Reporting Period (IAS 10) Disclosure Checklist",
+    "version": "1.0",
+    "sections": [
+        {
+            "section": "IAS 10",
+            "title": "Events After The Reporting Period",
+            "description": "Checklist for disclosure requirements under IAS 10 Events After The Reporting Period.",
+            "items": [
+                {
+                    "id": "23.1",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.17(a)",
+                    "question": "Does the entity disclose the date when the financial statements were authorised for issue?"
+                },
+                {
+                    "id": "23.2",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.17(b)",
+                    "question": "Does the entity disclose who authorised the financial statements?"
+                },
+                {
+                    "id": "23.3",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.17(c)",
+                    "question": "Does the entity disclose the fact that the entity’s owners or others have the power to amend the financial statements after issue, if applicable?"
+                },
+                {
+                    "id": "276",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.19",
+                    "question": "Do the disclosures in the financial statements reflect information received after the reporting period that relates to conditions that existed at the end of the reporting period?"
+                },
+                {
+                    "id": "277.1",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.22(a)",
+                    "question": "Does the entity disclose the nature of each material non-adjusting event after the reporting period?"
+                },
+                {
+                    "id": "277.2",
+                    "section": "IAS 10",
+                    "reference": "IAS 10.22(b)",
+                    "question": "Does the entity disclose an estimate of the financial effect of each material non-adjusting event after the reporting period, or state that such an estimate cannot be made?"
+                }
+            ]
+        }
+    ]
+}
