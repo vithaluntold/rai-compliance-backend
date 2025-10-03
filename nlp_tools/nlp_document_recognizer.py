@@ -197,8 +197,10 @@ class NLPDocumentStructureRecognizer:
         
         # Use existing categorizer for additional insights
         try:
-            categorization = self.categorizer.categorize_content(segment.content)
-            processed_segment['categorization'] = categorization
+            # Use the correct method - categorize_page_texts expects list of page text dicts
+            page_texts = [{'page_num': segment.page_range[0] if segment.page_range else 1, 'text': segment.content}]
+            categorization_results = self.categorizer.categorize_page_texts(page_texts)
+            processed_segment['categorization'] = categorization_results[0] if categorization_results else {}
         except Exception as e:
             logger.warning(f"Categorization failed for segment {segment.segment_id}: {e}")
             processed_segment['categorization'] = {'error': str(e)}
@@ -591,14 +593,14 @@ class NLPDocumentStructureRecognizer:
         
         try:
             # Use existing categorizer as fallback
-            fallback_result = self.categorizer.categorize_document(pdf_path)
+            fallback_result = self.categorizer.categorize_document_content(pdf_path)
             
             return {
                 'document_id': document_id,
                 'pdf_path': pdf_path,
-                'segments': fallback_result.get('segments', []),
+                'segments': fallback_result if isinstance(fallback_result, list) else [],
                 'tables': [],
-                'structure_analysis': fallback_result.get('analysis', {}),
+                'structure_analysis': {},
                 'processing_metadata': {
                     'processing_mode': 'fallback',
                     'fallback_reason': 'enhanced_parsing_failed'

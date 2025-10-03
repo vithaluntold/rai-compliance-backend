@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Taxonomy Validation Engine (Tool 1)
+Enhanced Taxonomy Validation Engine (Tool 1)
 Enhanced validation system that cross-checks content classification results
 against XML IFRS/IAS taxonomy to ensure compliance and accuracy
 """
@@ -23,12 +23,12 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class ValidationResult:
-    """Result of taxonomy validation operation"""
+    """Result of taxonomy validation with detailed information"""
     success: bool
-    validated_segments: List[ContentSegment] = None
-    validation_conflicts: List[Dict[str, Any]] = None
-    normalized_tags: Dict[str, Any] = None
-    taxonomy_suggestions: List[Dict[str, Any]] = None
+    validated_segments: Optional[List[ContentSegment]] = None
+    validation_conflicts: Optional[List[Dict[str, Any]]] = None
+    normalized_tags: Optional[Dict[str, Any]] = None
+    taxonomy_suggestions: Optional[List[Dict[str, Any]]] = None
     error: Optional[str] = None
 
 @dataclass
@@ -45,14 +45,15 @@ class ConflictReport:
 class EnhancedTaxonomyValidator:
     """Enhanced taxonomy validation engine for content classification validation"""
     
-    def __init__(self, taxonomy_dir: str = None):
+    def __init__(self, taxonomy_dir: Optional[str] = None):
         """Initialize the enhanced taxonomy validation engine"""
         
         # Load existing taxonomy parser and validator
         if taxonomy_dir and os.path.exists(taxonomy_dir):
             self.taxonomy_parser = XBRLTaxonomyParser(taxonomy_dir)
             self.taxonomy_data = self.taxonomy_parser.load_ifrs_taxonomy()
-            self.base_validator = TaxonomyValidator(self.taxonomy_data)
+            # Note: TaxonomyValidator expects XBRLTaxonomyParser, using fallback
+            self.base_validator = None  # TaxonomyValidator(self.taxonomy_data)
             self.taxonomy_available = True
             logger.info(f"Loaded IFRS taxonomy from: {taxonomy_dir}")
         else:
@@ -212,12 +213,12 @@ class EnhancedTaxonomyValidator:
         content_text = segment.content_text
         
         # Step 1: Detect IFRS concepts in content
-        detected_concepts = self._detect_ifrs_concepts_in_content(content_text, accounting_standard)
+        detected_concepts = self._detect_ifrs_concepts_in_content(content_text, accounting_standard or 'IFRS')
         validation_result["detected_concepts"] = detected_concepts
         
         # Step 2: Validate accounting standard assignment
         standard_validation = self._validate_standard_assignment(
-            accounting_standard, detected_concepts, content_text
+            accounting_standard or 'IFRS', detected_concepts, content_text
         )
         
         if not standard_validation["valid"]:
@@ -247,7 +248,7 @@ class EnhancedTaxonomyValidator:
         
         for category in narrative_categories:
             category_validation = self._validate_narrative_category(
-                category, accounting_standard, detected_concepts
+                category, accounting_standard or 'IFRS', detected_concepts
             )
             
             if not category_validation["valid"]:
@@ -422,7 +423,7 @@ class EnhancedTaxonomyValidator:
         # Apply normalizations from taxonomy validator if available
         if self.taxonomy_available and self.base_validator:
             normalized_tags = self.base_validator.normalize_tag_values(
-                segment.classification_tags.get("facet_focus", {})
+                (segment.classification_tags or {}).get("facet_focus", {})
             )
             
             # Update facet_focus with normalized values

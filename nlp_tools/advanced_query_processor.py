@@ -80,7 +80,7 @@ class QueryResponse:
 class AdvancedQueryProcessor:
     """Advanced natural language query processing engine"""
     
-    def __init__(self, content_mapper: IntelligentContentQuestionMapper = None):
+    def __init__(self, content_mapper: Optional[IntelligentContentQuestionMapper] = None):
         """Initialize the advanced query processor"""
         
         self.content_mapper = content_mapper or IntelligentContentQuestionMapper()
@@ -258,7 +258,7 @@ class AdvancedQueryProcessor:
             intent_scores[intent_type] = min(1.0, score)
         
         # Determine primary intent
-        primary_intent = max(intent_scores, key=intent_scores.get) if intent_scores else 'general_inquiry'
+        primary_intent = max(intent_scores.keys(), key=lambda k: intent_scores[k]) if intent_scores else 'general_inquiry'
         confidence = intent_scores.get(primary_intent, 0.3)
         
         # Extract financial concepts and standards
@@ -333,10 +333,10 @@ class AdvancedQueryProcessor:
             if score > 0:
                 concept_scores[content_type] = score
         
-        return max(concept_scores, key=concept_scores.get) if concept_scores else None
+        return max(concept_scores.keys(), key=lambda k: concept_scores[k]) if concept_scores else None
     
     def search_content_by_query(self, query_intent: QueryIntent, 
-                               content_segments: List[Dict[str, Any]] = None,
+                               content_segments: Optional[List[Dict[str, Any]]] = None,
                                max_results: int = 10) -> List[QueryResult]:
         """Search content segments based on query intent"""
         
@@ -530,7 +530,7 @@ class AdvancedQueryProcessor:
         ]
     
     def process_query(self, query_text: str, 
-                     content_segments: List[Dict[str, Any]] = None,
+                     content_segments: Optional[List[Dict[str, Any]]] = None,
                      max_results: int = 10) -> QueryResponse:
         """Process a complete user query and return comprehensive response"""
         

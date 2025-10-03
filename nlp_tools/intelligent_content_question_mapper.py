@@ -51,7 +51,7 @@ class MappingResult:
 class IntelligentContentQuestionMapper:
     """Advanced content-question mapping system with multi-dimensional similarity"""
     
-    def __init__(self, questions_directory: str = None):
+    def __init__(self, questions_directory: Optional[str] = None):
         """Initialize the intelligent mapping system"""
         self.questions_directory = questions_directory or "checklist_data"
         self.questions_cache = {}

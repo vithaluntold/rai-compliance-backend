@@ -959,9 +959,10 @@ class SmartMetadataExtractor:
     def _ensure_serializable(self, obj: Any) -> Any:
         """Ensure all objects in results are JSON serializable."""
         from services.geographical_service import GeographicalEntity
+        from dataclasses import asdict
         
         if isinstance(obj, GeographicalEntity):
-            return obj.to_dict()
+            return asdict(obj)
         elif isinstance(obj, set):
             return list(obj)
         elif isinstance(obj, dict):

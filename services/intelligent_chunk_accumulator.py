@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class CategoryAwareContentStorage:
     """SQLite-based storage for categorized content chunks"""
     
-    def __init__(self, db_path: str = None):
+    def __init__(self, db_path: Optional[str] = None):
         if db_path is None:
             # Use backend directory for database
             backend_dir = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -118,8 +118,8 @@ class CategoryAwareContentStorage:
             raise
     
     def store_categorized_chunk(self, document_id: str, chunk: str, category: str, 
-                               subcategory: str = None, confidence: float = 0.0, 
-                               keywords: List[str] = None) -> bool:
+                               subcategory: Optional[str] = None, confidence: float = 0.0, 
+                               keywords: Optional[List[str]] = None) -> bool:
         """Store a categorized content chunk with 4500 character limit validation"""
         try:
             # ENFORCE 4500 CHARACTER LIMIT
@@ -203,7 +203,7 @@ class CategoryAwareContentStorage:
                     ''', (document_id, max_chunks))
                 else:
                     keyword_query = " OR ".join(keyword_conditions)
-                    params.append(max_chunks)
+                    params.append(str(max_chunks))
                     
                     cursor.execute(f'''
                         SELECT content_chunk, category, subcategory, confidence_score, keywords

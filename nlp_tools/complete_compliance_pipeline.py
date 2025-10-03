@@ -122,8 +122,8 @@ class CompleteComplianceAnalysisPipeline:
             result = ComplianceAnalysisResult(
                 document_id=document_path,
                 standard=standard,
-                structure_analysis=nlp_result.structure_parsing,
-                content_classification=nlp_result.content_classification,
+                structure_analysis=nlp_result.structure_parsing or {},
+                content_classification=nlp_result.content_classification or {},
                 taxonomy_validation=nlp_result.taxonomy_validation.__dict__ if nlp_result.taxonomy_validation else {},
                 enhanced_question_mappings=enhanced_mappings,
                 coverage_analysis=coverage_analysis,
@@ -183,7 +183,7 @@ class CompleteComplianceAnalysisPipeline:
                 
                 mapping_result = self.content_question_mapper.map_content_to_questions(
                     content_segment=segment,
-                    questions_directory=f"Enhanced Framework/IFRS"
+                    top_k=5
                 )
                 
                 if mapping_result and mapping_result.matched_questions:

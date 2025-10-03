@@ -27,19 +27,19 @@ class CompleteProcessingResult:
     success: bool
     
     # Structure parsing results (Tool 2)
-    structure_parsing: Dict[str, Any] = None
+    structure_parsing: Optional[Dict[str, Any]] = None
     
     # Content classification results (Tool 3)  
-    content_classification: Dict[str, Any] = None
+    content_classification: Optional[Dict[str, Any]] = None
     
     # Taxonomy validation results (Tool 1)
-    taxonomy_validation: ValidationResult = None
+    taxonomy_validation: Optional[ValidationResult] = None
     
     # Final validated mega-chunks
-    validated_mega_chunks: Dict[str, Dict[str, Any]] = None
+    validated_mega_chunks: Optional[Dict[str, Dict[str, Any]]] = None
     
     # Processing metadata
-    processing_metadata: Dict[str, Any] = None
+    processing_metadata: Optional[Dict[str, Any]] = None
     
     # Error information
     error: Optional[str] = None
@@ -47,7 +47,7 @@ class CompleteProcessingResult:
 class CompleteNLPValidationPipeline:
     """Complete NLP processing and validation pipeline (Tool 2 → Tool 3 → Tool 1)"""
     
-    def __init__(self, taxonomy_dir: str = None):
+    def __init__(self, taxonomy_dir: Optional[str] = None):
         """Initialize the complete NLP validation pipeline"""
         
         # Initialize all three tools
@@ -133,13 +133,15 @@ class CompleteNLPValidationPipeline:
                     error=f"Content classification failed: {classification_result.error}"
                 )
                 
-            logger.info(f"Content classification complete: {len(classification_result.segments)} segments classified")
+            segments_count = len(classification_result.segments) if classification_result.segments else 0
+            logger.info(f"Content classification complete: {segments_count} segments classified")
             
             # Stage 3: Taxonomy Validation (Tool 1)
             logger.info("Stage 3: Taxonomy validation...")
             
+            segments = classification_result.segments or []
             validation_result = self.taxonomy_validator.validate_classified_content(
-                classification_result.segments
+                segments
             )
             
             if not validation_result.success:
@@ -157,8 +159,9 @@ class CompleteNLPValidationPipeline:
             # Stage 4: Create validated mega-chunks
             logger.info("Stage 4: Creating validated mega-chunks...")
             
+            validated_segments = validation_result.validated_segments or []
             validated_mega_chunks = self.content_classifier.create_mega_chunk_by_standard(
-                validation_result.validated_segments
+                validated_segments
             )
             
             # Stage 5: Compile processing metadata
@@ -347,33 +350,33 @@ class CompleteNLPValidationPipeline:
             
             # Stage 1: Structure Analysis
             'structure_analysis': {
-                'total_pages': structure_stats.get('total_pages', 0),
-                'segments_extracted': len(structure_stats.get('segments', [])),
-                'segment_types': self._count_segment_types(structure_stats.get('segments', []))
+                'total_pages': structure_stats.get('total_pages', 0) if structure_stats else 0,
+                'segments_extracted': len(structure_stats.get('segments', [])) if structure_stats else 0,
+                'segment_types': self._count_segment_types(structure_stats.get('segments', [])) if structure_stats else {}
             },
             
             # Stage 2: Content Classification
             'content_classification': {
-                'total_classified': classification_stats.get('total_segments', 0),
-                'standards_identified': len(classification_stats.get('standards_detected', [])),
+                'total_classified': classification_stats.get('total_segments', 0) if classification_stats else 0,
+                'standards_identified': len(classification_stats.get('standards_detected', [])) if classification_stats else 0,
                 'standards_breakdown': {
                     standard: len([
-                        seg for seg in validation_stats.validated_segments 
-                        if seg.accounting_standard == standard
-                    ]) for standard in classification_stats.get('standards_detected', [])
-                },
-                'average_confidence': classification_stats.get('average_confidence', 0.0)
+                        seg for seg in (validation_stats.validated_segments or [])
+                        if hasattr(seg, 'accounting_standard') and seg.accounting_standard == standard
+                    ]) for standard in (classification_stats.get('standards_detected', []) if classification_stats else [])
+                } if classification_stats and validation_stats else {},
+                'average_confidence': classification_stats.get('average_confidence', 0.0) if classification_stats else 0.0
             },
             
             # Stage 3: Taxonomy Validation
             'taxonomy_validation': {
                 'validation_mode': 'XML-based' if self.taxonomy_validator.taxonomy_available else 'Pattern-based',
-                'segments_validated': len(validation_stats.validated_segments) if validation_stats.validated_segments else 0,
-                'conflicts_detected': len(validation_stats.validation_conflicts) if validation_stats.validation_conflicts else 0,
-                'suggestions_provided': len(validation_stats.taxonomy_suggestions) if validation_stats.taxonomy_suggestions else 0,
+                'segments_validated': len(validation_stats.validated_segments) if validation_stats and validation_stats.validated_segments else 0,
+                'conflicts_detected': len(validation_stats.validation_conflicts) if validation_stats and validation_stats.validation_conflicts else 0,
+                'suggestions_provided': len(validation_stats.taxonomy_suggestions) if validation_stats and validation_stats.taxonomy_suggestions else 0,
                 'compliance_score': 1.0 - (
                     len(validation_stats.validation_conflicts) / len(validation_stats.validated_segments)
-                    if validation_stats.validated_segments and validation_stats.validation_conflicts
+                    if validation_stats and validation_stats.validated_segments and validation_stats.validation_conflicts and len(validation_stats.validated_segments) > 0
                     else 0.0
                 )
             },
@@ -389,7 +392,7 @@ class CompleteNLPValidationPipeline:
             },
             
             # Quality Metrics
-            'quality_summary': processing_result.processing_metadata.get('quality_metrics', {}),
+            'quality_summary': processing_result.processing_metadata.get('quality_metrics', {}) if processing_result.processing_metadata else {},
             
             # Processing Metadata
             'processing_metadata': processing_result.processing_metadata
@@ -425,16 +428,16 @@ class CompleteNLPValidationPipeline:
                 'document_info': {
                     'source_document': processing_result.document_path,
                     'processing_pipeline': 'Tool2+Tool3+Tool1',
-                    'processing_date': processing_result.processing_metadata.get('processing_timestamp', ''),
-                    'quality_metrics': processing_result.processing_metadata.get('quality_metrics', {})
+                    'processing_date': processing_result.processing_metadata.get('processing_timestamp', '') if processing_result.processing_metadata else '',
+                    'quality_metrics': processing_result.processing_metadata.get('quality_metrics', {}) if processing_result.processing_metadata else {}
                 },
                 
                 'validated_mega_chunks': {},
                 
                 'validation_summary': {
-                    'total_segments': len(processing_result.taxonomy_validation.validated_segments) if processing_result.taxonomy_validation.validated_segments else 0,
-                    'conflicts_detected': len(processing_result.taxonomy_validation.validation_conflicts) if processing_result.taxonomy_validation.validation_conflicts else 0,
-                    'taxonomy_compliance_score': processing_result.processing_metadata.get('quality_metrics', {}).get('taxonomy_compliance', 0.0)
+                    'total_segments': len(processing_result.taxonomy_validation.validated_segments) if processing_result.taxonomy_validation and processing_result.taxonomy_validation.validated_segments else 0,
+                    'conflicts_detected': len(processing_result.taxonomy_validation.validation_conflicts) if processing_result.taxonomy_validation and processing_result.taxonomy_validation.validation_conflicts else 0,
+                    'taxonomy_compliance_score': (processing_result.processing_metadata.get('quality_metrics', {}).get('taxonomy_compliance', 0.0) if processing_result.processing_metadata else 0.0)
                 },
                 
                 'processing_metadata': processing_result.processing_metadata

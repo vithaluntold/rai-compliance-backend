@@ -305,6 +305,10 @@ class IFRSTaxonomyIntegrator:
         suggestions = []
         question_text = question.get("question", "").lower()
         
+        # Check if parser is available
+        if not self.parser or not hasattr(self.parser, 'concepts'):
+            return suggestions
+        
         # Analyze question text and suggest relevant concepts
         for concept_id in standard_concepts[:10]:  # Limit to first 10 concepts
             concept_data = self.parser.concepts.get(concept_id, {})

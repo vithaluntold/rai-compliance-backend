@@ -25,7 +25,7 @@ class IndependentMetadataExtractor:
     async def extract_metadata_ai_only(
         self, 
         document_text: str, 
-        document_id: str = None
+        document_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Extract metadata using AI only - completely independent of chunking
@@ -58,10 +58,11 @@ class IndependentMetadataExtractor:
             
             # Call AI service for metadata extraction
             logger.info("🧠 Calling AI service for comprehensive metadata extraction...")
-            ai_response = await self.ai_service.analyze_content(
-                content=extraction_prompt,
-                analysis_type="metadata_extraction",
-                max_tokens=800  # Sufficient for detailed metadata response
+            ai_response = await self.ai_service.analyze_compliance(
+                document_id=document_id or "unknown",
+                text=truncated_text,
+                framework="GENERAL",  # Generic framework for metadata extraction
+                standard="METADATA_EXTRACTION"
             )
             
             if not ai_response or not ai_response.get('analysis'):
@@ -194,7 +195,7 @@ ANALYSIS_NOTES: [Any additional relevant observations]
         notes_match = re.search(notes_pattern, ai_response, re.DOTALL | re.IGNORECASE)
         analysis_notes = notes_match.group(1).strip() if notes_match else ""
         
-        metadata['analysis_notes'] = analysis_notes
+        metadata['analysis_notes'] = {'notes': str(analysis_notes) if analysis_notes else ''}
         
         return metadata
     
@@ -250,7 +251,7 @@ ANALYSIS_NOTES: [Any additional relevant observations]
 
 
 # Convenience function for direct usage
-async def extract_metadata_from_text(document_text: str, document_id: str = None) -> Dict[str, Any]:
+async def extract_metadata_from_text(document_text: str, document_id: Optional[str] = None) -> Dict[str, Any]:
     """
     Direct function to extract metadata from document text using AI
     

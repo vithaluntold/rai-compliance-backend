@@ -8,6 +8,7 @@ by the hierarchical mega-chunk system in the enhanced structure parser.
 import os
 import shutil
 import re
+from typing import Optional
 from pathlib import Path
 from typing import List, Dict, Any
 import json
@@ -16,7 +17,7 @@ from datetime import datetime
 class LegacyChunkingCleanup:
     """Cleanup manager for obsolete chunking logic"""
     
-    def __init__(self, base_path: str = None):
+    def __init__(self, base_path: Optional[str] = None):
         self.base_path = Path(base_path) if base_path else Path(__file__).parent
         self.backup_dir = self.base_path / "legacy_backup"
         self.cleanup_log = []

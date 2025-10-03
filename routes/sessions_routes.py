@@ -265,7 +265,7 @@ async def archive_session(session_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
 
 # Helper function for updating session processing status
-async def update_session_processing_status(session_id: str, status: str, additional_data: Dict[str, Any] = None):
+async def update_session_processing_status(session_id: str, status: str, additional_data: Optional[Dict[str, Any]] = None):
     """Update the processing status of a session - used internally by other routes"""
     try:
         session_data = load_session_from_file(session_id)

@@ -38,7 +38,7 @@ class ContentSegment:
 class ClassificationResult:
     """Result of content classification operation"""
     success: bool
-    segments: List[ContentSegment] = None
+    segments: Optional[List[ContentSegment]] = None
     total_segments: int = 0
     error: Optional[str] = None
 
@@ -330,7 +330,11 @@ Return EXACTLY this JSON format:
             )
             
             # Parse response
-            content = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if content:
+                content = content.strip()
+            else:
+                content = "{}"
             
             # Clean up JSON response
             if content.startswith('```json'):
@@ -592,7 +596,7 @@ Return EXACTLY this JSON format:
                     "accounting_standard": standard,
                     "sub_chunks": [],
                     "total_segments": 0,
-                    "combined_tags": self._merge_classification_tags([segment.classification_tags]),
+                    "combined_tags": self._merge_classification_tags([t for t in [segment.classification_tags] if t is not None]),
                     "confidence_score": segment.confidence_score
                 }
                 

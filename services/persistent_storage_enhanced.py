@@ -33,9 +33,8 @@ try:
 except ImportError:
     POSTGRES_AVAILABLE = False
     logger.warning("PostgreSQL support not available. Install psycopg2-binary for production deployment.")
-    logger.warning("PostgreSQL support not available. Install psycopg2-binary for production deployment.")
-
-logger = logging.getLogger(__name__)
+    psycopg2 = None
+    RealDictCursor = None
 
 class PersistentStorageManager:
     """
@@ -48,6 +47,7 @@ class PersistentStorageManager:
     
     def __init__(self, db_path: str = "persistent_storage.db"):
         self.use_postgresql = os.getenv("USE_POSTGRESQL", "false").lower() == "true"
+        self.postgres_conn: Optional[Any] = None
         self.database_url = os.getenv("DATABASE_URL")
         self.sqlite_path = db_path
         self.lock = threading.RLock()
@@ -64,7 +64,9 @@ class PersistentStorageManager:
     def _init_postgresql(self):
         """Initialize PostgreSQL database and tables"""
         try:
-            with psycopg2.connect(self.database_url) as conn:
+            if not psycopg2:
+                raise ImportError("psycopg2 not available")
+            with psycopg2.connect(self.database_url) as conn:  # type: ignore
                 with conn.cursor() as cursor:
                     # Create files table
                     cursor.execute("""
@@ -179,7 +181,9 @@ class PersistentStorageManager:
     
     async def _store_file_postgresql(self, document_id: str, filename: str, content: bytes) -> bool:
         """Store file in PostgreSQL"""
-        with psycopg2.connect(self.database_url) as conn:
+        if not psycopg2:
+            raise ImportError("psycopg2 not available")
+        with psycopg2.connect(self.database_url) as conn:  # type: ignore
             with conn.cursor() as cursor:
                 cursor.execute(
                     "INSERT INTO files (document_id, filename, content) VALUES (%s, %s, %s) "
@@ -213,8 +217,10 @@ class PersistentStorageManager:
     
     async def _get_file_postgresql(self, document_id: str) -> Optional[Dict[str, Union[str, bytes]]]:
         """Get file from PostgreSQL"""
-        with psycopg2.connect(self.database_url) as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        if not psycopg2 or not RealDictCursor:
+            raise ImportError("psycopg2 not available")
+        with psycopg2.connect(self.database_url) as conn:  # type: ignore
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:  # type: ignore
                 cursor.execute("SELECT filename, content FROM files WHERE document_id = %s", (document_id,))
                 result = cursor.fetchone()
                 
@@ -252,7 +258,9 @@ class PersistentStorageManager:
     
     async def _store_analysis_postgresql(self, document_id: str, results: Dict[str, Any]) -> bool:
         """Store analysis in PostgreSQL using JSONB"""
-        with psycopg2.connect(self.database_url) as conn:
+        if not psycopg2:
+            raise ImportError("psycopg2 not available")
+        with psycopg2.connect(self.database_url) as conn:  # type: ignore
             with conn.cursor() as cursor:
                 cursor.execute(
                     "INSERT INTO analysis_results (document_id, results) VALUES (%s, %s) "
@@ -286,13 +294,16 @@ class PersistentStorageManager:
     
     async def _get_analysis_postgresql(self, document_id: str) -> Optional[Dict[str, Any]]:
         """Get analysis from PostgreSQL"""
-        with psycopg2.connect(self.database_url) as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        if not psycopg2 or not RealDictCursor:
+            raise ImportError("psycopg2 not available")
+        with psycopg2.connect(self.database_url) as conn:  # type: ignore
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:  # type: ignore
                 cursor.execute("SELECT results FROM analysis_results WHERE document_id = %s", (document_id,))
                 result = cursor.fetchone()
                 
                 if result:
-                    return result["results"] if isinstance(result["results"], dict) else json.loads(result["results"])
+                    result_data = dict(result)
+                    return result_data["results"] if isinstance(result_data["results"], dict) else json.loads(result_data["results"])
                 return None
     
     async def _get_analysis_sqlite(self, document_id: str) -> Optional[Dict[str, Any]]:
@@ -316,7 +327,9 @@ class PersistentStorageManager:
     def _save_audit_log_postgresql(self, document_id: str, audit_data: Dict[str, Any]) -> None:
         """Save audit log to PostgreSQL"""
         try:
-            conn = psycopg2.connect(self.database_url)
+            if not psycopg2:
+                raise ImportError("psycopg2 not available")
+            conn = psycopg2.connect(self.database_url)  # type: ignore
             with conn:
                 with conn.cursor() as cursor:
                     # Create audit table if not exists

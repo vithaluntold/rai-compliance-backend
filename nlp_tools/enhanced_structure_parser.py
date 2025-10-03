@@ -15,11 +15,12 @@ from collections import defaultdict
 
 # Optional import for advanced table extraction
 try:
-    import pdfplumber
+    import pdfplumber  # type: ignore
     HAS_PDFPLUMBER = True
 except ImportError:
     HAS_PDFPLUMBER = False
     pdfplumber = None
+    # pdfplumber not available - using alternative PDF processing methods
 
 logger = logging.getLogger(__name__)
 
@@ -222,7 +223,7 @@ class EnhancedFinancialStatementParser:
             
             for page_num in range(pdf_document.page_count):
                 page = pdf_document[page_num]
-                page_text = page.get_text() or ""
+                page_text = getattr(page, 'get_text', lambda: '')() or ""
                 
                 # Extract tables using basic text analysis
                 page_tables = self._extract_basic_tables(page_text, page_num)
@@ -368,7 +369,7 @@ class EnhancedFinancialStatementParser:
         
         # Determine table type based on content
         table_text = ' '.join(line_data['text'] for line_data in table_lines)
-        table_type = self._classify_table_type(table_text, "")
+        table_type = self._classify_table_type([], table_text)
         
         return {
             'table_id': f"table_{page_num}_{table_lines[0]['line_num']}",
@@ -810,64 +811,7 @@ class EnhancedFinancialStatementParser:
                     
         return "Extracted Table"
 
-    def _map_cross_references(self, pages_data: List[Dict[str, Any]]) -> Dict[str, List[str]]:
-        """Map cross-references between document sections"""
-        cross_refs = defaultdict(list)
-        
-        # Pattern for note references
-        note_ref_pattern = r'note\s+(\d+)'
-        
-        for page_data in pages_data:
-            text = page_data['text']
-            page_num = page_data['page_num']
-            
-            # Find note references
-            note_matches = re.findall(note_ref_pattern, text, re.IGNORECASE)
-            for note_num in note_matches:
-                cross_refs[f"page_{page_num}"].append(f"note_{note_num}")
-        
-        return dict(cross_refs)
-
-    def _assemble_document_structure(self, primary_statements: List[DocumentSegment],
-                                   notes_sections: List[DocumentSegment],
-                                   policy_sections: List[DocumentSegment],
-                                   auditor_sections: List[DocumentSegment],
-                                   tables: List[TableStructure],
-                                   cross_refs: Dict[str, List[str]],
-                                   pages_data: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Assemble final document structure"""
-        
-        all_segments = []
-        all_segments.extend(primary_statements)
-        all_segments.extend(notes_sections)
-        all_segments.extend(policy_sections)
-        all_segments.extend(auditor_sections)
-        
-        # Calculate overall parsing confidence
-        if all_segments:
-            avg_confidence = sum(seg.confidence for seg in all_segments) / len(all_segments)
-        else:
-            avg_confidence = 0.0
-        
-        # Create structure metadata
-        structure_metadata = {
-            'total_pages': len(pages_data),
-            'primary_statements_count': len(primary_statements),
-            'notes_sections_count': len(notes_sections),
-            'policy_sections_count': len(policy_sections),
-            'auditor_sections_count': len(auditor_sections),
-            'tables_count': len(tables),
-            'cross_references_count': len(cross_refs)
-        }
-        
-        return {
-            'success': True,
-            'segments': all_segments,
-            'tables': tables,
-            'cross_references': cross_refs,
-            'structure_metadata': structure_metadata,
-            'parsing_confidence': avg_confidence
-        }
+    # Duplicate methods removed - keeping later implementations
 
     def _map_cross_references(self, pages_data: List[Dict[str, Any]]) -> Dict[str, List[str]]:
         """Map cross-references between document sections"""

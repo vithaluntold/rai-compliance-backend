@@ -177,7 +177,11 @@ CRITICAL: Always follow master dictionary values. Do not invent new categories. 
             )
             
             # Parse the JSON response
-            content = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if content:
+                content = content.strip()
+            else:
+                content = "{}"
             
             # Clean up the response if it contains markdown code blocks
             if content.startswith('```json'):
@@ -263,7 +267,7 @@ CRITICAL: Always follow master dictionary values. Do not invent new categories. 
             logger.info(f"Successfully enhanced question {question.get('id', 'unknown')}")
         else:
             # Use default classification on failure
-            enhanced_question.update(result.classification)
+            enhanced_question.update(result.classification or self._get_default_classification())
             logger.warning(f"Used default classification for question {question.get('id', 'unknown')}: {result.error}")
         
         return enhanced_question

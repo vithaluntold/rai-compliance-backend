@@ -97,8 +97,9 @@ class NLPDocumentProcessor:
             # Step 4: Create mega-chunks by accounting standard
             logger.info("Creating mega-chunks by accounting standard")
             
+            segments = classification_result.segments or []
             mega_chunks = self.content_classifier.create_mega_chunk_by_standard(
-                classification_result.segments
+                segments
             )
             
             # Step 5: Prepare processing metadata
@@ -107,7 +108,7 @@ class NLPDocumentProcessor:
                 'classification_stats': {
                     'total_classified_segments': classification_result.total_segments,
                     'standards_identified': list(mega_chunks.keys()),
-                    'avg_confidence_score': self._calculate_average_confidence(classification_result.segments)
+                    'avg_confidence_score': self._calculate_average_confidence(classification_result.segments or [])
                 },
                 'pipeline_version': 'Tool2+Tool3',
                 'processing_timestamp': self._get_current_timestamp()
@@ -117,7 +118,7 @@ class NLPDocumentProcessor:
                 document_path=pdf_path,
                 total_pages=structured_result.get('total_pages', 0),
                 structured_segments=structured_result.get('segments', []),
-                classified_segments=classification_result.segments,
+                classified_segments=classification_result.segments or [],
                 mega_chunks_by_standard=mega_chunks,
                 processing_metadata=processing_metadata,
                 success=True

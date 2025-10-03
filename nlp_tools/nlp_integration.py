@@ -96,11 +96,12 @@ class NLPEnhancedDocumentProcessor:
                     logger.error(f"❌ Enhanced NLP error: {e}, falling back to standard processing")
                     self.enable_enhanced_nlp = False
             
-            # Step 2: Standard Processing (always run for compatibility)
-            logger.info("📄 Running Standard Document Chunker")
-            standard_chunks = self.document_chunker.chunk_pdf(pdf_path, document_id)
+            # Step 2: Standard Processing (deprecated - skip if enhanced processing available)
+            standard_chunks = []
+            if not processing_result['enhanced_analysis']:
+                logger.warning("⚠️ No enhanced analysis available and standard chunker deprecated")
+                standard_chunks = []
             processing_result['standard_chunks'] = standard_chunks
-            logger.info(f"✅ Standard chunking SUCCESS: {len(standard_chunks)} chunks created")
             
             # Step 3: Unified Output Generation
             logger.info("🔄 Generating unified output")

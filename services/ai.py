@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import threading
 import time
 import traceback
@@ -543,23 +544,23 @@ class AIService:
                 logger.error(f"Circuit breaker is open: {str(e)}")
                 raise RuntimeError(f"AI analysis failed: {str(e)}")
 
-            # STRICT: Use smart categorization ONLY - no fallbacks
-            logger.info(f"🧠 AI STEP 1: Starting smart categorization for question: {question[:50]}...")
+            # STRICT: Use enhanced smart categorization ONLY - no fallbacks
+            logger.info(f"🧠 AI STEP 1: Starting enhanced smart categorization for question: {question[:50]}...")
             try:
-                from services.intelligent_chunk_accumulator import (
-                    IntelligentChunkAccumulator, 
+                from services.enhanced_chunk_selector import (
+                    EnhancedChunkSelector, 
                     CategoryAwareContentStorage
                 )
                 
-                # Initialize smart accumulator
-                logger.info(f"🔧 AI STEP 2: Initializing smart categorization components for document {self.current_document_id}")
+                # Initialize enhanced smart accumulator
+                logger.info(f"🔧 AI STEP 2: Initializing enhanced smart categorization components for document {self.current_document_id}")
                 storage = CategoryAwareContentStorage()
-                accumulator = IntelligentChunkAccumulator(storage)
-                logger.info(f"✅ AI STEP 2 COMPLETE: Smart categorization components initialized")
+                accumulator = EnhancedChunkSelector(storage)
+                logger.info(f"✅ AI STEP 2 COMPLETE: Enhanced smart categorization components initialized")
                 
-                # Get categorized content - strict mode
-                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content (max length: 3000)")
-                smart_result = accumulator.accumulate_relevant_content(
+                # Get enhanced categorized content - strict mode with FS header priority
+                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content with FS header priority (max length: 3000)")
+                smart_result = accumulator.enhanced_accumulate_relevant_content(
                     question, self.current_document_id, max_content_length=3000
                 )
                 
@@ -567,9 +568,47 @@ class AIService:
                     logger.error(f"❌ AI STEP 3 FAILED: No relevant content found for question: {question}")
                     raise RuntimeError(f"Smart categorization failed: No relevant categorized content found for question. Document may not be properly processed with smart categorization.")
                 
-                enhanced_evidence = smart_result['content']
-                logger.info(f"✅ AI STEP 3 COMPLETE: Found {smart_result['total_chunks']} relevant chunks with {smart_result['confidence']:.2f} confidence")
-                logger.info(f"📄 Content summary: {len(enhanced_evidence)} chars, categories: {smart_result['categories']}")
+                # MANDATORY FINANCIAL STATEMENT ATTACHMENT
+                logger.info(f"💼 AI STEP 3.5: Applying mandatory financial statement attachment")
+                enhanced_evidence = self._ensure_mandatory_financial_statements(
+                    smart_result['content'], question, self.current_document_id
+                )
+                logger.info(f"✅ AI STEP 3.5 COMPLETE: Financial statements mandatorily attached")
+                
+                # ===== COMPREHENSIVE CHUNK QUALITY LOGGING =====
+                logger.info(f"🔍 CHUNK QUALITY MONITOR - Question: {question[:100]}...")
+                logger.info(f"📊 CHUNK STATS: {smart_result['total_chunks']} chunks, confidence: {smart_result['confidence']:.2f}")
+                logger.info(f"📂 CHUNK CATEGORIES: {smart_result['categories']}")
+                logger.info(f"📄 CONTENT LENGTH: {len(enhanced_evidence)} characters")
+                
+                # Log first 200 chars of content for quality inspection
+                content_preview = enhanced_evidence[:200].replace('\n', ' ').replace('\r', ' ')
+                logger.info(f"� CONTENT PREVIEW: {content_preview}...")
+                
+                # Log detailed chunk information if available
+                if 'chunk_details' in smart_result:
+                    logger.info(f"🔍 CHUNK DETAILS:")
+                    for i, chunk_info in enumerate(smart_result['chunk_details'][:3]):  # Log first 3 chunks
+                        score = chunk_info.get('score', 'N/A')
+                        category = chunk_info.get('category', 'unknown')
+                        preview = chunk_info.get('content', '')[:100].replace('\n', ' ')
+                        logger.info(f"   Chunk {i+1}: Score={score}, Category={category}, Preview={preview}...")
+                
+                # Log financial statement detection
+                fs_keywords = ['balance sheet', 'statement of financial position', 'profit and loss', 
+                              'comprehensive income', 'cash flow', 'statement of changes in equity']
+                found_fs = [kw for kw in fs_keywords if kw.lower() in enhanced_evidence.lower()]
+                if found_fs:
+                    logger.info(f"✅ FINANCIAL STATEMENTS DETECTED: {found_fs}")
+                else:
+                    logger.warning(f"⚠️  NO FINANCIAL STATEMENTS DETECTED in content")
+                
+                # Log if content seems to be notes instead of statements
+                if 'note ' in enhanced_evidence.lower() and len([kw for kw in fs_keywords if kw.lower() in enhanced_evidence.lower()]) == 0:
+                    logger.warning(f"⚠️  CHUNK QUALITY ISSUE: Content appears to be notes, not financial statements")
+                
+                logger.info(f"✅ AI STEP 3 COMPLETE: Enhanced chunk selection with quality monitoring")
+                # ===== END CHUNK QUALITY LOGGING =====
                 
             except ImportError as import_error:
                 logger.error(f"❌ AI STEP 2 FAILED: Smart categorization system unavailable: {import_error}")
@@ -590,7 +629,7 @@ class AIService:
             # Construct the prompt for the AI using the prompts library
             logger.info(f"🤖 AI STEP 5: Constructing AI prompt for compliance analysis")
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
-                question=question, context=context, enhanced_evidence=enhanced_evidence, custom_instructions=custom_instructions
+                question=question, context=context, enhanced_evidence=enhanced_evidence if isinstance(enhanced_evidence, dict) else None, custom_instructions=custom_instructions
             )
             logger.info(f"✅ AI STEP 5 COMPLETE: AI prompt constructed ({len(prompt)} chars){' with custom instructions' if custom_instructions else ''}")
 
@@ -1211,7 +1250,7 @@ class AIService:
                         logger.error(f"AI returned non-dict JSON: {type(result)}, content: {result}")
                         result = {}
                 except json.JSONDecodeError as e:
-                    logger.error(f"Failed to parse AI response as JSON: {content[:200]}... Error: {e}")
+                    logger.error(f"Failed to parse AI response as JSON: {content[:200] if content else 'None'}... Error: {e}")
                     result = {}
 
                 # Validate and sanitize result
@@ -1468,6 +1507,127 @@ class AIService:
         
         logger.debug(f"Combined {len(chunks)} chunks into {current_length} characters (estimated {current_length // 4} tokens)")
         return combined
+    
+    def _ensure_mandatory_financial_statements(self, content: str, question: str, document_id: str) -> str:
+        """Ensure mandatory financial statements are included in content"""
+        
+        logger.info(f"💼 MANDATORY ATTACHMENT: Checking financial statement presence")
+        
+        # Financial statement patterns that MUST be present
+        mandatory_patterns = {
+            'balance_sheet': [
+                r'consolidated\s+statement\s+of\s+financial\s+position',
+                r'statement\s+of\s+financial\s+position',
+                r'balance\s+sheet'
+            ],
+            'profit_loss': [
+                r'consolidated\s+statement\s+of\s+profit\s+or\s+loss',
+                r'statement\s+of\s+profit\s+or\s+loss',  
+                r'statement\s+of\s+comprehensive\s+income',
+                r'profit\s+and\s+loss'
+            ],
+            'cash_flow': [
+                r'statement\s+of\s+cash\s+flows',
+                r'cash\s+flow\s+statement'
+            ],
+            'equity_changes': [
+                r'statement\s+of\s+changes\s+in\s+equity'
+            ]
+        }
+        
+        content_lower = content.lower()
+        missing_statements = []
+        found_statements = []
+        
+        # Check which statements are present
+        for stmt_type, patterns in mandatory_patterns.items():
+            found = False
+            for pattern in patterns:
+                if re.search(pattern, content_lower, re.IGNORECASE):
+                    found_statements.append(stmt_type)
+                    found = True
+                    break
+            if not found:
+                missing_statements.append(stmt_type)
+        
+        logger.info(f"💼 STATEMENTS FOUND: {found_statements}")
+        logger.info(f"💼 STATEMENTS MISSING: {missing_statements}")
+        
+        # If critical statements are missing, search database
+        enhanced_content = content
+        if missing_statements:
+            logger.warning(f"⚠️ SEARCHING DATABASE for missing statements: {missing_statements}")
+            
+            try:
+                from services.intelligent_chunk_accumulator import get_global_storage
+                storage = get_global_storage()
+                
+                additional_content = []
+                for stmt_type in missing_statements:
+                    # Search for each missing statement type
+                    search_terms = []
+                    if stmt_type == 'balance_sheet':
+                        search_terms = ['financial position', 'balance sheet']
+                    elif stmt_type == 'profit_loss':
+                        search_terms = ['profit loss', 'comprehensive income']
+                    elif stmt_type == 'cash_flow':
+                        search_terms = ['cash flows', 'cash flow']
+                    elif stmt_type == 'equity_changes':
+                        search_terms = ['changes equity', 'statement equity']
+                    
+                    for search_term in search_terms:
+                        try:
+                            chunks = storage.search_relevant_content(
+                                document_id=document_id,
+                                keywords=search_term.split()
+                            )
+                            
+                            # Find chunks with statement headers
+                            for chunk in chunks[:3]:  # Check first 3 chunks
+                                chunk_content = chunk.get('content_chunk', '') or chunk.get('content', '')
+                                
+                                # Check if this chunk contains the missing statement
+                                for pattern in mandatory_patterns[stmt_type]:
+                                    if re.search(pattern, chunk_content, re.IGNORECASE):
+                                        additional_content.append(f"\n\n--- MANDATORY ATTACHMENT ---\n{chunk_content}")
+                                        logger.info(f"✅ FOUND MISSING {stmt_type}: {pattern}")
+                                        missing_statements.remove(stmt_type)
+                                        break
+                                
+                                if stmt_type not in missing_statements:
+                                    break
+                            
+                            if stmt_type not in missing_statements:
+                                break
+                                
+                        except Exception as e:
+                            logger.error(f"❌ Search error for {stmt_type}: {e}")
+                
+                # Append additional content
+                if additional_content:
+                    enhanced_content = content + ''.join(additional_content)
+                    logger.info(f"✅ ENHANCED CONTENT: Added {len(additional_content)} mandatory statements")
+                
+            except Exception as e:
+                logger.error(f"❌ MANDATORY ATTACHMENT FAILED: {e}")
+        
+        # Log final attachment status for render backend visibility
+        final_statements = list(set(found_statements + [stmt for stmt in ['balance_sheet', 'profit_loss', 'cash_flow', 'equity_changes'] if stmt not in missing_statements]))
+        
+        attachment_log = {
+            'timestamp': datetime.now().isoformat(),
+            'question': question[:100],
+            'document_id': document_id,
+            'mandatory_attachment_applied': True,
+            'statements_found': final_statements,
+            'statements_missing': missing_statements,
+            'enhanced_content_length': len(enhanced_content),
+            'original_content_length': len(content)
+        }
+        
+        logger.info(f"💼 MANDATORY ATTACHMENT LOG: {json.dumps(attachment_log, indent=2)}")
+        
+        return enhanced_content
 
 
 # Global AI service instance
