@@ -542,11 +542,19 @@ class AIService:
             
             is_fs_identification = any(keyword in question.lower() for keyword in fs_identification_keywords)
             
+            # Enhanced diagnostic logging
+            matched_keywords = [keyword for keyword in fs_identification_keywords if keyword in question.lower()]
+            logger.info(f"🔍 Question keyword analysis: {len(matched_keywords)} matches found")
+            if matched_keywords:
+                logger.info(f"📝 Matched keywords: {matched_keywords[:3]}")  # Show first 3 matches
+            
             if is_fs_identification:
                 logger.info(f"🏦 Using enhanced chunk selector for FS/equity question: {question[:50]}...")
                 try:
                     # Use enhanced chunk selector for financial statement questions
+                    logger.info(f"🔧 Initializing CategoryAwareContentStorage...")
                     storage = CategoryAwareContentStorage()  # Use default path (categorized_content.db)
+                    logger.info(f"🔧 Getting enhanced chunk selector...")
                     enhanced_selector = get_enhanced_chunk_selector(storage)
                     
                     enhanced_result = enhanced_selector.enhanced_accumulate_relevant_content(
@@ -564,15 +572,22 @@ class AIService:
                         relevant_chunks = [{"text": context}]
                     
                 except Exception as e:
-                    logger.warning(f"Enhanced chunk selection failed, falling back to vector search: {e}")
+                    logger.error(f"❌ Enhanced chunk selection FAILED: {str(e)}")
+                    logger.error(f"❌ Exception type: {type(e).__name__}")
+                    import traceback
+                    logger.error(f"❌ Full traceback: {traceback.format_exc()}")
+                    
                     # Fallback to standard vector search
+                    logger.info(f"🔄 Falling back to standard vector search...")
                     vs_svc = get_vector_store()
                     if vs_svc:
                         relevant_chunks = vs_svc.search(
                             query=question, document_id=self.current_document_id, top_k=3
                         )
+                        logger.info(f"📊 Vector search returned {len(relevant_chunks)} chunks")
             else:
                 # Use standard vector search for other questions
+                logger.info(f"🔍 Using standard vector search (no keyword matches)")
                 vs_svc = get_vector_store()
                 if not vs_svc:
                     raise ValueError("Vector store service not initialized")
@@ -580,6 +595,7 @@ class AIService:
                 relevant_chunks = vs_svc.search(
                     query=question, document_id=self.current_document_id, top_k=3
                 )
+                logger.info(f"📊 Vector search returned {len(relevant_chunks)} chunks")
 
             # Enhanced: Use intelligent document analyzer if we have full document
             # text and standard ID

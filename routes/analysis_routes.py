@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import sys
 import time
 import traceback
 from datetime import datetime
@@ -271,7 +272,8 @@ def _process_document_chunks(document_id: str) -> list:
 
 async def _create_vector_index(document_id: str, chunks: list) -> None:
     """Index chunks in vector store and categorized content storage."""
-    logger.info(f"Starting vector store indexing for document {document_id}")
+    logger.info(f"🚀 STARTING VECTOR INDEX CREATION: document={document_id}, chunks={len(chunks)}")
+    
     vs_svc = get_vector_store()
     if not vs_svc:
         raise ValueError("Vector store service not initialized")
@@ -279,40 +281,100 @@ async def _create_vector_index(document_id: str, chunks: list) -> None:
     index_created = await vs_svc.create_index(document_id, chunks)
     if not index_created:
         raise ValueError("Failed to create vector index")
+    
+    logger.info(f"✅ Vector store index created successfully for {document_id}")
 
-    # Also store chunks in categorized content storage for enhanced chunk selector
+    # ENHANCED DUAL STORAGE: Store chunks in categorized content storage for enhanced chunk selector
+    logger.info(f"🔧 STARTING DUAL STORAGE: Storing {len(chunks)} chunks in categorized content storage")
+    
     try:
+        # Import with detailed logging
+        logger.info(f"📦 Importing CategoryAwareContentStorage...")
         from services.intelligent_chunk_accumulator import CategoryAwareContentStorage
+        logger.info(f"✅ CategoryAwareContentStorage imported successfully")
+        
+        # Create storage instance with logging
+        logger.info(f"🔧 Creating storage instance...")
         storage = CategoryAwareContentStorage()
+        logger.info(f"✅ Storage instance created successfully")
         
+        stored_count = 0
         for i, chunk in enumerate(chunks):
-            # Extract text content based on chunk format
-            if isinstance(chunk, dict):
-                text_content = chunk.get('text', '') or chunk.get('content', '') or str(chunk)
-                category = chunk.get('category', 'document_content')
-                subcategory = chunk.get('subcategory', 'general')
-            else:
-                text_content = str(chunk)
-                category = 'document_content'
-                subcategory = 'general'
+            try:
+                # Extract text content based on chunk format
+                if isinstance(chunk, dict):
+                    text_content = chunk.get('text', '') or chunk.get('content', '') or str(chunk)
+                    category = chunk.get('category', 'document_content')
+                    subcategory = chunk.get('subcategory', 'general')
+                else:
+                    text_content = str(chunk)
+                    category = 'document_content'
+                    subcategory = 'general'
+                
+                logger.info(f"📝 Storing chunk {i+1}/{len(chunks)}: {len(text_content)} chars, category={category}")
+                
+                # Store each chunk with appropriate categorization
+                storage.store_categorized_chunk(
+                    document_id=document_id,
+                    chunk=text_content,
+                    category=category,
+                    subcategory=subcategory,
+                    confidence=0.8,  # Default confidence
+                    keywords=[]
+                )
+                
+                stored_count += 1
+                logger.info(f"✅ Chunk {i+1} stored successfully")
+                
+            except Exception as chunk_error:
+                logger.error(f"❌ Failed to store chunk {i+1}: {chunk_error}")
+                logger.error(f"❌ Chunk type: {type(chunk)}, content preview: {str(chunk)[:100]}")
+                continue
+        
+        logger.info(f"🎉 DUAL STORAGE COMPLETE: Stored {stored_count}/{len(chunks)} chunks in categorized content storage")
+        
+        # Verification: Check if chunks were actually stored
+        try:
+            import sqlite3
+            import os
+            db_path = "categorized_content.db"
+            logger.info(f"🔍 Verifying storage in database: {os.path.abspath(db_path)}")
             
-            # Store each chunk with appropriate categorization
-            storage.store_categorized_chunk(
-                document_id=document_id,
-                chunk=text_content,
-                category=category,
-                subcategory=subcategory,
-                confidence=0.8,  # Default confidence
-                keywords=[]
-            )
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM categorized_content WHERE document_id = ?", (document_id,))
+            verification_count = cursor.fetchone()[0]
+            conn.close()
+            
+            logger.info(f"📊 VERIFICATION: {verification_count} chunks found in database for {document_id}")
+            
+            if verification_count != stored_count:
+                logger.error(f"❌ STORAGE MISMATCH: Stored {stored_count} but found {verification_count} in database")
+            else:
+                logger.info(f"✅ STORAGE VERIFIED: All {verification_count} chunks confirmed in database")
+                
+        except Exception as verify_error:
+            logger.error(f"❌ Verification failed: {verify_error}")
         
-        logger.info(f"✅ Stored {len(chunks)} chunks in categorized content storage for enhanced selection")
+    except ImportError as import_error:
+        logger.error(f"❌ IMPORT FAILED: CategoryAwareContentStorage import error: {import_error}")
+        try:
+            import os  # Ensure os is available in this scope
+            logger.error(f"❌ Working directory: {os.getcwd()}")
+            logger.error(f"❌ Python path: {sys.path}")
+        except Exception:
+            logger.error("❌ Could not get working directory or Python path")
+        raise  # Re-raise import errors as they indicate deployment issues
         
-    except Exception as e:
-        logger.warning(f"⚠️ Failed to store chunks in categorized content storage: {e}")
-        # Don't fail the entire process if this fails
+    except Exception as storage_error:
+        logger.error(f"❌ DUAL STORAGE FAILED: {storage_error}")
+        logger.error(f"❌ Error type: {type(storage_error).__name__}")
+        import traceback
+        logger.error(f"❌ Full traceback: {traceback.format_exc()}")
+        # Don't fail the entire process, but make the error very visible
+        logger.error(f"🚨 CRITICAL: Enhanced chunking will not work for document {document_id}")
 
-    logger.info(f"Vector store indexing completed for document {document_id}")
+    logger.info(f"🏁 Vector store indexing completed for document {document_id}")
 
 
 async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
