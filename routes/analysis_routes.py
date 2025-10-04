@@ -3124,8 +3124,6 @@ async def process_compliance_analysis(
             raise ValueError("No standards provided for compliance analysis")
 
         # Initialize progress tracking
-        from services.progress_tracker import get_progress_tracker
-
         progress_tracker = get_progress_tracker()
         progress_tracker.start_analysis(
             document_id, framework, standards, processing_mode
@@ -3175,7 +3173,7 @@ async def process_compliance_analysis(
 
     except Exception as e:
         # Mark progress as failed
-        progress_tracker = get_progress_tracker()
-        progress_tracker.fail_analysis(document_id, str(e))
+        progress_handler = get_progress_tracker()
+        progress_handler.fail_analysis(document_id, str(e))
 
         _handle_analysis_error(document_id, e, performance_tracker, processing_mode)
