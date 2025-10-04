@@ -18,6 +18,8 @@ from services.ai_prompts import ai_prompts
 from services.checklist_utils import load_checklist
 from services.intelligent_document_analyzer import enhance_compliance_analysis
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
+from services.enhanced_chunk_selector import get_enhanced_chunk_selector
+from services.intelligent_chunk_accumulator import CategoryAwareContentStorage
 
 logging.basicConfig(
     level=logging.INFO,
@@ -515,15 +517,58 @@ class AIService:
                     "suggestion": "Please wait and retry the analysis later.",
                 }
 
-            # Get relevant chunks using vector search (existing method)
-            vs_svc = get_vector_store()
-            if not vs_svc:
-                raise ValueError("Vector store service not initialized")
-
-            # Search for relevant chunks using the question
-            relevant_chunks = vs_svc.search(
-                query=question, document_id=self.current_document_id, top_k=3
-            )
+            # Enhanced chunk selection for financial statement identification questions
+            relevant_chunks = []
+            context = ""
+            
+            # Check if this is a financial statement identification question
+            fs_identification_keywords = [
+                "financial statements identified", "clearly identified", "distinguished from other information",
+                "unambiguous title", "statement of financial position", "statement of profit", 
+                "statement of comprehensive", "statement of changes", "statement of cash flows",
+                "present a statement", "entity present"
+            ]
+            
+            is_fs_identification = any(keyword in question.lower() for keyword in fs_identification_keywords)
+            
+            if is_fs_identification:
+                logger.info(f"🏦 Using enhanced chunk selector for FS identification question: {question[:50]}...")
+                try:
+                    # Use enhanced chunk selector for financial statement questions
+                    storage = CategoryAwareContentStorage()  # Use default path (categorized_content.db)
+                    enhanced_selector = get_enhanced_chunk_selector(storage)
+                    
+                    enhanced_result = enhanced_selector.enhanced_accumulate_relevant_content(
+                        question=question,
+                        document_id=self.current_document_id,
+                        max_content_length=4500
+                    )
+                    
+                    context = enhanced_result.get('content', '')
+                    logger.info(f"✅ Enhanced chunk selection: {len(context)} chars, confidence: {enhanced_result.get('confidence', 0):.3f}")
+                    logger.info(f"📋 Enhancement used: {enhanced_result.get('enhancement_used', 'none')}")
+                    
+                    # Convert to chunks format for compatibility
+                    if context:
+                        relevant_chunks = [{"text": context}]
+                    
+                except Exception as e:
+                    logger.warning(f"Enhanced chunk selection failed, falling back to vector search: {e}")
+                    # Fallback to standard vector search
+                    vs_svc = get_vector_store()
+                    if vs_svc:
+                        relevant_chunks = vs_svc.search(
+                            query=question, document_id=self.current_document_id, top_k=3
+                        )
+            else:
+                # Use standard vector search for other questions
+                vs_svc = get_vector_store()
+                if not vs_svc:
+                    raise ValueError("Vector store service not initialized")
+                
+                relevant_chunks = vs_svc.search(
+                    query=question, document_id=self.current_document_id, top_k=3
+                )
 
             # Enhanced: Use intelligent document analyzer if we have full document
             # text and standard ID
@@ -567,7 +612,7 @@ class AIService:
                     "suggestion": "Add a clear statement in the financial statement disclosures addressing this requirement.",
                 }
 
-            # Use enhanced evidence if available, otherwise fall back to original chunks
+            # Use enhanced evidence if available, otherwise fall back to chunk-based context
             if enhanced_evidence and enhanced_evidence.get("primary_evidence"):
                 context = enhanced_evidence["primary_evidence"]
                 evidence_quality = enhanced_evidence.get(
@@ -577,9 +622,12 @@ class AIService:
                 logger.info(
                     f"Using enhanced evidence from: {evidence_source}"
                 )
-            else:
+            elif not context and relevant_chunks:
+                # Only build context from chunks if we don't already have it from enhanced selection
                 context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
                 logger.info("Using standard vector search evidence")
+            elif context:
+                logger.info("Using enhanced chunk selector context")
 
             # Construct the prompt for the AI using the prompts library
             prompt = ai_prompts.get_full_compliance_analysis_prompt(

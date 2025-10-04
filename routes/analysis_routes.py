@@ -38,10 +38,6 @@ from services.vector_store import generate_document_id, get_vector_store
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 
 class PerformanceTracker:
     """Track performance metrics for different processing modes"""
@@ -107,10 +103,6 @@ try:
 except ImportError:
     logger.warning("python-docx not installed, DOCX support disabled")
     DocxDocument = None
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Get the absolute path to the backend directory
 BACKEND_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -278,7 +270,7 @@ def _process_document_chunks(document_id: str) -> list:
 
 
 async def _create_vector_index(document_id: str, chunks: list) -> None:
-    """Index chunks in vector store."""
+    """Index chunks in vector store and categorized content storage."""
     logger.info(f"Starting vector store indexing for document {document_id}")
     vs_svc = get_vector_store()
     if not vs_svc:
@@ -287,6 +279,38 @@ async def _create_vector_index(document_id: str, chunks: list) -> None:
     index_created = await vs_svc.create_index(document_id, chunks)
     if not index_created:
         raise ValueError("Failed to create vector index")
+
+    # Also store chunks in categorized content storage for enhanced chunk selector
+    try:
+        from services.intelligent_chunk_accumulator import CategoryAwareContentStorage
+        storage = CategoryAwareContentStorage()
+        
+        for i, chunk in enumerate(chunks):
+            # Extract text content based on chunk format
+            if isinstance(chunk, dict):
+                text_content = chunk.get('text', '') or chunk.get('content', '') or str(chunk)
+                category = chunk.get('category', 'document_content')
+                subcategory = chunk.get('subcategory', 'general')
+            else:
+                text_content = str(chunk)
+                category = 'document_content'
+                subcategory = 'general'
+            
+            # Store each chunk with appropriate categorization
+            storage.store_chunk(
+                document_id=document_id,
+                content_chunk=text_content,
+                category=category,
+                subcategory=subcategory,
+                confidence_score=0.8,  # Default confidence
+                keywords=[]
+            )
+        
+        logger.info(f"✅ Stored {len(chunks)} chunks in categorized content storage for enhanced selection")
+        
+    except Exception as e:
+        logger.warning(f"⚠️ Failed to store chunks in categorized content storage: {e}")
+        # Don't fail the entire process if this fails
 
     logger.info(f"Vector store indexing completed for document {document_id}")
 
