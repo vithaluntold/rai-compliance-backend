@@ -45,7 +45,7 @@ async def run_smart_mode_comparison(
         processing_time = end_time - start_time
 
         # Load Smart Mode results
-        results_path = ANALYSIS_RESULTS_DIR / "{document_id}_smart_comparison.json"
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_smart_comparison.json"
         try:
             with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
@@ -110,7 +110,7 @@ async def run_zap_mode_comparison(
         processing_time = end_time - start_time
 
         # Load Zap Mode results
-        results_path = ANALYSIS_RESULTS_DIR / "{document_id}_zap_comparison.json"
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}_zap_comparison.json"
         try:
             with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
@@ -153,9 +153,9 @@ def calculate_speed_improvement(smart_metrics: dict, zap_metrics: dict) -> str:
             / zap_metrics["processing_time_seconds"]
         )
         if speed_ratio > 1:
-            return "{speed_ratio:.1f}x faster (Zap vs Smart)"
+            return f"{speed_ratio:.1f}x faster (Zap vs Smart)"
         else:
-            return "{1 / speed_ratio:.1f}x faster (Smart vs Zap)"
+            return f"{1 / speed_ratio:.1f}x faster (Smart vs Zap)"
     else:
         return "Unable to calculate"
 
@@ -230,7 +230,7 @@ def build_comparison_results(
         "framework": framework,
         "standards": standards,
         "sections": primary_results.get("sections", []),
-        "message": "Comparison analysis completed - {recommendation} mode recommended",
+        "message": f"Comparison analysis completed - {recommendation} mode recommended",
         "comparison_results": {
             "enabled": True,
             "modes_compared": ["smart", "zap"],
@@ -285,7 +285,7 @@ async def process_compliance_comparison(
         }
 
         # Save initial progress
-        results_path = ANALYSIS_RESULTS_DIR / "{document_id}.json"
+        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
             json.dump(initial_results, f, indent=2, ensure_ascii=False)
 
@@ -338,15 +338,15 @@ async def process_compliance_comparison(
             json.dump(final_results, f, indent=2, ensure_ascii=False)
 
         logger.info(
-            "Comparison analysis completed for document {document_id} - "
-            "{recommendation} mode recommended"
+            f"Comparison analysis completed for document {document_id} - "
+            f"{recommendation} mode recommended"
         )
 
     except Exception as e:
         logger.error(f"Error in comparison analysis: {str(e)}", exc_info=True)
         # Update results with error
         try:
-            results_path = ANALYSIS_RESULTS_DIR / "{document_id}.json"
+            results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
             error_results = {
                 "document_id": document_id,
                 "status": "FAILED",
@@ -357,5 +357,5 @@ async def process_compliance_comparison(
         except Exception as save_error:
             # Failed to save error state - log but continue
             logger.error(
-                "Failed to save error state for {document_id}: {str(save_error)}"
+                f"Failed to save error state for {document_id}: {str(save_error)}"
             )

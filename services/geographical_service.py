@@ -9,7 +9,7 @@ high accuracy and completeness.
 import logging
 import re
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 
 import country_converter as coco  # type: ignore
 import pycountry  # type: ignore
@@ -66,7 +66,8 @@ class GeographicalDetectionService:
                 )
 
         # Common alternative names and abbreviations
-        self.country_aliases = {"uae": "United Arab Emirates",
+        self.country_aliases = {
+            "uae": "United Arab Emirates",
             "united arab emirates": "United Arab Emirates",
             "emirates": "United Arab Emirates",
             "usa": "United States",
@@ -89,11 +90,13 @@ class GeographicalDetectionService:
             "tanzania": "Tanzania, United Republic of",
             "congo": "Congo, Democratic Republic of the",
             "ivory coast": "Côte d'Ivoire",
-            "czech republic": "Czechia",}
+            "czech republic": "Czechia",
+        }
 
         # Regional groupings
         self.regions = {
-            "mena": {"name": "Middle East and North Africa",
+            "mena": {
+                "name": "Middle East and North Africa",
                 "countries": [
                     "Algeria",
                     "Bahrain",
@@ -114,8 +117,10 @@ class GeographicalDetectionService:
                     "Tunisia",
                     "United Arab Emirates",
                     "Yemen",
-                ]},
-            "apac": {"name": "Asia-Pacific",
+                ],
+            },
+            "apac": {
+                "name": "Asia-Pacific",
                 "countries": [
                     "Australia",
                     "Bangladesh",
@@ -142,8 +147,10 @@ class GeographicalDetectionService:
                     "Taiwan",
                     "Thailand",
                     "Vietnam",
-                ]},
-            "eu": {"name": "European Union",
+                ],
+            },
+            "eu": {
+                "name": "European Union",
                 "countries": [
                     "Austria",
                     "Belgium",
@@ -172,8 +179,10 @@ class GeographicalDetectionService:
                     "Slovenia",
                     "Spain",
                     "Sweden",
-                ]},
-            "europe": {"name": "Europe",
+                ],
+            },
+            "europe": {
+                "name": "Europe",
                 "countries": [
                     "Albania",
                     "Andorra",
@@ -218,10 +227,14 @@ class GeographicalDetectionService:
                     "Ukraine",
                     "United Kingdom",
                     "Vatican City",
-                ]},
-            "nafta": {"name": "North American Free Trade Agreement",
-                "countries": ["United States", "Canada", "Mexico"]},
-            "gcc": {"name": "Gulf Cooperation Council",
+                ],
+            },
+            "nafta": {
+                "name": "North American Free Trade Agreement",
+                "countries": ["United States", "Canada", "Mexico"],
+            },
+            "gcc": {
+                "name": "Gulf Cooperation Council",
                 "countries": [
                     "Bahrain",
                     "Kuwait",
@@ -229,8 +242,10 @@ class GeographicalDetectionService:
                     "Qatar",
                     "Saudi Arabia",
                     "United Arab Emirates",
-                ]},
-            "asean": {"name": "Association of Southeast Asian Nations",
+                ],
+            },
+            "asean": {
+                "name": "Association of Southeast Asian Nations",
                 "countries": [
                     "Brunei",
                     "Cambodia",
@@ -242,7 +257,8 @@ class GeographicalDetectionService:
                     "Singapore",
                     "Thailand",
                     "Vietnam",
-                ]}
+                ],
+            },
         }
 
         # Common geographical keywords to enhance detection
@@ -477,7 +493,8 @@ class GeographicalDetectionService:
             potential_countries.extend(matches)
 
         # Filter out common non-country words
-        excluded_words = {"the",
+        excluded_words = {
+            "the",
             "and",
             "or",
             "in",
@@ -499,7 +516,8 @@ class GeographicalDetectionService:
             "corporation",
             "corp",
             "llc",
-            "plc",}
+            "plc",
+        }
 
         return [
             country

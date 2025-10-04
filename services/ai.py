@@ -2,7 +2,6 @@ import asyncio
 import json
 import logging
 import os
-import re
 import threading
 import time
 import traceback
@@ -17,6 +16,7 @@ from services.ai_prompts import ai_prompts
 
 # from services.progress import progress_service, ProgressStatus # Removed unused import
 from services.checklist_utils import load_checklist
+from services.intelligent_document_analyzer import enhance_compliance_analysis
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
 
 logging.basicConfig(
@@ -31,16 +31,16 @@ vector_store = None
 ai_service = None
 
 # Global settings for parallel processing
-NUM_WORKERS = 1  # Reduced from 4 for 512MB Render instance to prevent memory pressure
-CHUNK_SIZE = 10  # Reduced from 50 to prevent overwhelming Azure OpenAI S0 tier
+NUM_WORKERS = min(32, (os.cpu_count() or 1) * 4)  # Optimize worker count
+CHUNK_SIZE = 50  # Increased from 10 - process more questions per batch for efficiency
 
 # Azure OpenAI configuration
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
-AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "o3-mini")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv(
-    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002"
+    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-large"
 )
 AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
     "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023-05-15"
@@ -52,7 +52,7 @@ TOKENS_PER_MINUTE = 40_000  # Conservative limit for S0 tier
 MAX_RETRIES = 3
 EXPONENTIAL_BACKOFF_BASE = 2
 CIRCUIT_BREAKER_THRESHOLD = (
-    20  # Increased from 10 - Number of consecutive failures before circuit breaker opens
+    10  # Number of consecutive failures before circuit breaker opens
 )
 
 _rate_lock = threading.Lock()
@@ -66,7 +66,17 @@ _processed_questions = (
     {}
 )  # Track processed questions per document to prevent duplicates
 
-# Removed: Zap Mode async rate limiting - not needed anymore
+# Async rate limiting for Zap Mode
+_async_rate_semaphore = None  # Will be initialized when needed
+
+
+def get_async_rate_semaphore():
+    """Get or create the async rate limiting semaphore for Zap Mode"""
+    global _async_rate_semaphore
+    if _async_rate_semaphore is None:
+        # Limit to 10 concurrent API calls to prevent overwhelming Azure OpenAI
+        _async_rate_semaphore = asyncio.Semaphore(10)
+    return _async_rate_semaphore
 
 
 class RateLimitError(Exception):
@@ -142,18 +152,6 @@ def get_rate_limit_status() -> Dict[str, Any]:
     """Get current rate limiting status for monitoring"""
     now = time.time()
     window_elapsed = now - _window_start
-    
-    # Calculate circuit breaker retry timing
-    circuit_breaker_status = "closed"
-    retry_after_seconds = 0
-    
-    if _circuit_breaker_open:
-        time_since_opened = now - _circuit_breaker_opened_at
-        if time_since_opened < 300:  # 5 minutes
-            circuit_breaker_status = "open"
-            retry_after_seconds = int(300 - time_since_opened)
-        else:
-            circuit_breaker_status = "half-open"
 
     return {
         "requests_used": _request_count,
@@ -164,12 +162,6 @@ def get_rate_limit_status() -> Dict[str, Any]:
         "window_remaining": max(0, 60 - window_elapsed),
         "consecutive_failures": _consecutive_failures,
         "circuit_breaker_open": _circuit_breaker_open,
-        "circuit_breaker": {
-            "status": circuit_breaker_status,
-            "failure_count": _consecutive_failures,
-            "last_failure_time": datetime.fromtimestamp(_circuit_breaker_opened_at).isoformat() if _circuit_breaker_opened_at > 0 else None,
-            "retry_after_seconds": retry_after_seconds
-        },
         "processed_questions_count": sum(
             len(doc_questions) for doc_questions in _processed_questions.values()
         ),
@@ -211,17 +203,6 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             _token_count = 0
             elapsed = 0
 
-        # Monitor rate limit usage and alert at 80% capacity
-        request_usage_pct = (_request_count / REQUESTS_PER_MINUTE) * 100
-        token_usage_pct = (_token_count / TOKENS_PER_MINUTE) * 100
-        
-        if request_usage_pct >= 80 or token_usage_pct >= 80:
-            logger.warning(
-                f"Rate limit usage high: {request_usage_pct:.1f}% requests "
-                f"({_request_count}/{REQUESTS_PER_MINUTE}), "
-                f"{token_usage_pct:.1f}% tokens ({_token_count}/{TOKENS_PER_MINUTE})"
-            )
-
         # Check if we would exceed limits
         if (
             _request_count + 1 > REQUESTS_PER_MINUTE
@@ -239,8 +220,7 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             sleep_time = max(backoff_time, remaining_window)
 
             logger.warning(
-                f"Rate limit would be exceeded. Backing off for "
-                f"{sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
+                f"Rate limit would be exceeded. Backing off for {sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
             )
             time.sleep(sleep_time)
 
@@ -256,8 +236,7 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
         _request_count += 1
         _token_count += tokens
         logger.debug(
-            f"Rate limit check passed. Requests: {_request_count}/{REQUESTS_PER_MINUTE}, "
-            f"Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
+            f"Rate limit check passed. Requests: {_request_count}/{REQUESTS_PER_MINUTE}, Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
         )
 
 
@@ -295,7 +274,6 @@ class AIService:
         )
         self.current_document_id = None
         self.progress_tracker = None  # Will be set by analysis routes
-        self.custom_instructions = None  # Will be set by analysis routes for custom instructions
         self.executor = ThreadPoolExecutor(max_workers=NUM_WORKERS)
         logger.info(f"AIService (Azure) initialized with {NUM_WORKERS} workers")
         global vector_store
@@ -311,7 +289,6 @@ class AIService:
         text: Optional[str] = None,
         framework: Optional[str] = None,
         standard: Optional[str] = None,
-        custom_instructions: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Process a document for compliance analysis (async version).
@@ -335,8 +312,7 @@ class AIService:
                 document_id = generate_document_id()
             self.current_document_id = document_id  # Ensure it's set at the start
             logger.info(
-                f"Starting compliance analysis for document {document_id} using "
-                f"framework={framework}, standard={standard}"
+                f"Starting compliance analysis for document {document_id} using framework={framework}, standard={standard}"
             )
             checklist = load_checklist(framework, standard)
             if not checklist or not isinstance(checklist, dict):
@@ -359,9 +335,9 @@ class AIService:
             }
             try:
                 model_section = next(
-                    (s for s in sections if isinstance(s, dict) and s.get("section") == "model_choice"), None
+                    (s for s in sections if s.get("section") == "model_choice"), None
                 )
-                if not model_section or not isinstance(model_section, dict):
+                if not model_section:
                     logger.info(
                         f"No model choice section found in {framework}/{standard} checklist, processing all sections"
                     )
@@ -370,33 +346,16 @@ class AIService:
                     model_questions = model_section.get("items", [])
                     model_results = []
                     for question in model_questions:
-                        # SAFETY: Skip if question is not a dict
-                        if not isinstance(question, dict):
-                            logger.warning(f"Skipping invalid question format: {question}")
-                            continue
-                            
                         self.current_document_id = (
                             document_id  # Ensure it's set before each call
                         )
                         result = self.analyze_chunk(
-                            text, question["question"], standard, custom_instructions or self.custom_instructions
+                            text, question["question"], standard
                         )
-                        
-                        # CRITICAL FIX: Ensure result is a dictionary before unpacking
-                        if not isinstance(result, dict):
-                            logger.error(f"❌ analyze_chunk returned non-dict: {type(result)} - {str(result)[:200]}")
-                            result = {
-                                "status": "N/A",
-                                "confidence": 0.0,
-                                "explanation": f"analyze_chunk returned invalid type: {type(result)}",
-                                "evidence": "",
-                                "suggestion": "Manual review required due to processing error.",
-                            }
-                        
                         model_results.append(
                             {
-                                "id": question.get("id", "unknown"),
-                                "question": question.get("question", ""),
+                                "id": question["id"],
+                                "question": question["question"],
                                 "reference": question.get("reference", ""),
                                 **result,
                             }
@@ -504,22 +463,28 @@ class AIService:
         return "unknown"
 
     def analyze_chunk(
-        self, chunk: str, question: str, standard_id: Optional[str] = None, custom_instructions: Optional[str] = None
+        self, chunk: str, question: str, standard_id: Optional[str] = None
     ) -> dict:
         """
         Analyze a chunk of annual report content against a compliance checklist question.
-        Enhanced with smart categorization and intelligent document analysis.
+        Enhanced with intelligent document analysis, rate limiting, and duplicate prevention.
+        Returns a JSON response with:
+          - status: "YES", "NO", or "N/A"
+          - confidence: float between 0 and 1
+          - explanation: str explaining the analysis
+          - evidence: str containing relevant text from the document
+          - suggestion: str containing suggestion when status is "NO"
         """
         try:
             # Ensure document_id is set
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. Cannot perform smart search."
+                    "analyze_chunk called with no current_document_id set. Cannot perform vector search."
                 )
                 return {
                     "status": "Error",
                     "confidence": 0.0,
-                    "explanation": "No document ID provided for smart search.",
+                    "explanation": "No document ID provided for vector search.",
                     "evidence": "",
                     "suggestion": "Check backend logic to ensure document_id is always set.",
                 }
@@ -542,114 +507,93 @@ class AIService:
                 check_circuit_breaker()
             except CircuitBreakerOpenError as e:
                 logger.error(f"Circuit breaker is open: {str(e)}")
-                raise RuntimeError(f"AI analysis failed: {str(e)}")
+                return {
+                    "status": "N/A",
+                    "confidence": 0.0,
+                    "explanation": f"Analysis temporarily unavailable: {str(e)}",
+                    "evidence": "Circuit breaker open due to repeated failures.",
+                    "suggestion": "Please wait and retry the analysis later.",
+                }
 
-            # STRICT: Use enhanced smart categorization ONLY - no fallbacks
-            logger.info(f"🧠 AI STEP 1: Starting enhanced smart categorization for question: {question[:50]}...")
-            try:
-                from services.enhanced_chunk_selector import (
-                    EnhancedChunkSelector, 
-                    CategoryAwareContentStorage
-                )
-                
-                # Initialize enhanced smart accumulator
-                logger.info(f"🔧 AI STEP 2: Initializing enhanced smart categorization components for document {self.current_document_id}")
-                storage = CategoryAwareContentStorage()
-                accumulator = EnhancedChunkSelector(storage)
-                logger.info(f"✅ AI STEP 2 COMPLETE: Enhanced smart categorization components initialized")
-                
-                # Get enhanced categorized content - strict mode with FS header priority
-                logger.info(f"🔍 AI STEP 3: Accumulating relevant categorized content with FS header priority (max length: 3000)")
-                smart_result = accumulator.enhanced_accumulate_relevant_content(
-                    question, self.current_document_id, max_content_length=3000
-                )
-                
-                if smart_result['total_chunks'] == 0:
-                    logger.error(f"❌ AI STEP 3 FAILED: No relevant content found for question: {question}")
-                    raise RuntimeError(f"Smart categorization failed: No relevant categorized content found for question. Document may not be properly processed with smart categorization.")
-                
-                # MANDATORY FINANCIAL STATEMENT ATTACHMENT
-                logger.info(f"💼 AI STEP 3.5: Applying mandatory financial statement attachment")
-                enhanced_evidence = self._ensure_mandatory_financial_statements(
-                    smart_result['content'], question, self.current_document_id
-                )
-                logger.info(f"✅ AI STEP 3.5 COMPLETE: Financial statements mandatorily attached")
-                
-                # ===== COMPREHENSIVE CHUNK QUALITY LOGGING =====
-                logger.info(f"🔍 CHUNK QUALITY MONITOR - Question: {question[:100]}...")
-                logger.info(f"📊 CHUNK STATS: {smart_result['total_chunks']} chunks, confidence: {smart_result['confidence']:.2f}")
-                logger.info(f"📂 CHUNK CATEGORIES: {smart_result['categories']}")
-                logger.info(f"📄 CONTENT LENGTH: {len(enhanced_evidence)} characters")
-                
-                # Log first 200 chars of content for quality inspection
-                content_preview = enhanced_evidence[:200].replace('\n', ' ').replace('\r', ' ')
-                logger.info(f"� CONTENT PREVIEW: {content_preview}...")
-                
-                # Log detailed chunk information if available
-                if 'chunk_details' in smart_result:
-                    logger.info(f"🔍 CHUNK DETAILS:")
-                    for i, chunk_info in enumerate(smart_result['chunk_details'][:3]):  # Log first 3 chunks
-                        score = chunk_info.get('score', 'N/A')
-                        category = chunk_info.get('category', 'unknown')
-                        preview = chunk_info.get('content', '')[:100].replace('\n', ' ')
-                        logger.info(f"   Chunk {i+1}: Score={score}, Category={category}, Preview={preview}...")
-                
-                # Log financial statement detection
-                fs_keywords = ['balance sheet', 'statement of financial position', 'profit and loss', 
-                              'comprehensive income', 'cash flow', 'statement of changes in equity']
-                found_fs = [kw for kw in fs_keywords if kw.lower() in enhanced_evidence.lower()]
-                if found_fs:
-                    logger.info(f"✅ FINANCIAL STATEMENTS DETECTED: {found_fs}")
-                else:
-                    logger.warning(f"⚠️  NO FINANCIAL STATEMENTS DETECTED in content")
-                
-                # Log if content seems to be notes instead of statements
-                if 'note ' in enhanced_evidence.lower() and len([kw for kw in fs_keywords if kw.lower() in enhanced_evidence.lower()]) == 0:
-                    logger.warning(f"⚠️  CHUNK QUALITY ISSUE: Content appears to be notes, not financial statements")
-                
-                logger.info(f"✅ AI STEP 3 COMPLETE: Enhanced chunk selection with quality monitoring")
-                # ===== END CHUNK QUALITY LOGGING =====
-                
-            except ImportError as import_error:
-                logger.error(f"❌ AI STEP 2 FAILED: Smart categorization system unavailable: {import_error}")
-                raise RuntimeError(f"Smart categorization system is not available. Required modules missing: {str(import_error)}")
-            except Exception as smart_error:
-                logger.error(f"❌ AI STEP 3 FAILED: Smart categorization error: {smart_error}")
-                raise RuntimeError(f"Smart categorization failed: {str(smart_error)}")
+            # Get relevant chunks using vector search (existing method)
+            vs_svc = get_vector_store()
+            if not vs_svc:
+                raise ValueError("Vector store service not initialized")
 
-            if not enhanced_evidence:
-                logger.error("❌ CONTENT RETRIEVAL FAILED: No evidence generated from smart categorization")
-                raise RuntimeError("Smart categorization failed to generate usable evidence for analysis")
+            # Search for relevant chunks using the question
+            relevant_chunks = vs_svc.search(
+                query=question, document_id=self.current_document_id, top_k=3
+            )
 
-            # Use smart categorization results ONLY
-            logger.info(f"📝 AI STEP 4: Preparing context for AI analysis")
-            context = enhanced_evidence
-            logger.info(f"✅ AI STEP 4 COMPLETE: Context prepared ({len(context)} chars)")
+            # Enhanced: Use intelligent document analyzer if we have full document
+            # text and standard ID
+            enhanced_evidence = None
+            if (
+                chunk and len(chunk) > 1000 and standard_id
+            ):  # Check if we have substantial document content
+                try:
+                    logger.info(
+                        f"Using intelligent document analyzer for {standard_id}"
+                    )
+                    enhanced_analysis = enhance_compliance_analysis(
+                        compliance_question=question,
+                        document_text=chunk,  # This should be the full document text
+                        standard_id=standard_id,
+                        existing_chunks=(
+                            [chunk_data["text"] for chunk_data in relevant_chunks]
+                            if relevant_chunks
+                            else []
+                        ),
+                    )
+                    enhanced_evidence = enhanced_analysis
+                    quality_score = enhanced_analysis.get(
+                        'evidence_quality_assessment', {}).get('overall_quality', 0)
+                    logger.info(
+                        f"Intelligent analysis completed with quality score: {quality_score}"
+                    )
+                except Exception as e:
+                    logger.warning(
+                        f"Intelligent document analysis failed, falling back to standard method: {str(e)}"
+                    )
+                    enhanced_evidence = None
+
+            if not relevant_chunks and not enhanced_evidence:
+                logger.warning(f"No relevant chunks found for question: {question}")
+                return {
+                    "status": "N/A",
+                    "confidence": 0.0,
+                    "explanation": "No relevant content found in the document",
+                    "evidence": "",
+                    "suggestion": "Add a clear statement in the financial statement disclosures addressing this requirement.",
+                }
+
+            # Use enhanced evidence if available, otherwise fall back to original chunks
+            if enhanced_evidence and enhanced_evidence.get("primary_evidence"):
+                context = enhanced_evidence["primary_evidence"]
+                evidence_quality = enhanced_evidence.get(
+                    "evidence_quality_assessment", {}
+                )
+                evidence_source = evidence_quality.get('evidence_source', 'Unknown')
+                logger.info(
+                    f"Using enhanced evidence from: {evidence_source}"
+                )
+            else:
+                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
+                logger.info("Using standard vector search evidence")
 
             # Construct the prompt for the AI using the prompts library
-            logger.info(f"🤖 AI STEP 5: Constructing AI prompt for compliance analysis")
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
-                question=question, context=context, enhanced_evidence=enhanced_evidence if isinstance(enhanced_evidence, dict) else None, custom_instructions=custom_instructions
+                question=question, context=context, enhanced_evidence=enhanced_evidence
             )
-            logger.info(f"✅ AI STEP 5 COMPLETE: AI prompt constructed ({len(prompt)} chars){' with custom instructions' if custom_instructions else ''}")
 
             # Enhanced rate limiting with retries and circuit breaker
             max_api_retries = 3
             for api_retry in range(max_api_retries):
                 try:
-                    # Progressive delay to reduce rate limiting pressure
-                    if api_retry > 0:
-                        delay = 3 * (api_retry ** 2)  # 3s, 12s, 27s progressive backoff
-                        logger.info(f"API retry {api_retry}: waiting {delay}s before retry")
-                        time.sleep(delay)
-                    else:
-                        # Add 2-second delay between requests to space them out
-                        time.sleep(2)
-                    
                     # RATE LIMITING REMOVED - Process all 217 questions without limits
                     # check_rate_limit_with_backoff(tokens=estimated_tokens)
 
-                    # Get AI response - ADD MAX_TOKENS FOR TESTING
+                    # Get AI response
                     response = self.openai_client.chat.completions.create(
                         model=self.deployment_name,
                         messages=[
@@ -659,7 +603,6 @@ class AIService:
                             },
                             {"role": "user", "content": prompt},
                         ],
-                        max_tokens=1000,  # ADD MAX_TOKENS LIMIT FOR TESTING
                     )
 
                     # If we get here, the API call was successful
@@ -675,8 +618,7 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE ** (api_retry + 1)
                             logger.warning(
-                                f"Rate limit hit, retrying in {backoff_time} seconds "
-                                f"(attempt {api_retry + 1}/{max_api_retries})"
+                                f"Rate limit hit, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -684,16 +626,20 @@ class AIService:
                             logger.error(
                                 "Max API retries exceeded due to rate limiting"
                             )
-                            # CHANGED: Raise exception instead of returning fallback
-                            raise RuntimeError("AI analysis failed due to persistent rate limits")
+                            return {
+                                "status": "N/A",
+                                "confidence": 0.0,
+                                "explanation": "Analysis could not be completed due to persistent API rate limits.",
+                                "evidence": "Multiple rate limit errors occurred.",
+                                "suggestion": "Please retry the analysis later when API rate limits reset.",
+                            }
 
                     elif "timeout" in error_message or "connection" in error_message:
                         record_failure()
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE**api_retry
                             logger.warning(
-                                f"Connection error, retrying in {backoff_time} seconds "
-                                f"(attempt {api_retry + 1}/{max_api_retries})"
+                                f"Connection error, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -701,15 +647,25 @@ class AIService:
                             logger.error(
                                 "Max API retries exceeded due to connection issues"
                             )
-                            # CHANGED: Raise exception instead of returning fallback
-                            raise RuntimeError(f"AI analysis failed due to connection issues: {str(api_error)}")
+                            return {
+                                "status": "N/A",
+                                "confidence": 0.0,
+                                "explanation": f"Analysis failed due to connection issues: {str(api_error)}",
+                                "evidence": "Connection error occurred.",
+                                "suggestion": "Please check network connectivity and retry the analysis.",
+                            }
 
                     else:
                         # Other API error - don't retry
                         record_failure()
                         logger.error(f"Non-retryable API error: {str(api_error)}")
-                        # CHANGED: Raise exception instead of returning fallback
-                        raise RuntimeError(f"AI analysis failed: {str(api_error)}")
+                        return {
+                            "status": "N/A",
+                            "confidence": 0.0,
+                            "explanation": f"Analysis failed due to API error: {str(api_error)}",
+                            "evidence": "API error occurred.",
+                            "suggestion": "Please retry the analysis or check system logs for details.",
+                        }
             else:
                 # This should not happen due to the break statement, but just in case
                 logger.error("Unexpected exit from retry loop")
@@ -753,18 +709,6 @@ class AIService:
             try:
                 # First, try to parse as JSON directly
                 result = json.loads(content)
-                
-                # SAFETY CHECK: Ensure result is a dictionary
-                if not isinstance(result, dict):
-                    logger.error(f"❌ JSON parsing returned non-dict type: {type(result)}, content: {result}")
-                    result = {
-                        "status": "N/A",
-                        "confidence": 0.0,
-                        "explanation": f"Invalid response format received: {type(result)}",
-                        "evidence": "",
-                        "suggestion": "Consider adding explicit disclosure addressing this requirement.",
-                    }
-                    
             except json.JSONDecodeError:
                 # If that fails, try to extract JSON from the text
                 logger.warning(
@@ -825,9 +769,7 @@ class AIService:
                         result["suggestion"] = suggestion_match.group(1).strip()
                     else:
                         result["suggestion"] = (
-                            "Provide a concrete, practical sample disclosure that would satisfy this "
-                            "IAS 40 requirement. For example: 'The entity should disclose [required information] "
-                            "in accordance with IAS 40.[paragraph]'."
+                            "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
                         )
 
                 # Extract content_analysis
@@ -854,7 +796,7 @@ class AIService:
                     array_content = disclosure_array_match.group(1)
                     recommendations = re.findall(r'["\']([^"\']+)["\']', array_content)
                     disclosure_recommendations.extend(recommendations)
-
+                
                 if not disclosure_recommendations:
                     # Look for single recommendation format
                     single_disclosure_match = re.search(
@@ -864,10 +806,9 @@ class AIService:
                     )
                     if single_disclosure_match:
                         disclosure_recommendations.append(single_disclosure_match.group(1).strip())
-
+                
                 result["disclosure_recommendations"] = disclosure_recommendations if disclosure_recommendations else [
-                    "Consider enhancing the disclosure to provide more comprehensive information "
-                    "addressing this requirement."
+                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
                 ]
 
             # Validate and clean the response
@@ -879,14 +820,13 @@ class AIService:
                 result["explanation"] = "No explanation provided"
             if "evidence" not in result:
                 result["evidence"] = ""
-
+            
             # Validate new enhanced fields
             if "content_analysis" not in result:
                 result["content_analysis"] = "No detailed content analysis provided."
             if "disclosure_recommendations" not in result:
                 result["disclosure_recommendations"] = [
-                    "Consider enhancing the disclosure to provide more comprehensive information "
-                    "addressing this requirement."
+                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
                 ]
             elif not isinstance(result["disclosure_recommendations"], list):
                 # Convert single string to list if needed
@@ -901,78 +841,105 @@ class AIService:
             # Add a suggestion when status is "NO" and no suggestion provided
             if result["status"] == "NO" and "suggestion" not in result:
                 result["suggestion"] = (
-                    "Provide a concrete, practical sample disclosure that would satisfy this "
-                    "IAS 40 requirement. For example: 'The entity should disclose [required information] "
-                    "in accordance with IAS 40.[paragraph]'."
+                    "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
                 )
 
             # Add enhanced evidence metadata if available
-            # CRITICAL FIX: enhanced_evidence is a string, not a dict - skip metadata extraction
-            if enhanced_evidence and isinstance(enhanced_evidence, str):
+            if enhanced_evidence:
                 result["enhanced_analysis"] = {
-                    "evidence_quality_score": 0.0,
-                    "confidence_level": 0.0,
-                    "source_type": "smart_categorization",
-                    "is_policy_based": True,
-                    "evidence_source": "Smart Categorization System",
-                    "recommendation": "Manual review recommended",
+                    "evidence_quality_score": enhanced_evidence.get(
+                        "evidence_quality_assessment", {}
+                    ).get("overall_quality", 0),
+                    "confidence_level": enhanced_evidence.get(
+                        "evidence_quality_assessment", {}
+                    ).get("confidence_level", 0.0),
+                    "source_type": enhanced_evidence.get(
+                        "evidence_quality_assessment", {}
+                    ).get("source_type", "unknown"),
+                    "is_policy_based": enhanced_evidence.get(
+                        "evidence_quality_assessment", {}
+                    ).get("is_policy_based", True),
+                    "evidence_source": enhanced_evidence.get(
+                        "evidence_quality_assessment", {}
+                    ).get("evidence_source", "Unknown"),
+                    "recommendation": enhanced_evidence.get("analysis_summary", {}).get(
+                        "recommendation", "Manual review recommended"
+                    ),
                 }
 
-            # Smart categorization mode doesn't use vector search, so no page information available
-            # Page numbers will come from smart document integration instead
-
-            # SAFE FIX: Check if result is a dictionary before logging (prevents 'str' object errors)
-            if isinstance(result, dict):
-                # Log the processed result
-                logger.info("✅ PROCESSED RESULT:")
-                logger.info(f"   Status: {result.get('status', 'N/A')}")
-                logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
-                explanation_text = result.get('explanation', 'N/A')
-                logger.info(
-                    f"   Explanation: {explanation_text[:150]}{'...' if len(str(explanation_text)) > 150 else ''}"
-                )
-                evidence_count = len(result.get('evidence', [])) if isinstance(result.get('evidence'), list) else 1
-                logger.info(f"   Evidence Count: {evidence_count}")
-                if result.get("content_analysis"):
-                    content_analysis_text = result.get('content_analysis', 'N/A')
-                    logger.info(
-                        f"   Content Analysis: {content_analysis_text[:100]}"
-                        f"{'...' if len(str(content_analysis_text)) > 100 else ''}"
-                    )
-                if result.get("disclosure_recommendations"):
-                    logger.info(
-                        f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
-                    )
-                if result.get("source_pages"):
-                    logger.info(f"   Source Pages: {result.get('source_pages')}")
-                if result.get("document_sources"):
-                    source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
-                    logger.info(f"   Document Sources: {', '.join(source_info)}")
-            else:
-                # SAFE FIX: Log basic info if result is not a dict
-                logger.warning(f"⚠️ Result is not a dictionary (type: {type(result)}), basic logging only")
-                logger.info("✅ PROCESSED RESULT:")
-                logger.info(f"   Raw result: {str(result)[:200]}{'...' if len(str(result)) > 200 else ''}")
-            
-            # Continue with document extracts check (only if result is dict)
-            if isinstance(result, dict):
-                if result.get("document_extracts"):
-                    extract_count = len(result.get('document_extracts', []))
-                    avg_score = (
-                        sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count
-                        if extract_count > 0 else 0
-                    )
-                    logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
+            # Add page number information from vector search results
+            if relevant_chunks:
+                page_numbers = []
+                document_sources = []
+                document_extracts = []
+                for chunk in relevant_chunks:
+                    if chunk.get("page_number") and chunk["page_number"] > 0:
+                        page_numbers.append(chunk["page_number"])
+                    if chunk.get("chunk_index") is not None:
+                        document_sources.append({
+                            "page": chunk.get("page_number", 0),
+                            "chunk_index": chunk.get("chunk_index", 0),
+                            "chunk_type": chunk.get("chunk_type", "text")
+                        })
+                    # Include document extracts with page references
+                    if chunk.get("text"):
+                        extract_text = chunk["text"][:500] + "..." if len(chunk["text"]) > 500 else chunk["text"]
+                        document_extracts.append({
+                            "text": extract_text,
+                            "page": chunk.get("page_number", 0),
+                            "chunk_index": chunk.get("chunk_index", 0),
+                            "relevance_score": chunk.get("score", 0.0)
+                        })
                 
-                if result.get("status") == "NO" and result.get("suggestion"):
-                    suggestion_text = result.get('suggestion', 'N/A')
-                    logger.info(
-                        f"   Suggestion: {suggestion_text[:100]}{'...' if len(str(suggestion_text)) > 100 else ''}"
-                    )
-                if enhanced_evidence:
-                    quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
-                    logger.info(f"   Enhanced Analysis: Quality Score {quality_score}/100")
-            
+                if page_numbers:
+                    result["source_pages"] = sorted(list(set(page_numbers)))
+                if document_sources:
+                    result["document_sources"] = document_sources
+                if document_extracts:
+                    result["document_extracts"] = document_extracts
+
+            # Log the processed result
+            logger.info("✅ PROCESSED RESULT:")
+            logger.info(f"   Status: {result.get('status', 'N/A')}")
+            logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
+            logger.info(
+                f"   Explanation: {result.get('explanation',
+                                              'N/A')[:150]}{'...' if len(str(result.get('explanation',
+                                                                                        ''))) > 150 else ''}"
+            )
+            evidence = result.get('evidence', [])
+            evidence_count = len(evidence) if isinstance(evidence, list) else 1
+            logger.info(
+                f"   Evidence Count: {evidence_count}"
+            )
+            if result.get("content_analysis"):
+                logger.info(
+                    f"   Content Analysis: {result.get('content_analysis', 'N/A')[:100]}{'...' if len(str(result.get('content_analysis', ''))) > 100 else ''}"
+                )
+            if result.get("disclosure_recommendations"):
+                logger.info(
+                    f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
+                )
+            if result.get("source_pages"):
+                logger.info(f"   Source Pages: {result.get('source_pages')}")
+            if result.get("document_sources"):
+                source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
+                logger.info(f"   Document Sources: {', '.join(source_info)}")
+            if result.get("document_extracts"):
+                extract_count = len(result.get('document_extracts', []))
+                avg_score = sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count if extract_count > 0 else 0
+                logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
+            if result.get("status") == "NO" and result.get("suggestion"):
+                logger.info(
+                    f"   Suggestion: {result.get('suggestion',
+                                                 'N/A')[:100]}{'...' if len(str(result.get('suggestion',
+                                                                                           ''))) > 100 else ''}"
+                )
+            if enhanced_evidence:
+                quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
+                logger.info(
+                    f"   Enhanced Analysis: Quality Score {quality_score}/100"
+                )
             logger.info("=" * 80)
 
             return result
@@ -1017,17 +984,7 @@ class AIService:
                     "explanation": "Missing document ID or question",
                     "evidence": "",
                     "confidence": 0.0,
-                    "adequacy": "Inadequate"
-                }
-            
-            # SAFETY: Validate question is a dict
-            if not isinstance(question, dict):
-                return {
-                    "status": "Error",
-                    "explanation": f"Invalid question format: expected dict, got {type(question)}",
-                    "evidence": "",
-                    "confidence": 0.0,
-                    "adequacy": "Inadequate"
+                    "adequacy": "Inadequate",
                 }
 
             # Extract question text and reference
@@ -1041,7 +998,7 @@ class AIService:
                     "explanation": "No question provided",
                     "evidence": "",
                     "confidence": 0.0,
-                    "adequacy": "Inadequate"
+                    "adequacy": "Inadequate",
                 }
 
             # For metadata fields, use direct AI analysis without vector search
@@ -1073,7 +1030,7 @@ class AIService:
                         "status": "Error",
                         "explanation": "OpenAI API returned empty response",
                         "evidence": "",
-                        "adequacy": "low"
+                        "adequacy": "low",
                     }
 
                 content = content.strip()
@@ -1085,14 +1042,14 @@ class AIService:
                     "unknown",
                     "not applicable",
                     "not specified",
-                    "not mentionedf",
+                    "not mentioned",
                 ]:
                     result = {
                         "status": "COMPLETED",
                         "explanation": content,
                         "evidence": "AI extracted from document",
                         "confidence": 0.9,
-                        "adequacy": "Complete"
+                        "adequacy": "Complete",
                     }
                 else:
                     result = {
@@ -1100,7 +1057,7 @@ class AIService:
                         "explanation": content,
                         "evidence": "",
                         "confidence": 0.0,
-                        "adequacy": "Inadequate"
+                        "adequacy": "Inadequate",
                     }
 
                 return result
@@ -1115,17 +1072,7 @@ class AIService:
                     "explanation": "Missing document ID or question",
                     "evidence": "",
                     "confidence": 0.0,
-                    "adequacy": "Inadequate"
-                }
-            
-            # SAFETY: Validate question is a dict (second instance)
-            if not isinstance(question, dict):
-                return {
-                    "status": "Error",
-                    "explanation": f"Invalid question format: expected dict, got {type(question)}",
-                    "evidence": "",
-                    "confidence": 0.0,
-                    "adequacy": "Inadequate"
+                    "adequacy": "Inadequate",
                 }
 
             # Extract question text and reference
@@ -1139,15 +1086,14 @@ class AIService:
                     "explanation": "No question provided",
                     "evidence": "",
                     "confidence": 0.0,
-                    "adequacy": "Inadequate"
+                    "adequacy": "Inadequate",
                 }
 
             # Check if vector index exists
             vector_index_exists = vs_svc.index_exists(document_id)
             if not vector_index_exists:
                 logger.warning(
-                    f"Vector index not found for document {document_id}. "
-                    f"Using direct questioning without vector context."
+                    f"Vector index not found for document {document_id}. Using direct questioning without vector context."
                 )
 
             logger.info(
@@ -1187,7 +1133,7 @@ class AIService:
                         "status": "Error",
                         "explanation": "OpenAI API returned empty response",
                         "evidence": "",
-                        "adequacy": "low"
+                        "adequacy": "low",
                     }
 
                 content = content.strip()
@@ -1201,14 +1147,14 @@ class AIService:
                     "not specified",
                     "not mentioned",
                 ]:
-                    confidence_val = 0.9 if vector_index_exists else 0.5
-                    adequacy_val = "Complete" if vector_index_exists else "Partial"
                     result = {
                         "status": "COMPLETED",
                         "explanation": content,
                         "evidence": "AI extracted from document directly",
-                        "confidence": confidence_val,
-                        "adequacy": adequacy_val
+                        "confidence": vector_index_exists
+                        and 0.9
+                        or 0.5,  # Lower confidence if no vector index
+                        "adequacy": vector_index_exists and "Complete" or "Partial",
                     }
                 else:
                     result = {
@@ -1216,7 +1162,7 @@ class AIService:
                         "explanation": "Not found",
                         "evidence": "",
                         "confidence": 0.0,
-                        "adequacy": "Inadequate"
+                        "adequacy": "Inadequate",
                     }
 
             else:
@@ -1233,7 +1179,7 @@ class AIService:
                 # Use JSON response format for checklist items
                 response = self.openai_client.chat.completions.create(
                     model=self.deployment_name,
-                    response_format={"type": "json_object"},  # FIXED: Re-enabled JSON format
+                    response_format={"type": "json_object"},
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt},
@@ -1241,27 +1187,19 @@ class AIService:
                     max_tokens=800,
                 )
 
-                # Parse JSON response with proper error handling
+                # Parse JSON response
                 content = response.choices[0].message.content
-                try:
-                    result = json.loads(content) if content else {}
-                    # Ensure result is a dictionary
-                    if not isinstance(result, dict):
-                        logger.error(f"AI returned non-dict JSON: {type(result)}, content: {result}")
-                        result = {}
-                except json.JSONDecodeError as e:
-                    logger.error(f"Failed to parse AI response as JSON: {content[:200] if content else 'None'}... Error: {e}")
-                    result = {}
+                result = json.loads(content) if content else {}
 
                 # Validate and sanitize result
                 if not result:
-                    raise ValueError("Empty or invalid response from AI")
+                    raise ValueError("Empty response from AI")
 
-                # Ensure required fields with safe access
-                result["status"] = result.get("status", "Not found") if isinstance(result, dict) else "Not found"
-                result["explanation"] = result.get("explanation", "") if isinstance(result, dict) else ""
-                result["evidence"] = result.get("evidence", "") if isinstance(result, dict) else ""
-                result["confidence"] = float(result.get("confidence", 0.0)) if isinstance(result, dict) else 0.0
+                # Ensure required fields
+                result["status"] = result.get("status", "Not found")
+                result["explanation"] = result.get("explanation", "")
+                result["evidence"] = result.get("evidence", "")
+                result["confidence"] = float(result.get("confidence", 0.0))
 
                 # Adjust confidence if no vector index
                 if not vector_index_exists and result["confidence"] > 0.5:
@@ -1286,7 +1224,7 @@ class AIService:
                 "explanation": f"Analysis error: {str(e)}",
                 "evidence": "",
                 "confidence": 0.0,
-                "adequacy": "Inadequate"
+                "adequacy": "Inadequate",
             }
 
     async def _process_section(
@@ -1298,16 +1236,6 @@ class AIService:
     ) -> Dict[str, Any]:
         """Process a single section of the checklist (async)."""
         try:
-            # SAFETY: Validate section is a dict
-            if not isinstance(section, dict):
-                logger.error(f"Invalid section format: expected dict, got {type(section)}")
-                return {
-                    "section": "unknown",
-                    "title": "Invalid Section",
-                    "items": [],
-                    "error": f"Invalid section format: {type(section)}"
-                }
-                
             if document_id:
                 self.current_document_id = (
                     document_id  # Ensure it's set for every section
@@ -1334,11 +1262,6 @@ class AIService:
                 # async_semaphore = get_async_rate_semaphore()
 
                 async def process_item_no_limits(item):
-                    # SAFETY: Skip if item is not a dict
-                    if not isinstance(item, dict):
-                        logger.warning(f"Skipping invalid item format: {item}")
-                        return None
-                        
                     # NO SEMAPHORE - Process immediately without rate limiting
                     # Mark question as processing in progress tracker
                     if hasattr(self, "progress_tracker") and self.progress_tracker:
@@ -1364,12 +1287,6 @@ class AIService:
                 batch_results = await asyncio.gather(*tasks, return_exceptions=True)
                 for idx, result in enumerate(batch_results):
                     item = batch[idx]
-                    
-                    # SAFETY: Skip if item is not a dict
-                    if not isinstance(item, dict):
-                        logger.warning(f"Skipping invalid item in batch: {item}")
-                        continue
-                        
                     if isinstance(result, Exception):
                         logger.error(
                             f"Error processing item {item.get('id')}: {str(result)}"
@@ -1383,14 +1300,11 @@ class AIService:
                             )
                         continue
 
-                    # Skip None results from invalid items
-                    if result is None:
-                        continue
-                        
                     # Ensure result is a dictionary before unpacking
                     if not isinstance(result, dict):
+                        item_id = item.get('id')
                         logger.error(
-                            f"Invalid result type for item {item.get('id')}: {type(result)}"
+                            f"Invalid result type for item {item_id}: {type(result)}"
                         )
                         continue
 
@@ -1399,43 +1313,45 @@ class AIService:
                         self.progress_tracker.mark_question_completed(
                             document_id,
                             standard_id or "unknown",
-                            item.get("id", "unknown"),  # Fixed typo "unknownf" -> "unknown"
+                            item.get("id", "unknown"),
                         )
 
-                    processed_items.append({
-                        "id": item["id"],
-                        "question": item["question"],
-                        "reference": item.get("reference", ""),
-                        **result
-                    })
+                    processed_items.append(
+                        {
+                            "id": item["id"],
+                            "question": item["question"],
+                            "reference": item.get("reference", ""),
+                            **result,
+                        }
+                    )
             return {
                 "section": section_name,
                 "title": full_title,
-                "items": processed_items
+                "items": processed_items,
             }
         except Exception as e:
-            # SAFETY: Handle potentially corrupted section in exception
-            section_name = section.get('section', 'unknown') if isinstance(section, dict) else 'unknown'
-            section_title = section.get('title', '') if isinstance(section, dict) else ''
             logger.error(
-                f"Error processing section {section_name}: {str(e)}"
+                f"Error processing section {
+                    section.get(
+                        'section',
+                        'unknown')}: {
+                    str(e)}"
             )
             return {
-                "section": section_name,
-                "title": section_title,
+                "section": section.get("section", "unknown"),
+                "title": section.get("title", ""),
                 "items": [],
-                "error": str(e)
+                "error": str(e),
             }
 
     async def analyze_compliance(
-        self, document_id: str, text: str, framework: str, standard: str, custom_instructions: Optional[str] = None
+        self, document_id: str, text: str, framework: str, standard: str
     ) -> Dict[str, Any]:
         """
         Analyze a document for compliance with a specified framework and standard (async).
         """
         logger.info(
-            f"Starting compliance analysis for document {document_id} "
-            f"with framework {framework} and standard {standard}"
+            f"Starting compliance analysis for document {document_id} with framework {framework} and standard {standard}"
         )
         try:
             results = await self.process_document(
@@ -1443,17 +1359,14 @@ class AIService:
                 text=text,
                 framework=framework,
                 standard=standard,
-                custom_instructions=custom_instructions,
             )
-            # SAFETY: Validate results before accessing
-            status = results.get("status", "error") if isinstance(results, dict) else "error"
             return {
                 "compliance_results": results,
                 "document_id": document_id,
                 "framework": framework,
                 "standard": standard,
                 "timestamp": datetime.now().isoformat(),
-                "status": status
+                "status": results.get("status", "error"),
             }
         except Exception as e:
             logger.error(f"Error in analyze_compliance: {str(e)}", exc_info=True)
@@ -1468,166 +1381,9 @@ class AIService:
                 "compliance_results": {
                     "sections": [],
                     "status": "error",
-                    "error": str(e)
-                }
+                    "error": str(e),
+                },
             }
-
-    def _combine_chunks_with_limit(self, chunks: List[str], max_tokens: int = 3000) -> str:
-        """
-        Combine text chunks while respecting token limits.
-        
-        Args:
-            chunks: List of text chunks to combine
-            max_tokens: Maximum token limit (approximate, using character count * 0.25)
-            
-        Returns:
-            Combined text within token limits
-        """
-        if not chunks:
-            return ""
-        
-        # Rough estimation: 1 token ≈ 4 characters
-        max_chars = max_tokens * 4
-        
-        combined = ""
-        current_length = 0
-        
-        for chunk in chunks:
-            chunk_length = len(chunk)
-            # Add separator if not first chunk
-            separator = "\n\n" if combined else ""
-            separator_length = len(separator)
-            
-            # Check if adding this chunk would exceed the limit
-            if current_length + separator_length + chunk_length > max_chars:
-                break
-                
-            combined += separator + chunk
-            current_length += separator_length + chunk_length
-        
-        logger.debug(f"Combined {len(chunks)} chunks into {current_length} characters (estimated {current_length // 4} tokens)")
-        return combined
-    
-    def _ensure_mandatory_financial_statements(self, content: str, question: str, document_id: str) -> str:
-        """Ensure mandatory financial statements are included in content"""
-        
-        logger.info(f"💼 MANDATORY ATTACHMENT: Checking financial statement presence")
-        
-        # Financial statement patterns that MUST be present
-        mandatory_patterns = {
-            'balance_sheet': [
-                r'consolidated\s+statement\s+of\s+financial\s+position',
-                r'statement\s+of\s+financial\s+position',
-                r'balance\s+sheet'
-            ],
-            'profit_loss': [
-                r'consolidated\s+statement\s+of\s+profit\s+or\s+loss',
-                r'statement\s+of\s+profit\s+or\s+loss',  
-                r'statement\s+of\s+comprehensive\s+income',
-                r'profit\s+and\s+loss'
-            ],
-            'cash_flow': [
-                r'statement\s+of\s+cash\s+flows',
-                r'cash\s+flow\s+statement'
-            ],
-            'equity_changes': [
-                r'statement\s+of\s+changes\s+in\s+equity'
-            ]
-        }
-        
-        content_lower = content.lower()
-        missing_statements = []
-        found_statements = []
-        
-        # Check which statements are present
-        for stmt_type, patterns in mandatory_patterns.items():
-            found = False
-            for pattern in patterns:
-                if re.search(pattern, content_lower, re.IGNORECASE):
-                    found_statements.append(stmt_type)
-                    found = True
-                    break
-            if not found:
-                missing_statements.append(stmt_type)
-        
-        logger.info(f"💼 STATEMENTS FOUND: {found_statements}")
-        logger.info(f"💼 STATEMENTS MISSING: {missing_statements}")
-        
-        # If critical statements are missing, search database
-        enhanced_content = content
-        if missing_statements:
-            logger.warning(f"⚠️ SEARCHING DATABASE for missing statements: {missing_statements}")
-            
-            try:
-                from services.intelligent_chunk_accumulator import get_global_storage
-                storage = get_global_storage()
-                
-                additional_content = []
-                for stmt_type in missing_statements:
-                    # Search for each missing statement type
-                    search_terms = []
-                    if stmt_type == 'balance_sheet':
-                        search_terms = ['financial position', 'balance sheet']
-                    elif stmt_type == 'profit_loss':
-                        search_terms = ['profit loss', 'comprehensive income']
-                    elif stmt_type == 'cash_flow':
-                        search_terms = ['cash flows', 'cash flow']
-                    elif stmt_type == 'equity_changes':
-                        search_terms = ['changes equity', 'statement equity']
-                    
-                    for search_term in search_terms:
-                        try:
-                            chunks = storage.search_relevant_content(
-                                document_id=document_id,
-                                keywords=search_term.split()
-                            )
-                            
-                            # Find chunks with statement headers
-                            for chunk in chunks[:3]:  # Check first 3 chunks
-                                chunk_content = chunk.get('content_chunk', '') or chunk.get('content', '')
-                                
-                                # Check if this chunk contains the missing statement
-                                for pattern in mandatory_patterns[stmt_type]:
-                                    if re.search(pattern, chunk_content, re.IGNORECASE):
-                                        additional_content.append(f"\n\n--- MANDATORY ATTACHMENT ---\n{chunk_content}")
-                                        logger.info(f"✅ FOUND MISSING {stmt_type}: {pattern}")
-                                        missing_statements.remove(stmt_type)
-                                        break
-                                
-                                if stmt_type not in missing_statements:
-                                    break
-                            
-                            if stmt_type not in missing_statements:
-                                break
-                                
-                        except Exception as e:
-                            logger.error(f"❌ Search error for {stmt_type}: {e}")
-                
-                # Append additional content
-                if additional_content:
-                    enhanced_content = content + ''.join(additional_content)
-                    logger.info(f"✅ ENHANCED CONTENT: Added {len(additional_content)} mandatory statements")
-                
-            except Exception as e:
-                logger.error(f"❌ MANDATORY ATTACHMENT FAILED: {e}")
-        
-        # Log final attachment status for render backend visibility
-        final_statements = list(set(found_statements + [stmt for stmt in ['balance_sheet', 'profit_loss', 'cash_flow', 'equity_changes'] if stmt not in missing_statements]))
-        
-        attachment_log = {
-            'timestamp': datetime.now().isoformat(),
-            'question': question[:100],
-            'document_id': document_id,
-            'mandatory_attachment_applied': True,
-            'statements_found': final_statements,
-            'statements_missing': missing_statements,
-            'enhanced_content_length': len(enhanced_content),
-            'original_content_length': len(content)
-        }
-        
-        logger.info(f"💼 MANDATORY ATTACHMENT LOG: {json.dumps(attachment_log, indent=2)}")
-        
-        return enhanced_content
 
 
 # Global AI service instance

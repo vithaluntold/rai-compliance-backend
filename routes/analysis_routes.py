@@ -7,40 +7,39 @@ import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
-import random
-import string
 
-from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, Request, UploadFile
+# NO PSUTIL IMPORT - DEPLOYMENT FIX
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    UploadFile,
+)
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from services.ai import AIService, get_ai_service
-from services.checklist_utils import get_available_frameworks, is_standard_available, load_checklist
-# Document chunking now handled by NLP pipeline - see nlp_tools/
+from services.ai_prompts import AIPrompts
+from services.checklist_utils import (
+    get_available_frameworks,
+    is_standard_available,
+    load_checklist,
+)
+from services.document_chunker import document_chunker
 from services.smart_metadata_extractor import SmartMetadataExtractor
-from services.vector_store import get_vector_store
-from services.staged_storage import staged_storage
-
-
-def generate_document_id() -> str:
-    """Generate a unique document ID without vector dependencies"""
-    timestamp = datetime.now().strftime("%d%m%Y")
-    random_part = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-    random_part2 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-    return f"RAI-{timestamp}-{random_part}-{random_part2}"
+from services.vector_store import generate_document_id, get_vector_store
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Try to use enhanced storage with PostgreSQL support, fallback to basic SQLite
-try:
-    from services.persistent_storage_enhanced import get_persistent_storage_manager
-    logger.info("✅ Using enhanced persistent storage with PostgreSQL support")
-except ImportError:
-    # Force use of enhanced storage - should not fall back to old version
-    logger.error("❌ Enhanced storage import failed - this should not happen")
-    raise
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class PerformanceTracker:
@@ -105,7 +104,7 @@ class PerformanceTracker:
 try:
     from docx import Document as DocxDocument
 except ImportError:
-    logger.warning("python - docx not installed, DOCX support disabled")
+    logger.warning("python-docx not installed, DOCX support disabled")
     DocxDocument = None
 
 # Configure logging
@@ -119,29 +118,22 @@ BACKEND_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 UPLOADS_DIR = BACKEND_DIR / "uploads"
 ANALYSIS_RESULTS_DIR = BACKEND_DIR / "analysis_results"
 CHECKLIST_DATA_DIR = BACKEND_DIR / "checklist_data"
-VECTOR_INDICES_DIR = BACKEND_DIR / "vector_indices"
 
 # Create directories
-for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR, VECTOR_INDICES_DIR]:
+for directory in [UPLOADS_DIR, ANALYSIS_RESULTS_DIR, CHECKLIST_DATA_DIR]:
     directory.mkdir(parents=True, exist_ok=True)
-    logger.info(f"Directory created / verified: {directory}")
+    logger.info(f"Directory created/verified: {directory}")
 
 router = APIRouter()
 
 # Initialize services
-AZURE_OPENAI_API_KEY = os.getenv(
-    "AZURE_OPENAI_API_KEY",
-    (
-        "Dqlg5AKLmgh4d7riA5lcJc9NTygtQgTskHZ7UQ6ZFgm9m6cDoiNEJQQJ99BEACHYHv6XJ3w3"
-        "AAAAACOG1eeM"
-    ),
-)
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv(
     "AZURE_OPENAI_ENDPOINT",
     "https://vitha-maxu94mf-eastus2.cognitiveservices.azure.com/",
 )
 AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
-AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv(
     "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-ada-002"
 )
@@ -149,89 +141,24 @@ AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
     "AZURE_OPENAI_EMBEDDING_API_VERSION", "2023-05-15"
 )
 
+
 # Initialize smart metadata extractor
 smart_metadata_extractor = SmartMetadataExtractor()
 
 
-async def _start_keepalive_task(document_id: str) -> None:
-    """Start a background task that keeps the server alive after metadata extraction."""
-    import asyncio
-    
-    async def keepalive_worker():
-        """Background worker that keeps server alive by logging periodically."""
-        logger.info(f"🟢 KEEPALIVE: Started for document {document_id}")
-        
-        # Keep alive for 30 minutes (enough time for user to select framework)
-        for i in range(180):  # 30 minutes = 180 * 10 seconds
-            await asyncio.sleep(10)  # Wait 10 seconds
-            
-            # Check if framework has been selected (compliance analysis started)
-            try:
-                status_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-                if status_file.exists():
-                    with open(status_file, 'r', encoding='utf-8') as f:
-                        status_data = json.load(f)
-                        
-                    if status_data.get("compliance_analysis") in ["IN_PROGRESS", "COMPLETED"]:
-                        logger.info(f"🟢 KEEPALIVE: Framework selected for {document_id}, ending keepalive")
-                        break
-                        
-                logger.info(f"🟢 KEEPALIVE: Ping {i+1}/180 for document {document_id}")
-            except Exception as e:
-                logger.error(f"🟢 KEEPALIVE: Error checking status for {document_id}: {e}")
-        
-        logger.info(f"🟢 KEEPALIVE: Ended for document {document_id}")
-    
-    # Start the keepalive task in the background
-    asyncio.create_task(keepalive_worker())
-
-
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
-    """
-    SIMPLE FILE SAVE: Direct file storage only, no dual storage complexity.
-    """
+    """Save analysis results to JSON file."""
     try:
-        logger.info(f"� FILE SAVE: Starting save for {document_id}")
-        
-        # Create a deep copy and ensure all GeographicalEntity objects are converted to dicts
-        serializable_results = _ensure_json_serializable(results)
-        
-        # Simple file save
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(serializable_results, f, indent=2, ensure_ascii=False)
-            
-        logger.info(f"✅ FILE SAVE: Save completed for {document_id} (status: {results.get('status', 'unknown')})")
-        
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        logger.info(f"Saved analysis results for document {document_id}")
     except Exception as e:
-        logger.error(f"❌ FILE SAVE: Save failed for {document_id}: {str(e)}")
+        logger.error(f"Error saving analysis results: {str(e)}")
         raise
 
 
-def _ensure_json_serializable(obj: Any) -> Any:
-    """Recursively ensure all objects are JSON serializable, converting GeographicalEntity objects to dicts."""
-    from services.geographical_service import GeographicalEntity
-
-    if isinstance(obj, GeographicalEntity):
-        # Convert GeographicalEntity to dictionary
-        return obj.__dict__ if hasattr(obj, '__dict__') else str(obj)
-    elif isinstance(obj, set):
-        # Convert sets to lists for JSON serialization
-        return list(obj)
-    elif isinstance(obj, dict):
-        # Recursively process dictionary values
-        return {key: _ensure_json_serializable(value) for key, value in obj.items()}
-    elif isinstance(obj, (list, tuple)):
-        # Recursively process list/tuple items
-        return [_ensure_json_serializable(item) for item in obj]
-    else:
-        # Return as-is for JSON-serializable types
-        return obj
-
 # Utility to get the file path for a document_id, regardless of extension
-
-
 def get_document_file_path(document_id: str) -> Optional[Path]:
     for ext in [".pdf", ".docx"]:
         candidate = UPLOADS_DIR / f"{document_id}{ext}"
@@ -267,7 +194,7 @@ def _check_processing_locks(document_id: str) -> bool:
         return True
     if metadata_lock_file.exists():
         logger.info(
-            "[PATCH] Metadata extraction already completed for "
+            f"[PATCH] Metadata extraction already completed for "
             f"{document_id}, skipping duplicate trigger."
         )
         return True
@@ -295,554 +222,37 @@ def _initialize_processing_results(
 
 def _process_document_chunks(document_id: str) -> list:
     """Process document chunks based on file type."""
-    logger.info(f"🚀 CHUNKING START: Starting document chunking for {document_id}")
+    logger.info(f"Starting document chunking for {document_id}")
     file_path = get_document_file_path(document_id)
     if not file_path:
-        logger.error(f"❌ CHUNKING ERROR: No file found for document_id: {document_id}")
+        logger.error(f"No file found for document_id: {document_id}")
         raise ValueError("No file found for document_id")
 
-    logger.info(f"📁 CHUNKING FILE: Found file at {file_path}")
     ext = file_path.suffix.lower()
-    logger.info(f"📄 CHUNKING EXT: File extension detected: {ext}")
-    
     if ext == ".pdf":
-        logger.info(f"🔧 CHUNKING PDF: Processing with NLP pipeline for {document_id} - NO FALLBACKS!")
-        # Use NLP pipeline for enhanced document processing - FORCE IT TO WORK
-        from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
-        import os
-        taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy", "IFRSAT-2025", "IFRSAT-2025", "full_ifrs")
-        
-        logger.info(f"🔧 CHUNKING PDF: Initializing NLP pipeline with taxonomy_dir: {taxonomy_dir}")
-        nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
-        
-        logger.info(f"🔧 CHUNKING PDF: Running NLP processing on {file_path}")
-        nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
-        
-        logger.info(f"🔧 CHUNKING PDF: NLP result success: {nlp_result.success}")
-        if hasattr(nlp_result, 'error'):
-            logger.info(f"🔧 CHUNKING PDF: NLP result error: {nlp_result.error}")
-        
-        if not nlp_result.success:
-            logger.error(f"❌ CHUNKING PDF FAILED: NLP processing failed: {nlp_result.error}")
-            raise ValueError(f"NLP processing failed: {nlp_result.error}")
-        
-        # Convert NLP result to legacy chunk format for compatibility
-        logger.info(f"� CHUNKING PDF: Converting NLP result to chunks")
-        chunks = _convert_nlp_to_chunks(nlp_result, document_id)
-        logger.info(f"✅ CHUNKING PDF SUCCESS: NLP pipeline returned {len(chunks) if chunks else 0} chunks")
+        chunks = document_chunker.chunk_pdf(str(file_path), document_id)
     elif ext == ".docx":
-        logger.info(f"🔧 CHUNKING DOCX: Processing with NLP pipeline for {document_id} - NO FALLBACKS!")
-        # Use NLP pipeline for enhanced document processing - FORCE IT TO WORK
-        from nlp_tools.complete_nlp_validation_pipeline import CompleteNLPValidationPipeline
-        import os
-        taxonomy_dir = os.path.join(os.path.dirname(__file__), "..", "taxonomy", "IFRSAT-2025", "IFRSAT-2025", "full_ifrs")
-        
-        logger.info(f"🔧 CHUNKING DOCX: Initializing NLP pipeline with taxonomy_dir: {taxonomy_dir}")
-        nlp_pipeline = CompleteNLPValidationPipeline(taxonomy_dir=taxonomy_dir)
-        
-        logger.info(f"🔧 CHUNKING DOCX: Running NLP processing on {file_path}")
-        nlp_result = nlp_pipeline.process_document_with_validation(str(file_path))
-        
-        logger.info(f"🔧 CHUNKING DOCX: NLP result success: {nlp_result.success}")
-        if hasattr(nlp_result, 'error'):
-            logger.info(f"🔧 CHUNKING DOCX: NLP result error: {nlp_result.error}")
-        
-        if not nlp_result.success:
-            logger.error(f"❌ CHUNKING DOCX FAILED: NLP processing failed: {nlp_result.error}")
-            raise ValueError(f"NLP processing failed: {nlp_result.error}")
-        
-        # Convert NLP result to legacy chunk format for compatibility
-        logger.info(f"� CHUNKING DOCX: Converting NLP result to chunks")
-        chunks = _convert_nlp_to_chunks(nlp_result, document_id)
-        logger.info(f"✅ CHUNKING DOCX SUCCESS: NLP pipeline returned {len(chunks) if chunks else 0} chunks")
+        chunks = document_chunker.chunk_docx(str(file_path), document_id)
     else:
-        logger.error(f"❌ CHUNKING ERROR: Unsupported file extension: {ext}")
         raise ValueError(f"Unsupported file extension: {ext}")
 
     if not chunks:
-        logger.error(f"❌ CHUNKING ERROR: No chunks generated from document {document_id}")
         raise ValueError("No chunks generated from document")
-
-    # CRITICAL FIX: Store chunks in categorized_content database for smart categorization
-    _store_chunks_for_smart_categorization(document_id, chunks)
 
     logger.info(f"Generated {len(chunks)} chunks for document {document_id}")
     return chunks
 
 
-def _apply_5d_taxonomy_tags(content: str) -> dict:
-    """Apply 5D taxonomy tags to chunk content using master dictionary analysis."""
-    import re
-    import json
-    import os
-    
-    # Load master dictionary
-    master_dict_path = os.path.join(os.getcwd(), 'ai_parser', 'master_dictionary.json')
-    master_dict = {}
-    
-    try:
-        with open(master_dict_path, 'r') as f:
-            master_dict = json.load(f)
-    except Exception as e:
-        logger.warning(f"Could not load master dictionary: {e}")
-        return {}
-    
-    content_lower = content.lower()
-    
-    # Initialize 5D taxonomy tags
-    taxonomy_tags = {
-        "narrative_categories": [],
-        "table_archetypes": [],
-        "quantitative_expectations": [],
-        "temporal_scope": [],
-        "cross_reference_anchors": [],
-        "conditionality": [],
-        "evidence_expectations": {},
-        "citation_controls": [],
-        "keywords": []
-    }
-    
-    # 1. NARRATIVE CATEGORIES
-    narrative_mappings = {
-        "accounting_policies_note": ["accounting policies", "measurement bases", "methods", "policy", "ifrs", "ias"],
-        "event_based": ["subsequent events", "acquisition", "restructuring", "disposal", "merger", "combination"],
-        "measurement_basis": ["fair value", "amortised cost", "impairment", "depreciation", "amortization"],
-        "risk_exposure": ["credit risk", "liquidity risk", "market risk", "sensitivity", "hedging", "derivatives"],
-        "estimates_judgements": ["estimates", "assumptions", "judgements", "uncertainty", "management"],
-        "related_party": ["related party", "compensation", "transactions", "key management"],
-        "going_concern": ["going concern", "continuity", "liquidity", "working capital"],
-        "disclosure_narrative": ["notes", "disclosure", "statement", "consolidated"]
-    }
-    
-    for category, keywords in narrative_mappings.items():
-        if any(keyword in content_lower for keyword in keywords):
-            taxonomy_tags["narrative_categories"].append(category)
-    
-    # 2. TABLE ARCHETYPES
-    table_mappings = {
-        "reconciliation_table": ["opening", "closing", "movement", "balance", "beginning", "ending"],
-        "roll_forward_table": ["carrying amounts", "by class", "categories", "analysis"],
-        "sensitivity_table": ["sensitivity", "stress test", "impact", "change", "assumption"],
-        "segmental_analysis": ["segment", "geographic", "business", "division", "region"],
-        "carrying_amounts_by_category": ["total", "category", "class", "type", "current", "non-current"],
-        "maturity_analysis": ["maturity", "due", "within", "after", "years", "profile"]
-    }
-    
-    for archetype, keywords in table_mappings.items():
-        if any(keyword in content_lower for keyword in keywords):
-            taxonomy_tags["table_archetypes"].append(archetype)
-    
-    # 3. QUANTITATIVE EXPECTATIONS
-    if re.search(r'\$[\d,]+|\d+\.\d+|\d+%', content):
-        if "total" in content_lower or "amount" in content_lower:
-            taxonomy_tags["quantitative_expectations"].append("absolute_amounts")
-        if "by class" in content_lower or "category" in content_lower:
-            taxonomy_tags["quantitative_expectations"].append("class_by_class_totals")
-        if "estimate" in content_lower or "effect" in content_lower:
-            taxonomy_tags["quantitative_expectations"].append("estimate_of_financial_effect")
-        if "comparative" in content_lower or "prior" in content_lower:
-            taxonomy_tags["quantitative_expectations"].append("comparative_amounts")
-    else:
-        taxonomy_tags["quantitative_expectations"].append("qualitative_only")
-    
-    # 4. TEMPORAL SCOPE
-    temporal_mappings = {
-        "current_period": ["current", "year", "period", "2024", "2025"],
-        "comparative_period": ["comparative", "prior", "previous", "2023"],
-        "multiple_periods": ["years", "periods", "historical"],
-        "subsequent_events": ["subsequent", "after", "events", "reporting date"],
-        "opening_balance": ["opening", "beginning", "start", "initial"]
-    }
-    
-    for scope, keywords in temporal_mappings.items():
-        if any(keyword in content_lower for keyword in keywords):
-            taxonomy_tags["temporal_scope"].append(scope)
-    
-    # 5. CROSS REFERENCE ANCHORS
-    anchor_mappings = {
-        "notes_main": ["notes", "note", "financial statements"],
-        "policies": ["accounting policies", "policy", "method"],
-        "primary_statement": ["statement of financial position", "balance sheet", "income", "cash flow"],
-        "segment_note": ["segment", "segmental"],
-        "risk_note": ["risk", "financial risk", "credit", "liquidity"],
-        "related_standards": ["ifrs", "ias", "standard"]
-    }
-    
-    for anchor, keywords in anchor_mappings.items():
-        if any(keyword in content_lower for keyword in keywords):
-            taxonomy_tags["cross_reference_anchors"].append(anchor)
-    
-    # 6. CONDITIONALITY
-    if "requirement" in content_lower or "required" in content_lower:
-        taxonomy_tags["conditionality"].append("standard_requirement")
-    if "material" in content_lower:
-        taxonomy_tags["conditionality"].append("materiality")
-    if "policy" in content_lower and "choice" in content_lower:
-        taxonomy_tags["conditionality"].append("policy_choice")
-    
-    # 7. EVIDENCE EXPECTATIONS
-    taxonomy_tags["evidence_expectations"] = {
-        "required_documents": ["financial_statements"],
-        "data_sources": ["accounting_records"],
-        "validation_methods": ["document_review"],
-        "quality_indicators": ["completeness_check"]
-    }
-    
-    if "management" in content_lower:
-        taxonomy_tags["evidence_expectations"]["data_sources"].append("management_estimates")
-    if "valuation" in content_lower:
-        taxonomy_tags["evidence_expectations"]["data_sources"].append("external_valuations")
-    
-    # 8. CITATION CONTROLS
-    if "accounting policy" in content_lower:
-        taxonomy_tags["citation_controls"].append("accounting_policy")
-    if "judgement" in content_lower or "estimate" in content_lower:
-        taxonomy_tags["citation_controls"].append("significant_judgement")
-    if any(char.isdigit() for char in content):
-        taxonomy_tags["citation_controls"].append("quantitative_detail")
-    
-    # Extract IFRS keywords
-    taxonomy_tags["keywords"] = _extract_keywords_from_content(content)
-    
-    return taxonomy_tags
+async def _create_vector_index(document_id: str, chunks: list) -> None:
+    """Index chunks in vector store."""
+    logger.info(f"Starting vector store indexing for document {document_id}")
+    vs_svc = get_vector_store()
+    if not vs_svc:
+        raise ValueError("Vector store service not initialized")
 
-
-def _extract_keywords_from_content(content: str) -> list:
-    """Extract meaningful keywords from chunk content using IFRS taxonomy master dictionary."""
-    import re
-    import json
-    import os
-    
-    # Load master dictionary with IFRS taxonomy concepts
-    master_dict_path = os.path.join(os.getcwd(), 'ai_parser', 'master_dictionary.json')
-    ifrs_keywords = set()
-    
-    try:
-        with open(master_dict_path, 'r') as f:
-            master_dict = json.load(f)
-            
-        # Extract IFRS taxonomy keywords from master dictionary
-        for category_name, category_data in master_dict.items():
-            if isinstance(category_data, dict):
-                for key, value in category_data.items():
-                    # Extract keywords from keys and values
-                    if isinstance(key, str):
-                        ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', key.lower()))
-                    if isinstance(value, str):
-                        ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', value.lower()))
-                    elif isinstance(value, list):
-                        for item in value:
-                            if isinstance(item, str):
-                                ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', item.lower()))
-    except Exception as e:
-        logger.warning(f"Could not load master dictionary: {e}")
-    
-    # IFRS/IAS priority financial terms from taxonomy (5512 concepts available)
-    ifrs_taxonomy_terms = {
-        # Balance Sheet / Statement of Financial Position
-        'assets', 'liabilities', 'equity', 'capital', 'reserves', 'retained', 'earnings',
-        'current', 'noncurrent', 'property', 'plant', 'equipment', 'intangible',
-        'goodwill', 'investment', 'inventories', 'receivables', 'payables',
-        'provisions', 'borrowings', 'derivative', 'financial', 'instruments',
-        
-        # Income Statement / Comprehensive Income
-        'revenue', 'income', 'expenses', 'costs', 'profit', 'loss', 'comprehensive',
-        'depreciation', 'amortization', 'impairment', 'taxation', 'deferred',
-        'discontinued', 'operations', 'earnings', 'share',
-        
-        # Cash Flow Statement
-        'cash', 'flows', 'operating', 'investing', 'financing', 'activities',
-        'payments', 'receipts', 'equivalents',
-        
-        # Risk Management (IFRS 7, IFRS 9)
-        'risk', 'credit', 'liquidity', 'market', 'sensitivity', 'hedging',
-        'fair', 'value', 'measurement', 'hierarchy',
-        
-        # Accounting Policies & Estimates (IAS 1, IAS 8)
-        'accounting', 'policies', 'estimates', 'judgements', 'assumptions',
-        'changes', 'errors', 'retrospective', 'prospective',
-        
-        # Standards-specific terms
-        'lease', 'lessor', 'lessee', 'right', 'use', 'modification',  # IFRS 16
-        'employee', 'benefits', 'defined', 'contribution', 'benefit',  # IAS 19
-        'segment', 'operating', 'reportable', 'geographical',          # IFRS 8
-        'related', 'party', 'transactions', 'compensation',            # IAS 24
-        'subsequent', 'events', 'adjusting', 'non-adjusting',         # IAS 10
-        'consolidation', 'subsidiary', 'associate', 'joint',          # IFRS 10, 11, 12
-        'business', 'combination', 'acquisition', 'merger',           # IFRS 3
-        'insurance', 'contracts', 'coverage', 'units',                # IFRS 17
-        'biological', 'agricultural', 'harvest', 'bearer',            # IAS 41
-        'extractive', 'exploration', 'evaluation', 'development',     # IFRS 6
-        'hyperinflation', 'monetary', 'nonmonetary', 'adjustment'     # IAS 29
-    }
-    
-    # Combine with loaded dictionary keywords
-    all_ifrs_terms = ifrs_taxonomy_terms.union(ifrs_keywords)
-    
-    # Extract words (3+ chars, alphanumeric)
-    words = re.findall(r'\b[a-zA-Z]{3,}\b', content.lower())
-    
-    # Filter for IFRS taxonomy keywords
-    keywords = []
-    stopwords = {
-        'the', 'and', 'for', 'are', 'that', 'this', 'with', 'from', 'they', 'been', 
-        'have', 'were', 'said', 'each', 'which', 'their', 'will', 'would', 'there', 
-        'could', 'other', 'more', 'very', 'what', 'know', 'just', 'first', 'into', 
-        'over', 'think', 'also', 'your', 'work', 'life', 'only', 'can', 'still', 
-        'should', 'after', 'being', 'now', 'made', 'before', 'here', 'through', 
-        'when', 'where', 'much', 'some', 'these', 'many', 'then', 'them', 'well'
-    }
-    
-    for word in words:
-        if word in all_ifrs_terms:
-            keywords.append(word)
-        elif len(word) >= 6 and word not in stopwords:
-            # Include longer words that might be IFRS-relevant but not in our dictionary
-            keywords.append(word)
-    
-    # Remove duplicates and limit to 15 keywords (increased for better taxonomy coverage)
-    return list(set(keywords))[:15]
-
-
-def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> None:
-    """Store document chunks in categorized_content database for smart categorization."""
-    logger.info(f"📚 SMART STORAGE: Starting to store {len(chunks)} chunks for document {document_id}")
-    
-    if not chunks:
-        logger.warning(f"⚠️  SMART STORAGE: No chunks provided for document {document_id}")
-        return
-    
-    try:
-        # Import and initialize storage
-        from services.intelligent_chunk_accumulator import get_global_storage
-        logger.info(f"🔧 SMART STORAGE: Importing storage for document {document_id}")
-        
-        storage = get_global_storage()
-        logger.info(f"🔧 SMART STORAGE: Storage initialized for document {document_id}")
-        
-        # Verify storage is working by checking database
-        try:
-            # Test database connection
-            test_result = storage._test_database_connection()
-            logger.info(f"🔧 SMART STORAGE: Database connection test result: {test_result}")
-        except Exception as db_test_error:
-            logger.warning(f"⚠️  SMART STORAGE: Database test failed: {db_test_error}")
-        
-        stored_count = 0
-        failed_count = 0
-        
-        for i, chunk in enumerate(chunks):
-            try:
-                # Extract text content from chunk
-                if isinstance(chunk, dict):
-                    content = chunk.get("text") or chunk.get("content", "")
-                    chunk_info = f"dict with keys: {list(chunk.keys())}"
-                else:
-                    content = str(chunk)
-                    chunk_info = f"string of length {len(content)}"
-                
-                if not content or not content.strip():
-                    logger.warning(f"⚠️  SMART STORAGE: Chunk {i} is empty for document {document_id}")
-                    failed_count += 1
-                    continue
-                
-                # Apply 5D taxonomy tags to chunk content
-                taxonomy_tags = _apply_5d_taxonomy_tags(content)
-                
-                # Extract basic categorization info
-                category = "financial_document"  # Basic category
-                subcategory = "content_chunk"
-                confidence = 0.8  # Good confidence for processed chunks
-                keywords = taxonomy_tags.get('keywords', [])  # Use taxonomy-extracted keywords
-                
-                logger.debug(f"📝 SMART STORAGE: Storing chunk {i} ({chunk_info[:100]}) for document {document_id}")
-                logger.debug(f"📋 TAXONOMY TAGS APPLIED: {len(taxonomy_tags.get('narrative_categories', []))} narrative, {len(taxonomy_tags.get('table_archetypes', []))} tables, {len(taxonomy_tags.get('quantitative_expectations', []))} quantitative")
-                
-                success = storage.store_categorized_chunk(
-                    document_id=document_id,
-                    chunk=content,
-                    category=category,
-                    subcategory=subcategory,
-                    confidence=confidence,
-                    keywords=keywords,
-                    taxonomy_tags=taxonomy_tags
-                )
-                
-                if success:
-                    stored_count += 1
-                    logger.debug(f"✅ SMART STORAGE: Successfully stored chunk {i} for document {document_id}")
-                else:
-                    failed_count += 1
-                    logger.warning(f"⚠️  SMART STORAGE: Failed to store chunk {i} (storage returned False) for document {document_id}")
-                        
-            except Exception as chunk_error:
-                failed_count += 1
-                logger.error(f"❌ SMART STORAGE: Failed to store chunk {i} for document {document_id}: {chunk_error}")
-                logger.error(f"❌ SMART STORAGE: Chunk {i} traceback: {traceback.format_exc()}")
-                continue
-        
-        # Final verification - check if chunks were actually stored
-        try:
-            total_stored = storage.debug_chunk_count(document_id)
-            logger.info(f"🔍 SMART STORAGE: Verification - {total_stored} total chunks found in database for document {document_id}")
-            
-            # Also show all documents for debugging
-            logger.info(f"🔍 SMART STORAGE: All documents summary:")
-            all_docs = storage.debug_all_documents()
-            for doc_id, count in all_docs.items():
-                logger.info(f"  📄 {doc_id}: {count} chunks")
-                
-        except Exception as verify_error:
-            logger.warning(f"⚠️  SMART STORAGE: Could not verify chunk count: {verify_error}")
-        
-        if stored_count > 0:
-            logger.info(f"✅ SMART STORAGE: Successfully stored {stored_count}/{len(chunks)} chunks for document {document_id} (failed: {failed_count})")
-        else:
-            logger.error(f"❌ SMART STORAGE: Failed to store any chunks for document {document_id} (failed: {failed_count})")
-        
-    except ImportError as import_error:
-        logger.error(f"❌ SMART STORAGE: Import error for document {document_id}: {import_error}")
-    except Exception as e:
-        logger.error(f"❌ SMART STORAGE: Failed to store chunks for document {document_id}: {e}")
-        logger.error(f"❌ SMART STORAGE: Traceback: {traceback.format_exc()}")
-
-
-def _convert_nlp_to_chunks(nlp_result, document_id: str) -> list:
-    """Convert NLP pipeline result to legacy chunk format - NO FALLBACKS, MUST WORK!"""
-    chunks = []
-    
-    logger.info(f"🔍 CHUNK CONVERSION: Starting conversion for document {document_id}")
-    logger.info(f"🔍 CHUNK CONVERSION: NLP result type: {type(nlp_result)}")
-    logger.info(f"🔍 CHUNK CONVERSION: NLP result attributes: {dir(nlp_result)}")
-    
-    # Log what we have in the NLP result
-    if hasattr(nlp_result, 'validated_mega_chunks'):
-        logger.info(f"🔍 CHUNK CONVERSION: Has validated_mega_chunks: {nlp_result.validated_mega_chunks is not None}")
-        logger.info(f"🔍 CHUNK CONVERSION: validated_mega_chunks type: {type(nlp_result.validated_mega_chunks)}")
-        if nlp_result.validated_mega_chunks:
-            logger.info(f"🔍 CHUNK CONVERSION: validated_mega_chunks keys: {list(nlp_result.validated_mega_chunks.keys()) if isinstance(nlp_result.validated_mega_chunks, dict) else 'Not a dict'}")
-    
-    if hasattr(nlp_result, 'structure_parsing'):
-        logger.info(f"🔍 CHUNK CONVERSION: Has structure_parsing: {nlp_result.structure_parsing is not None}")
-        logger.info(f"🔍 CHUNK CONVERSION: structure_parsing type: {type(nlp_result.structure_parsing)}")
-    
-    # PRIMARY: Extract validated mega chunks from NLP result
-    if hasattr(nlp_result, 'validated_mega_chunks') and nlp_result.validated_mega_chunks:
-        logger.info("🔧 CHUNK CONVERSION: Processing validated_mega_chunks")
-        chunk_counter = 1
-        
-        for standard_key, chunks_dict in nlp_result.validated_mega_chunks.items():
-            logger.info(f"🔧 CHUNK CONVERSION: Processing standard_key: {standard_key}, type: {type(chunks_dict)}")
-            
-            if isinstance(chunks_dict, dict):
-                for chunk_id, chunk_data in chunks_dict.items():
-                    logger.info(f"🔧 CHUNK CONVERSION: Processing chunk_id: {chunk_id}, data type: {type(chunk_data)}")
-                    
-                    # Handle both dict and string chunk_data
-                    if isinstance(chunk_data, dict):
-                        content_text = chunk_data.get("content", "")
-                        accounting_standard = chunk_data.get("accounting_standard", "")
-                        confidence_score = chunk_data.get("confidence_score", 0.0)
-                        classification_tags = chunk_data.get("classification_tags", {})
-                    elif isinstance(chunk_data, str):
-                        content_text = chunk_data
-                        accounting_standard = standard_key
-                        confidence_score = 0.8
-                        classification_tags = {}
-                    else:
-                        content_text = str(chunk_data)
-                        accounting_standard = standard_key
-                        confidence_score = 0.5
-                        classification_tags = {}
-                    
-                    logger.info(f"🔧 CHUNK CONVERSION: Content length: {len(content_text)}")
-                    
-                    if len(content_text.strip()) > 0:  # Only create chunks with actual content
-                        # Create legacy chunk format compatible with SmartMetadataExtractor
-                        legacy_chunk = {
-                            "id": f"{document_id}_chunk_{chunk_counter}",
-                            "content": content_text,  # For frontend/analysis compatibility
-                            "text": content_text,     # For SmartMetadataExtractor compatibility
-                            "chunk_index": chunk_counter - 1,
-                            "page": 0,  # Will be updated if page info available
-                            "page_no": 0,
-                            "length": len(content_text),
-                            "chunk_type": "content",
-                            "metadata": {
-                                "accounting_standard": accounting_standard,
-                                "confidence_score": confidence_score,
-                                "classification_tags": classification_tags,
-                                "original_chunk_id": chunk_id,
-                                "processing_method": "nlp_pipeline"
-                            }
-                        }
-                        chunks.append(legacy_chunk)
-                        chunk_counter += 1
-                        logger.info(f"✅ CHUNK CONVERSION: Created chunk {chunk_counter-1} with {len(content_text)} chars")
-    
-    # SECONDARY: use basic structure parsing if validated_mega_chunks didn't work
-    if not chunks and hasattr(nlp_result, 'structure_parsing') and nlp_result.structure_parsing:
-        logger.info("🔧 CHUNK CONVERSION: No validated_mega_chunks, trying structure_parsing")
-        structure = nlp_result.structure_parsing
-        
-        if isinstance(structure, dict) and "sections" in structure:
-            logger.info(f"🔧 CHUNK CONVERSION: Found {len(structure['sections'])} sections")
-            
-            for i, section in enumerate(structure["sections"], 1):
-                # Handle both dict and string sections
-                if isinstance(section, dict):
-                    content_text = section.get("content", "")
-                    section_type = section.get("type", "unknown")
-                    section_id = section.get("id", f"section_{i}")
-                elif isinstance(section, str):
-                    content_text = section
-                    section_type = "text"
-                    section_id = f"section_{i}"
-                else:
-                    content_text = str(section)
-                    section_type = "unknown"
-                    section_id = f"section_{i}"
-                
-                if len(content_text.strip()) > 0:  # Only create chunks with actual content
-                    legacy_chunk = {
-                        "id": f"{document_id}_section_{i}",
-                        "content": content_text,  # For frontend/analysis compatibility  
-                        "text": content_text,     # For SmartMetadataExtractor compatibility
-                        "chunk_index": i - 1,
-                        "page": 0,
-                        "page_no": 0,
-                        "length": len(content_text),
-                        "chunk_type": "section",
-                        "metadata": {
-                            "section_type": section_type,
-                            "processing_method": "structure_parsing",
-                            "original_section_id": section_id
-                        }
-                    }
-                    chunks.append(legacy_chunk)
-                    logger.info(f"✅ CHUNK CONVERSION: Created section chunk {i} with {len(content_text)} chars")
-    
-    # FAIL FAST: If we still have no chunks, something is wrong with the NLP pipeline
-    if not chunks:
-        logger.error(f"❌ CHUNK CONVERSION FAILED: No chunks created from NLP result for {document_id}")
-        logger.error(f"❌ CHUNK CONVERSION: NLP result dump: {nlp_result}")
-        raise ValueError(f"NLP pipeline produced no usable chunks for document {document_id}")
-    
-    logger.info(f"✅ CHUNK CONVERSION SUCCESS: Converted NLP result to {len(chunks)} legacy chunks for {document_id}")
-    return chunks
-
-
-def _save_chunks_directly(document_id: str, chunks: list) -> None:
-    """Save chunks directly to vector_indices directory without vector indexing."""
-    logger.info(f"Saving {len(chunks)} chunks for document {document_id}")
-    
-    # Save chunks to vector_indices directory for compatibility
-    chunks_file = VECTOR_INDICES_DIR / f"{document_id}_chunks.json"
-    with open(chunks_file, 'w', encoding='utf-8') as f:
-        json.dump(chunks, f, indent=2, ensure_ascii=False)
-    
-    logger.info(f"✅ Chunks saved to {chunks_file}")
-
+    index_created = await vs_svc.create_index(document_id, chunks)
+    if not index_created:
+        raise ValueError("Failed to create vector index")
 
     logger.info(f"Vector store indexing completed for document {document_id}")
 
@@ -850,20 +260,20 @@ def _save_chunks_directly(document_id: str, chunks: list) -> None:
 async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
     """Extract metadata from document chunks using optimized smart extraction."""
     logger.info(f"🚀 Starting OPTIMIZED metadata extraction for document {document_id}")
-    logger.info("🔍 Using SmartMetadataExtractor - this should be DIFFERENT from old extraction!")
-
+    logger.info(f"🔍 Using SmartMetadataExtractor - this should be DIFFERENT from old extraction!")
+    
     # Use smart metadata extractor for 80% token reduction
     metadata_result = await smart_metadata_extractor.extract_metadata_optimized(document_id, chunks)
     logger.info(f"✅ Smart metadata extraction completed for document {document_id}")
-    logger.info(f"💰 Token usage: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N / A')}")
+    logger.info(f"💰 Token usage: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N/A')}")
     return metadata_result
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Transform metadata from smart extractor format to enhanced presentation."""
+    """Transform metadata from smart extractor format to enhanced frontend presentation."""
     transformed_metadata = {}
 
-    # Fields that need to be transformed - BACKEND USES SNAKE_CASE AS STANDARD
+    # Fields that need to be transformed
     metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
 
     for field in metadata_fields:
@@ -879,34 +289,34 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                     "confidence_level": _get_confidence_level(value.get("confidence", 0.0)),
                     "presentation": _format_field_presentation(field, value)
                 }
-
+                
                 # Special handling for operational_demographics to extract geography
                 if field == "operational_demographics":
-                    # Extract geography - specific information for result page
+                    # Extract geography-specific information for result page
                     geography_parts = []
-
+                    
                     # Add primary location if available
                     if value.get("primary_location"):
                         geography_parts.append(value["primary_location"])
-
+                    
                     # Add regions detected
                     if value.get("regions_detected") and isinstance(value["regions_detected"], list):
                         geography_parts.extend(value["regions_detected"])
-
+                    
                     # Add geographical entities
                     if value.get("geographical_entities") and isinstance(value["geographical_entities"], list):
                         for entity in value["geographical_entities"]:
                             if isinstance(entity, dict):
                                 location_name = (
-                                    entity.get("name") or
-                                    entity.get("location") or
-                                    entity.get("place") or
-                                    entity.get("country") or
+                                    entity.get("name") or 
+                                    entity.get("location") or 
+                                    entity.get("place") or 
+                                    entity.get("country") or 
                                     entity.get("region")
                                 )
                                 if location_name and location_name not in geography_parts:
                                     geography_parts.append(str(location_name))
-
+                    
                     # Create geography_of_operations field
                     if geography_parts:
                         # Remove duplicates while preserving order
@@ -918,10 +328,9 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                         geography_value = ", ".join(unique_parts)
                     else:
                         geography_value = value.get("value", "Geographic operations not specified")
-
+                    
                     transformed_field["geography_of_operations"] = geography_value
-
-                # BACKEND STANDARD: Use snake_case field names consistently
+                
                 transformed_metadata[field] = transformed_field
             else:
                 # Handle legacy string format
@@ -933,26 +342,25 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
                     "confidence_level": "High",
                     "presentation": str(value) if value else "Not specified"
                 }
-
+                
                 # Add geography field for legacy format too
                 if field == "operational_demographics":
-                    transformed_metadata[field]["geography_of_operations"] = str(
-                        value) if value else "Geographic operations not specified"
+                    transformed_metadata[field]["geography_of_operations"] = str(value) if value else "Geographic operations not specified"
         else:
             # Provide default structure for missing fields
             default_field = {
-                "value": "",
+                "value": "", 
                 "confidence": 0.0,
                 "extraction_method": "none",
                 "context": "",
                 "confidence_level": "None",
                 "presentation": "Not specified"
             }
-
+            
             # Add geography field for operational demographics
             if field == "operational_demographics":
                 default_field["geography_of_operations"] = "Geographic operations not specified"
-
+            
             transformed_metadata[field] = default_field
 
     # Copy optimization metrics and other fields
@@ -967,7 +375,7 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
 
 
 def _get_confidence_level(confidence: float) -> str:
-    """Convert confidence score to human - readable level."""
+    """Convert confidence score to human-readable level."""
     if confidence >= 0.9:
         return "Very High"
     elif confidence >= 0.7:
@@ -983,13 +391,13 @@ def _get_confidence_level(confidence: float) -> str:
 def _format_field_presentation(field_name: str, field_data: dict) -> str:
     """Format field data for enhanced presentation."""
     value = field_data.get("value", "")
-    field_data.get("confidence", 0.0)
+    confidence = field_data.get("confidence", 0.0)
     context = field_data.get("context", "")
-    field_data.get("extraction_method", "")
-
+    method = field_data.get("extraction_method", "")
+    
     if not value:
         return "Not specified"
-
+    
     # Create formatted presentation based on field type
     if field_name == "operational_demographics" and context:
         # For demographics, show value with context
@@ -1014,17 +422,17 @@ def _create_extraction_summary(metadata: dict) -> dict:
             "high_confidence_fields": 0
         }
     }
-
+    
     metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
     total_confidence = 0.0
     extracted_fields = 0
     high_confidence_count = 0
-
+    
     for field in metadata_fields:
         if field in metadata and isinstance(metadata[field], dict):
             field_data = metadata[field]
             confidence = field_data.get("confidence", 0.0)
-
+            
             # Add to extraction table
             summary["extraction_table"].append({
                 "field": field.replace("_", " ").title(),
@@ -1034,20 +442,19 @@ def _create_extraction_summary(metadata: dict) -> dict:
                 "method": field_data.get("extraction_method", "unknown"),
                 "has_context": bool(field_data.get("context", ""))
             })
-
+            
             # Update metrics
             if confidence > 0:
                 total_confidence += confidence
                 extracted_fields += 1
                 if confidence >= 0.7:
                     high_confidence_count += 1
-
+    
     # Calculate summary metrics
-    summary["confidence_metrics"]["average_confidence"] = total_confidence / \
-        extracted_fields if extracted_fields > 0 else 0.0
+    summary["confidence_metrics"]["average_confidence"] = total_confidence / extracted_fields if extracted_fields > 0 else 0.0
     summary["confidence_metrics"]["total_fields_extracted"] = extracted_fields
     summary["confidence_metrics"]["high_confidence_fields"] = high_confidence_count
-
+    
     return summary
 
 
@@ -1074,57 +481,15 @@ def _finalize_processing_results(document_id: str, metadata_result: dict) -> dic
     return final_results
 
 
-def _archive_document_file(document_id: str) -> None:
-    """Archive uploaded file to document-specific folder for audit trail."""
+def _cleanup_uploaded_file(document_id: str) -> None:
+    """Auto-delete uploaded file after vectorization and chunking."""
+    file_path = get_document_file_path(document_id)
     try:
-        from pathlib import Path
-        
-        # Get the current file path
-        file_path = get_document_file_path(document_id)
-        if not file_path or not file_path.exists():
-            logger.warning(f"No file found to archive for document: {document_id}")
-            return
-            
-        # Create document archive directory
-        archive_dir = Path("document_archives") / document_id
-        archive_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Archive original file
-        archived_file_path = archive_dir / f"original_{file_path.name}"
-        
-        # Move file to archive instead of deleting
-        import shutil
-        shutil.move(str(file_path), str(archived_file_path))
-        
-        logger.info(f"Archived uploaded file to: {archived_file_path}")
-        
-        # Store in database for audit trail
-        try:
-            storage = get_persistent_storage_manager()
-            audit_data = {
-                "document_id": document_id,
-                "action": "file_archived",
-                "original_path": str(file_path),
-                "archive_path": str(archived_file_path),
-                "timestamp": datetime.now().isoformat(),
-                "file_size": archived_file_path.stat().st_size,
-                "file_name": file_path.name
-            }
-            
-            # Store audit log
-            storage.save_document_audit_log(document_id, audit_data)
-            logger.info(f"Audit log created for archived file: {document_id}")
-            
-        except Exception as audit_err:
-            logger.warning(f"Failed to create audit log for {document_id}: {audit_err}")
-        
-    except Exception as archive_err:
-        logger.error(f"Failed to archive file for {document_id}: {archive_err}")
-        # Fallback to original deletion if archiving fails
-        file_path = get_document_file_path(document_id)
         if file_path and file_path.exists():
             file_path.unlink()
-            logger.info(f"Fallback: Deleted uploaded file after vectorization: {file_path}")
+            logger.info(f"Deleted uploaded file after vectorization: {file_path}")
+    except Exception as cleanup_err:
+        logger.warning(f"Failed to delete uploaded file: {file_path} ({cleanup_err})")
 
 
 def _handle_processing_error(document_id: str, error: Exception) -> None:
@@ -1155,8 +520,6 @@ async def process_upload_tasks(
     document_id: str, ai_svc: AIService, text: str = "", processing_mode: str = "smart"
 ) -> None:
     """Run document processing tasks up to metadata extraction."""
-    import traceback
-    
     # Check for duplicate processing
     if _check_processing_locks(document_id):
         return
@@ -1169,175 +532,34 @@ async def process_upload_tasks(
         # Initialize processing with processing mode
         _initialize_processing_results(document_id, processing_mode)
 
-        # Create initial status file to indicate chunking has started
-        status_file = ANALYSIS_RESULTS_DIR / f"{document_id}_status.json"
-        initial_status = {
-            "document_id": document_id,
-            "chunking_status": "in_progress",
-            "metadata_extraction_status": "pending",
-            "chunking_started_at": datetime.now().isoformat()
-        }
-        with open(status_file, 'w', encoding='utf-8') as f:
-            json.dump(initial_status, f, indent=2, ensure_ascii=False)
-
-        # Process document chunks directly
+        # Process document chunks
         chunks = _process_document_chunks(document_id)
-        
-        # Create vector index for the chunks BEFORE metadata extraction
-        vector_index_ready = False
-        try:
-            from services.vector_store import get_vector_store
-            vs_svc = get_vector_store()
-            index_created = await vs_svc.create_index(document_id, chunks)
-            if index_created:
-                logger.info(f"✅ Vector index created successfully for document {document_id}")
-                
-                # Verify the index is actually accessible
-                try:
-                    test_results = vs_svc.search("test", document_id, top_k=1)
-                    vector_index_ready = True
-                    logger.info(f"✅ Vector index verified and ready for document {document_id}")
-                except Exception as ve:
-                    logger.warning(f"⚠️ Vector index created but not accessible for document {document_id}: {ve}")
-            else:
-                logger.warning(f"⚠️ Vector index creation failed for document {document_id}")
-        except ImportError as ie:
-            logger.warning(f"⚠️ Vector store import error for document {document_id}: {ie}")
-        except Exception as e:
-            logger.warning(f"⚠️ Vector index creation error for document {document_id}: {e}")
-            
-        if not vector_index_ready:
-            logger.warning(f"⚠️ Proceeding with metadata extraction without vector search for document {document_id}")
 
-        # Update status to indicate chunking is complete and metadata extraction starting
-        chunking_complete_status = {
-            "document_id": document_id,
-            "chunking_status": "completed",
-            "metadata_extraction_status": "in_progress",
-            "chunking_started_at": initial_status["chunking_started_at"],
-            "chunking_completed_at": datetime.now().isoformat()
-        }
-        with open(status_file, 'w', encoding='utf-8') as f:
-            json.dump(chunking_complete_status, f, indent=2, ensure_ascii=False)
+        # Create vector index
+        await _create_vector_index(document_id, chunks)
 
-        # Save chunks to analysis_results directory (no vector processing needed)
-        chunks_file = ANALYSIS_RESULTS_DIR / f"{document_id}_chunks.json"
-        with open(chunks_file, 'w', encoding='utf-8') as f:
-            json.dump(chunks, f, indent=2, ensure_ascii=False)
-        
-        logger.info(f"✅ Document chunking completed for {document_id}")
-        logger.info(f"📄 Saved {len(chunks)} chunks to {chunks_file}")
+        # Extract metadata
+        metadata_result = await _extract_document_metadata(document_id, chunks)
 
-        # Create basic results structure (metadata extraction will update this later)
-        basic_result = {
-            "status": "metadata_extraction_in_progress",
-            "document_id": document_id,
-            "chunks_count": len(chunks),
-            "processing_mode": processing_mode,
-            "completed_at": datetime.now().isoformat(),
-            "timestamp": datetime.now().isoformat(),
-            "metadata": {},
-            "sections": [],
-            "metadata_extraction": "IN_PROGRESS",
-            "compliance_analysis": "PENDING",
-            "message": "Document chunking completed. Metadata extraction in progress - poll /metadata-status for updates."
-        }
+        # Finalize results
+        _finalize_processing_results(document_id, metadata_result)
 
-        # Save results with basic structure (metadata extraction will update this)
-        save_analysis_results(document_id, basic_result)
-
-        # CRITICAL FIX: Actually extract metadata before marking as completed
-        logger.info(f"🚀 METADATA EXTRACTION: Starting for document {document_id}")
-        try:
-            # Run metadata extraction using smart extractor
-            metadata = await _extract_document_metadata(document_id, chunks)
-            
-            # Save metadata using staged storage for isolation
-            try:
-                logger.info(f"💾 STAGED: Starting staged storage save for {document_id}")
-                from services.staged_storage import StagedStorageManager
-                storage_manager = StagedStorageManager()
-                storage_manager.save_metadata(document_id, metadata)
-                logger.info(f"✅ STAGED: Staged storage save completed for {document_id}")
-            except Exception as staged_error:
-                logger.error(f"❌ STAGED STORAGE ERROR for {document_id}: {str(staged_error)}")
-                logger.error(f"❌ STAGED STORAGE TRACEBACK: {traceback.format_exc()}")
-                # Continue processing even if staged storage fails
-            
-            # Update the main results file with actual metadata and completion status
-            try:
-                logger.info(f"🔄 TRANSFORM: Starting metadata transformation for {document_id}")
-                transformed_metadata = _transform_metadata_for_frontend(metadata)
-                logger.info(f"✅ TRANSFORM: Metadata transformation completed for {document_id}")
-                
-                basic_result.update({
-                    "status": "COMPLETED",  # FIX: Update main status to show completion
-                    "metadata_extraction": "COMPLETED", 
-                    "metadata": transformed_metadata,
-                    "message": "Metadata extraction completed successfully. Ready for framework selection."
-                })
-                
-                logger.info(f"💾 SAVE: Starting results save for {document_id}")
-                save_analysis_results(document_id, basic_result)
-                logger.info(f"✅ SAVE: Results saved successfully for {document_id}")
-                
-            except Exception as transform_error:
-                logger.error(f"❌ TRANSFORM/SAVE ERROR for {document_id}: {str(transform_error)}")
-                logger.error(f"❌ TRANSFORM/SAVE TRACEBACK: {traceback.format_exc()}")
-                
-                # Fallback: save with raw metadata if transformation fails
-                basic_result.update({
-                    "status": "COMPLETED",
-                    "metadata_extraction": "COMPLETED",
-                    "metadata": metadata,  # Use raw metadata as fallback
-                    "message": "Metadata extraction completed (fallback mode)."
-                })
-                save_analysis_results(document_id, basic_result)
-            
-            # NOW create metadata completion lock file (after actual extraction)
-            metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
-            metadata_lock_file.touch()
-            
-            logger.info(f"✅ METADATA EXTRACTION: Completed successfully for {document_id}")
-            
-        except Exception as metadata_error:
-            logger.error(f"❌ METADATA EXTRACTION: Failed for {document_id}: {metadata_error}")
-            # Update results with error status
-            basic_result.update({
-                "metadata_extraction": "FAILED",
-                "message": f"Metadata extraction failed: {str(metadata_error)}"
-            })
-            save_analysis_results(document_id, basic_result)
+        # Create metadata completion lock file
+        metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
+        metadata_lock_file.touch()
 
         # Remove processing lock file
         if processing_lock_file.exists():
             processing_lock_file.unlink()
 
-        # Archive uploaded file for audit trail
-        _archive_document_file(document_id)
-
-        # UPDATE SESSION STATUS: Metadata extraction completed, ready for framework selection
-        try:
-            from routes.sessions_routes import update_session_processing_status
-            await update_session_processing_status(
-                f"session_{document_id}", 
-                "metadata_complete", 
-                {"last_updated": datetime.now().isoformat()}
-            )
-            logger.info(f"✅ SESSION STATUS UPDATED: Metadata complete for session_{document_id}")
-        except Exception as session_error:
-            logger.error(f"❌ Failed to update session status: {session_error}")
+        # Cleanup uploaded file
+        _cleanup_uploaded_file(document_id)
 
         logger.info(f"Metadata extraction completed for document {document_id}")
-        
-        # CRITICAL FIX: Keep server alive by starting a keep-alive background task
-        # This prevents Render from shutting down the service after metadata extraction
-        logger.info(f"🟢 SERVER CONTINUITY: Starting keep-alive task to prevent shutdown")
-        await _start_keepalive_task(document_id)
 
-    except Exception as _e:
+    except Exception as e:
         # Handle error
-        _handle_processing_error(document_id, _e)
+        _handle_processing_error(document_id, e)
 
         # Remove processing lock file if it exists
         if processing_lock_file.exists():
@@ -1396,12 +618,10 @@ async def upload_document(
             return response
 
         # Read file content
-        logger.info(f"📖 UPLOAD STEP 1: Reading uploaded file content ({file.filename})")
         try:
             content = await file.read()
-            logger.info(f"✅ UPLOAD STEP 1 COMPLETE: File content read ({len(content)} bytes)")
-        except Exception as _e:
-            logger.error(f"❌ UPLOAD STEP 1 FAILED: Error reading file content: {str(_e)}")
+        except Exception as e:
+            logger.error(f"Error reading file content: {str(e)}")
             response = {
                 "status": "error",
                 "error": "File processing failed",
@@ -1410,147 +630,74 @@ async def upload_document(
             return response
 
         # Generate unique document ID
-        logger.info("🆔 UPLOAD STEP 2: Generating document ID")
         document_id = generate_document_id()
-        logger.info(f"✅ UPLOAD STEP 2 COMPLETE: Document ID generated: {document_id}")
+        logger.info(f"Processing document upload with ID: {document_id}")
 
         # Save uploaded file with original extension
-        logger.info("💾 UPLOAD STEP 3: Saving uploaded file to disk")
         upload_ext = f".{ext}"
         upload_path = UPLOADS_DIR / f"{document_id}{upload_ext}"
         try:
             with open(upload_path, "wb") as f:
                 f.write(content)
-            logger.info(f"✅ UPLOAD STEP 3 COMPLETE: File saved to {upload_path}")
-        except Exception as _e:
-            logger.error(f"❌ UPLOAD STEP 3 FAILED: Error saving uploaded file: {str(_e)}")
+            logger.info(f"Saved uploaded file to: {upload_path}")
+        except Exception as e:
+            logger.error(f"Error saving uploaded file: {str(e)}")
             response = {
                 "status": "error",
                 "error": "File save failed",
                 "message": "Failed to save uploaded file",
             }
-            logger.error(f"🚫 UPLOAD FAILED: File save error response: {json.dumps(response)}")
+            logger.info(
+                f"Returning response for file save error: {json.dumps(response)}"
+            )
             return response
 
         # Log the processing mode
-        logger.info(f"⚙️  Processing mode validation: {processing_mode}")
+        logger.info(f"Upload received with processing mode: {processing_mode}")
 
         # Validate processing mode
-        valid_modes = ["zap", "smart", "comparison", "enhanced"]
+        valid_modes = ["zap", "smart", "comparison"]
         if processing_mode not in valid_modes:
             logger.warning(
                 f"Invalid processing mode '{processing_mode}', defaulting to 'smart'"
             )
             processing_mode = "smart"
-            
-        # Map enhanced mode to smart for backend processing
-        if processing_mode == "enhanced":
-            processing_mode = "smart"
 
-        logger.info(f"📤 UPLOAD STEP 4: Starting background processing for document {document_id}")
-        # FULL NLP WORKFLOW: Document chunking with intelligent categorization
+        # No need to chunk here, just start background processing
         try:
-            logger.info("🔧 UPLOAD STEP 5: Importing full NLP document processing system")
-            # Import the complete NLP pipeline
             background_tasks.add_task(
                 process_upload_tasks,
-                document_id,
-                ai_svc,
-                "",  # text parameter
-                processing_mode
+                document_id=document_id,
+                ai_svc=ai_svc,
+                processing_mode=processing_mode,
             )
-            logger.info("✅ UPLOAD STEP 5 COMPLETE: Full NLP processing system imported successfully")
-
-            # Generate session ID and format response for frontend compatibility
-            session_id = f"session_{document_id}"
-            document_name = file.filename if file.filename else "unknown.pdf"
-            file_type = ext
-            
-            # Create enhanced session with file tracking
-            try:
-                now = datetime.now()
-                session_file_info = SessionFile(
-                    file_id=document_id,
-                    original_filename=document_name,
-                    file_size=len(content),
-                    upload_timestamp=now,
-                    file_type=file_type,
-                    storage_location="postgresql"
-                )
-                
-                enhanced_session = {
-                    "session_id": session_id,
-                    "title": f"Analysis of {document_name}",
-                    "description": f"Document analysis session for {document_name}",
-                    "created_at": now.isoformat(),
-                    "updated_at": now.isoformat(),
-                    "document_count": 1,
-                    "last_document_id": document_id,
-                    "status": "active",
-                    "owner": "current_user",
-                    "shared_with": [],
-                    "chat_state": {"documentId": document_id, "processingStatus": "processing"},
-                    "conversation_history": [
-                        {
-                            "message_id": f"msg_{now.strftime('%Y%m%d_%H%M%S')}_upload",
-                            "role": "system",
-                            "content": f"Document {document_name} uploaded and processing started",
-                            "timestamp": now.isoformat(),
-                            "message_type": "upload_notification",
-                            "metadata": {"document_id": document_id, "file_size": len(content)}
-                        }
-                    ],
-                    "user_choices": [],
-                    "ai_responses": [],
-                    "uploaded_files": [session_file_info.dict()],
-                    "documents": [],
-                    "analysis_context": {
-                        "accounting_standard": None,
-                        "custom_instructions": None,
-                        "selected_frameworks": [],
-                        "analysis_preferences": {"processing_mode": processing_mode}
-                    }
-                }
-                
-                # Save enhanced session
-                save_session_to_file(session_id, enhanced_session)
-                logger.info(f"✅ Enhanced session created: {session_id}")
-                
-            except Exception as session_error:
-                logger.warning(f"Failed to create enhanced session: {session_error}")
-                # Continue with upload even if session creation fails
-            
             response = {
-                "session_id": session_id,
-                "document_id": document_id,
                 "status": "processing",
-                "document_name": document_name,
-                "file_type": file_type,
+                "document_id": document_id,
                 "processing_mode": processing_mode,
-                "message": "Document uploaded - processing with full NLP pipeline including "
-                          "chunking, categorization, and metadata extraction",
+                "message": f"Document uploaded with {processing_mode} mode, processing started",
             }
-            logger.info(f"✅ UPLOAD STEP 6 COMPLETE: Full NLP background task started for document {document_id}")
-            logger.info(f"🎯 ALL UPLOAD STEPS COMPLETE: Full NLP pipeline initiated for {document_id}")
-            logger.info(f"📋 Response: {json.dumps(response)}")
+            logger.info(f"Returning success response: {json.dumps(response)}")
             return response
-        except Exception as _e:
-            logger.error(f"❌ UPLOAD STEP 5 FAILED: Full NLP processing failed to start: {str(_e)}")
+        except Exception as e:
+            logger.error(f"Error starting background processing: {str(e)}")
             response = {
                 "status": "error",
-                "error": "NLP processing failed",
-                "message": f"Full NLP pipeline failed to start: {str(_e)}",
+                "error": "Processing failed",
+                "message": "Failed to start document processing",
             }
-            logger.error(f"🚫 UPLOAD FAILED: Returning NLP processing failure response: {json.dumps(response)}")
+            logger.info(
+                f"Returning response for processing error: {json.dumps(response)}"
+            )
             return response
 
-    except Exception as _e:
-        logger.error(f"Error processing document upload: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error processing document upload: {str(e)}")
         logger.error(traceback.format_exc())
         response = {
             "status": "error",
             "error": "Upload failed",
-            "message": f"Error processing document: {str(_e)}",
+            "message": f"Error processing document: {str(e)}",
         }
         logger.info(f"Returning response for general error: {json.dumps(response)}")
         return response
@@ -1562,11 +709,11 @@ async def get_checklist() -> JSONResponse:
     try:
         checklist = load_checklist()
         return JSONResponse(status_code=200, content=checklist)
-    except Exception as _e:
-        logger.error(f"Error loading checklist: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error loading checklist: {str(e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load checklist", "message": str(_e)},
+            content={"error": "Failed to load checklist", "message": str(e)},
         )
 
 
@@ -1581,19 +728,9 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
         frameworks_data = get_available_frameworks()
         filtered_frameworks = []
         checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
-
-        # Debug logging
-        logger.info(f"Frameworks loaded: {len(frameworks_data.get('frameworks', []))}")
-        logger.info(f"Checklist base path: {checklist_base}")
-        logger.info(f"Checklist base exists: {checklist_base.exists()}")
-        if checklist_base.exists():
-            dirs = [item.name for item in checklist_base.iterdir() if item.is_dir()]
-            logger.info(f"Framework directories found: {dirs}")
-
         for fw in frameworks_data.get("frameworks", []):
             fw_id = fw["id"]
             fw_dir = checklist_base / fw_id
-            logger.info(f"Checking framework {fw_id}: {fw_dir} exists={fw_dir.exists()}")
             if not fw_dir.exists() or not fw_dir.is_dir():
                 continue  # Skip frameworks with no directory
             filtered_standards = []
@@ -1611,109 +748,20 @@ async def get_frameworks() -> Union[Dict[str, Any], JSONResponse]:
                 fw_copy["standards"] = filtered_standards
                 filtered_frameworks.append(fw_copy)
         return {"frameworks": filtered_frameworks}
-    except Exception as _e:
-        logger.error(f"Error getting frameworks: {str(_e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
-
-
-@router.get("/frameworks - debug", response_model=None)
-async def get_frameworks_debug():
-    """Debug endpoint to check frameworks loading issues"""
-    try:
-        from pathlib import Path
-
-        result = {
-            "raw_frameworks_count": 0,
-            "checklist_base_exists": False,
-            "checklist_base_path": "",
-            "framework_dirs": [],
-            "error": None
-        }
-
-        try:
-            frameworks_data = get_available_frameworks()
-            result["raw_frameworks_count"] = len(frameworks_data.get("frameworks", []))
-        except Exception as _e:
-            result["error"] = f"get_available_frameworks failed: {str(_e)}"
-
-        checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
-        result["checklist_base_path"] = str(checklist_base)
-        result["checklist_base_exists"] = checklist_base.exists()
-
-        if checklist_base.exists():
-            result["framework_dirs"] = [item.name for item in checklist_base.iterdir() if item.is_dir()]
-
-        return result
-    except Exception:
-        return {"error": "Debug endpoint failed"}
-
-
-@router.get("/checklist-debug/{framework}/{standard}", response_model=None)
-async def get_checklist_debug(framework: str, standard: str):
-    """Debug endpoint to check checklist loading for specific framework / standard"""
-    try:
-        from pathlib import Path
-
-        result = {
-            "framework": framework,
-            "standard": standard,
-            "is_available": False,
-            "checklist_loaded": False,
-            "checklist_path_checked": [],
-            "checklist_sections": 0,
-            "checklist_total_items": 0,
-            "error": None
-        }
-
-        # Check availability
-        try:
-            result["is_available"] = is_standard_available(framework, standard)
-        except Exception as _e:
-            result["error"] = f"is_standard_available failed: {str(_e)}"
-
-        # Check checklist loading
-        try:
-            checklist_base = Path(__file__).parent.parent / "checklist_data" / "frameworks"
-
-            # Test possible paths
-            possible_paths = [
-                checklist_base / framework / f"{standard}.json",
-                checklist_base / "IFRS" / f"{standard}.json",
-                checklist_base / framework / standard / "checklist.json"
-            ]
-
-            for path in possible_paths:
-                path_info = {
-                    "path": str(path),
-                    "exists": path.exists(),
-                    "is_file": path.is_file() if path.exists() else False
-                }
-                result["checklist_path_checked"].append(path_info)
-
-            checklist = load_checklist(framework, standard)
-            if checklist:
-                result["checklist_loaded"] = True
-                result["checklist_sections"] = len(checklist.get('sections', []))
-                result["checklist_total_items"] = sum(len(section.get('items', []))
-                                                      for section in checklist.get('sections', []))
-
-        except Exception as _e:
-            result["error"] = f"checklist loading failed: {str(_e)}"
-
-        return result
-    except Exception:
-        return {"error": "Debug endpoint failed"}
+    except Exception as e:
+        logger.error(f"Error getting frameworks: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 
 @router.post("/suggest-standards", response_model=None)
 async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[str, Any], JSONResponse]:
     """
     Suggest relevant accounting standards based on company metadata and selected framework.
-
+    
     Expected request body:
     {
         "framework": "IFRS",
-        "company_name": "ALDAR Properties PJSC",
+        "company_name": "ALDAR Properties PJSC", 
         "nature_of_business": "Real estate development...",
         "operational_demographics": "United Arab Emirates, Egypt",
         "financial_statements_type": "Consolidated"
@@ -1721,19 +769,19 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
     """
     try:
         # Validate required fields
-        required_fields = ["framework", "company_name", "nature_of_business",
-                           "operational_demographics", "financial_statements_type"]
-
+        required_fields = ["framework", "company_name", "nature_of_business", 
+                          "operational_demographics", "financial_statements_type"]
+        
         for field in required_fields:
             if field not in request:
                 raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
-
+        
         framework = request["framework"]
-        company_name = request["company_name"]
+        company_name = request["company_name"] 
         nature_of_business = request["nature_of_business"]
         operational_demographics = request["operational_demographics"]
         financial_statements_type = request["financial_statements_type"]
-
+        
         # Get available standards for the framework
         frameworks_data = get_available_frameworks()
         framework_data = None
@@ -1741,31 +789,30 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             if fw["id"] == framework:
                 framework_data = fw
                 break
-
+        
         if not framework_data:
             raise HTTPException(status_code=400, detail=f"Framework '{framework}' not found")
-
+        
         # Extract available standard IDs and names
         available_standards = []
         standards_map = {}  # Map ID to name for lookup
         for std in framework_data.get("standards", []):
             available_standards.append(std["id"])
             standards_map[std["id"]] = std.get("name", std["id"])
-
+        
         if not available_standards:
             raise HTTPException(status_code=400, detail=f"No standards available for framework '{framework}'")
-
+        
         # Create AI prompt for standards suggestion
         # Create the prompt directly since there's an issue with the AIPrompts method
         available_standards_list = "\\n".join([f"- {std} ({standards_map[std]})" for std in available_standards])
-
+        
         system_prompt = (
-            "You are a financial standards recommendation AI. You MUST respond with valid JSON only - "
-            "no text before or after the JSON.\\n\\n"
+            "You are a financial standards recommendation AI. You MUST respond with valid JSON only - no text before or after the JSON.\\n\\n"
             "Your task: Analyze company profiles and return JSON with recommended accounting standards.\\n\\n"
-            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. "
-            "No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters).")
-
+            "CRITICAL: Your response must be valid JSON that starts with { and ends with }. No markdown, no explanations, no code blocks. Keep reasoning concise (max 80 characters)."
+        )
+        
         user_prompt = (
             f"Company: {company_name}\\n"
             f"Business: {nature_of_business}\\n"
@@ -1774,80 +821,65 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             f"Statement Type: {financial_statements_type}\\n\\n"
             f"Available Standards: {available_standards_list}\\n\\n"
             "INSTRUCTIONS:\\n"
-            "1. Analyze the company profile and suggest 6 - 10 most relevant standards\\n"
+            "1. Analyze the company profile and suggest 6-10 most relevant standards\\n"
             "2. Include core universal standards (IAS 1, IAS 7) that apply to all companies\\n"
-            "3. Add industry - specific standards based on business nature\\n"
+            "3. Add industry-specific standards based on business nature\\n"
             "4. Use EXACT standard IDs from Available Standards list\\n"
             "5. Include the full standard title in your response\\n"
             "6. Keep reasoning brief and specific (max 80 characters per reason)\\n\\n"
             "Return JSON with this exact structure:\\n"
             "{\\n"
             '  "suggested_standards": [\\n'
-            '    {"standard_id": "IAS 1", "standard_title": "IAS 1 - Presentation of Financial Statements", '
-            '"relevance_score": 0.95, "reasoning": "Financial statement presentation - mandatory"},\\n'
-            '    {"standard_id": "IAS 7", "standard_title": "IAS 7 - Statement of Cash Flows", '
-            '"relevance_score": 0.95, "reasoning": "Cash flow statements - mandatory"}\\n'
+            '    {"standard_id": "IAS 1", "standard_title": "IAS 1 - Presentation of Financial Statements", "relevance_score": 0.95, "reasoning": "Financial statement presentation - mandatory"},\\n'
+            '    {"standard_id": "IAS 7", "standard_title": "IAS 7 - Statement of Cash Flows", "relevance_score": 0.95, "reasoning": "Cash flow statements - mandatory"}\\n'
             '  ],\\n'
             '  "priority_level": "high",\\n'
             '  "business_context": "Brief analysis summary"\\n'
             "}"
         )
-
+        
         prompt_data = {
             "system": system_prompt,
             "user": user_prompt
         }
-
+        
         # Call AI service to get suggestions
         ai_service = get_ai_service()
         
-        # Check if AI service is available
-        if ai_service is None:
-            raise HTTPException(status_code=503, detail="AI service is not available - check Azure OpenAI configuration")
-
-        # Use the OpenAI client directly for this simple call - ENHANCED DEBUGGING
-        logger.info(f"🔍 About to call Azure OpenAI - Model: {ai_service.deployment_name}")
-        logger.info(f"🔍 System prompt length: {len(prompt_data['system'])}")
-        logger.info(f"🔍 User prompt length: {len(prompt_data['user'])}")
+        # Use the OpenAI client directly for this simple call
+        response = ai_service.openai_client.chat.completions.create(
+            model=ai_service.deployment_name,
+            messages=[
+                {"role": "system", "content": prompt_data["system"]},
+                {"role": "user", "content": prompt_data["user"]}
+            ],
+            max_completion_tokens=8000  # Much higher token limit to prevent truncation
+        )
         
-        try:
-            response = ai_service.openai_client.chat.completions.create(
-                model=ai_service.deployment_name,
-                messages=[
-                    {"role": "system", "content": prompt_data["system"]},
-                    {"role": "user", "content": prompt_data["user"]}
-                ],
-                max_tokens=8000  # Use max_tokens for Azure OpenAI API compatibility
-            )
-            logger.info("🔍 Azure OpenAI call succeeded!")
-        except Exception as openai_error:
-            logger.error(f"🔍 Azure OpenAI call failed: {type(openai_error).__name__}: {str(openai_error)}")
-            raise
-
         ai_response = response.choices[0].message.content
-
+        
         # Parse AI response - ensure it's not None
         if not ai_response:
             raise HTTPException(status_code=500, detail="AI response is empty")
-
+        
         logger.info(f"Raw AI response: {ai_response}")
-
+        
         # Clean the response - remove any markdown code blocks
         cleaned_response = ai_response.strip()
         if cleaned_response.startswith("```json"):
             cleaned_response = cleaned_response.replace("```json", "").replace("```", "").strip()
         elif cleaned_response.startswith("```"):
             cleaned_response = cleaned_response.replace("```", "").strip()
-
+            
         logger.info(f"Cleaned AI response: {cleaned_response}")
-
+        
         # Parse JSON - no fallback, just fail if it doesn't work
         suggestions_data = json.loads(cleaned_response)
-
+        
         # Validate the response structure
         if "suggested_standards" not in suggestions_data:
             raise HTTPException(status_code=500, detail="AI response missing 'suggested_standards' field")
-
+        
         # Filter suggestions to only include available standards and add titles if missing
         valid_suggestions = []
         for suggestion in suggestions_data["suggested_standards"]:
@@ -1855,7 +887,7 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             if standard_id in available_standards:
                 # Ensure we have a title - use AI provided title or lookup from standards_map
                 standard_title = suggestion.get("standard_title") or standards_map.get(standard_id, standard_id)
-
+                
                 valid_suggestion = {
                     "standard_id": standard_id,
                     "standard_title": standard_title,
@@ -1863,13 +895,12 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
                     "reasoning": suggestion.get("reasoning", "Recommended for your business profile")
                 }
                 valid_suggestions.append(valid_suggestion)
-
+        
         result = {
             "framework": framework,
             "metadata_used": {
                 "company_name": company_name,
-                "nature_of_business": (nature_of_business[:100] + "..."
-                                     if len(nature_of_business) > 100 else nature_of_business),
+                "nature_of_business": nature_of_business[:100] + "..." if len(nature_of_business) > 100 else nature_of_business,
                 "operational_demographics": operational_demographics,
                 "financial_statements_type": financial_statements_type
             },
@@ -1879,15 +910,15 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
             "total_available_standards": len(available_standards),
             "suggestions_count": len(valid_suggestions)
         }
-
+        
         logger.info(f"Generated {len(valid_suggestions)} accounting standards suggestions for {framework} framework")
         return result
-
+        
     except HTTPException:
         raise
-    except Exception as _e:
-        logger.error(f"Error suggesting accounting standards: {str(_e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error suggesting accounting standards: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 
 @router.get("/progress/{document_id}", response_model=None)
@@ -1896,43 +927,9 @@ async def get_analysis_progress(
 ) -> Union[Dict[str, Any], JSONResponse]:
     """
     Get real-time analysis progress for a document including question counts and elapsed time.
-    Now with persistent storage support for Render deployment.
     """
     try:
-        # Import persistent storage
-        from services.persistent_storage_enhanced import get_persistent_storage_manager
-        storage_manager = get_persistent_storage_manager()
-        
-        # FIRST: Check if analysis is completed in persistent storage
-        logger.info(f"📊 Checking persistent storage for completed analysis: {document_id}")
-        persistent_results = await storage_manager.get_analysis_results(document_id)
-        
-        if persistent_results and persistent_results.get("status", "").lower() == "completed":
-            logger.info(f"✅ Analysis completed in persistent storage: {document_id}")
-            # Analysis is completed, cleanup any stale progress data
-            from services.progress_tracker import get_progress_tracker
-            tracker = get_progress_tracker()
-            tracker.cleanup_analysis(document_id)
-
-            return {
-                "document_id": document_id,
-                "status": "COMPLETED",
-                "overall_progress": {
-                    "percentage": 100.0,
-                    "elapsed_time_seconds": 0.0,
-                    "elapsed_time_formatted": "Complete",
-                    "completed_standards": 2,
-                    "total_standards": 2,
-                    "current_standard": "Analysis Complete",
-                },
-                "percentage": 100,  # For backwards compatibility
-                "currentStandard": "Analysis Complete",
-                "completedStandards": 2,
-                "totalStandards": 2,
-                "completed": True,
-            }
-        
-        # FALLBACK: Check filesystem for completion
+        # FIRST: Check if analysis is completed (highest priority)
         completed_file = (
             Path(__file__).parent.parent
             / "analysis_results"
@@ -1975,30 +972,7 @@ async def get_analysis_progress(
         progress = tracker.get_progress(document_id)
 
         if not progress:
-            # Check if analysis is running in persistent storage first
-            logger.info(f"🔍 Checking persistent storage for processing lock: {document_id}")
-            processing_lock = await storage_manager.get_processing_lock(document_id)
-            
-            if processing_lock:
-                logger.info(f"🔐 Found processing lock in persistent storage: {document_id}")
-                return {
-                    "document_id": document_id,
-                    "status": "PROCESSING",
-                    "overall_progress": {
-                        "percentage": 15.0,  # Default progress
-                        "elapsed_time_seconds": 60.0,
-                        "elapsed_time_formatted": "1m 0s",
-                        "completed_standards": 0,
-                        "total_standards": 2,
-                        "current_standard": "Analysis in progress...",
-                    },
-                    "percentage": 15,  # For backwards compatibility
-                    "currentStandard": "Analysis in progress...",
-                    "completedStandards": 0,
-                    "totalStandards": 2,
-                }
-            
-            # Fallback: Check filesystem for lock file
+            # Check if analysis is running by looking for lock file
             processing_lock_file = (
                 Path(__file__).parent.parent
                 / "analysis_results"
@@ -2076,7 +1050,7 @@ async def get_analysis_progress(
 
                 # Add individual question progress with tick marks
                 if std_progress.questions_progress:
-                    for _q_id, q_progress in std_progress.questions_progress.items():
+                    for q_id, q_progress in std_progress.questions_progress.items():
                         question_detail = {
                             "id": q_progress.question_id,
                             "section": q_progress.section,
@@ -2113,9 +1087,9 @@ async def get_analysis_progress(
 
         return response_data
 
-    except Exception as _e:
-        logger.error(f"Error getting analysis progress for {document_id}: {str(_e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error getting analysis progress for {document_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 
 @router.get("/rate-limit-status", response_model=None)
@@ -2173,13 +1147,13 @@ async def get_rate_limit_status() -> Dict[str, Any]:
             },
         }
 
-    except Exception as _e:
-        logger.error(f"Error getting rate limit status: {str(_e)}")
-        raise HTTPException(status_code=500, detail=f"Server error: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error getting rate limit status: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 
 def _format_elapsed_time(seconds: float) -> str:
-    """Format elapsed time in a human - readable format"""
+    """Format elapsed time in a human-readable format"""
     if seconds < 60:
         return f"{int(seconds)}s"
     elif seconds < 3600:
@@ -2229,7 +1203,7 @@ def _validate_standards_available(
             content={
                 "error": "Standard(s) not available",
                 "detail": (
-                    "The following standard(s) are not available for "
+                    f"The following standard(s) are not available for "
                     f"framework {framework}: "
                     f"{', '.join(unavailable_standards)}"
                 ),
@@ -2272,24 +1246,24 @@ def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
             text = ""
             with fitz.open(str(file_path)) as doc:
                 for page in doc:
-                    page_text = page.get_text()  # type: ignore[attr - defined]
+                    page_text = page.get_text()  # type: ignore[attr-defined]
                     if page_text:
                         text += page_text + "\n"
             return text.strip()
-        except Exception as _e:
-            logger.error(f"Error extracting text from PDF: {str(_e)}")
+        except Exception as e:
+            logger.error(f"Error extracting text from PDF: {str(e)}")
             return JSONResponse(
                 status_code=500,
-                content={"error": "PDF text extraction failed", "detail": str(_e)}
+                content={"error": "PDF text extraction failed", "detail": str(e)}
             )
     elif file_path.suffix.lower() == ".docx":
         if DocxDocument is None:
-            logger.error("DOCX support not available (python - docx not installed)")
+            logger.error("DOCX support not available (python-docx not installed)")
             return JSONResponse(
                 status_code=400,
                 content={
                     "error": "DOCX support not available",
-                    "detail": "python - docx package is not installed",
+                    "detail": "python-docx package is not installed",
                 },
             )
         text = "\n".join(
@@ -2309,7 +1283,7 @@ def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
 
 def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from chunk data."""
-    chunks_path = ANALYSIS_RESULTS_DIR / f"{document_id}_chunks.json"
+    chunks_path = Path("vector_indices") / f"{document_id}_chunks.json"
     if chunks_path.exists():
         with open(chunks_path, "r", encoding="utf-8") as f:
             chunks = json.load(f)
@@ -2365,12 +1339,8 @@ async def get_framework_checklist(
 ) -> Union[Dict[str, Any], JSONResponse]:
     """Get the checklist for a specific framework and standard."""
     try:
-        # Debug logging
-        logger.info(f"Checklist request: framework={framework}, standard={standard}")
-
         # Check if standard is available
         if not is_standard_available(framework, standard):
-            logger.warning(f"Standard not available: {framework}/{standard}")
             return JSONResponse(
                 status_code=404,
                 content={
@@ -2382,27 +1352,18 @@ async def get_framework_checklist(
                 },
             )
 
-        logger.info(f"Loading checklist for {framework}/{standard}")
         checklist = load_checklist(framework, standard)
-
-        if checklist:
-            sections_count = len(checklist.get('sections', []))
-            total_items = sum(len(section.get('items', [])) for section in checklist.get('sections', []))
-            logger.info(f"Checklist loaded: {sections_count} sections, {total_items} total items")
-        else:
-            logger.warning(f"Empty checklist returned for {framework}/{standard}")
-
         return JSONResponse(status_code=200, content=checklist)
-    except FileNotFoundError as _e:
-        logger.error(f"Checklist not found: {str(_e)}")
+    except FileNotFoundError as e:
+        logger.error(f"Checklist not found: {str(e)}")
         return JSONResponse(
-            status_code=404, content={"error": "Checklist not found", "message": str(_e)}
+            status_code=404, content={"error": "Checklist not found", "message": str(e)}
         )
-    except Exception as _e:
-        logger.error(f"Error loading checklist: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error loading checklist: {str(e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load checklist", "message": str(_e)},
+            content={"error": "Failed to load checklist", "message": str(e)},
         )
 
 
@@ -2414,137 +1375,18 @@ async def get_metadata_fields() -> JSONResponse:
         with open(metadata_path, "r", encoding="utf-8") as f:
             metadata = json.load(f)
         return JSONResponse(status_code=200, content=metadata["metadata_fields"])
-    except Exception as _e:
-        logger.error(f"Error loading metadata fields: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error loading metadata fields: {str(e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Failed to load metadata fields", "message": str(_e)},
+            content={"error": "Failed to load metadata fields", "message": str(e)},
         )
 
 
 @router.get("/documents/{document_id}", response_model=None)
 async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
-    """
-    Get document status with persistent storage support for Render deployment.
-    
-    This endpoint uses dual storage:
-    1. Try persistent database storage first (primary for Render)
-    2. Fallback to filesystem if database unavailable
-    """
-    logger.info(f"📊 GET /documents/{document_id} - Starting status check")
-    
-    try:
-        # Import persistent storage
-        from services.persistent_storage_enhanced import get_persistent_storage_manager
-        storage_manager = get_persistent_storage_manager()
-        
-        # Try to get analysis results from persistent storage first
-        logger.info(f"🗄️ Checking persistent storage for results: {document_id}")
-        persistent_results = await storage_manager.get_analysis_results(document_id)
-        
-        if persistent_results:
-            logger.info(f"✅ Found results in persistent storage for {document_id}")
-            return _process_analysis_results(document_id, persistent_results)
-        
-        # Fallback to filesystem
-        logger.info(f"📁 Checking filesystem for results: {document_id}")
-        return await _get_document_status_legacy(document_id)
-        
-    except Exception as e:
-        logger.error(f"❌ Error getting document status for {document_id}: {str(e)}")
-        # Final fallback to legacy system
-        try:
-            return await _get_document_status_legacy(document_id)
-        except Exception as fallback_error:
-            logger.error(f"❌ FALLBACK: Legacy system failed for {document_id}: {str(fallback_error)}")
-            return JSONResponse(
-                status_code=500,
-                content={
-                    "error": "Server error",
-                    "message": f"Failed to get document status: {str(e)}",
-                    "document_id": document_id
-                }
-            )
-
-
-def _process_analysis_results(document_id: str, results: dict) -> Dict[str, Any]:
-    """
-    Process analysis results from either persistent storage or filesystem.
-    Standardizes the response format regardless of storage source.
-    """
-    try:
-        # Check for errors in results
-        if "error" in results:
-            return {
-                "document_id": document_id,
-                "status": "FAILED",
-                "error": results.get("error", "Unknown error"),
-                "message": results.get("message", "Analysis failed"),
-                "metadata": results.get("metadata", {}),
-            }
-        
-        # Normalize status values
-        status = results.get("status", "PROCESSING")
-        if status == "awaiting_framework_selection":
-            status = "awaiting_framework_selection"
-        elif status.lower() == "completed":
-            status = "COMPLETED"
-        elif status.lower() == "failed" or status.lower() == "error":
-            status = "FAILED"
-        else:
-            status = "PROCESSING"
-        
-        metadata_extraction = results.get("metadata_extraction", "PENDING")
-        compliance_analysis = results.get("compliance_analysis", "PENDING")
-        
-        # Include smart categorization metadata if available
-        smart_categorization = results.get("smart_categorization", {})
-        
-        # Only return sections when compliance analysis is completed
-        sections_data = []
-        if compliance_analysis in ["COMPLETED", "COMPLETED_WITH_ERRORS"]:
-            sections_data = results.get("sections", [])
-            logger.info(f"Returning {len(sections_data)} sections for completed analysis {document_id}")
-        else:
-            logger.info(f"Compliance analysis not completed ({compliance_analysis}) - returning empty sections for {document_id}")
-        
-        return {
-            "document_id": document_id,
-            "status": status,
-            "metadata_extraction": metadata_extraction,
-            "compliance_analysis": compliance_analysis,
-            "processing_mode": results.get("processing_mode", "smart"),
-            "smart_categorization": {
-                "total_categories": smart_categorization.get("total_categories", 0),
-                "content_chunks": smart_categorization.get("content_chunks", 0),
-                "categorization_complete": smart_categorization.get("categorization_complete", False),
-                "categories_found": smart_categorization.get("categories_found", [])
-            },
-            "metadata": results.get("metadata", {}),
-            "sections": sections_data,
-            "progress": results.get("progress", {}),
-            "framework": results.get("framework"),
-            "standards": results.get("standards", []),
-            "specialInstructions": results.get("specialInstructions"),
-            "extensiveSearch": results.get("extensiveSearch", False),
-            "message": results.get("message", "Analysis in progress"),
-        }
-    except Exception as e:
-        logger.error(f"Error processing analysis results for {document_id}: {str(e)}")
-        return {
-            "document_id": document_id,
-            "status": "FAILED",
-            "error": "Processing error",
-            "message": f"Failed to process analysis results: {str(e)}",
-            "metadata": {},
-        }
-
-
-async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
-    """
-    LEGACY: Original file-based document status retrieval for fallback.
-    This is the old implementation kept for backward compatibility.
-    """
+    """Get document status and metadata."""
+    logger.info(f"🔍 GET /documents/{document_id} - Starting request")
     try:
         logger.info(f"🔍 Checking results path for document: {document_id}")
         # Check if analysis results exist
@@ -2574,113 +1416,15 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
             else:
                 status = "PROCESSING"
             metadata_extraction = results.get("metadata_extraction", "PENDING")
-            
-            # CRITICAL: Check for completion flag file to update metadata_extraction status
-            completion_flag_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.metadata_completed")
-            if os.path.exists(completion_flag_path):
-                metadata_extraction = "COMPLETED"
-                
-                # Try to load metadata from staged storage first, fallback to legacy
-                from services.staged_storage import StagedStorageManager
-                storage_manager = StagedStorageManager()
-                staged_metadata = storage_manager.get_metadata(document_id)
-                
-                # Extract actual metadata from staged storage format
-                extracted_metadata = None
-                if staged_metadata:
-                    # Handle staged storage wrapper format
-                    extracted_metadata = staged_metadata.get('data', staged_metadata)
-                
-                if not extracted_metadata:
-                    # FALLBACK: Load from legacy location
-                    metadata_file_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}_metadata.json")
-                    if os.path.exists(metadata_file_path):
-                        try:
-                            with open(metadata_file_path, 'r', encoding='utf-8') as f:
-                                extracted_metadata = json.load(f)
-                        except Exception as e:
-                            logger.error(f"[POLLING FIX] Failed to load legacy metadata file: {e}")
-                
-                if extracted_metadata:
-                    # Transform metadata to proper backend format with snake_case field names
-                    frontend_metadata = {
-                        "company_name": "",
-                        "nature_of_business": "", 
-                        "operational_demographics": "",
-                        "financial_statements_type": ""
-                    }
-                    
-                    # Extract values from confidence structure - BACKEND MAINTAINS SNAKE_CASE STANDARD
-                    for key, metadata_obj in extracted_metadata.items():
-                        if key == "optimization_metrics":
-                            continue  # Skip metrics
-                            
-                        if isinstance(metadata_obj, dict) and 'value' in metadata_obj:
-                            value = metadata_obj['value']
-                        else:
-                            value = metadata_obj
-                        
-                        # Map to backend standard snake_case field names
-                        if key in ["company_name", "companyName"]:
-                            if value and value != "":
-                                frontend_metadata["company_name"] = str(value) if value else ""
-                        elif key in ["nature_of_business", "natureOfBusiness", "business_nature"]:
-                            if value and value != "":
-                                frontend_metadata["nature_of_business"] = str(value) if value else ""
-                        elif key in ["operational_demographics", "operationalDemographics", "geography", "demographics"]:
-                            if value and value != "":
-                                frontend_metadata["operational_demographics"] = str(value) if value else ""
-                        elif key in ["financial_statements_type", "financialStatementsType", "statement_type", "fs_type"]:
-                            if value and value != "":
-                                frontend_metadata["financial_statements_type"] = str(value) if value else ""
-                    
-                    # Only update if we have actual extracted values
-                    has_extracted_data = any(v for v in frontend_metadata.values() if v)
-                    if has_extracted_data:
-                        results["metadata"] = frontend_metadata
-                        logger.info(f"[POLLING FIX] Successfully loaded metadata for {document_id}")
-                    else:
-                        logger.warning(f"[POLLING FIX] No valid metadata extracted for {document_id}")
-                else:
-                    logger.warning(f"[POLLING FIX] No metadata found for {document_id}")
-                
-                # Update the results file with the completed status
-                results["metadata_extraction"] = "COMPLETED"
-                try:
-                    with open(results_path, 'w', encoding='utf-8') as f:
-                        json.dump(results, f, indent=2, ensure_ascii=False)
-                    logger.info(f"[POLLING FIX] Updated results file for {document_id} - metadata_extraction: COMPLETED")
-                except Exception as e:
-                    logger.error(f"[POLLING FIX] Failed to update results file: {e}")
-            
             compliance_analysis = results.get("compliance_analysis", "PENDING")
-
-            # Include smart categorization metadata if available
-            smart_categorization = results.get("smart_categorization", {})
-
-            # CRITICAL FIX: Only return sections when compliance analysis is completed
-            # This prevents frontend from showing 0% compliance for incomplete analyses
-            sections_data = []
-            if compliance_analysis in ["COMPLETED", "COMPLETED_WITH_ERRORS"]:
-                sections_data = results.get("sections", [])
-                logger.info(f"Returning {len(sections_data)} sections for completed analysis {document_id}")
-            else:
-                logger.info(f"Compliance analysis not completed ({compliance_analysis}) - returning empty sections for {document_id}")
-
             return {
                 "document_id": document_id,
                 "status": status,
                 "metadata_extraction": metadata_extraction,
                 "compliance_analysis": compliance_analysis,
                 "processing_mode": results.get("processing_mode", "smart"),
-                "smart_categorization": {
-                    "total_categories": smart_categorization.get("total_categories", 0),
-                    "content_chunks": smart_categorization.get("content_chunks", 0),
-                    "categorization_complete": smart_categorization.get("categorization_complete", False),
-                    "categories_found": smart_categorization.get("categories_found", [])
-                },
                 "metadata": results.get("metadata", {}),
-                "sections": sections_data,
+                "sections": results.get("sections", []),
                 "progress": results.get("progress", {}),
                 "framework": results.get("framework"),
                 "standards": results.get("standards", []),
@@ -2708,78 +1452,20 @@ async def _get_document_status_legacy(document_id: str) -> Union[Dict[str, Any],
             "metadata": {},
             "message": "Document uploaded, analysis not started yet",
         }
-    except Exception as _e:
-        logger.error(f"Error getting document status: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error getting document status: {str(e)}")
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "message": f"Failed to get document status: {str(_e)}",
+                "message": f"Failed to get document status: {str(e)}",
             },
         )
 
 
 @router.get("/documents/{document_id}/results")
 async def get_document_results(document_id: str) -> Dict[str, Any]:
-    """
-    BULLETPROOF: Get the results of a document analysis with atomic data access.
-    """
-    logger.info(f"🛡️ BULLETPROOF GET /documents/{document_id}/results - Starting bulletproof request")
-    
-    try:
-        # SIMPLE FILE READ: Get results from file
-        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        
-        if not results_path.exists():
-            return {
-                "error": "Document not found",
-                "message": f"No results found for document {document_id}",
-                "document_id": document_id
-            }
-        
-        with open(results_path, "r", encoding="utf-8") as f:
-            result = json.load(f)
-            
-        logger.info(f"✅ FILE READ: File success for {document_id}")
-        
-        # Build response from file data
-        return {
-            "status": result.get("status", "unknown"),
-            "document_id": document_id,
-            "metadata": result.get("metadata", {}),
-            "sections": result.get("sections", []),
-            "message": (
-                    "Document analysis completed"
-                    if result.get("status") == "completed"
-                    else "Document analysis in progress"
-                ),
-                "bulletproof": True,  # Indicates bulletproof system was used
-                "data_source": "database_primary"
-            }
-        
-        # FALLBACK: Try legacy file system
-        logger.info(f"📁 FALLBACK: Trying legacy file system for {document_id}")
-        return await _get_document_results_legacy(document_id)
-        
-    except Exception as e:
-        logger.error(f"❌ BULLETPROOF GET: Error for {document_id}: {str(e)}")
-        # Final fallback to legacy system
-        try:
-            return await _get_document_results_legacy(document_id)
-        except Exception as fallback_error:
-            logger.error(f"❌ FALLBACK: Even legacy failed for {document_id}: {str(fallback_error)}")
-            return {
-                "status": "error",
-                "document_id": document_id,
-                "message": f"Error retrieving document results: {str(e)}",
-                "bulletproof": False
-            }
-
-
-async def _get_document_results_legacy(document_id: str) -> Dict[str, Any]:
-    """
-    LEGACY: Original file-based document results retrieval for fallback.
-    """
+    """Get the results of a document analysis."""
     try:
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         if not os.path.exists(results_path):
@@ -2804,138 +1490,40 @@ async def _get_document_results_legacy(document_id: str) -> Dict[str, Any]:
                 else "Document analysis in progress"
             ),
         }
-    except Exception as _e:
-        logger.error(f"Error retrieving document results: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error retrieving document results: {str(e)}")
         logger.error(traceback.format_exc())
         return {
             "status": "error",
             "document_id": document_id,
-            "message": f"Error retrieving document results: {str(_e)}",
+            "message": f"Error retrieving document results: {str(e)}",
         }
 
 
-@router.get("/documents/{document_id}/keywords")
-async def get_document_keywords(document_id: str) -> Dict[str, Any]:
-    """Get keyword extraction progress for a document analysis."""
-    try:
-        # Check if analysis is in progress
-        from services.progress_tracker import get_progress_tracker
-        tracker = get_progress_tracker()
-        
-        progress = tracker.get_progress(document_id)
-        
-        if progress:
-            # Extract keyword-related progress
-            keywords_discovered = []
-            current_step = "Keyword extraction in progress"
-            progress_percentage = getattr(progress, 'overall_progress', 0.0)
-            current_keyword = None
-            
-            # Try to extract keywords from standards progress
-            if hasattr(progress, 'standards_progress'):
-                standards_progress = getattr(progress, 'standards_progress', {})
-                if standards_progress:
-                    for std_progress in standards_progress.values():
-                        if hasattr(std_progress, 'questions_progress'):
-                            questions_progress = getattr(std_progress, 'questions_progress', {})
-                            if questions_progress:
-                                keywords_discovered.extend(questions_progress.keys())
-            
-            return {
-                "keywords_discovered": list(set(keywords_discovered)),
-                "current_step": current_step,
-                "progress_percentage": progress_percentage,
-                "current_keyword": current_keyword
-            }
-        else:
-            # No active progress, check if completed
-            from services.persistent_storage_enhanced import get_persistent_storage_manager
-            storage_manager = get_persistent_storage_manager()
-            
-            results = await storage_manager.get_analysis_results(document_id)
-            if results:
-                # Extract keywords from completed analysis
-                keywords = []
-                if results.get("sections"):
-                    for section in results.get("sections", []):
-                        if section.get("items"):
-                            keywords.extend([item.get("id", "") for item in section.get("items", [])])
-                
-                return {
-                    "keywords_discovered": list(set(filter(None, keywords))),
-                    "current_step": "Keyword extraction completed",
-                    "progress_percentage": 100,
-                    "current_keyword": None
-                }
-            else:
-                return {
-                    "keywords_discovered": [],
-                    "current_step": "No keyword extraction found",
-                    "progress_percentage": 0,
-                    "current_keyword": None
-                }
-                
-    except Exception as e:
-        logger.error(f"Error getting keywords for document {document_id}: {e}")
-        return {
-            "keywords_discovered": [],
-            "current_step": "Error retrieving keywords",
-            "progress_percentage": 0,
-            "current_keyword": None
-        }
-
-@router.get("/documents/{document_id}/extract")
-async def get_document_extract(document_id: str) -> Dict[str, Any]:
-    """Get the extracted metadata from document analysis. Alias for /results endpoint."""
-    return await get_document_results(document_id)
-
-
-class ChecklistItemUpdateModel(BaseModel):
+class ChecklistItemUpdate(BaseModel):
     status: str
     comments: Optional[str] = None
 
 
 @router.patch("/documents/{document_id}/items/{item_id}")
 async def update_compliance_item(
-    document_id: str, item_id: str, update: ChecklistItemUpdateModel
+    document_id: str, item_id: str, update: ChecklistItemUpdate
 ):
-    """
-    BULLETPROOF: Update a compliance checklist item with atomic operations.
-    """
-    logger.info(f"🛡️ BULLETPROOF PATCH /documents/{document_id}/items/{item_id} - Starting bulletproof update")
-    
+    """Update a compliance checklist item."""
     try:
-        # SIMPLE FILE READ: Get current results from file
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        
-        if not results_path.exists():
+        if not os.path.exists(results_path):
             return JSONResponse(
                 status_code=404,
                 content={
                     "error": "Document not found",
-                    "message": f"No results found for document {document_id}",
-                    "document_id": document_id
-                }
+                    "message": "No results found for the specified document",
+                },
             )
-        
+
+        # Read current results
         with open(results_path, "r", encoding="utf-8") as f:
             results = json.load(f)
-        
-        if not results:
-            # FALLBACK: Try legacy file system
-            logger.info(f"📁 FALLBACK: Trying legacy file system for {document_id}")
-            results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-            if not os.path.exists(results_path):
-                return JSONResponse(
-                    status_code=404,
-                    content={
-                        "error": "Document not found",
-                        "message": "No results found for the specified document",
-                    },
-                )
-            
-            with open(results_path, "r", encoding="utf-8") as f:
-                results = json.load(f)
 
         # Update the specific item
         item_updated = False
@@ -2959,94 +1547,21 @@ async def update_compliance_item(
                 },
             )
 
-        # SIMPLE FILE SAVE: Save updated results to file
-        logger.info(f"💾 FILE SAVE: Saving updated compliance item for {document_id}")
+        # Save updated results
         save_analysis_results(document_id, results)
-        
-        logger.info(f"✅ FILE UPDATE: Successfully updated compliance item {item_id} for {document_id}")
+
         return JSONResponse(
-            status_code=200, 
-            content={
-                "message": "Item updated successfully",
-                "item_id": item_id,
-                "document_id": document_id
-            }
+            status_code=200, content={"message": "Item updated successfully"}
         )
-        
-    except Exception as _e:
-        logger.error(f"❌ BULLETPROOF UPDATE: Error updating compliance item for {document_id}: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error updating compliance item: {str(e)}")
         logger.error(traceback.format_exc())
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Update failed",
-                "message": f"Error updating compliance item: {str(_e)}",
-                "bulletproof": False
+                "message": f"Error updating compliance item: {str(e)}",
             },
-        )
-
-
-@router.get("/documents/{document_id}/report")
-async def get_document_analysis_report(document_id: str):
-    """Get comprehensive analysis report for a document"""
-    try:
-        from services.persistent_storage import PersistentStorageManager
-        storage = PersistentStorageManager()
-        
-        # Get document metadata
-        metadata = getattr(storage, 'load_document_metadata', lambda x: {})(document_id)
-        if not metadata:
-            raise HTTPException(status_code=404, detail="Document not found")
-        
-        # Get document analysis results 
-        compliance_results = getattr(storage, 'load_compliance_results', lambda x: {})(document_id)
-        if not compliance_results:
-            compliance_results = {}
-            
-        # Get extracted content
-        extracted_content = getattr(storage, 'load_extracted_content', lambda x: {})(document_id)
-        if not extracted_content:
-            extracted_content = {}
-        
-        # Build comprehensive report
-        report = {
-            "document_id": document_id,
-            "document_name": metadata.get("filename", "Unknown"),
-            "upload_date": metadata.get("upload_date", "Unknown"),
-            "analysis_status": metadata.get("status", "unknown"),
-            "total_pages": extracted_content.get("total_pages", 0),
-            "word_count": extracted_content.get("word_count", 0),
-            "compliance_results": compliance_results,
-            "framework_analysis": metadata.get("framework_analysis", {}),
-            "key_findings": compliance_results.get("key_findings", []),
-            "compliance_score": compliance_results.get("overall_score", 0),
-            "recommendations": compliance_results.get("recommendations", []),
-            "extracted_sections": extracted_content.get("sections", {}),
-            "metadata": metadata
-        }
-        
-        logger.info(f"✅ Generated comprehensive report for document {document_id}")
-        return JSONResponse(
-            status_code=200,
-            content={
-                "success": True,
-                "report": report,
-                "message": "Report generated successfully"
-            }
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"❌ Error generating report for document {document_id}: {str(e)}")
-        logger.error(traceback.format_exc())
-        return JSONResponse(
-            status_code=500,
-            content={
-                "error": "Report generation failed",
-                "message": f"Error generating report: {str(e)}",
-                "success": False
-            }
         )
 
 
@@ -3067,7 +1582,6 @@ class ProcessingModeRequest(BaseModel):
 class ComplianceAnalysisRequest(BaseModel):
     mode: str = "smart"  # "zap" | "smart" | "comparison"
     special_instructions: str = ""
-    custom_instructions: Optional[str] = ""  # User-provided analysis instructions
     comparison_config: Optional[Dict[str, Any]] = None
 
 
@@ -3080,10 +1594,9 @@ async def select_framework(
 ) -> Union[Dict[str, Any], JSONResponse]:
     try:
         logger.info(
-            f"🚀 FRAMEWORK SELECTION STARTED: {request.framework} and standards "
+            f"Selecting framework {request.framework} and standards "
             f"{request.standards} for document {document_id}"
         )
-        logger.info(f"🔍 REQUEST DETAILS: specialInstructions='{request.specialInstructions}', extensiveSearch={request.extensiveSearch}")
 
         # Validate framework exists
         framework_error = _validate_framework_exists(request.framework)
@@ -3140,9 +1653,6 @@ async def select_framework(
             return text
 
         # Start compliance analysis in the background
-        logger.info(f"✅ VALIDATION PASSED: Starting compliance analysis for {document_id}")
-        logger.info(f"📝 TEXT EXTRACTED: {len(text)} characters for analysis")
-        
         background_tasks.add_task(
             process_compliance_analysis,
             document_id,
@@ -3154,10 +1664,8 @@ async def select_framework(
             ai_svc,
             request.processingMode,  # Pass the processing mode
         )
-        
-        logger.info(f"🎯 COMPLIANCE ANALYSIS TASK SCHEDULED: Background task added for {document_id}")
 
-        response_data = {
+        return {
             "status": "PROCESSING",
             "document_id": document_id,
             "framework": request.framework,
@@ -3169,22 +1677,18 @@ async def select_framework(
                 "for all selected standards"
             ),
         }
-        
-        logger.info(f"✅ FRAMEWORK SELECTION COMPLETED: Returning response for {document_id}")
-        return response_data
-    except Exception as _e:
-        logger.error(f"Error selecting framework: {str(_e)}", exc_info=True)
+    except Exception as e:
+        logger.error(f"Error selecting framework: {str(e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error selecting framework: {str(_e)}",
+                "detail": f"Error selecting framework: {str(e)}",
             },
         )
 
+
 # Add an alias endpoint for framework selection to match the frontend call
-
-
 @router.post("/documents/{document_id}/framework")
 async def select_framework_alias(
     document_id: str,
@@ -3252,7 +1756,8 @@ async def select_processing_mode(
             results["status"] = "PROCESSING"
             results["metadata_extraction"] = "PROCESSING"
             results["message"] = (
-                f"Processing mode '{request.processing_mode}' selected, starting metadata extraction"
+                f"Processing mode '{
+                    request.processing_mode}' selected, starting metadata extraction"
             )
 
             # Save updated results
@@ -3263,17 +1768,13 @@ async def select_processing_mode(
             background_tasks = BackgroundTasks()
             ai_svc = get_ai_service()
             background_tasks.add_task(
-                process_upload_tasks,
-                document_id,
-                ai_svc,
-                "",  # text parameter
-                request.processing_mode,
+                process_upload_tasks, document_id=document_id, ai_svc=ai_svc
             )
 
             mode_descriptions = {
                 "zap": "Lightning fast analysis with 16 parallel workers",
                 "smart": (
-                    "AI - powered intelligent semantic processing with cost "
+                    "AI-powered intelligent semantic processing with cost "
                     "optimization"
                 ),
                 "comparison": "Performance benchmark running both Zap and Smart modes",
@@ -3293,7 +1794,8 @@ async def select_processing_mode(
             # Metadata already extracted, ready for framework selection
             results["status"] = "awaiting_framework_selection"
             results["message"] = (
-                f"Processing mode '{request.processing_mode}' selected, ready for framework selection"
+                f"Processing mode '{
+                    request.processing_mode}' selected, ready for framework selection"
             )
 
             # Save updated results
@@ -3303,7 +1805,7 @@ async def select_processing_mode(
             mode_descriptions = {
                 "zap": "Lightning fast analysis with 16 parallel workers",
                 "smart": (
-                    "AI - powered intelligent semantic processing with cost "
+                    "AI-powered intelligent semantic processing with cost "
                     "optimization"
                 ),
                 "comparison": "Performance benchmark running both Zap and Smart modes",
@@ -3320,318 +1822,14 @@ async def select_processing_mode(
                 ),
             }
 
-    except Exception as _e:
-        logger.error(f"Error selecting processing mode: {str(_e)}", exc_info=True)
+    except Exception as e:
+        logger.error(f"Error selecting processing mode: {str(e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error selecting processing mode: {str(_e)}",
+                "detail": f"Error selecting processing mode: {str(e)}",
             },
-        )
-
-
-@router.get("/documents/{document_id}/metadata-status")
-async def get_metadata_extraction_status(document_id: str) -> JSONResponse:
-    """
-    Get the current status of metadata extraction for a document.
-    Frontend should poll this endpoint after upload to check metadata extraction progress.
-    """
-    try:
-        # Check if status file exists
-        status_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        
-        if not status_file.exists():
-            return JSONResponse(
-                status_code=404,
-                content={
-                    "status": "not_found",
-                    "message": f"No status information found for document {document_id}"
-                }
-            )
-        
-        # Read status file
-        with open(status_file, 'r', encoding='utf-8') as f:
-            status_data = json.load(f)
-        
-        # Check if metadata extraction is completed
-        metadata_completed_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
-        is_completed = metadata_completed_file.exists()
-        
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "completed" if is_completed else status_data.get("status", "processing"),
-                "message": status_data.get("message", "Processing in progress"),
-                "metadata_extraction": "completed" if is_completed else "in_progress",
-                "document_id": document_id,
-                "last_updated": status_data.get("timestamp", "unknown")
-            }
-        )
-        
-    except Exception as e:
-        logger.error(f"Error getting metadata status for {document_id}: {str(e)}", exc_info=True)
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "message": f"Error getting metadata status: {str(e)}"
-            }
-        )
-
-
-@router.get("/documents/{document_id}/metadata-results")
-async def get_metadata_extraction_results(document_id: str) -> JSONResponse:
-    """
-    Get the extracted metadata results for a document.
-    This endpoint returns the actual metadata extracted by smart_metadata_extractor.
-    """
-    try:
-        # Check if metadata file exists
-        metadata_file = ANALYSIS_RESULTS_DIR / f"{document_id}_metadata.json"
-        
-        if not metadata_file.exists():
-            return JSONResponse(
-                status_code=404,
-                content={
-                    "status": "not_found",
-                    "message": f"No metadata extraction results found for document {document_id}"
-                }
-            )
-        
-        # Read metadata results
-        with open(metadata_file, 'r', encoding='utf-8') as f:
-            metadata_results = json.load(f)
-        
-        return JSONResponse(
-            status_code=200,
-            content={
-                "status": "success",
-                "document_id": document_id,
-                "metadata": metadata_results,
-                "extracted_at": metadata_results.get("extracted_at", "unknown")
-            }
-        )
-        
-    except Exception as e:
-        logger.error(f"Error getting metadata results for {document_id}: {str(e)}", exc_info=True)
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "message": f"Error getting metadata results: {str(e)}"
-            }
-        )
-
-
-@router.post("/documents/{document_id}/start-metadata-extraction")
-async def start_metadata_extraction(
-    document_id: str,
-    background_tasks: BackgroundTasks
-) -> JSONResponse:
-    """
-    Trigger metadata extraction using pre-extracted document data.
-    This endpoint is called after upload completion to start metadata processing.
-    """
-    try:
-        logger.info(f"🧠 Starting metadata extraction for document {document_id}")
-
-        # Import and trigger metadata extraction
-        from services.smart_metadata_extractor import SmartMetadataExtractor
-        from datetime import datetime
-        import asyncio
-        import json
-
-        async def run_metadata_extraction():
-            try:
-                # Load chunks from file
-                chunks_file = f"analysis_results/{document_id}_chunks.json"
-                if not os.path.exists(chunks_file):
-                    logger.error(f"Chunks file not found: {chunks_file}")
-                    return
-
-                with open(chunks_file, 'r', encoding='utf-8') as f:
-                    chunks = json.load(f)
-
-                # Run metadata extraction
-                extractor = SmartMetadataExtractor()
-                metadata = await extractor.extract_metadata_optimized(document_id, chunks)
-
-                # Save metadata using staged storage for isolation
-                from services.staged_storage import StagedStorageManager
-                storage_manager = StagedStorageManager()
-                storage_manager.save_metadata(document_id, metadata)
-
-                # BACKWARD COMPATIBILITY: Also save to legacy location
-                metadata_file = f"analysis_results/{document_id}_metadata.json"
-                with open(metadata_file, 'w', encoding='utf-8') as f:
-                    json.dump(metadata, f, indent=2, ensure_ascii=False)
-
-                # Mark as completed
-                completion_file = f"analysis_results/{document_id}.metadata_completed"
-                with open(completion_file, 'w') as f:
-                    f.write("completed")
-                
-                # CRITICAL: Update main results file (consistent with document_chunker.py fix)
-                main_results_file = f"analysis_results/{document_id}.json"
-                try:
-                    if os.path.exists(main_results_file):
-                        with open(main_results_file, 'r', encoding='utf-8') as f:
-                            results_data = json.load(f)
-                    else:
-                        results_data = {
-                            "document_id": document_id,
-                            "status": "PROCESSING"
-                        }
-                except Exception:
-                    results_data = {
-                        "document_id": document_id,
-                        "status": "PROCESSING"
-                    }
-                
-                # Update with metadata extraction completion
-                results_data.update({
-                    "metadata_extraction": "COMPLETED",
-                    "metadata_completed_at": datetime.now().isoformat(),
-                    "metadata_file": metadata_file
-                })
-                
-                # Write back to main results file
-                with open(main_results_file, 'w', encoding='utf-8') as f:
-                    json.dump(results_data, f, indent=2, ensure_ascii=False)
-
-                # 🔧 CRITICAL FIX: Update persistent storage with metadata completion status
-                try:
-                    from services.persistent_storage_enhanced import get_persistent_storage_manager
-                    persistent_storage = get_persistent_storage_manager()
-                    
-                    logger.info(f"🗄️ ATTEMPTING: Persistent storage update for {document_id}")
-                    
-                    # Get current persistent results
-                    current_results = await persistent_storage.get_analysis_results(document_id)
-                    if current_results:
-                        logger.info(f"🗄️ FOUND: Existing persistent results for {document_id}")
-                        # Update with metadata extraction completion
-                        current_results.update({
-                            "metadata_extraction": "COMPLETED",
-                            "metadata_completed_at": datetime.now().isoformat(),
-                            "metadata_file": metadata_file
-                        })
-                        
-                        # Save back to persistent storage
-                        success = await persistent_storage.store_analysis_results(document_id, current_results)
-                        if success:
-                            logger.info(f"✅ SUCCESS: Updated persistent storage with metadata completion for {document_id}")
-                        else:
-                            logger.error(f"❌ FAILED: Persistent storage update returned False for {document_id}")
-                    else:
-                        logger.warning(f"⚠️ NOT FOUND: No existing persistent results to update for {document_id}")
-                        # Create new persistent results with metadata completion
-                        new_results = {
-                            "document_id": document_id,
-                            "status": "metadata_extraction_completed",
-                            "metadata_extraction": "COMPLETED", 
-                            "metadata_completed_at": datetime.now().isoformat(),
-                            "metadata_file": metadata_file,
-                            "compliance_analysis": "PENDING"
-                        }
-                        success = await persistent_storage.store_analysis_results(document_id, new_results)
-                        if success:
-                            logger.info(f"✅ CREATED: New persistent storage entry for {document_id}")
-                        else:
-                            logger.error(f"❌ FAILED: Could not create persistent storage entry for {document_id}")
-                        
-                except Exception as persistent_error:
-                    logger.error(f"❌ EXCEPTION: Failed to update persistent storage for {document_id}: {persistent_error}", exc_info=True)
-                    # Don't fail the whole operation, just log the error
-                
-                logger.info(f"✅ Metadata extraction completed for {document_id}")
-
-            except Exception as e:
-                logger.error(f"❌ Metadata extraction failed for {document_id}: {e}")
-                # Mark as failed
-                error_file = f"analysis_results/{document_id}.metadata_error"
-                with open(error_file, 'w') as f:
-                    f.write(str(e))
-
-        # Run metadata extraction in background (fix: remove asyncio.run to prevent event loop conflict)
-        background_tasks.add_task(run_metadata_extraction)
-
-        response = {
-            "status": "processing",
-            "document_id": document_id,
-            "stage": "metadata_extraction",
-            "message": "Metadata extraction started using pre-extracted data"
-        }
-
-        logger.info(f"✅ Metadata extraction background task started for {document_id}")
-        return JSONResponse(status_code=200, content=response)
-
-    except Exception as e:
-        logger.error(f"❌ Failed to start metadata extraction for {document_id}: {e}")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error": "Failed to start metadata extraction",
-                "detail": str(e)
-            }
-        )
-
-
-@router.post("/documents/{document_id}/start-checklist-processing")
-async def start_checklist_processing(
-    document_id: str,
-    request: Dict[str, Any],
-    background_tasks: BackgroundTasks
-) -> JSONResponse:
-    """
-    Trigger checklist processing using pre-extracted document data.
-    This endpoint is called after user confirms framework and standards.
-    """
-    try:
-        framework = request.get("framework")
-        standards = request.get("standards", [])
-
-        if not framework:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "status": "error",
-                    "error": "Framework required",
-                    "detail": "Framework must be specified for checklist processing"
-                }
-            )
-
-        logger.info(f"📋 Starting checklist processing for document {document_id}, framework: {framework}")
-
-        # Import and trigger checklist processing
-        # from services.simple_document_processing import trigger_checklist_processing
-
-        # Run checklist processing in background
-        # background_tasks.add_task(trigger_checklist_processing, document_id, framework, standards)  # Commented out - function not available
-
-        response = {
-            "status": "processing",
-            "document_id": document_id,
-            "stage": "checklist_processing",
-            "framework": framework,
-            "standards": standards,
-            "message": "Checklist processing started using pre-extracted data"
-        }
-
-        logger.info(f"✅ Checklist processing background task started for {document_id}")
-        return JSONResponse(status_code=200, content=response)
-
-    except Exception as e:
-        logger.error(f"❌ Failed to start checklist processing for {document_id}: {e}")
-        return JSONResponse(
-            status_code=500,
-            content={
-                "status": "error",
-                "error": "Failed to start checklist processing",
-                "detail": str(e)
-            }
         )
 
 
@@ -3692,29 +1890,25 @@ async def start_compliance_analysis(
 
         if processing_mode == "comparison":
             # For comparison mode, run both Smart and Zap modes
-            # Use custom_instructions if provided, otherwise fall back to special_instructions
-            instructions = request.custom_instructions or request.special_instructions
             background_tasks.add_task(
                 process_compliance_comparison,
                 document_id,
                 text_content,
                 framework,
                 standards,
-                instructions,
+                request.special_instructions,
                 results.get("extensiveSearch", False),
                 ai_svc,
             )
         else:
             # For single mode (zap or smart)
-            # Use custom_instructions if provided, otherwise fall back to special_instructions
-            instructions = request.custom_instructions or request.special_instructions
             background_tasks.add_task(
                 process_compliance_analysis,
                 document_id,
                 text_content,
                 framework,
                 standards,
-                instructions,
+                request.special_instructions,
                 results.get("extensiveSearch", False),
                 ai_svc,
                 processing_mode,  # Pass processing mode parameter
@@ -3726,13 +1920,13 @@ async def start_compliance_analysis(
             "message": f"Compliance analysis started with {processing_mode} mode",
         }
 
-    except Exception as _e:
-        logger.error(f"Error starting compliance analysis: {str(_e)}", exc_info=True)
+    except Exception as e:
+        logger.error(f"Error starting compliance analysis: {str(e)}", exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Server error",
-                "detail": f"Error starting compliance analysis: {str(_e)}",
+                "detail": f"Error starting compliance analysis: {str(e)}",
             },
         )
 
@@ -3783,8 +1977,8 @@ async def _run_smart_mode_comparison(
 
         return metrics, results
 
-    except Exception as _e:
-        logger.error(f"Smart mode failed in comparison: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Smart mode failed in comparison: {str(e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -3793,7 +1987,7 @@ async def _run_smart_mode_comparison(
             "questions_processed": 0,
             "success": False,
             "sections_analyzed": 0,
-            "error": str(_e),
+            "error": str(e),
         }
         results = {"sections": []}
 
@@ -3846,8 +2040,8 @@ async def _run_zap_mode_comparison(
 
         return metrics, results
 
-    except Exception as _e:
-        logger.error(f"Zap mode failed in comparison: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Zap mode failed in comparison: {str(e)}")
         end_time = time.time()
         processing_time = end_time - start_time
 
@@ -3856,7 +2050,7 @@ async def _run_zap_mode_comparison(
             "questions_processed": 0,
             "success": False,
             "sections_analyzed": 0,
-            "error": str(_e),
+            "error": str(e),
         }
         results = {"sections": []}
 
@@ -4056,22 +2250,22 @@ async def process_compliance_comparison(
             f"{recommendation} mode recommended"
         )
 
-    except Exception as _e:
-        logger.error(f"Error in comparison analysis: {str(_e)}", exc_info=True)
+    except Exception as e:
+        logger.error(f"Error in comparison analysis: {str(e)}", exc_info=True)
         # Update results with error
         try:
             results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
             error_results = {
                 "document_id": document_id,
                 "status": "FAILED",
-                "error": str(_e),
+                "error": str(e),
             }
             with open(results_path, "w", encoding="utf-8") as f:
                 json.dump(error_results, f, indent=2, ensure_ascii=False)
-        except Exception as _save_error:
+        except Exception as save_error:
             # Failed to save error state - log but continue
             logger.error(
-                f"Failed to save error state for {document_id}: {str(_save_error)}"
+                f"Failed to save error state for {document_id}: {str(save_error)}"
             )
 
 
@@ -4117,7 +2311,7 @@ async def process_smart_mode_analysis(
     Smart Mode features:
     - Semantic content analysis for better accuracy
     - Question prioritization based on document content
-    - Cost - optimized AI processing
+    - Cost-optimized AI processing
     - Enhanced context understanding
     """
     logger.info(f"Starting Smart Mode analysis for standard {standard}")
@@ -4126,11 +2320,11 @@ async def process_smart_mode_analysis(
     # Preprocess checklist to add standard numbers to questions
     processed_checklist = _preprocess_checklist_with_standard_numbers(checklist)
 
-    # Set progress tracker for question - level tracking
+    # Set progress tracker for question-level tracking
     if progress_tracker:
         ai_svc.progress_tracker = progress_tracker
 
-        # Initialize question - level tracking for Smart Mode
+        # Initialize question-level tracking for Smart Mode
         all_questions_data = []
         for section in processed_checklist.get("sections", []):
             for item in section.get("items", []):
@@ -4164,7 +2358,7 @@ async def process_smart_mode_analysis(
         text_segments = _create_semantic_segments(text)
         logger.info(f"Smart Mode: Created {len(text_segments)} semantic segments")
 
-        # Step 3: Question - content mapping for optimal processing
+        # Step 3: Question-content mapping for optimal processing
         question_priorities = _prioritize_questions_by_content(
             all_questions, text_segments
         )
@@ -4209,7 +2403,12 @@ async def process_smart_mode_analysis(
                 progress_tracker.update_question_progress(
                     document_id,
                     standard,
-                    f"Processing section {section_idx + 1}/{len(processed_checklist.get('sections', []))}",
+                    f"Processing section {
+                        section_idx + 1}/{
+                        len(
+                            processed_checklist.get(
+                                'sections',
+                                []))}",
                     completed_questions,
                 )
 
@@ -4225,8 +2424,8 @@ async def process_smart_mode_analysis(
 
         return processed_sections
 
-    except Exception as _e:
-        logger.error(f"Smart Mode analysis failed for {standard}: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Smart Mode analysis failed for {standard}: {str(e)}")
         # Fallback to standard processing
         logger.info("Falling back to standard processing mode")
         try:
@@ -4285,7 +2484,7 @@ def _prioritize_questions_by_content(
     """Prioritize questions based on content relevance"""
     priorities = {}
 
-    # Simple keyword - based prioritization
+    # Simple keyword-based prioritization
     for question in questions:
         question_lower = question.lower()
         total_relevance = 0
@@ -4332,7 +2531,7 @@ def _find_relevant_segments(
 
     # Sort by score and take top segments
     segment_scores.sort(reverse=True)
-    for _score, _, segment in segment_scores[:max_segments]:
+    for score, _, segment in segment_scores[:max_segments]:
         relevant_segments.append(segment)
 
     return relevant_segments
@@ -4380,8 +2579,8 @@ def _preprocess_checklist_with_standard_numbers(
                     item["question"] = f"{section_standard}: {question}"
 
         return processed_checklist
-    except Exception as _e:
-        logger.error(f"Error preprocessing checklist with standard numbers: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Error preprocessing checklist with standard numbers: {str(e)}")
         return checklist  # Return original on error
 
 
@@ -4414,7 +2613,7 @@ async def process_zap_mode_analysis(
     Zap Mode features:
     - 16 parallel workers for maximum throughput
     - Direct processing without semantic optimization
-    - Speed - first approach with acceptable accuracy trade - offs
+    - Speed-first approach with acceptable accuracy trade-offs
     - Minimal context processing for fastest results
     """
     logger.info(f"Starting Zap Mode analysis for standard {standard}")
@@ -4423,11 +2622,11 @@ async def process_zap_mode_analysis(
     # Preprocess checklist to add standard numbers to questions
     processed_checklist = _preprocess_checklist_with_standard_numbers(checklist)
 
-    # Set progress tracker for question - level tracking
+    # Set progress tracker for question-level tracking
     if progress_tracker:
         ai_svc.progress_tracker = progress_tracker
 
-        # Initialize question - level tracking for Zap Mode
+        # Initialize question-level tracking for Zap Mode
         all_questions_data = []
         for section in processed_checklist.get("sections", []):
             for item in section.get("items", []):
@@ -4472,14 +2671,15 @@ async def process_zap_mode_analysis(
                     )
                     return result
 
-                except Exception as _e:
-                    error_str = str(_e).lower()
+                except Exception as e:
+                    error_str = str(e).lower()
                     if (
                         "rate limit" in error_str or "429" in error_str
                     ) and attempt < max_retries - 1:
                         # Simple retry without staggered backoff - just power through
                         logger.warning(
-                            f"Zap Mode worker error, retrying immediately (attempt {attempt + 1}/{max_retries})"
+                            f"Zap Mode worker error, retrying immediately (attempt {
+                                attempt + 1}/{max_retries})"
                         )
                         await asyncio.sleep(0.1)  # Minimal delay
                         continue
@@ -4487,8 +2687,8 @@ async def process_zap_mode_analysis(
                         # Log error and return error result instead of failing
                         # completely
                         logger.error(
-                            "Zap Mode worker failed after "
-                            f"{attempt + 1} attempts: {str(_e)}"
+                            f"Zap Mode worker failed after "
+                            f"{attempt + 1} attempts: {str(e)}"
                         )
                         current_task = asyncio.current_task()
                         return {
@@ -4496,7 +2696,7 @@ async def process_zap_mode_analysis(
                             "section": section.get("section", "unknown"),
                             "title": section.get("title", ""),
                             "items": [],
-                            "error": str(_e),
+                            "error": str(e),
                             "worker_id": (
                                 current_task.get_name() if current_task else "unknown"
                             ),
@@ -4568,8 +2768,8 @@ async def process_zap_mode_analysis(
 
         return valid_sections
 
-    except Exception as _e:
-        logger.error(f"Zap Mode analysis failed for {standard}: {str(_e)}")
+    except Exception as e:
+        logger.error(f"Zap Mode analysis failed for {standard}: {str(e)}")
         # Fallback to standard processing
         logger.info("Falling back to standard processing mode")
         section_tasks = []
@@ -4638,22 +2838,6 @@ async def _initialize_analysis_tracking(
     if error_lock_file.exists():
         error_lock_file.unlink()
 
-    # Also create processing lock in persistent storage for Render deployment
-    try:
-        from services.persistent_storage_enhanced import get_persistent_storage_manager
-        storage_manager = get_persistent_storage_manager()
-        await storage_manager.set_processing_lock(document_id, {
-            "status": "PROCESSING",
-            "started_at": datetime.now().isoformat(),
-            "framework": framework,
-            "standards": standards,
-            "special_instructions": special_instructions,
-            "extensive_search": extensive_search
-        }, "compliance_analysis")
-        logger.info(f"🔐 Created processing lock in persistent storage: {document_id}")
-    except Exception as e:
-        logger.error(f"❌ Failed to create persistent storage lock for {document_id}: {str(e)}")
-
     save_analysis_results(document_id, results)
 
     return results, results_path, processing_lock_file, error_lock_file
@@ -4668,15 +2852,14 @@ async def _process_standards_sequentially(
     processing_mode: str,
     results: dict,
     progress_tracker=None,
-    custom_instructions: Optional[str] = None,
 ) -> tuple[list, list]:
     """
     Process each standard sequentially and return all sections and failed standards.
-    CRITICAL: This function MUST only process the user - selected standards.
+    CRITICAL: This function MUST only process the user-selected standards.
     """
-    # STRICT VALIDATION: Ensure we only process user - selected standards
+    # STRICT VALIDATION: Ensure we only process user-selected standards
     logger.info(f"🔒 STRICT STANDARDS VALIDATION for document {document_id}")
-    logger.info(f"🔒 Processing EXACTLY these user - selected standards: {standards}")
+    logger.info(f"🔒 Processing EXACTLY these user-selected standards: {standards}")
     logger.info(
         "🔒 Will NOT process any other standards regardless of document content"
     )
@@ -4692,7 +2875,8 @@ async def _process_standards_sequentially(
     for i, standard in enumerate(standards):
         try:
             logger.info(
-                f"🎯 PROCESSING STANDARD {i + 1}/{total_standards}: {standard} (USER-SELECTED ONLY)"
+                f"🎯 PROCESSING STANDARD {
+                    i + 1}/{total_standards}: {standard} (USER-SELECTED ONLY)"
             )
             logger.info(
                 f"🎯 Document {document_id} - Current: {standard}, "
@@ -4701,25 +2885,13 @@ async def _process_standards_sequentially(
 
             # Get checklist to determine total questions
             checklist_data = load_checklist(framework, standard)
-
-            # CRITICAL FIX: Count actual questions / items, not top - level object length
-            total_questions = 0
-            if checklist_data and isinstance(checklist_data, dict):
-                for section in checklist_data.get("sections", []):
-                    total_questions += len(section.get("items", []))
-
-            logger.info(f"🔍 Checklist loaded for {standard}: {total_questions} total questions")
-
-            if total_questions == 0:
-                logger.error(f"❌ No questions found in checklist for {framework}/{standard}")
-                failed_standards.append(standard)
-                continue
+            total_questions = len(checklist_data)
 
             # Start tracking this standard
             if progress_tracker:
                 progress_tracker.start_standard(document_id, standard, total_questions)
 
-                # Initialize question - level tracking
+                # Initialize question-level tracking
                 all_questions_data = []
                 for section in checklist_data.get("sections", []):
                     for item in section.get("items", []):
@@ -4750,23 +2922,8 @@ async def _process_standards_sequentially(
 
             checklist = load_checklist(framework, standard)
 
-            # Debug checklist loading
-            if not checklist:
-                logger.error(f"❌ Failed to load checklist for {framework}/{standard}")
-                failed_standards.append(standard)
-                continue
-
-            checklist_sections = checklist.get("sections", [])
-            checklist_items_count = sum(len(section.get("items", [])) for section in checklist_sections)
-            logger.info(f"📋 Loaded checklist: {len(checklist_sections)} sections, {checklist_items_count} items")
-
-            # Set progress tracker for question - level tracking
+            # Set progress tracker for question-level tracking
             ai_svc.progress_tracker = progress_tracker
-            
-            # Set custom instructions for this analysis
-            if custom_instructions:
-                # Store custom instructions for use in AI analysis
-                setattr(ai_svc, 'custom_instructions', custom_instructions)
 
             # Choose processing approach based on mode
             if processing_mode == "smart":
@@ -4775,7 +2932,7 @@ async def _process_standards_sequentially(
                     checklist, text, document_id, ai_svc, standard, progress_tracker
                 )
             elif processing_mode == "zap":
-                # Zap Mode: High - speed processing with 16 concurrent workers
+                # Zap Mode: High-speed processing with 16 concurrent workers
                 standard_sections = await process_zap_mode_analysis(
                     checklist, text, document_id, ai_svc, standard, progress_tracker
                 )
@@ -4792,17 +2949,6 @@ async def _process_standards_sequentially(
                         )
                     )
                 standard_sections = await asyncio.gather(*section_tasks)
-
-            # Debug processing results
-            logger.info(
-                f"📊 Processing result for {standard}: "
-                f"{len(standard_sections) if standard_sections else 0} sections returned"
-            )
-            if standard_sections:
-                total_processed_items = sum(len(section.get("items", [])) for section in standard_sections)
-                logger.info(f"📊 Total processed items for {standard}: {total_processed_items}")
-            else:
-                logger.warning(f"⚠️ No sections returned for {standard}")
 
             # Add metadata to identify which standard these sections belong to
             for section in standard_sections:
@@ -4831,11 +2977,11 @@ async def _process_standards_sequentially(
             logger.info(
                 f"Added {len(standard_sections)} sections for standard {standard}"
             )
-        except Exception as _e:
+        except Exception as e:
             logger.error(
-                f"Error processing standard {standard}: {str(_e)}", exc_info=True
+                f"Error processing standard {standard}: {str(e)}", exc_info=True
             )
-            failed_standards.append({"standard": standard, "error": str(_e)})
+            failed_standards.append({"standard": standard, "error": str(e)})
 
         save_analysis_results(
             document_id, {**results, "sections": all_sections}
@@ -4875,7 +3021,7 @@ def _handle_analysis_completion(
         results["failed_standards"] = failed_standards
         results["completed_at"] = datetime.now().isoformat()
         results["message"] = (
-            "Compliance analysis completed with errors for "
+            f"Compliance analysis completed with errors for "
             f"{len(failed_standards)} of {len(standards)} standards"
         )
         completion_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.completed"
@@ -4952,21 +3098,6 @@ def _handle_analysis_error(
         )
         if processing_lock_file.exists():
             processing_lock_file.unlink()
-        
-        # Remove processing lock from persistent storage on error
-        try:
-            from services.persistent_storage_enhanced import get_persistent_storage_manager
-            storage_manager = get_persistent_storage_manager()
-            # Note: Using asyncio to call async function in sync context
-            import asyncio
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(storage_manager.remove_processing_lock(document_id))
-            loop.close()
-            logger.info(f"🔓 Removed processing lock from persistent storage on error: {document_id}")
-        except Exception as storage_e:
-            logger.error(f"❌ Failed to remove persistent storage lock on error for {document_id}: {str(storage_e)}")
-            
     except Exception as inner_e:
         logger.error(f"Error updating error status: {str(inner_e)}")
 
@@ -4988,20 +3119,6 @@ async def process_compliance_analysis(
     performance_tracker = None  # Initialize to avoid NameError in exception handler
 
     try:
-        logger.info(f"🎯 COMPLIANCE ANALYSIS BACKGROUND TASK STARTED: {document_id}")
-        logger.info(f"🎯 PARAMETERS: framework={framework}, standards={standards}, processing_mode={processing_mode}")
-        logger.info(f"🎯 TEXT LENGTH: {len(text)} chars, extensive_search={extensive_search}")
-        # CRITICAL: Limit text content to 4000 characters to prevent Azure OpenAI API 500 errors
-        MAX_TEXT_LENGTH = 4000
-        if len(text) > MAX_TEXT_LENGTH:
-            original_length = len(text)
-            text = text[:MAX_TEXT_LENGTH]
-            logger.warning(
-                f"🔥 TEXT TRUNCATED: Original length {original_length} → "
-                f"Limited to {MAX_TEXT_LENGTH} characters to prevent API errors")
-        else:
-            logger.info(f"📝 Text length: {len(text)} characters (within limit)")
-
         # Clear any previously processed questions for this document
         from services.ai import clear_document_questions
 
@@ -5010,7 +3127,7 @@ async def process_compliance_analysis(
         # CRITICAL: Log exactly which standards the user selected for compliance
         # analysis
         logger.info(f"🎯 COMPLIANCE ANALYSIS STARTING for document {document_id}")
-        logger.info(f"🎯 USER - SELECTED STANDARDS ONLY: {standards}")
+        logger.info(f"🎯 USER-SELECTED STANDARDS ONLY: {standards}")
         logger.info(f"🎯 Framework: {framework}, Processing Mode: {processing_mode}")
         logger.info(f"🎯 Total standards to analyze: {len(standards)}")
 
@@ -5046,7 +3163,6 @@ async def process_compliance_analysis(
             processing_mode,
             results,
             progress_tracker,
-            custom_instructions=special_instructions,  # Pass the custom instructions
         )
 
         # Handle completion and build final results
@@ -5067,1001 +3183,13 @@ async def process_compliance_analysis(
         save_analysis_results(document_id, final_results)
         if processing_lock_file.exists():
             processing_lock_file.unlink()
-        
-        # Remove processing lock from persistent storage
-        try:
-            from services.persistent_storage_enhanced import get_persistent_storage_manager
-            storage_manager = get_persistent_storage_manager()
-            await storage_manager.remove_processing_lock(document_id)
-            logger.info(f"🔓 Removed processing lock from persistent storage: {document_id}")
-        except Exception as e:
-            logger.error(f"❌ Failed to remove persistent storage lock for {document_id}: {str(e)}")
-        
         logger.info(f"Completed compliance analysis process for document {document_id}")
 
-    except Exception as _e:
+    except Exception as e:
         # Mark progress as failed
         from services.progress_tracker import get_progress_tracker
 
         progress_tracker = get_progress_tracker()
-        progress_tracker.fail_analysis(document_id, str(_e))
+        progress_tracker.fail_analysis(document_id, str(e))
 
-        _handle_analysis_error(document_id, _e, performance_tracker, processing_mode)
-
-
-# Health check endpoints (consolidated from health_routes.py)
-@router.get("/health", tags=["Health"])
-async def health_check():
-    """Health check endpoint to verify service is running"""
-    return {"status": "healthy", "message": "Audricc AI Service is running"}
-
-
-@router.get("/health/detailed", tags=["Health"])  
-async def detailed_health_check():
-    """Detailed health check with system metrics"""
-    from pathlib import Path
-    import os
-    
-    # Check critical directories
-    critical_dirs = [
-        UPLOADS_DIR,
-        ANALYSIS_RESULTS_DIR,
-        CHECKLIST_DATA_DIR,
-        VECTOR_INDICES_DIR
-    ]
-    
-    dir_status = {}
-    for dir_path in critical_dirs:
-        dir_status[str(dir_path)] = {
-            "exists": dir_path.exists(),
-            "writable": os.access(dir_path, os.W_OK) if dir_path.exists() else False
-        }
-    
-    # System metrics (simplified without psutil)
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-        "system": {
-            "memory_percent": 0,  # Disabled - psutil not available
-            "disk_percent": 0,    # Disabled - psutil not available
-            "available_memory_gb": 0  # Disabled - psutil not available
-        },
-        "directories": dir_status,
-        "services": {
-            "ai_service": "operational",
-            "smart_metadata_extractor": "operational",
-            "bulletproof_storage": "operational"
-        }
-    }
-
-
-# Session Management endpoints (consolidated from sessions_routes.py)
-# Pydantic models for session management
-# Enhanced session models for comprehensive data storage
-class UserChoice(BaseModel):
-    choice_type: str  # "accounting_standard", "framework", "section_selection", etc.
-    value: Any
-    timestamp: datetime
-    context: Optional[str] = None
-
-class AIResponse(BaseModel):
-    response_type: str  # "suggestion", "analysis", "answer", etc.
-    content: str
-    confidence: Optional[float] = None
-    sources: Optional[List[str]] = None
-    timestamp: datetime
-
-class ConversationMessage(BaseModel):
-    message_id: str
-    role: str  # "user", "assistant", "system"
-    content: str
-    timestamp: datetime
-    message_type: Optional[str] = None  # "instruction", "query", "section_query", etc.
-    metadata: Optional[Dict[str, Any]] = None  # page_range, section_reference, etc.
-
-class SessionFile(BaseModel):
-    file_id: str
-    original_filename: str
-    file_size: int
-    upload_timestamp: datetime
-    file_type: str
-    storage_location: str  # "postgresql" or file path
-
-class SessionAnalysisContext(BaseModel):
-    accounting_standard: Optional[str] = None
-    custom_instructions: Optional[str] = None
-    selected_frameworks: Optional[List[str]] = None
-    analysis_preferences: Optional[Dict[str, Any]] = None
-
-class SessionCreate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    analysis_context: Optional[SessionAnalysisContext] = None
-
-class SessionUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    chat_state: Optional[Dict[str, Any]] = None
-    messages: Optional[List[ConversationMessage]] = None
-    user_choices: Optional[List[UserChoice]] = None
-    ai_responses: Optional[List[AIResponse]] = None
-    analysis_context: Optional[SessionAnalysisContext] = None
-
-class SessionResponse(BaseModel):
-    session_id: str
-    title: str
-    description: Optional[str] = None
-    created_at: datetime
-    updated_at: datetime
-    document_count: int = 0
-    last_document_id: Optional[str] = None
-    status: str = "active"  # active, completed, archived, shared
-    shared_with: Optional[List[str]] = None  # list of user IDs
-    owner: Optional[str] = None
-
-class SessionDetail(SessionResponse):
-    chat_state: Optional[Dict[str, Any]] = None
-    conversation_history: Optional[List[ConversationMessage]] = None
-    user_choices: Optional[List[UserChoice]] = None
-    ai_responses: Optional[List[AIResponse]] = None
-    uploaded_files: Optional[List[SessionFile]] = None
-    documents: Optional[List[Dict[str, Any]]] = None
-    analysis_context: Optional[SessionAnalysisContext] = None
-
-# Session storage directory
-SESSIONS_DIR = BACKEND_DIR / "sessions"
-SESSIONS_DIR.mkdir(exist_ok=True)
-
-def generate_session_id() -> str:
-    """Generate a unique session ID"""
-    import uuid
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    unique_id = str(uuid.uuid4())[:8]
-    return f"session_{timestamp}_{unique_id}"
-
-def get_session_file_path(session_id: str) -> Path:
-    """Get the file path for a session"""
-    return SESSIONS_DIR / f"{session_id}.json"
-
-def save_session_to_file(session_id: str, session_data: Dict[str, Any]) -> None:
-    """Save session data to file"""
-    session_file = get_session_file_path(session_id)
-    with open(session_file, 'w', encoding='utf-8') as f:
-        json.dump(session_data, f, indent=2, default=str)
-
-def load_session_from_file(session_id: str) -> Optional[Dict[str, Any]]:
-    """Load session data from file"""
-    session_file = get_session_file_path(session_id)
-    if not session_file.exists():
-        return None
-
-    try:
-        with open(session_file, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except Exception as e:
-        logger.error(f"Error loading session {session_id}: {e}")
-        return None
-
-@router.post("/sessions/create", response_model=SessionResponse, tags=["Sessions"])
-async def create_session(session_data: SessionCreate):
-    """Create a new analysis session"""
-    try:
-        session_id = generate_session_id()
-        now = datetime.now()
-
-        # Default title if not provided
-        title = session_data.title or f"Analysis Session {now.strftime('%Y-%m-%d %H:%M')}"
-
-        session = {
-            "session_id": session_id,
-            "title": title,
-            "description": session_data.description,
-            "created_at": now.isoformat(),
-            "updated_at": now.isoformat(),
-            "document_count": 0,
-            "last_document_id": None,
-            "status": "active",
-            "owner": "current_user",  # TODO: Replace with actual user ID from auth
-            "shared_with": [],
-            "chat_state": None,
-            "conversation_history": [],
-            "user_choices": [],
-            "ai_responses": [],
-            "uploaded_files": [],
-            "documents": [],
-            "analysis_context": {
-                "accounting_standard": session_data.analysis_context.accounting_standard if session_data.analysis_context else None,
-                "custom_instructions": session_data.analysis_context.custom_instructions if session_data.analysis_context else None,
-                "selected_frameworks": session_data.analysis_context.selected_frameworks if session_data.analysis_context else [],
-                "analysis_preferences": session_data.analysis_context.analysis_preferences if session_data.analysis_context else {}
-            }
-        }
-
-        # Save to file
-        save_session_to_file(session_id, session)
-
-        return SessionResponse(
-            session_id=session_id,
-            title=title,
-            description=session_data.description,
-            created_at=now,
-            updated_at=now,
-            document_count=0,
-            last_document_id=None,
-            status="active"
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to create session: {str(e)}")
-
-@router.get("/sessions/list", response_model=List[SessionResponse], tags=["Sessions"])
-async def list_sessions(limit: int = 50, offset: int = 0):
-    """List all analysis sessions"""
-    try:
-        sessions = []
-
-        # Get all session files
-        session_files = list(SESSIONS_DIR.glob("session_*.json"))
-        session_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)  # Sort by modification time
-
-        # Apply pagination
-        paginated_files = session_files[offset:offset + limit]
-
-        for session_file in paginated_files:
-            session_data = load_session_from_file(session_file.stem)
-            if session_data:
-                sessions.append(SessionResponse(
-                    session_id=session_data["session_id"],
-                    title=session_data["title"],
-                    description=session_data.get("description"),
-                    created_at=datetime.fromisoformat(session_data["created_at"]),
-                    updated_at=datetime.fromisoformat(session_data["updated_at"]),
-                    document_count=session_data.get("document_count", 0),
-                    last_document_id=session_data.get("last_document_id"),
-                    status=session_data.get("status", "active")
-                ))
-
-        return sessions
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to list sessions: {str(e)}")
-
-@router.get("/sessions/{session_id}", response_model=SessionDetail, tags=["Sessions"])
-async def get_session(session_id: str):
-    """Get a specific session with full details including documents from PostgreSQL"""
-    try:
-        session_data = load_session_from_file(session_id)
-
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-
-        # Enhanced: Fetch document details from PostgreSQL storage
-        documents = []
-        document_ids = []
-        
-        # Collect document IDs from various sources
-        if session_data.get("last_document_id"):
-            document_ids.append(session_data["last_document_id"])
-        
-        # Check chat state for document IDs
-        chat_state = session_data.get("chat_state", {})
-        if isinstance(chat_state, dict) and chat_state.get("documentId"):
-            if chat_state["documentId"] not in document_ids:
-                document_ids.append(chat_state["documentId"])
-        
-        # Check messages for document references
-        messages = session_data.get("messages", [])
-        for message in messages:
-            if isinstance(message, dict):
-                # Look for document IDs in message content
-                content = str(message.get("content", ""))
-                if "RAI-" in content:
-                    # Extract document IDs from content (simple pattern matching)
-                    import re
-                    doc_matches = re.findall(r'RAI-[0-9A-Z-]+', content)
-                    for doc_id in doc_matches:
-                        if doc_id not in document_ids:
-                            document_ids.append(doc_id)
-
-        # Fetch document analysis results from persistent storage
-        try:
-            from services.persistent_storage_enhanced import PersistentStorageManager
-            storage = PersistentStorageManager()
-            
-            for doc_id in document_ids:
-                try:
-                    analysis_result = await storage.get_analysis_results(doc_id)
-                    if analysis_result:
-                        # Format document for frontend compatibility
-                        documents.append({
-                            "document_id": doc_id,
-                            "filename": f"{doc_id}.pdf",  # Default filename
-                            "status": analysis_result.get("status", "COMPLETED"),
-                            "metadata": analysis_result.get("metadata", {}),
-                            "sections": analysis_result.get("sections", []),
-                            "created_at": analysis_result.get("created_at"),
-                            "analysis_complete": True
-                        })
-                        logger.info(f"✅ Retrieved document {doc_id} from PostgreSQL for session {session_id}")
-                except Exception as e:
-                    logger.warning(f"Could not retrieve document {doc_id} from storage: {e}")
-                    
-        except Exception as e:
-            logger.warning(f"Storage system not available for session {session_id}: {e}")
-
-        return SessionDetail(
-            session_id=session_data["session_id"],
-            title=session_data["title"],
-            description=session_data.get("description"),
-            created_at=datetime.fromisoformat(session_data["created_at"]),
-            updated_at=datetime.fromisoformat(session_data["updated_at"]),
-            document_count=len(documents),  # Updated with actual document count
-            last_document_id=session_data.get("last_document_id"),
-            status=session_data.get("status", "active"),
-            chat_state=session_data.get("chat_state"),
-            documents=documents  # Now includes full document data from PostgreSQL
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get session: {str(e)}")
-
-@router.put("/sessions/{session_id}", response_model=SessionResponse, tags=["Sessions"])
-async def update_session(session_id: str, session_update: SessionUpdate):
-    """Update a session with new data"""
-    try:
-        session_data = load_session_from_file(session_id)
-
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-
-        # Update fields
-        if session_update.title is not None:
-            session_data["title"] = session_update.title
-
-        if session_update.description is not None:
-            session_data["description"] = session_update.description
-
-        if session_update.chat_state is not None:
-            session_data["chat_state"] = session_update.chat_state
-
-            # Update document count and last document if present in chat state
-            if "documentId" in session_update.chat_state and session_update.chat_state["documentId"]:
-                session_data["last_document_id"] = session_update.chat_state["documentId"]
-                session_data["document_count"] = max(session_data.get("document_count", 0), 1)
-
-        if session_update.messages is not None:
-            session_data["messages"] = session_update.messages
-
-        # Update timestamp
-        session_data["updated_at"] = datetime.now().isoformat()
-
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-
-        return SessionResponse(
-            session_id=session_data["session_id"],
-            title=session_data["title"],
-            description=session_data.get("description"),
-            created_at=datetime.fromisoformat(session_data["created_at"]),
-            updated_at=datetime.fromisoformat(session_data["updated_at"]),
-            document_count=session_data.get("document_count", 0),
-            last_document_id=session_data.get("last_document_id"),
-            status=session_data.get("status", "active")
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to update session: {str(e)}")
-
-@router.delete("/sessions/{session_id}", tags=["Sessions"])
-async def delete_session(session_id: str):
-    """Delete a session"""
-    try:
-        session_file = get_session_file_path(session_id)
-
-        if not session_file.exists():
-            raise HTTPException(status_code=404, detail="Session not found")
-
-        # Delete the session file
-        session_file.unlink()
-
-        return JSONResponse(content={"message": "Session deleted successfully"})
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to delete session: {str(e)}")
-
-@router.post("/sessions/{session_id}/archive", tags=["Sessions"])
-async def archive_session(session_id: str):
-    """Archive a session (mark as completed)"""
-    try:
-        session_data = load_session_from_file(session_id)
-
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-
-        # Update status to archived
-        session_data["status"] = "archived"
-        session_data["updated_at"] = datetime.now().isoformat()
-
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-
-        return JSONResponse(content={"message": "Session archived successfully"})
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
-
-# Enhanced session management endpoints
-@router.delete("/sessions/{session_id}/delete", tags=["Sessions"])
-async def delete_session_permanently(session_id: str):
-    """Permanently delete a session"""
-    try:
-        session_file = get_session_file_path(session_id)
-        
-        if not session_file.exists():
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Delete session file
-        session_file.unlink()
-        
-        return JSONResponse(content={"message": "Session deleted successfully"})
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to delete session: {str(e)}")
-
-@router.post("/sessions/{session_id}/share", tags=["Sessions"])
-async def share_session(session_id: str, shared_users: List[str]):
-    """Share a session with other users"""
-    try:
-        session_data = load_session_from_file(session_id)
-        
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Update shared users list
-        session_data["shared_with"] = list(set(session_data.get("shared_with", []) + shared_users))
-        session_data["status"] = "shared"
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-        
-        return JSONResponse(content={
-            "message": f"Session shared with {len(shared_users)} users",
-            "shared_with": session_data["shared_with"]
-        })
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to share session: {str(e)}")
-
-@router.post("/sessions/{session_id}/conversation", tags=["Sessions"])
-async def add_conversation_message(session_id: str, message: ConversationMessage):
-    """Add a message to session conversation history"""
-    try:
-        session_data = load_session_from_file(session_id)
-        
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Add message to conversation history
-        conversation_history = session_data.get("conversation_history", [])
-        conversation_history.append(message.dict())
-        session_data["conversation_history"] = conversation_history
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-        
-        return JSONResponse(content={"message": "Conversation message added"})
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to add conversation message: {str(e)}")
-
-@router.post("/sessions/{session_id}/user-choice", tags=["Sessions"])
-async def record_user_choice(session_id: str, choice: UserChoice):
-    """Record a user choice in the session"""
-    try:
-        session_data = load_session_from_file(session_id)
-        
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Add user choice
-        user_choices = session_data.get("user_choices", [])
-        user_choices.append(choice.dict())
-        session_data["user_choices"] = user_choices
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-        
-        return JSONResponse(content={"message": "User choice recorded"})
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to record user choice: {str(e)}")
-
-@router.post("/sessions/{session_id}/ai-response", tags=["Sessions"])
-async def record_ai_response(session_id: str, response: AIResponse):
-    """Record an AI response in the session"""
-    try:
-        session_data = load_session_from_file(session_id)
-        
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Add AI response
-        ai_responses = session_data.get("ai_responses", [])
-        ai_responses.append(response.dict())
-        session_data["ai_responses"] = ai_responses
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-        
-        return JSONResponse(content={"message": "AI response recorded"})
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to record AI response: {str(e)}")
-
-# Document section query endpoint for results page chatbox
-class DocumentSectionQuery(BaseModel):
-    document_id: str
-    question: str
-    start_page: Optional[int] = None
-    end_page: Optional[int] = None
-    section_name: Optional[str] = None
-    custom_instructions: Optional[str] = None
-
-@router.post("/sessions/{session_id}/document-query", tags=["Sessions", "AI"])
-async def query_document_section(session_id: str, query: DocumentSectionQuery):
-    """Query a specific section of a document with AI assistance"""
-    try:
-        # Load session
-        session_data = load_session_from_file(session_id)
-        if not session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        # Get document from PostgreSQL
-        from services.persistent_storage_enhanced import PersistentStorageManager
-        storage = PersistentStorageManager()
-        
-        # Get document analysis results
-        analysis_result = await storage.get_analysis_results(query.document_id)
-        if not analysis_result:
-            raise HTTPException(status_code=404, detail="Document not found")
-        
-        # Get original file content if needed for page-specific queries
-        file_data = await storage.get_file(query.document_id)
-        
-        # Prepare context for AI query
-        context = {
-            "document_metadata": analysis_result.get("metadata", {}),
-            "sections": analysis_result.get("sections", []),
-            "query": query.question,
-            "custom_instructions": query.custom_instructions
-        }
-        
-        # Filter sections by page range if specified
-        if query.start_page and query.end_page:
-            # TODO: Implement page-based section filtering
-            context["page_filter"] = {"start": query.start_page, "end": query.end_page}
-        
-        # Filter by section name if specified
-        if query.section_name:
-            filtered_sections = [
-                section for section in context["sections"] 
-                if query.section_name.lower() in section.get("title", "").lower()
-            ]
-            context["sections"] = filtered_sections
-        
-        # Get custom instructions from analysis context
-        analysis_context = session_data.get("analysis_context", {})
-        base_instructions = analysis_context.get("custom_instructions", "")
-        
-        # Combine instructions
-        full_instructions = f"{base_instructions}\n\n{query.custom_instructions}" if query.custom_instructions else base_instructions
-        
-        # Prepare AI prompt
-        prompt = f"""
-        Based on the document analysis and the specific section(s) requested, please answer the following question:
-        
-        Question: {query.question}
-        
-        Custom Instructions: {full_instructions}
-        
-        Document Context:
-        Company: {context['document_metadata'].get('company_name', {}).get('value', 'Unknown')}
-        Document Type: {context['document_metadata'].get('document_type', {}).get('value', 'Unknown')}
-        
-        Relevant Sections:
-        {json.dumps(context['sections'], indent=2)}
-        
-        Please provide a detailed answer based only on the information available in these sections.
-        If the answer cannot be found in the provided sections, please state that clearly.
-        """
-        
-        # TODO: Call AI service to get response
-        # For now, return a structured response
-        ai_answer = {
-            "query_id": f"query_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            "question": query.question,
-            "answer": "This would be the AI-generated answer based on the document sections and custom instructions.",
-            "sections_referenced": len(context["sections"]),
-            "confidence": 0.85,
-            "sources": [section.get("title", "Unknown Section") for section in context["sections"]],
-            "page_range": f"{query.start_page}-{query.end_page}" if query.start_page and query.end_page else "All sections"
-        }
-        
-        # Record this interaction in session
-        conversation_message = ConversationMessage(
-            message_id=f"msg_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            role="user",
-            content=query.question,
-            timestamp=datetime.now(),
-            message_type="section_query",
-            metadata={
-                "document_id": query.document_id,
-                "start_page": query.start_page,
-                "end_page": query.end_page,
-                "section_name": query.section_name
-            }
-        )
-        
-        ai_response_message = ConversationMessage(
-            message_id=f"msg_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
-            role="assistant", 
-            content=ai_answer["answer"],
-            timestamp=datetime.now(),
-            message_type="section_answer",
-            metadata={
-                "query_id": ai_answer["query_id"],
-                "confidence": ai_answer["confidence"],
-                "sources": ai_answer["sources"]
-            }
-        )
-        
-        # Update session with conversation
-        conversation_history = session_data.get("conversation_history", [])
-        conversation_history.extend([conversation_message.dict(), ai_response_message.dict()])
-        session_data["conversation_history"] = conversation_history
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        save_session_to_file(session_id, session_data)
-        
-        return {
-            "success": True,
-            "ai_response": ai_answer,
-            "session_updated": True
-        }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Document section query failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to process document query: {str(e)}")
-
-
-# Documents management endpoints (consolidated from documents_routes.py)
-@router.get("/documents", response_model=List[Dict[str, Any]], tags=["Documents"])
-async def list_documents():
-    """List all uploaded documents by scanning the uploads and results directories."""
-    documents = {}
-    try:
-        # Scan uploads directory for both .pdf and .docx
-        for item in UPLOADS_DIR.iterdir():
-            if item.is_file() and item.suffix in [".pdf", ".docx"]:
-                doc_id = item.stem
-                try:
-                    stat_result = item.stat()
-                    documents[doc_id] = {
-                        "id": doc_id,
-                        "filename": item.name,
-                        "uploaded_at": datetime.fromtimestamp(stat_result.st_ctime).isoformat(),
-                        "status": "PENDING",  # Default status, update below
-                        "file_size": stat_result.st_size,
-                    }
-                except Exception as stat_err:
-                    logger.warning(f"Could not get stats for file {item.name}: {stat_err}")
-
-        # Scan analysis results directory to update status
-        for item in ANALYSIS_RESULTS_DIR.iterdir():
-            if item.is_file() and item.suffix == ".json":
-                doc_id = item.stem.split("_metadata")[0]  # Handle both metadata and final results files
-                if doc_id in documents:
-                    try:
-                        with open(item, "r", encoding="utf-8") as f:
-                            results_data = json.load(f)
-                        # Determine status based on file content
-                        if "_metadata.json" in item.name:
-                            meta_status = results_data.get("_overall_status", "COMPLETED")
-                            if meta_status == "FAILED":
-                                documents[doc_id]["status"] = "FAILED"
-                            elif meta_status == "PARTIAL":
-                                documents[doc_id]["status"] = "PROCESSING"
-                            elif documents[doc_id]["status"] == "PENDING":
-                                documents[doc_id]["status"] = "PROCESSING"
-                        elif ".json" in item.name and "_metadata" not in item.name:
-                            # Final results file
-                            final_status = results_data.get("status", "completed")
-                            if final_status == "failed":
-                                documents[doc_id]["status"] = "FAILED"
-                            else:
-                                documents[doc_id]["status"] = "COMPLETED"
-                    except Exception as json_err:
-                        logger.warning(f"Could not read or parse result file {item.name}: {json_err}")
-                        if doc_id in documents:
-                            documents[doc_id]["status"] = "FAILED"
-
-        # Return documents sorted by upload time
-        sorted_docs = sorted(documents.values(), key=lambda d: d.get("uploaded_at", ""), reverse=True)
-        return sorted_docs
-
-    except Exception as e:
-        logger.error(f"Error listing documents from file system: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error listing documents: {str(e)}")
-
-
-# Checklist management endpoints (consolidated from checklist_routes.py)
-class ChecklistItemUpdateRequest(BaseModel):
-    status: Optional[str] = None
-    comment: Optional[str] = None
-    resolved: Optional[bool] = None
-
-@router.put("/documents/{document_id}/checklist/items/{item_ref}", tags=["Checklist"])
-async def update_checklist_item(document_id: str, item_ref: str, update: ChecklistItemUpdateRequest):
-    """Update a checklist item."""
-    try:
-        result_path = CHECKLIST_DATA_DIR / f"{document_id}.json"
-        if not result_path.exists():
-            raise HTTPException(status_code=404, detail="Analysis not found")
-
-        with open(result_path, "r", encoding='utf-8') as f:
-            data = json.load(f)
-
-        # Find and update the item
-        item_found = False
-        for item in data.get("items", []):
-            if item.get("ref") == item_ref or item.get("id") == item_ref:
-                if update.status is not None:
-                    item["status"] = update.status
-                if update.comment is not None:
-                    item["comment"] = update.comment
-                if update.resolved is not None:
-                    item["resolved"] = update.resolved
-                item_found = True
-                break
-
-        if not item_found:
-            raise HTTPException(status_code=404, detail="Item not found")
-
-        # Save updated data
-        with open(result_path, "w", encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
-
-        return {"message": "Item updated successfully"}
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.post("/documents/{document_id}/checklist/auto-fill", tags=["Checklist"])
-async def auto_fill_checklist(document_id: str, request: Dict[str, Any] = {}):
-    """Auto-fill checklist items based on document analysis."""
-    try:
-        logger.info(f"Received auto-fill request for document {document_id}")
-
-        # Extract section_id from request body
-        section_id = request.get("section_id") if request else None
-
-        # Get analysis results
-        results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
-        if not results_path.exists():
-            raise HTTPException(
-                status_code=404,
-                detail=f"No analysis results found for document {document_id}",
-            )
-
-        with open(results_path, "r", encoding="utf-8") as f:
-            analysis_data = json.load(f)
-
-        # Check if analysis is completed
-        if analysis_data.get("status") not in ["COMPLETED", "completed"]:
-            raise HTTPException(status_code=400, detail="Document analysis not completed")
-
-        # Load base checklist template
-        checklist_template = load_checklist()
-
-        # Auto-fill checklist items based on analysis
-        checklist_items = []
-        total_items = 0
-        completed_items = 0
-
-        for section in checklist_template.get("sections", []):
-            # Skip sections that don't match the requested section_id if one is provided
-            if section_id and section.get("title") != section_id:
-                continue
-
-            for item in section.get("items", []):
-                total_items += 1
-                auto_filled_item = {
-                    "id": item.get("id"),
-                    "section": section.get("title"),
-                    "requirement": item.get("requirement", item.get("question", "")),
-                    "reference": item.get("reference", ""),
-                    "status": "PENDING",
-                    "evidence": "",
-                    "comments": "",
-                    "auto_filled": True,
-                }
-
-                # Try to find matching analysis result
-                for analysis_section in analysis_data.get("sections", []):
-                    for analysis_item in analysis_section.get("items", []):
-                        if analysis_item.get("id") == item.get("id"):
-                            auto_filled_item.update({
-                                "status": analysis_item.get("status", "PENDING"),
-                                "evidence": analysis_item.get("evidence", ""),
-                                "comments": analysis_item.get("ai_explanation", ""),
-                                "suggestion": analysis_item.get("suggestion", ""),
-                                "auto_filled": True,
-                            })
-                            if analysis_item.get("status") != "PENDING":
-                                completed_items += 1
-                            break
-
-                checklist_items.append(auto_filled_item)
-
-        # Create response with metadata
-        response = {
-            "items": checklist_items,
-            "metadata": {
-                "total_items": total_items,
-                "completed_items": completed_items,
-                "compliance_score": (completed_items / total_items) if total_items > 0 else 0,
-            },
-        }
-
-        # Save auto-filled checklist
-        checklist_path = CHECKLIST_DATA_DIR / f"{document_id}.json"
-        with open(checklist_path, "w", encoding="utf-8") as f:
-            json.dump(response, f, indent=2)
-
-        logger.info(f"Successfully auto-filled checklist for document {document_id}")
-        return response
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error auto-filling checklist for document {document_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get("/debug/files")
-async def debug_list_files():
-    """
-    DEBUG ENDPOINT: List files in analysis_results directory on Render
-    """
-    try:
-        import os
-        from pathlib import Path
-        
-        # Get the current working directory
-        cwd = os.getcwd()
-        
-        # List analysis_results directory
-        analysis_dir = Path(cwd) / "analysis_results"
-        files_info = {
-            "cwd": cwd,
-            "analysis_results_dir": str(analysis_dir),
-            "analysis_results_exists": analysis_dir.exists(),
-            "files": []
-        }
-        
-        if analysis_dir.exists():
-            files_info["files"] = [f.name for f in analysis_dir.iterdir() if f.is_file()]
-        
-        # Also check uploads directory
-        uploads_dir = Path(cwd) / "uploads"
-        files_info["uploads_dir"] = str(uploads_dir)
-        files_info["uploads_exists"] = uploads_dir.exists()
-        files_info["uploads_files"] = []
-        
-        if uploads_dir.exists():
-            files_info["uploads_files"] = [f.name for f in uploads_dir.iterdir() if f.is_file()]
-            
-        return files_info
-        
-    except Exception as e:
-        try:
-            import os
-            cwd = os.getcwd()
-        except:
-            cwd = "unknown"
-        return {"error": str(e), "cwd": cwd}
-
-
-@router.get("/debug/storage")
-async def debug_storage_check():
-    """
-    DEBUG ENDPOINT: Check storage directories and recent files
-    """
-    try:
-        import os
-        from pathlib import Path
-        import time
-        
-        cwd = os.getcwd()
-        
-        # Check analysis_results
-        analysis_dir = Path(cwd) / "analysis_results"
-        uploads_dir = Path(cwd) / "uploads"
-        
-        result = {
-            "working_directory": cwd,
-            "analysis_results": {
-                "path": str(analysis_dir),
-                "exists": analysis_dir.exists(),
-                "files": [],
-                "file_count": 0
-            },
-            "uploads": {
-                "path": str(uploads_dir), 
-                "exists": uploads_dir.exists(),
-                "files": [],
-                "file_count": 0
-            }
-        }
-        
-        # List analysis results files
-        if analysis_dir.exists():
-            files = list(analysis_dir.iterdir())
-            result["analysis_results"]["files"] = [
-                {
-                    "name": f.name,
-                    "size": f.stat().st_size if f.is_file() else 0,
-                    "modified": time.ctime(f.stat().st_mtime) if f.exists() else "unknown"
-                } 
-                for f in files if f.is_file()
-            ]
-            result["analysis_results"]["file_count"] = len(result["analysis_results"]["files"])
-        
-        # List uploads files
-        if uploads_dir.exists():
-            files = list(uploads_dir.iterdir())
-            result["uploads"]["files"] = [
-                {
-                    "name": f.name,
-                    "size": f.stat().st_size if f.is_file() else 0,
-                    "modified": time.ctime(f.stat().st_mtime) if f.exists() else "unknown"
-                }
-                for f in files if f.is_file()
-            ]
-            result["uploads"]["file_count"] = len(result["uploads"]["files"])
-            
-        return result
-        
-    except Exception as e:
-        try:
-            import os
-            working_directory = os.getcwd()
-        except:
-            working_directory = "unknown"
-        return {"error": str(e), "working_directory": working_directory}
+        _handle_analysis_error(document_id, e, performance_tracker, processing_mode)

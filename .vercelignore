@@ -1,0 +1,44 @@
+# Python cache files (these cause 250MB deployment bloat!)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Large data files only (keep all code and functionality)
+uploads/*.pdf
+vector_indices/*.faiss
+vector_indices/*.json
+analysis_results/*.json
+sessions/*.json
+*.duckdb
+
+# Cache and temp files only
+.pytest_cache/
+.mypy_cache/
+.coverage
+*.cover
+.cache
+.DS_Store
+Thumbs.db
+
+# Environment secrets only
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files only
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

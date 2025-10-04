@@ -9,7 +9,7 @@ stages involved.
 import json
 import logging
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class AttributeTrace:
     """Represents the complete trace of how a result page attribute was generated"""
-
+    
     attribute_name: str
     current_value: Any
     data_source_model: str
@@ -34,14 +34,14 @@ class ResultPageAttributeTracer:
     """
     Provides tracing capabilities for result page attributes
     """
-
+    
     def __init__(self):
         self.traces: Dict[str, AttributeTrace] = {}
-
-    def trace_question_section(self, checklist_item: Dict[str, Any],
+        
+    def trace_question_section(self, checklist_item: Dict[str, Any], 
                               framework_data: Dict[str, Any]) -> AttributeTrace:
         """Trace how the question section was generated"""
-
+        
         return AttributeTrace(
             attribute_name="question_section",
             current_value={
@@ -59,7 +59,7 @@ class ResultPageAttributeTracer:
                     "output": "checklist_items"
                 },
                 {
-                    "stage": "standards_selection",
+                    "stage": "standards_selection", 
                     "input": framework_data.get("selected_standards"),
                     "processor": "JSON file loading",
                     "output": "compliance_questions"
@@ -77,15 +77,15 @@ class ResultPageAttributeTracer:
             },
             timestamp=datetime.now()
         )
-
+    
     def trace_confidence_score(self, checklist_item: Dict[str, Any],
                               ai_analysis_log: Dict[str, Any]) -> AttributeTrace:
         """Trace how the confidence score was calculated"""
-
+        
         return AttributeTrace(
             attribute_name="confidence_score",
             current_value=checklist_item.get("confidence", 0.0),
-            data_source_model="ChecklistItem",
+            data_source_model="ChecklistItem", 
             data_source_field="confidence",
             processing_stages=[
                 {
@@ -124,16 +124,16 @@ class ResultPageAttributeTracer:
             },
             timestamp=datetime.now()
         )
-
+    
     def trace_explanation_text(self, checklist_item: Dict[str, Any],
                               ai_response_log: Dict[str, Any]) -> AttributeTrace:
         """Trace how the explanation text was generated"""
-
+        
         return AttributeTrace(
             attribute_name="explanation_text",
             current_value=checklist_item.get("explanation", ""),
             data_source_model="ChecklistItem",
-            data_source_field="explanation",
+            data_source_field="explanation", 
             processing_stages=[
                 {
                     "stage": "context_assembly",
@@ -170,22 +170,22 @@ class ResultPageAttributeTracer:
             },
             timestamp=datetime.now()
         )
-
+    
     def trace_evidence_table(self, checklist_item: Dict[str, Any],
                             vector_search_results: List[Dict[str, Any]]) -> AttributeTrace:
         """Trace how the evidence table was populated"""
-
+        
         evidence_rows = []
         for result in vector_search_results:
             evidence_rows.append({
                 "reference": checklist_item.get("reference"),
                 "requirement": "N/A",  # Usually not populated from vector search
-                "description": "N/A",   # Usually not populated from vector search
+                "description": "N/A",   # Usually not populated from vector search  
                 "page_number": result.get("metadata", {}).get("page", "N/A"),
                 "extract": result.get("content", ""),
                 "content_analysis": result.get("analysis", "")
             })
-
+        
         return AttributeTrace(
             attribute_name="evidence_table",
             current_value=evidence_rows,
@@ -199,7 +199,7 @@ class ResultPageAttributeTracer:
                     "output": "text_chunks_with_metadata"
                 },
                 {
-                    "stage": "vector_indexing",
+                    "stage": "vector_indexing", 
                     "input": "text_chunks",
                     "processor": "FAISS + text-embedding-3-large",
                     "output": "vector_index"
@@ -235,12 +235,12 @@ class ResultPageAttributeTracer:
             },
             timestamp=datetime.now()
         )
-
+    
     def trace_suggested_disclosure(self, checklist_item: Dict[str, Any],
                                   company_metadata: Dict[str, Any],
                                   ai_suggestion_log: Dict[str, Any]) -> AttributeTrace:
         """Trace how the suggested disclosure was generated"""
-
+        
         return AttributeTrace(
             attribute_name="suggested_disclosure",
             current_value=checklist_item.get("suggestion", ""),
@@ -283,14 +283,14 @@ class ResultPageAttributeTracer:
             },
             timestamp=datetime.now()
         )
-
+    
     def generate_complete_trace_report(self, document_id: str,
                                      checklist_item_id: str) -> Dict[str, Any]:
         """Generate a complete trace report for a specific result page item"""
-
+        
         # This would fetch actual data from your database/storage
         # For now, providing the structure
-
+        
         return {
             "document_id": document_id,
             "checklist_item_id": checklist_item_id,
@@ -314,7 +314,7 @@ class ResultPageAttributeTracer:
             "summary": {
                 "total_attributes_traced": len(self.traces),
                 "ai_models_involved": list(set(
-                    model for trace in self.traces.values()
+                    model for trace in self.traces.values() 
                     for model in trace.ai_components_used
                 )),
                 "processing_stages_count": sum(
@@ -326,10 +326,10 @@ class ResultPageAttributeTracer:
                 )
             }
         }
-
+    
     def export_trace_for_debugging(self, output_file: str):
         """Export trace information for debugging purposes"""
-
+        
         trace_data = {
             "export_timestamp": datetime.now().isoformat(),
             "traces": self.traces,
@@ -347,10 +347,10 @@ class ResultPageAttributeTracer:
                 ))
             }
         }
-
+        
         with open(output_file, 'w') as f:
             json.dump(trace_data, f, indent=2, default=str)
-
+        
         logger.info(f"Trace data exported to {output_file}")
 
 
@@ -359,40 +359,40 @@ def trace_result_page_attributes(document_id: str, checklist_item_id: str) -> Di
     """
     Example function showing how to trace all attributes for a result page item
     """
-
+    
     tracer = ResultPageAttributeTracer()
-
+    
     # Mock data - in real implementation, fetch from database
     checklist_item = {
         "id": checklist_item_id,
         "question": "If an entity reclassifies property at the date of initial application...",
         "reference": "IAS 40.84E(b)",
-        "section": "IAS 40",
+        "section": "IAS 40", 
         "confidence": 0.65,
         "explanation": "The document provides numerical disclosures on transfers...",
         "suggestion": "The entity should include a detailed reconciliation...",
         "status": "PARTIAL"
     }
-
+    
     framework_data = {
         "framework_id": "IFRS",
         "selected_standards": ["IAS 40"],
         "total_questions": 150
     }
-
+    
     company_metadata = {
         "company_name": "Aldar Properties PJSC",
         "nature_of_business": "Real estate development",
         "operational_demographics": "United Arab Emirates, Egypt"
     }
-
+    
     # Generate traces for each attribute
     tracer.traces["question"] = tracer.trace_question_section(checklist_item, framework_data)
     tracer.traces["confidence"] = tracer.trace_confidence_score(checklist_item, {})
     tracer.traces["explanation"] = tracer.trace_explanation_text(checklist_item, {})
     tracer.traces["evidence"] = tracer.trace_evidence_table(checklist_item, [])
     tracer.traces["suggestion"] = tracer.trace_suggested_disclosure(checklist_item, company_metadata, {})
-
+    
     return tracer.generate_complete_trace_report(document_id, checklist_item_id)
 
 

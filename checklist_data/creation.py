@@ -42,4 +42,4 @@ frameworks_json_path = Path(__file__).parent / "frameworks.json"
 with open(frameworks_json_path, "w", encoding="utf-8") as f:
     json.dump(frameworks_json, f, indent=2, ensure_ascii=False)
 
-print("frameworks.json updated with {len(frameworks)} frameworks.")
+print(f"frameworks.json updated with {len(frameworks)} frameworks.")

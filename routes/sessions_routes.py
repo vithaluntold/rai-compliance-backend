@@ -263,33 +263,3 @@ async def archive_session(session_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
-
-# Helper function for updating session processing status
-async def update_session_processing_status(session_id: str, status: str, additional_data: Optional[Dict[str, Any]] = None):
-    """Update the processing status of a session - used internally by other routes"""
-    try:
-        session_data = load_session_from_file(session_id)
-        
-        if not session_data:
-            return False  # Session not found, but don't raise error for internal calls
-        
-        # Update chat_state processing status
-        if "chat_state" not in session_data:
-            session_data["chat_state"] = {}
-        
-        session_data["chat_state"]["processingStatus"] = status
-        session_data["updated_at"] = datetime.now().isoformat()
-        
-        # Add any additional data
-        if additional_data:
-            session_data["chat_state"].update(additional_data)
-        
-        # Save updated session
-        save_session_to_file(session_id, session_data)
-        
-        return True
-        
-    except Exception as e:
-        # Log error but don't raise for internal calls
-        print(f"Failed to update session processing status: {str(e)}")
-        return False

@@ -82,32 +82,32 @@ class OperationalDemographicsField(MetadataField):
     def geography_of_operations(self) -> str:
         """Extract geographical operations information for result page display."""
         geography_parts = []
-
+        
         # Add primary location if available
         if self.primary_location and self.primary_location.strip():
             geography_parts.append(self.primary_location.strip())
-
+        
         # Add detected regions, avoiding duplicates
         if self.regions_detected:
             for region in self.regions_detected:
                 if region and region.strip() and region.strip() not in geography_parts:
                     geography_parts.append(region.strip())
-
+        
         # Add geographical entities information
         if self.geographical_entities:
             for entity in self.geographical_entities:
                 if isinstance(entity, dict):
                     # Extract location name from various possible keys
                     location_name = (
-                        entity.get("name") or
-                        entity.get("location") or
-                        entity.get("place") or
-                        entity.get("country") or
+                        entity.get("name") or 
+                        entity.get("location") or 
+                        entity.get("place") or 
+                        entity.get("country") or 
                         entity.get("region")
                     )
                     if location_name and str(location_name).strip() and str(location_name).strip() not in geography_parts:
                         geography_parts.append(str(location_name).strip())
-
+        
         # Return consolidated geography information
         if geography_parts:
             # Remove duplicates while preserving order
@@ -116,11 +116,11 @@ class OperationalDemographicsField(MetadataField):
                 if part not in unique_parts:
                     unique_parts.append(part)
             return ", ".join(unique_parts)
-
+        
         # Fallback to base value if available
         if self.value and self.value.strip():
             return self.value.strip()
-
+        
         return "Geographic operations not specified"
 
 
@@ -342,7 +342,7 @@ def convert_legacy_to_optimized(legacy_metadata: Dict[str, Any]) -> OptimizedMet
     if "company_name" not in legacy_metadata or not legacy_metadata["company_name"]:
         raise ValueError("Missing required field: company_name")
     if "nature_of_business" not in legacy_metadata or not legacy_metadata["nature_of_business"]:
-        raise ValueError("Missing required field: nature_of_business")
+        raise ValueError("Missing required field: nature_of_business") 
     if "operational_demographics" not in legacy_metadata or not legacy_metadata["operational_demographics"]:
         raise ValueError("Missing required field: operational_demographics")
 

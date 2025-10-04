@@ -13,10 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import faiss  # Import FAISS at the module level
 import numpy as np
-from dotenv import load_dotenv  # type: ignore
 from openai import AzureOpenAI
-
-load_dotenv()  # Load environment variables from .env file
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +47,7 @@ FAISS_AVAILABLE = False
 _vector_store: Optional["VectorStore"] = None
 
 # Optimize worker count for vector operations
-NUM_WORKERS = 4  # Reduced for 512MB Render instance
+NUM_WORKERS = min(32, (os.cpu_count() or 1) * 4)
 CHUNK_SIZE = 20  # Increased chunk size for vector operations
 MAX_RETRIES = 3  # Number of retries for API calls
 
@@ -105,7 +102,7 @@ class VectorStore:
         self.index_dir.mkdir(parents=True, exist_ok=True)
         self.export_dir = Path("exported_dataset")
         self.export_dir.mkdir(parents=True, exist_ok=True)
-        self.dimension = 3072  # text-embedding-3-large dimension
+        self.dimension = 1536  # text-embedding-ada-002 dimension
         self.executor = ThreadPoolExecutor(max_workers=NUM_WORKERS)
         logger.info(f"VectorStore (Azure) initialized with {NUM_WORKERS} workers")
 
@@ -115,14 +112,8 @@ class VectorStore:
         """Process a single chunk with retries."""
         for attempt in range(MAX_RETRIES):
             try:
-                # Truncate text to fit within token limits (approximately 6000 chars = 8000 tokens max)
-                chunk_text = chunk["text"]
-                if len(chunk_text) > 6000:
-                    chunk_text = chunk_text[:6000] + "..."
-                    logger.warning(f"Truncated chunk text from {len(chunk['text'])} to 6000 characters")
-                    
                 response = self.ai_client.embeddings.create(
-                    model=self.deployment_id, input=chunk_text
+                    model=self.deployment_id, input=chunk["text"]
                 )
                 embedding = np.array(response.data[0].embedding, dtype=np.float32)
                 return embedding, chunk
@@ -192,7 +183,7 @@ class VectorStore:
             chunks_path = self.index_dir / f"{document_id}_chunks.json"
 
             if not index_path.exists() or not chunks_path.exists():
-                logger.debug(f"Index files not yet created for document {document_id}")
+                logger.warning(f"Index files not found for document {document_id}")
                 return None
 
             # Load FAISS index
@@ -223,7 +214,7 @@ class VectorStore:
             if document_id not in self.index_cache:
                 loaded = self.load_index(document_id)
                 if not loaded:
-                    logger.debug(f"Index files not yet available for document {document_id}")
+                    logger.warning(f"Index files not found for document {document_id}")
                     return []
                 self.index_cache[document_id] = loaded
 
@@ -268,7 +259,7 @@ class VectorStore:
     def delete_index(self, document_id: str) -> None:
         """Delete index files for a document."""
         index_path = self.index_dir / f"{document_id}_index.faiss"
-        chunks_path = self.index_dir / f"{document_id}_chunks.pkl"
+        chunks_path = self.index_dir / f"{document_id}_chunks.json"
         embeddings_path = self.index_dir / f"{document_id}_embeddings.npy"
         export_path = self.export_dir / f"{document_id}_dataset.json"
 

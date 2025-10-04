@@ -1,5 +1,5 @@
 """
-Real-time progress tracking utility for compliance analysis
+Real-time progress tracking utility for compliance analysis.
 Tracks questions answered, elapsed time, and current status.
 """
 
@@ -63,7 +63,9 @@ class StandardProgress:
         """Convert to dictionary for JSON serialization"""
         result = asdict(self)
         # Convert QuestionProgress objects to dicts
-        result["questions_progress"] = {k: v.to_dict() for k, v in (self.questions_progress or {}).items()}
+        result["questions_progress"] = {
+            k: v.to_dict() for k, v in (self.questions_progress or {}).items()
+        }
         return result
 
 
@@ -119,8 +121,11 @@ class AnalysisProgress:
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization"""
         result = asdict(self)
-        # Convert StandardProgress objects to dicts (which also converts nested QuestionProgress)
-        result["standards_progress"] = {k: v.to_dict() for k, v in (self.standards_progress or {}).items()}
+        # Convert StandardProgress objects to dicts (which also converts nested
+        # QuestionProgress)
+        result["standards_progress"] = {
+            k: v.to_dict() for k, v in (self.standards_progress or {}).items()
+        }
         return result
 
 

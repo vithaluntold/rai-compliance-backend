@@ -124,10 +124,11 @@ async def process_smart_mode_analysis(
                 )
             return await asyncio.gather(*section_tasks)
         except Exception as fallback_error:
-            logger.error(f"Fallback processing also failed: {str(fallback_error)}f")
+            logger.error(f"Fallback processing also failed: {str(fallback_error)}")
             # Return minimal fallback results
             return [
-                {"section_name": section.get("name", f"Section {i + 1}"),
+                {
+                    "section_name": section.get("name", f"Section {i + 1}"),
                     "analysis_result": "Analysis unavailable due to processing error",
                     "processing_mode": "fallback",
                     "error": True,
@@ -214,10 +215,12 @@ async def process_zap_mode_analysis(
 
         # Add performance metadata to each section
         for section in valid_sections:
-            section["zap_mode_statsff"] = {"total_processing_time": processing_time,
+            section["zap_mode_stats"] = {
+                "total_processing_time": processing_time,
                 "concurrent_workers": 32,
                 "success_rate": len(valid_sections) / len(sections),
-                "sections_processed": len(sections),}
+                "sections_processed": len(sections),
+            }
 
         return valid_sections
 
