@@ -160,7 +160,10 @@ def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
         try:
             # Use sync version instead of async to avoid event loop conflicts
             storage_manager = get_persistent_storage_manager()
-            success = storage_manager.save_analysis_results_sync(document_id, results)
+            if hasattr(storage_manager, 'save_analysis_results_sync'):
+                success = storage_manager.save_analysis_results_sync(document_id, results)  # type: ignore
+            else:
+                success = False
             if success:
                 logger.info(f"✅ Analysis results saved to persistent storage: {document_id}")
             else:
@@ -184,7 +187,10 @@ def get_document_file_path(document_id: str) -> Optional[Path]:
     # 🔧 FIX: If not found locally, try to restore from persistent storage
     try:
         storage_manager = get_persistent_storage_manager()
-        temp_file = storage_manager.write_file_to_temp_sync(document_id)
+        if hasattr(storage_manager, 'write_file_to_temp_sync'):
+            temp_file = storage_manager.write_file_to_temp_sync(document_id)  # type: ignore
+        else:
+            temp_file = None
         if temp_file and temp_file.exists():
             logger.info(f"✅ Restored file from persistent storage: {document_id} -> {temp_file}")
             return temp_file
@@ -548,7 +554,7 @@ def _archive_document_file(document_id: str) -> None:
             
             # Store audit log (will create method if it doesn't exist)
             if hasattr(storage, 'save_document_audit_log'):
-                storage.save_document_audit_log(document_id, audit_data)
+                storage.save_document_audit_log(document_id, audit_data)  # type: ignore
                 logger.info(f"Audit log created for archived file: {document_id}")
             else:
                 logger.info(f"Audit logging not available, file archived to: {archived_file_path}")

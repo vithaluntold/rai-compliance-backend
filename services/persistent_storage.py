@@ -21,7 +21,7 @@ class PersistentStorageManager:
     Solves the ephemeral filesystem issue on Render.com
     """
     
-    def __init__(self, db_path: str = None):
+    def __init__(self, db_path: Optional[str] = None):
         if db_path is None:
             # Use environment variable or default path
             db_path = os.environ.get('DATABASE_PATH', '/tmp/persistent_storage.db')
@@ -67,7 +67,7 @@ class PersistentStorageManager:
             logger.info(f"✅ Persistent storage database initialized at {self.db_path}")
     
     # FILE STORAGE METHODS
-    async def save_uploaded_file(self, document_id: str, file_path: Path, filename: str, mime_type: str = None) -> bool:
+    async def save_uploaded_file(self, document_id: str, file_path: Path, filename: str, mime_type: Optional[str] = None) -> bool:
         """Save uploaded file to database"""
         try:
             if not file_path.exists():
@@ -125,7 +125,7 @@ class PersistentStorageManager:
             logger.error(f"❌ Failed to retrieve file {document_id}: {e}")
             return None
     
-    async def write_file_to_temp(self, document_id: str, temp_dir: Path = None) -> Optional[Path]:
+    async def write_file_to_temp(self, document_id: str, temp_dir: Optional[Path] = None) -> Optional[Path]:
         """Write database file to temporary location for processing"""
         try:
             file_data = await self.get_uploaded_file(document_id)
@@ -224,7 +224,7 @@ class PersistentStorageManager:
             logger.error(f"❌ Failed to create processing lock {document_id}: {e}")
             return False
     
-    async def check_processing_lock(self, document_id: str, lock_type: str = None) -> bool:
+    async def check_processing_lock(self, document_id: str, lock_type: Optional[str] = None) -> bool:
         """Check if processing lock exists and is valid"""
         try:
             current_time = datetime.now().timestamp()
@@ -257,7 +257,7 @@ class PersistentStorageManager:
             logger.error(f"❌ Failed to check processing lock {document_id}: {e}")
             return False
     
-    async def release_processing_lock(self, document_id: str, lock_type: str = None) -> bool:
+    async def release_processing_lock(self, document_id: str, lock_type: Optional[str] = None) -> bool:
         """Release processing lock"""
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -287,7 +287,7 @@ def get_persistent_storage() -> PersistentStorageManager:
     return _storage_manager
 
 # Convenience functions for backward compatibility
-async def save_file(document_id: str, file_path: Path, filename: str, mime_type: str = None) -> bool:
+async def save_file(document_id: str, file_path: Path, filename: str, mime_type: Optional[str] = None) -> bool:
     """Save file using persistent storage"""
     storage = get_persistent_storage()
     return await storage.save_uploaded_file(document_id, file_path, filename, mime_type)
@@ -394,7 +394,7 @@ def _add_sync_methods():
             logger.error(f"❌ Failed to retrieve file (sync) {document_id}: {e}")
             return None
     
-    def write_file_to_temp_sync(self, document_id: str, temp_dir: Path = None) -> Optional[Path]:
+    def write_file_to_temp_sync(self, document_id: str, temp_dir: Optional[Path] = None) -> Optional[Path]:
         """Sync version of write_file_to_temp"""
         try:
             file_data = self.get_uploaded_file_sync(document_id)
@@ -422,11 +422,11 @@ def _add_sync_methods():
             logger.error(f"❌ Failed to write temp file (sync) {document_id}: {e}")
             return None
 
-    # Add methods to class
-    PersistentStorageManager.save_analysis_results_sync = save_analysis_results_sync
-    PersistentStorageManager.get_analysis_results_sync = get_analysis_results_sync
-    PersistentStorageManager.get_uploaded_file_sync = get_uploaded_file_sync
-    PersistentStorageManager.write_file_to_temp_sync = write_file_to_temp_sync
+    # Add methods to class using setattr to avoid type checker issues
+    setattr(PersistentStorageManager, 'save_analysis_results_sync', save_analysis_results_sync)
+    setattr(PersistentStorageManager, 'get_analysis_results_sync', get_analysis_results_sync)
+    setattr(PersistentStorageManager, 'get_uploaded_file_sync', get_uploaded_file_sync)
+    setattr(PersistentStorageManager, 'write_file_to_temp_sync', write_file_to_temp_sync)
 
 # Call the function to add sync methods
 _add_sync_methods()

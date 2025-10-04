@@ -872,23 +872,23 @@ class AIService:
                 page_numbers = []
                 document_sources = []
                 document_extracts = []
-                for chunk in relevant_chunks:
-                    if chunk.get("page_number") and chunk["page_number"] > 0:
-                        page_numbers.append(chunk["page_number"])
-                    if chunk.get("chunk_index") is not None:
+                for chunk_data in relevant_chunks:
+                    if chunk_data.get("page_number") and chunk_data["page_number"] > 0:
+                        page_numbers.append(chunk_data["page_number"])
+                    if chunk_data.get("chunk_index") is not None:
                         document_sources.append({
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "chunk_type": chunk.get("chunk_type", "text")
+                            "page": chunk_data.get("page_number", 0),
+                            "chunk_index": chunk_data.get("chunk_index", 0),
+                            "chunk_type": chunk_data.get("chunk_type", "text")
                         })
                     # Include document extracts with page references
-                    if chunk.get("text"):
-                        extract_text = chunk["text"][:500] + "..." if len(chunk["text"]) > 500 else chunk["text"]
+                    if chunk_data.get("text"):
+                        extract_text = chunk_data["text"][:500] + "..." if len(chunk_data["text"]) > 500 else chunk_data["text"]
                         document_extracts.append({
                             "text": extract_text,
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "relevance_score": chunk.get("score", 0.0)
+                            "page": chunk_data.get("page_number", 0),
+                            "chunk_index": chunk_data.get("chunk_index", 0),
+                            "relevance_score": chunk_data.get("score", 0.0)
                         })
                 
                 if page_numbers:
