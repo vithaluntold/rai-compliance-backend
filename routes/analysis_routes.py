@@ -370,6 +370,240 @@ def _process_document_chunks(document_id: str) -> list:
     return chunks
 
 
+def _apply_5d_taxonomy_tags(content: str) -> dict:
+    """Apply 5D taxonomy tags to chunk content using master dictionary analysis."""
+    import re
+    import json
+    import os
+    
+    # Load master dictionary
+    master_dict_path = os.path.join(os.getcwd(), 'ai_parser', 'master_dictionary.json')
+    master_dict = {}
+    
+    try:
+        with open(master_dict_path, 'r') as f:
+            master_dict = json.load(f)
+    except Exception as e:
+        logger.warning(f"Could not load master dictionary: {e}")
+        return {}
+    
+    content_lower = content.lower()
+    
+    # Initialize 5D taxonomy tags
+    taxonomy_tags = {
+        "narrative_categories": [],
+        "table_archetypes": [],
+        "quantitative_expectations": [],
+        "temporal_scope": [],
+        "cross_reference_anchors": [],
+        "conditionality": [],
+        "evidence_expectations": {},
+        "citation_controls": [],
+        "keywords": []
+    }
+    
+    # 1. NARRATIVE CATEGORIES
+    narrative_mappings = {
+        "accounting_policies_note": ["accounting policies", "measurement bases", "methods", "policy", "ifrs", "ias"],
+        "event_based": ["subsequent events", "acquisition", "restructuring", "disposal", "merger", "combination"],
+        "measurement_basis": ["fair value", "amortised cost", "impairment", "depreciation", "amortization"],
+        "risk_exposure": ["credit risk", "liquidity risk", "market risk", "sensitivity", "hedging", "derivatives"],
+        "estimates_judgements": ["estimates", "assumptions", "judgements", "uncertainty", "management"],
+        "related_party": ["related party", "compensation", "transactions", "key management"],
+        "going_concern": ["going concern", "continuity", "liquidity", "working capital"],
+        "disclosure_narrative": ["notes", "disclosure", "statement", "consolidated"]
+    }
+    
+    for category, keywords in narrative_mappings.items():
+        if any(keyword in content_lower for keyword in keywords):
+            taxonomy_tags["narrative_categories"].append(category)
+    
+    # 2. TABLE ARCHETYPES
+    table_mappings = {
+        "reconciliation_table": ["opening", "closing", "movement", "balance", "beginning", "ending"],
+        "roll_forward_table": ["carrying amounts", "by class", "categories", "analysis"],
+        "sensitivity_table": ["sensitivity", "stress test", "impact", "change", "assumption"],
+        "segmental_analysis": ["segment", "geographic", "business", "division", "region"],
+        "carrying_amounts_by_category": ["total", "category", "class", "type", "current", "non-current"],
+        "maturity_analysis": ["maturity", "due", "within", "after", "years", "profile"]
+    }
+    
+    for archetype, keywords in table_mappings.items():
+        if any(keyword in content_lower for keyword in keywords):
+            taxonomy_tags["table_archetypes"].append(archetype)
+    
+    # 3. QUANTITATIVE EXPECTATIONS
+    if re.search(r'\$[\d,]+|\d+\.\d+|\d+%', content):
+        if "total" in content_lower or "amount" in content_lower:
+            taxonomy_tags["quantitative_expectations"].append("absolute_amounts")
+        if "by class" in content_lower or "category" in content_lower:
+            taxonomy_tags["quantitative_expectations"].append("class_by_class_totals")
+        if "estimate" in content_lower or "effect" in content_lower:
+            taxonomy_tags["quantitative_expectations"].append("estimate_of_financial_effect")
+        if "comparative" in content_lower or "prior" in content_lower:
+            taxonomy_tags["quantitative_expectations"].append("comparative_amounts")
+    else:
+        taxonomy_tags["quantitative_expectations"].append("qualitative_only")
+    
+    # 4. TEMPORAL SCOPE
+    temporal_mappings = {
+        "current_period": ["current", "year", "period", "2024", "2025"],
+        "comparative_period": ["comparative", "prior", "previous", "2023"],
+        "multiple_periods": ["years", "periods", "historical"],
+        "subsequent_events": ["subsequent", "after", "events", "reporting date"],
+        "opening_balance": ["opening", "beginning", "start", "initial"]
+    }
+    
+    for scope, keywords in temporal_mappings.items():
+        if any(keyword in content_lower for keyword in keywords):
+            taxonomy_tags["temporal_scope"].append(scope)
+    
+    # 5. CROSS REFERENCE ANCHORS
+    anchor_mappings = {
+        "notes_main": ["notes", "note", "financial statements"],
+        "policies": ["accounting policies", "policy", "method"],
+        "primary_statement": ["statement of financial position", "balance sheet", "income", "cash flow"],
+        "segment_note": ["segment", "segmental"],
+        "risk_note": ["risk", "financial risk", "credit", "liquidity"],
+        "related_standards": ["ifrs", "ias", "standard"]
+    }
+    
+    for anchor, keywords in anchor_mappings.items():
+        if any(keyword in content_lower for keyword in keywords):
+            taxonomy_tags["cross_reference_anchors"].append(anchor)
+    
+    # 6. CONDITIONALITY
+    if "requirement" in content_lower or "required" in content_lower:
+        taxonomy_tags["conditionality"].append("standard_requirement")
+    if "material" in content_lower:
+        taxonomy_tags["conditionality"].append("materiality")
+    if "policy" in content_lower and "choice" in content_lower:
+        taxonomy_tags["conditionality"].append("policy_choice")
+    
+    # 7. EVIDENCE EXPECTATIONS
+    taxonomy_tags["evidence_expectations"] = {
+        "required_documents": ["financial_statements"],
+        "data_sources": ["accounting_records"],
+        "validation_methods": ["document_review"],
+        "quality_indicators": ["completeness_check"]
+    }
+    
+    if "management" in content_lower:
+        taxonomy_tags["evidence_expectations"]["data_sources"].append("management_estimates")
+    if "valuation" in content_lower:
+        taxonomy_tags["evidence_expectations"]["data_sources"].append("external_valuations")
+    
+    # 8. CITATION CONTROLS
+    if "accounting policy" in content_lower:
+        taxonomy_tags["citation_controls"].append("accounting_policy")
+    if "judgement" in content_lower or "estimate" in content_lower:
+        taxonomy_tags["citation_controls"].append("significant_judgement")
+    if any(char.isdigit() for char in content):
+        taxonomy_tags["citation_controls"].append("quantitative_detail")
+    
+    # Extract IFRS keywords
+    taxonomy_tags["keywords"] = _extract_keywords_from_content(content)
+    
+    return taxonomy_tags
+
+
+def _extract_keywords_from_content(content: str) -> list:
+    """Extract meaningful keywords from chunk content using IFRS taxonomy master dictionary."""
+    import re
+    import json
+    import os
+    
+    # Load master dictionary with IFRS taxonomy concepts
+    master_dict_path = os.path.join(os.getcwd(), 'ai_parser', 'master_dictionary.json')
+    ifrs_keywords = set()
+    
+    try:
+        with open(master_dict_path, 'r') as f:
+            master_dict = json.load(f)
+            
+        # Extract IFRS taxonomy keywords from master dictionary
+        for category_name, category_data in master_dict.items():
+            if isinstance(category_data, dict):
+                for key, value in category_data.items():
+                    # Extract keywords from keys and values
+                    if isinstance(key, str):
+                        ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', key.lower()))
+                    if isinstance(value, str):
+                        ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', value.lower()))
+                    elif isinstance(value, list):
+                        for item in value:
+                            if isinstance(item, str):
+                                ifrs_keywords.update(re.findall(r'\b[a-zA-Z]{3,}\b', item.lower()))
+    except Exception as e:
+        logger.warning(f"Could not load master dictionary: {e}")
+    
+    # IFRS/IAS priority financial terms from taxonomy (5512 concepts available)
+    ifrs_taxonomy_terms = {
+        # Balance Sheet / Statement of Financial Position
+        'assets', 'liabilities', 'equity', 'capital', 'reserves', 'retained', 'earnings',
+        'current', 'noncurrent', 'property', 'plant', 'equipment', 'intangible',
+        'goodwill', 'investment', 'inventories', 'receivables', 'payables',
+        'provisions', 'borrowings', 'derivative', 'financial', 'instruments',
+        
+        # Income Statement / Comprehensive Income
+        'revenue', 'income', 'expenses', 'costs', 'profit', 'loss', 'comprehensive',
+        'depreciation', 'amortization', 'impairment', 'taxation', 'deferred',
+        'discontinued', 'operations', 'earnings', 'share',
+        
+        # Cash Flow Statement
+        'cash', 'flows', 'operating', 'investing', 'financing', 'activities',
+        'payments', 'receipts', 'equivalents',
+        
+        # Risk Management (IFRS 7, IFRS 9)
+        'risk', 'credit', 'liquidity', 'market', 'sensitivity', 'hedging',
+        'fair', 'value', 'measurement', 'hierarchy',
+        
+        # Accounting Policies & Estimates (IAS 1, IAS 8)
+        'accounting', 'policies', 'estimates', 'judgements', 'assumptions',
+        'changes', 'errors', 'retrospective', 'prospective',
+        
+        # Standards-specific terms
+        'lease', 'lessor', 'lessee', 'right', 'use', 'modification',  # IFRS 16
+        'employee', 'benefits', 'defined', 'contribution', 'benefit',  # IAS 19
+        'segment', 'operating', 'reportable', 'geographical',          # IFRS 8
+        'related', 'party', 'transactions', 'compensation',            # IAS 24
+        'subsequent', 'events', 'adjusting', 'non-adjusting',         # IAS 10
+        'consolidation', 'subsidiary', 'associate', 'joint',          # IFRS 10, 11, 12
+        'business', 'combination', 'acquisition', 'merger',           # IFRS 3
+        'insurance', 'contracts', 'coverage', 'units',                # IFRS 17
+        'biological', 'agricultural', 'harvest', 'bearer',            # IAS 41
+        'extractive', 'exploration', 'evaluation', 'development',     # IFRS 6
+        'hyperinflation', 'monetary', 'nonmonetary', 'adjustment'     # IAS 29
+    }
+    
+    # Combine with loaded dictionary keywords
+    all_ifrs_terms = ifrs_taxonomy_terms.union(ifrs_keywords)
+    
+    # Extract words (3+ chars, alphanumeric)
+    words = re.findall(r'\b[a-zA-Z]{3,}\b', content.lower())
+    
+    # Filter for IFRS taxonomy keywords
+    keywords = []
+    stopwords = {
+        'the', 'and', 'for', 'are', 'that', 'this', 'with', 'from', 'they', 'been', 
+        'have', 'were', 'said', 'each', 'which', 'their', 'will', 'would', 'there', 
+        'could', 'other', 'more', 'very', 'what', 'know', 'just', 'first', 'into', 
+        'over', 'think', 'also', 'your', 'work', 'life', 'only', 'can', 'still', 
+        'should', 'after', 'being', 'now', 'made', 'before', 'here', 'through', 
+        'when', 'where', 'much', 'some', 'these', 'many', 'then', 'them', 'well'
+    }
+    
+    for word in words:
+        if word in all_ifrs_terms:
+            keywords.append(word)
+        elif len(word) >= 6 and word not in stopwords:
+            # Include longer words that might be IFRS-relevant but not in our dictionary
+            keywords.append(word)
+    
+    # Remove duplicates and limit to 15 keywords (increased for better taxonomy coverage)
+    return list(set(keywords))[:15]
+
+
 def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> None:
     """Store document chunks in categorized_content database for smart categorization."""
     logger.info(f"📚 SMART STORAGE: Starting to store {len(chunks)} chunks for document {document_id}")
@@ -412,13 +646,17 @@ def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> No
                     failed_count += 1
                     continue
                 
-                # Store with basic categorization - AI service can enhance later
+                # Apply 5D taxonomy tags to chunk content
+                taxonomy_tags = _apply_5d_taxonomy_tags(content)
+                
+                # Extract basic categorization info
                 category = "financial_document"  # Basic category
                 subcategory = "content_chunk"
                 confidence = 0.8  # Good confidence for processed chunks
-                keywords = []  # Can be enhanced by AI later
+                keywords = taxonomy_tags.get('keywords', [])  # Use taxonomy-extracted keywords
                 
                 logger.debug(f"📝 SMART STORAGE: Storing chunk {i} ({chunk_info[:100]}) for document {document_id}")
+                logger.debug(f"📋 TAXONOMY TAGS APPLIED: {len(taxonomy_tags.get('narrative_categories', []))} narrative, {len(taxonomy_tags.get('table_archetypes', []))} tables, {len(taxonomy_tags.get('quantitative_expectations', []))} quantitative")
                 
                 success = storage.store_categorized_chunk(
                     document_id=document_id,
@@ -426,7 +664,8 @@ def _store_chunks_for_smart_categorization(document_id: str, chunks: list) -> No
                     category=category,
                     subcategory=subcategory,
                     confidence=confidence,
-                    keywords=keywords
+                    keywords=keywords,
+                    taxonomy_tags=taxonomy_tags
                 )
                 
                 if success:

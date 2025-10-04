@@ -60,6 +60,14 @@ class CategoryAwareContentStorage:
                             subcategory TEXT,
                             confidence_score REAL DEFAULT 0.0,
                             keywords TEXT,
+                            narrative_categories TEXT,
+                            table_archetypes TEXT,
+                            quantitative_expectations TEXT,
+                            temporal_scope TEXT,
+                            cross_reference_anchors TEXT,
+                            conditionality TEXT,
+                            evidence_expectations TEXT,
+                            citation_controls TEXT,
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                         )
                     ''')
@@ -71,7 +79,7 @@ class CategoryAwareContentStorage:
                     logger.info(f"🔍 Existing table columns: {list(columns.keys())}")
                     
                     # Check if we need to recreate the table with correct schema
-                    expected_columns = {'id', 'document_id', 'content_chunk', 'category', 'subcategory', 'confidence_score', 'keywords', 'created_at'}
+                    expected_columns = {'id', 'document_id', 'content_chunk', 'category', 'subcategory', 'confidence_score', 'keywords', 'narrative_categories', 'table_archetypes', 'quantitative_expectations', 'temporal_scope', 'cross_reference_anchors', 'conditionality', 'evidence_expectations', 'citation_controls', 'created_at'}
                     missing_columns = expected_columns - set(columns.keys())
                     
                     if missing_columns or 'content_chunk' not in columns:
@@ -88,6 +96,14 @@ class CategoryAwareContentStorage:
                                 subcategory TEXT,
                                 confidence_score REAL DEFAULT 0.0,
                                 keywords TEXT,
+                                narrative_categories TEXT,
+                                table_archetypes TEXT,
+                                quantitative_expectations TEXT,
+                                temporal_scope TEXT,
+                                cross_reference_anchors TEXT,
+                                conditionality TEXT,
+                                evidence_expectations TEXT,
+                                citation_controls TEXT,
                                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             )
                         ''')
@@ -119,8 +135,9 @@ class CategoryAwareContentStorage:
     
     def store_categorized_chunk(self, document_id: str, chunk: str, category: str, 
                                subcategory: Optional[str] = None, confidence: float = 0.0, 
-                               keywords: Optional[List[str]] = None) -> bool:
-        """Store a categorized content chunk with 4500 character limit validation"""
+                               keywords: Optional[List[str]] = None,
+                               taxonomy_tags: Optional[Dict[str, Any]] = None) -> bool:
+        """Store a categorized content chunk with 5D taxonomy tags and 4500 character limit validation"""
         try:
             # ENFORCE 4500 CHARACTER LIMIT
             if len(chunk) > 4500:
@@ -130,13 +147,40 @@ class CategoryAwareContentStorage:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 keywords_json = json.dumps(keywords or [])
+                
+                # Process 5D taxonomy tags
+                taxonomy_tags = taxonomy_tags or {}
+                narrative_categories_json = json.dumps(taxonomy_tags.get('narrative_categories', []))
+                table_archetypes_json = json.dumps(taxonomy_tags.get('table_archetypes', []))
+                quantitative_expectations_json = json.dumps(taxonomy_tags.get('quantitative_expectations', []))
+                temporal_scope_json = json.dumps(taxonomy_tags.get('temporal_scope', []))
+                cross_reference_anchors_json = json.dumps(taxonomy_tags.get('cross_reference_anchors', []))
+                conditionality_json = json.dumps(taxonomy_tags.get('conditionality', []))
+                evidence_expectations_json = json.dumps(taxonomy_tags.get('evidence_expectations', {}))
+                citation_controls_json = json.dumps(taxonomy_tags.get('citation_controls', []))
+                
                 cursor.execute('''
                     INSERT INTO categorized_content 
-                    (document_id, content_chunk, category, subcategory, confidence_score, keywords)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                ''', (document_id, chunk, category, subcategory, confidence, keywords_json))
+                    (document_id, content_chunk, category, subcategory, confidence_score, keywords,
+                     narrative_categories, table_archetypes, quantitative_expectations, temporal_scope,
+                     cross_reference_anchors, conditionality, evidence_expectations, citation_controls)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (document_id, chunk, category, subcategory, confidence, keywords_json,
+                      narrative_categories_json, table_archetypes_json, quantitative_expectations_json,
+                      temporal_scope_json, cross_reference_anchors_json, conditionality_json,
+                      evidence_expectations_json, citation_controls_json))
                 conn.commit()
-                logger.info(f"✅ STORED CHUNK: {len(chunk)} chars for document {document_id}")
+                
+                # Log 5D taxonomy tags applied
+                tag_summary = []
+                for tag_name, tag_values in taxonomy_tags.items():
+                    if tag_values:
+                        if isinstance(tag_values, list):
+                            tag_summary.append(f"{tag_name}({len(tag_values)})")
+                        elif isinstance(tag_values, dict):
+                            tag_summary.append(f"{tag_name}({len(tag_values)})")
+                
+                logger.info(f"✅ STORED CHUNK: {len(chunk)} chars for document {document_id} with 5D tags: {', '.join(tag_summary)}")
                 return True
         except Exception as e:
             logger.error(f"❌ Failed to store categorized chunk: {e}")
@@ -184,13 +228,14 @@ class CategoryAwareContentStorage:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 
-                # Build search query for keywords
+                # Build search query for keywords - FIXED LOGIC
                 keyword_conditions = []
                 params = [document_id]
                 
                 for keyword in keywords:
-                    keyword_conditions.append("(content_chunk LIKE ? OR keywords LIKE ?)")
-                    params.extend([f'%{keyword}%', f'%{keyword}%'])
+                    # Search content only with case-insensitive matching
+                    keyword_conditions.append("LOWER(content_chunk) LIKE LOWER(?)")
+                    params.append(f'%{keyword}%')
                 
                 if not keyword_conditions:
                     # Return high-confidence chunks if no keywords
