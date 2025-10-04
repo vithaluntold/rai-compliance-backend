@@ -179,29 +179,13 @@ class AIPrompts:
 
         return (
             " **Enhanced Evidence Analysis**\n"
-            f"• **Evidence Quality Score**: {
-                quality_assessment.get(
-                    'overall_quality', 0)}/100\n"
-            f"• **Confidence Level**: {
-                quality_assessment.get(
-                    'confidence_level', 0.0):.2f}\n"
+            f"• **Evidence Quality Score**: {quality_assessment.get('overall_quality', 0)}/100\n"
+            f"• **Confidence Level**: {quality_assessment.get('confidence_level', 0.0):.2f}\n"
             f"• **Source Type**: {quality_assessment.get('source_type', 'unknown')}\n"
-            f"• **Evidence Source**: {
-                quality_assessment.get(
-                    'evidence_source',
-                    'Unknown section')}\n"
-            f"• **Substantive Evidence Found**: {
-                analysis_summary.get(
-                    'substantive_evidence_count',
-                    0)} sources\n"
-            f"• **Policy Evidence Found**: {
-                analysis_summary.get(
-                    'policy_evidence_count',
-                    0)} sources\n"
-            f"• **Recommendation**: {
-                analysis_summary.get(
-                    'recommendation',
-                    'Manual review recommended')}\n\n"
+            f"• **Evidence Source**: {quality_assessment.get('evidence_source', 'Unknown section')}\n"
+            f"• **Substantive Evidence Found**: {analysis_summary.get('substantive_evidence_count', 0)} sources\n"
+            f"• **Policy Evidence Found**: {analysis_summary.get('policy_evidence_count', 0)} sources\n"
+            f"• **Recommendation**: {analysis_summary.get('recommendation', 'Manual review recommended')}\n\n"
             " **Note**: This evidence has been intelligently selected from the most relevant document sections.\n"
             "Consider the evidence quality score and source type in your assessment.\n\n"
         )
