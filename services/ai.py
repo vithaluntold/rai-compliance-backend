@@ -521,18 +521,29 @@ class AIService:
             relevant_chunks = []
             context = ""
             
-            # Check if this is a financial statement identification question
+            # Check if this is a financial statement identification question OR equity/share capital question
             fs_identification_keywords = [
+                # Financial statement identification (IAS 1.49-51)
                 "financial statements identified", "clearly identified", "distinguished from other information",
                 "unambiguous title", "statement of financial position", "statement of profit", 
                 "statement of comprehensive", "statement of changes", "statement of cash flows",
-                "present a statement", "entity present"
+                "present a statement", "entity present",
+                
+                # Share capital and equity disclosures (IAS 1.79)
+                "shares issued", "shares authorised", "share capital", "shares outstanding",
+                "par value per share", "shares reserved", "treasury shares", "shares held by",
+                "dividend", "cumulative preference", "nature and purpose of each reserve",
+                "rights, preferences and restrictions", "reconciliation of shares",
+                
+                # Other equity-related disclosures
+                "equity reserve", "retained earnings", "share premium", "revaluation reserve",
+                "borrowing costs", "defined benefit plan", "subsequent events", "non-adjusting events"
             ]
             
             is_fs_identification = any(keyword in question.lower() for keyword in fs_identification_keywords)
             
             if is_fs_identification:
-                logger.info(f"🏦 Using enhanced chunk selector for FS identification question: {question[:50]}...")
+                logger.info(f"🏦 Using enhanced chunk selector for FS/equity question: {question[:50]}...")
                 try:
                     # Use enhanced chunk selector for financial statement questions
                     storage = CategoryAwareContentStorage()  # Use default path (categorized_content.db)
