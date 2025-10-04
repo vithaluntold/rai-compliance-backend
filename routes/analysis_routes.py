@@ -297,12 +297,12 @@ async def _create_vector_index(document_id: str, chunks: list) -> None:
                 subcategory = 'general'
             
             # Store each chunk with appropriate categorization
-            storage.store_chunk(
+            storage.store_categorized_chunk(
                 document_id=document_id,
-                content_chunk=text_content,
+                chunk=text_content,
                 category=category,
                 subcategory=subcategory,
-                confidence_score=0.8,  # Default confidence
+                confidence=0.8,  # Default confidence
                 keywords=[]
             )
         
