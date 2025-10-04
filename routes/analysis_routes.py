@@ -3420,3 +3420,65 @@ async def archive_session(session_id: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
+
+@router.get("/sessions/session_{document_id}", response_model=SessionDetail)
+async def get_session_by_document_id(document_id: str):
+    """Get session by document ID - frontend compatibility endpoint"""
+    try:
+        # Try to find a session that contains this document_id
+        session_files = list(SESSIONS_DIR.glob("session_*.json"))
+        
+        for session_file in session_files:
+            session_data = load_session_from_file(session_file.stem)
+            if session_data and session_data.get("last_document_id") == document_id:
+                return SessionDetail(
+                    session_id=session_data["session_id"],
+                    title=session_data["title"],
+                    description=session_data.get("description"),
+                    created_at=datetime.fromisoformat(session_data["created_at"]),
+                    updated_at=datetime.fromisoformat(session_data["updated_at"]),
+                    document_count=session_data.get("document_count", 0),
+                    last_document_id=session_data.get("last_document_id"),
+                    status=session_data.get("status", "active"),
+                    chat_state=session_data.get("chat_state"),
+                    messages=session_data.get("messages", []),
+                    documents=session_data.get("documents", [])
+                )
+        
+        # If no existing session found, create a new one for this document
+        session_id = generate_session_id()
+        now = datetime.now()
+        
+        session = {
+            "session_id": session_id,
+            "title": f"Document Session {document_id[:8]}",
+            "description": f"Auto-created session for document {document_id}",
+            "created_at": now.isoformat(),
+            "updated_at": now.isoformat(),
+            "document_count": 1,
+            "last_document_id": document_id,
+            "status": "active",
+            "chat_state": None,
+            "messages": [],
+            "documents": [{"document_id": document_id, "added_at": now.isoformat()}]
+        }
+        
+        # Save the new session
+        save_session_to_file(session_id, session)
+        
+        return SessionDetail(
+            session_id=session_id,
+            title=session["title"],
+            description=session["description"],
+            created_at=now,
+            updated_at=now,
+            document_count=1,
+            last_document_id=document_id,
+            status="active",
+            chat_state=None,
+            messages=[],
+            documents=[{"document_id": document_id, "added_at": now.isoformat()}]
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get session by document ID: {str(e)}")
