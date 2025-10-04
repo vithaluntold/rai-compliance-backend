@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import threading
 import time
 import traceback
@@ -14,7 +15,7 @@ from openai import AzureOpenAI  # type: ignore
 
 from services.ai_prompts import ai_prompts
 
-# from services.progress import progress_service, ProgressStatus # Removed unused import
+
 from services.checklist_utils import load_checklist
 from services.intelligent_document_analyzer import enhance_compliance_analysis
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
@@ -220,7 +221,8 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             sleep_time = max(backoff_time, remaining_window)
 
             logger.warning(
-                f"Rate limit would be exceeded. Backing off for {sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
+                f"Rate limit would be exceeded. Backing off for "
+                f"{sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
             )
             time.sleep(sleep_time)
 
@@ -236,7 +238,8 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
         _request_count += 1
         _token_count += tokens
         logger.debug(
-            f"Rate limit check passed. Requests: {_request_count}/{REQUESTS_PER_MINUTE}, Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
+            f"Rate limit check passed. Requests: {_request_count}/"
+            f"{REQUESTS_PER_MINUTE}, Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
         )
 
 
@@ -312,7 +315,8 @@ class AIService:
                 document_id = generate_document_id()
             self.current_document_id = document_id  # Ensure it's set at the start
             logger.info(
-                f"Starting compliance analysis for document {document_id} using framework={framework}, standard={standard}"
+                f"Starting compliance analysis for document {document_id} "
+                f"using framework={framework}, standard={standard}"
             )
             checklist = load_checklist(framework, standard)
             if not checklist or not isinstance(checklist, dict):
@@ -323,7 +327,8 @@ class AIService:
                     "Invalid checklist format: 'sections' key must be a list"
                 )
             logger.info(
-                f"Loaded checklist with {len(sections)} sections for {framework}/{standard}"
+                f"Loaded checklist with {len(sections)} sections "
+                f"for {framework}/{standard}"
             )
             results = {
                 "document_id": document_id,
@@ -339,7 +344,8 @@ class AIService:
                 )
                 if not model_section:
                     logger.info(
-                        f"No model choice section found in {framework}/{standard} checklist, processing all sections"
+                        f"No model choice section found in {framework}/{standard} "
+                        f"checklist, processing all sections"
                     )
                     model_used = "unknown"
                 else:
@@ -384,7 +390,8 @@ class AIService:
                         logger.info(f"Processing section {section_name}")
                     else:
                         logger.info(
-                            f"Skipping section {section_name} based on model {model_used}"
+                            f"Skipping section {section_name} based on "
+                            f"model {model_used}"
                         )
                 processed_sections = await asyncio.gather(
                     *section_tasks, return_exceptions=True
@@ -400,7 +407,8 @@ class AIService:
                 results["status"] = "completed"
                 results["completed_at"] = datetime.now().isoformat()
                 logger.info(
-                    f"Successfully processed document {document_id} using {framework}/{standard}"
+                    f"Successfully processed document {document_id} using "
+                    f"{framework}/{standard}"
                 )
                 return results
             except Exception as e:
@@ -442,7 +450,10 @@ class AIService:
             return True
 
     def _determine_model_from_results(self, results: List[Dict[str, Any]]) -> str:
-        """Determine which model is used based on the results of model choice questions."""
+        """
+        Determine which model is used based on the results of model choice
+        questions.
+        """
         for result in results:
             if result["status"] != "N/A":
                 # Safely handle evidence that could be string or list
@@ -458,7 +469,8 @@ class AIService:
                     return "cost"
 
         logger.warning(
-            "Could not determine which model is used - defaulting to 'unknown' and processing ALL sections"
+            "Could not determine which model is used - defaulting to 'unknown' "
+            "and processing ALL sections"
         )
         return "unknown"
 
@@ -466,8 +478,10 @@ class AIService:
         self, chunk: str, question: str, standard_id: Optional[str] = None
     ) -> dict:
         """
-        Analyze a chunk of annual report content against a compliance checklist question.
-        Enhanced with intelligent document analysis, rate limiting, and duplicate prevention.
+        Analyze a chunk of annual report content against a compliance
+        checklist question.
+        Enhanced with intelligent document analysis, rate limiting, and
+        duplicate prevention.
         Returns a JSON response with:
           - status: "YES", "NO", or "N/A"
           - confidence: float between 0 and 1
@@ -479,25 +493,31 @@ class AIService:
             # Ensure document_id is set
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. Cannot perform vector search."
+                    "analyze_chunk called with no current_document_id set. "
+                    "Cannot perform vector search."
                 )
                 return {
                     "status": "Error",
                     "confidence": 0.0,
                     "explanation": "No document ID provided for vector search.",
                     "evidence": "",
-                    "suggestion": "Check backend logic to ensure document_id is always set.",
+                    "suggestion": (
+                        "Check backend logic to ensure document_id is always set."
+                    ),
                 }
 
             # Check for duplicate questions
             if check_duplicate_question(question, self.current_document_id):
                 logger.warning(
-                    f"Skipping duplicate question for document {self.current_document_id}"
+                    f"Skipping duplicate question for document "
+                    f"{self.current_document_id}"
                 )
                 return {
                     "status": "N/A",
                     "confidence": 0.0,
-                    "explanation": "This question has already been processed for this document.",
+                    "explanation": (
+                        "This question has already been processed for this document."
+                    ),
                     "evidence": "Duplicate question detected.",
                     "suggestion": "Question already analyzed - check previous results.",
                 }
@@ -549,11 +569,13 @@ class AIService:
                     quality_score = enhanced_analysis.get(
                         'evidence_quality_assessment', {}).get('overall_quality', 0)
                     logger.info(
-                        f"Intelligent analysis completed with quality score: {quality_score}"
+                        f"Intelligent analysis completed with quality score: "
+                        f"{quality_score}"
                     )
                 except Exception as e:
                     logger.warning(
-                        f"Intelligent document analysis failed, falling back to standard method: {str(e)}"
+                        f"Intelligent document analysis failed, falling back to "
+                        f"standard method: {str(e)}"
                     )
                     enhanced_evidence = None
 
@@ -564,7 +586,10 @@ class AIService:
                     "confidence": 0.0,
                     "explanation": "No relevant content found in the document",
                     "evidence": "",
-                    "suggestion": "Add a clear statement in the financial statement disclosures addressing this requirement.",
+                    "suggestion": (
+                        "Add a clear statement in the financial statement "
+                        "disclosures addressing this requirement."
+                    ),
                 }
 
             # Use enhanced evidence if available, otherwise fall back to original chunks
@@ -578,7 +603,7 @@ class AIService:
                     f"Using enhanced evidence from: {evidence_source}"
                 )
             else:
-                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
+                context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
                 logger.info("Using standard vector search evidence")
 
             # Construct the prompt for the AI using the prompts library
@@ -599,7 +624,9 @@ class AIService:
                         messages=[
                             {
                                 "role": "system",
-                                "content": ai_prompts.get_compliance_analysis_system_prompt(),
+                                "content": (
+                                    ai_prompts.get_compliance_analysis_system_prompt()
+                                ),
                             },
                             {"role": "user", "content": prompt},
                         ],
@@ -618,7 +645,8 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE ** (api_retry + 1)
                             logger.warning(
-                                f"Rate limit hit, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
+                                f"Rate limit hit, retrying in {backoff_time} seconds "
+                                f"(attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -629,9 +657,15 @@ class AIService:
                             return {
                                 "status": "N/A",
                                 "confidence": 0.0,
-                                "explanation": "Analysis could not be completed due to persistent API rate limits.",
+                                "explanation": (
+                                    "Analysis could not be completed due to "
+                                    "persistent API rate limits."
+                                ),
                                 "evidence": "Multiple rate limit errors occurred.",
-                                "suggestion": "Please retry the analysis later when API rate limits reset.",
+                                "suggestion": (
+                                    "Please retry the analysis later when API rate "
+                                    "limits reset."
+                                ),
                             }
 
                     elif "timeout" in error_message or "connection" in error_message:
@@ -639,7 +673,8 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE**api_retry
                             logger.warning(
-                                f"Connection error, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
+                                f"Connection error, retrying in {backoff_time} seconds "
+                                f"(attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -650,9 +685,15 @@ class AIService:
                             return {
                                 "status": "N/A",
                                 "confidence": 0.0,
-                                "explanation": f"Analysis failed due to connection issues: {str(api_error)}",
+                                "explanation": (
+                                    f"Analysis failed due to connection issues: "
+                                    f"{str(api_error)}"
+                                ),
                                 "evidence": "Connection error occurred.",
-                                "suggestion": "Please check network connectivity and retry the analysis.",
+                                "suggestion": (
+                                    "Please check network connectivity and retry the "
+                                    "analysis."
+                                ),
                             }
 
                     else:
@@ -662,9 +703,14 @@ class AIService:
                         return {
                             "status": "N/A",
                             "confidence": 0.0,
-                            "explanation": f"Analysis failed due to API error: {str(api_error)}",
+                            "explanation": (
+                                f"Analysis failed due to API error: {str(api_error)}"
+                            ),
                             "evidence": "API error occurred.",
-                            "suggestion": "Please retry the analysis or check system logs for details.",
+                            "suggestion": (
+                                "Please retry the analysis or check system logs for "
+                                "details."
+                            ),
                         }
             else:
                 # This should not happen due to the break statement, but just in case
@@ -712,7 +758,8 @@ class AIService:
             except json.JSONDecodeError:
                 # If that fails, try to extract JSON from the text
                 logger.warning(
-                    f"Response is not valid JSON, attempting to extract structured data: {content[:100]}..."
+                    f"Response is not valid JSON, attempting to extract "
+                    f"structured data: {content[:100]}..."
                 )
 
                 # Extract using regex-like approach for key fields
@@ -727,8 +774,6 @@ class AIService:
                     result["status"] = "N/A"
 
                 # Extract confidence (look for number between 0 and 1)
-                import re
-
                 confidence_match = re.search(r"[Cc]onfidence:?\s*(\d+\.\d+)", content)
                 if confidence_match:
                     result["confidence"] = float(confidence_match.group(1))
@@ -769,7 +814,10 @@ class AIService:
                         result["suggestion"] = suggestion_match.group(1).strip()
                     else:
                         result["suggestion"] = (
-                            "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
+                            "Provide a concrete, practical sample disclosure that "
+                            "would satisfy this IAS 40 requirement. For example: "
+                            "'The entity should disclose [required information] in "
+                            "accordance with IAS 40.[paragraph]'."
                         )
 
                 # Extract content_analysis
@@ -781,7 +829,9 @@ class AIService:
                 if content_analysis_match:
                     result["content_analysis"] = content_analysis_match.group(1).strip()
                 else:
-                    result["content_analysis"] = "No detailed content analysis provided."
+                    result["content_analysis"] = (
+                        "No detailed content analysis provided."
+                    )
 
                 # Extract disclosure_recommendations
                 disclosure_recommendations = []
@@ -805,11 +855,18 @@ class AIService:
                         re.DOTALL,
                     )
                     if single_disclosure_match:
-                        disclosure_recommendations.append(single_disclosure_match.group(1).strip())
+                        disclosure_recommendations.append(
+                            single_disclosure_match.group(1).strip()
+                        )
                 
-                result["disclosure_recommendations"] = disclosure_recommendations if disclosure_recommendations else [
-                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
-                ]
+                default_rec = (
+                    "Consider enhancing the disclosure to provide more "
+                    "comprehensive information addressing this requirement."
+                )
+                result["disclosure_recommendations"] = (
+                    disclosure_recommendations if disclosure_recommendations 
+                    else [default_rec]
+                )
 
             # Validate and clean the response
             if "status" not in result or result["status"] not in ["YES", "NO", "N/A"]:
@@ -826,11 +883,14 @@ class AIService:
                 result["content_analysis"] = "No detailed content analysis provided."
             if "disclosure_recommendations" not in result:
                 result["disclosure_recommendations"] = [
-                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
+                    "Consider enhancing the disclosure to provide more "
+                    "comprehensive information addressing this requirement."
                 ]
             elif not isinstance(result["disclosure_recommendations"], list):
                 # Convert single string to list if needed
-                result["disclosure_recommendations"] = [str(result["disclosure_recommendations"])]
+                result["disclosure_recommendations"] = [
+                    str(result["disclosure_recommendations"])
+                ]
 
             # Ensure evidence is structured and meaningful
             if result["evidence"] == "" or all(
@@ -841,7 +901,10 @@ class AIService:
             # Add a suggestion when status is "NO" and no suggestion provided
             if result["status"] == "NO" and "suggestion" not in result:
                 result["suggestion"] = (
-                    "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
+                    "Provide a concrete, practical sample disclosure that would "
+                    "satisfy this IAS 40 requirement. For example: 'The entity "
+                    "should disclose [required information] in accordance with "
+                    "IAS 40.[paragraph]'."
                 )
 
             # Add enhanced evidence metadata if available
@@ -872,23 +935,38 @@ class AIService:
                 page_numbers = []
                 document_sources = []
                 document_extracts = []
-                for chunk in relevant_chunks:
-                    if chunk.get("page_number") and chunk["page_number"] > 0:
-                        page_numbers.append(chunk["page_number"])
-                    if chunk.get("chunk_index") is not None:
+                
+                for chunk_item in relevant_chunks:
+                    # Extract common chunk attributes once
+                    page_number = chunk_item.get("page_number", 0)
+                    chunk_index = chunk_item.get("chunk_index")
+                    chunk_text = chunk_item.get("text")
+                    chunk_type = chunk_item.get("chunk_type", "text")
+                    relevance_score = chunk_item.get("score", 0.0)
+                    
+                    # Collect page numbers
+                    if page_number and page_number > 0:
+                        page_numbers.append(page_number)
+                    
+                    # Collect document sources
+                    if chunk_index is not None:
                         document_sources.append({
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "chunk_type": chunk.get("chunk_type", "text")
+                            "page": page_number,
+                            "chunk_index": chunk_index,
+                            "chunk_type": chunk_type
                         })
+                    
                     # Include document extracts with page references
-                    if chunk.get("text"):
-                        extract_text = chunk["text"][:500] + "..." if len(chunk["text"]) > 500 else chunk["text"]
+                    if chunk_text:
+                        extract_text = (
+                            chunk_text[:500] + "..." if len(chunk_text) > 500 
+                            else chunk_text
+                        )
                         document_extracts.append({
                             "text": extract_text,
-                            "page": chunk.get("page_number", 0),
-                            "chunk_index": chunk.get("chunk_index", 0),
-                            "relevance_score": chunk.get("score", 0.0)
+                            "page": page_number,
+                            "chunk_index": chunk_index or 0,
+                            "relevance_score": relevance_score
                         })
                 
                 if page_numbers:
@@ -902,41 +980,48 @@ class AIService:
             logger.info("✅ PROCESSED RESULT:")
             logger.info(f"   Status: {result.get('status', 'N/A')}")
             logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
-            logger.info(
-                f"   Explanation: {result.get('explanation',
-                                              'N/A')[:150]}{'...' if len(str(result.get('explanation',
-                                                                                        ''))) > 150 else ''}"
+            explanation = result.get('explanation', 'N/A')
+            truncated_explanation = (
+                explanation[:150] + ('...' if len(str(explanation)) > 150 else '')
             )
+            logger.info(f"   Explanation: {truncated_explanation}")
             evidence = result.get('evidence', [])
             evidence_count = len(evidence) if isinstance(evidence, list) else 1
             logger.info(
                 f"   Evidence Count: {evidence_count}"
             )
             if result.get("content_analysis"):
-                logger.info(
-                    f"   Content Analysis: {result.get('content_analysis', 'N/A')[:100]}{'...' if len(str(result.get('content_analysis', ''))) > 100 else ''}"
-                )
+                content_analysis = result.get('content_analysis', 'N/A')[:100]
+                content_len = len(str(result.get('content_analysis', '')))
+                content_suffix = '...' if content_len > 100 else ''
+                logger.info(f"   Content Analysis: {content_analysis}{content_suffix}")
             if result.get("disclosure_recommendations"):
-                logger.info(
-                    f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
-                )
+                rec_count = len(result.get('disclosure_recommendations', []))
+                logger.info(f"   Disclosure Recommendations: {rec_count} suggestions")
             if result.get("source_pages"):
                 logger.info(f"   Source Pages: {result.get('source_pages')}")
             if result.get("document_sources"):
-                source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
+                sources = result.get('document_sources', [])
+                source_info = [f"p{s['page']}" for s in sources]
                 logger.info(f"   Document Sources: {', '.join(source_info)}")
             if result.get("document_extracts"):
                 extract_count = len(result.get('document_extracts', []))
-                avg_score = sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count if extract_count > 0 else 0
-                logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
-            if result.get("status") == "NO" and result.get("suggestion"):
+                extracts = result.get('document_extracts', [])
+                total_score = sum(e.get('relevance_score', 0) for e in extracts)
+                avg_score = total_score / extract_count if extract_count > 0 else 0
                 logger.info(
-                    f"   Suggestion: {result.get('suggestion',
-                                                 'N/A')[:100]}{'...' if len(str(result.get('suggestion',
-                                                                                           ''))) > 100 else ''}"
+                    f"   Document Extracts: {extract_count} chunks, "
+                    f"avg relevance: {avg_score:.3f}"
                 )
+            if result.get("status") == "NO" and result.get("suggestion"):
+                suggestion = result.get('suggestion', 'N/A')
+                truncated_suggestion = (
+                    suggestion[:100] + ('...' if len(str(suggestion)) > 100 else '')
+                )
+                logger.info(f"   Suggestion: {truncated_suggestion}")
             if enhanced_evidence:
-                quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
+                enhanced = result.get('enhanced_analysis', {})
+                quality_score = enhanced.get('evidence_quality_score', 0)
                 logger.info(
                     f"   Enhanced Analysis: Quality Score {quality_score}/100"
                 )
@@ -951,7 +1036,10 @@ class AIService:
                 "confidence": 0.0,
                 "explanation": f"Error during analysis: {str(e)}",
                 "evidence": "",
-                "suggestion": "Consider adding explicit disclosure addressing this requirement.",
+                "suggestion": (
+                    "Consider adding explicit disclosure addressing this "
+                    "requirement."
+                ),
             }
 
     def _calculate_adequacy(
@@ -1093,11 +1181,13 @@ class AIService:
             vector_index_exists = vs_svc.index_exists(document_id)
             if not vector_index_exists:
                 logger.warning(
-                    f"Vector index not found for document {document_id}. Using direct questioning without vector context."
+                    f"Vector index not found for document {document_id}. "
+                    f"Using direct questioning without vector context."
                 )
 
             logger.info(
-                f"Directly querying AI about document {document_id} using vector store as context"
+                f"Directly querying AI about document {document_id} using "
+                f"vector store as context"
             )
 
             # Choose system prompt based on question type and vector index status
@@ -1330,13 +1420,8 @@ class AIService:
                 "items": processed_items,
             }
         except Exception as e:
-            logger.error(
-                f"Error processing section {
-                    section.get(
-                        'section',
-                        'unknown')}: {
-                    str(e)}"
-            )
+            section_name = section.get('section', 'unknown')
+            logger.error(f"Error processing section {section_name}: {str(e)}")
             return {
                 "section": section.get("section", "unknown"),
                 "title": section.get("title", ""),
@@ -1348,10 +1433,12 @@ class AIService:
         self, document_id: str, text: str, framework: str, standard: str
     ) -> Dict[str, Any]:
         """
-        Analyze a document for compliance with a specified framework and standard (async).
+        Analyze a document for compliance with a specified framework and
+        standard (async).
         """
         logger.info(
-            f"Starting compliance analysis for document {document_id} with framework {framework} and standard {standard}"
+            f"Starting compliance analysis for document {document_id} with "
+            f"framework {framework} and standard {standard}"
         )
         try:
             results = await self.process_document(
@@ -1410,7 +1497,8 @@ def get_ai_service() -> AIService:
                 or not embedding_deployment
             ):
                 raise ValueError(
-                    "Azure OpenAI configuration missing in environment variables (chat or embedding)"
+                    "Azure OpenAI configuration missing in environment "
+                    "variables (chat or embedding)"
                 )
 
             ai_service_instance = AIService(
@@ -1438,7 +1526,8 @@ try:
     embedding_api_version = AZURE_OPENAI_EMBEDDING_API_VERSION
     if not api_key or not api_base or not deployment_id or not embedding_deployment:
         raise ValueError(
-            "Azure OpenAI configuration missing in environment variables (chat or embedding)"
+            "Azure OpenAI configuration missing in environment variables "
+            "(chat or embedding)"
         )
     ai_service_instance = AIService(
         api_key,
