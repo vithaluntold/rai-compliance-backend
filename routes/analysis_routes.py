@@ -3421,7 +3421,7 @@ async def archive_session(session_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to archive session: {str(e)}")
 
-@router.get("/sessions/session_{document_id}", response_model=SessionDetail)
+@router.get("/sessions/session_{document_id:path}", response_model=SessionDetail)
 async def get_session_by_document_id(document_id: str):
     """Get session by document ID - frontend compatibility endpoint"""
     try:
