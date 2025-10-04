@@ -30,6 +30,7 @@ from services.checklist_utils import (
     load_checklist,
 )
 from services.document_chunker import document_chunker
+from services.progress_tracker import get_progress_tracker
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
 
@@ -942,8 +943,6 @@ async def get_analysis_progress(
         if completed_file.exists() and results_file.exists():
             # Analysis is completed, cleanup any stale progress data and return
             # completed status
-            from services.progress_tracker import get_progress_tracker
-
             tracker = get_progress_tracker()
             tracker.cleanup_analysis(document_id)
 
@@ -966,8 +965,6 @@ async def get_analysis_progress(
             }
 
         # SECOND: Check progress tracker for active analysis
-        from services.progress_tracker import get_progress_tracker
-
         tracker = get_progress_tracker()
         progress = tracker.get_progress(document_id)
 
@@ -3178,8 +3175,6 @@ async def process_compliance_analysis(
 
     except Exception as e:
         # Mark progress as failed
-        from services.progress_tracker import get_progress_tracker
-
         progress_tracker = get_progress_tracker()
         progress_tracker.fail_analysis(document_id, str(e))
 
