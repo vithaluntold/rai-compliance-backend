@@ -1641,6 +1641,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 "compliance_analysis": compliance_analysis,
                 "processing_mode": results.get("processing_mode", "smart"),
                 "metadata": results.get("metadata", {}),
+                "company_metadata": results.get("company_metadata", {}),  # NEW: Independent metadata extractor results
                 "sections": results.get("sections", []),
                 "progress": results.get("progress", {}),
                 "framework": results.get("framework"),
@@ -1667,6 +1668,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             "metadata_extraction": "PENDING",
             "compliance_analysis": "PENDING",
             "metadata": {},
+            "company_metadata": {},  # NEW: Empty company metadata for pending documents
             "message": "Document uploaded, analysis not started yet",
         }
     except Exception as e:
