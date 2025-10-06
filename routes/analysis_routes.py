@@ -409,6 +409,11 @@ def _finalize_parallel_processing_results(document_id: str, parallel_results: di
         # Ensure existing_results is treated as a mutable dict
         existing_results_dict: Dict[str, Any] = dict(existing_results)
         
+        # Extract company_metadata from parallel results for frontend access
+        metadata_extraction = parallel_results.get('metadata', {})
+        if metadata_extraction and 'company_metadata' in metadata_extraction:
+            existing_results_dict["company_metadata"] = metadata_extraction['company_metadata']
+        
         # Add parallel processing results directly to the dict
         existing_results_dict["parallel_processing"] = {
             "completed": True,
