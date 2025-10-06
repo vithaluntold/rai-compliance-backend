@@ -216,11 +216,13 @@ class FinancialStatementDetector:
         """
         content_upper = statement.content.upper()
         
-        # FAIL FAST: Check for auditor report content
+        # CHECK FOR AUDITOR CONTEXT: Don't reject, just log for awareness
+        auditor_context_found = False
         for exclusion_pattern in self.auditor_exclusion_patterns:
             if re.search(exclusion_pattern, content_upper):
-                logger.warning(f"❌ AUDITOR CONTENT DETECTED in {statement.statement_type}: {exclusion_pattern}")
-                return False
+                logger.info(f"ℹ️ AUDITOR CONTEXT in {statement.statement_type}: {exclusion_pattern}")
+                auditor_context_found = True
+                break  # Only log once per statement
         
         # FAIL FAST: Check for generic policy content
         for exclusion_pattern in self.generic_exclusion_patterns:
@@ -228,18 +230,22 @@ class FinancialStatementDetector:
                 logger.warning(f"❌ GENERIC POLICY CONTENT in {statement.statement_type}: {exclusion_pattern}")
                 return False
         
-        # REQUIRE: At least 2 financial data validation markers
+        # REQUIRE: At least 1 financial data validation marker (relaxed from 2)
         validation_markers = []
         for validator in self.financial_data_validators:
             matches = re.findall(validator, content_upper)
             if matches:
                 validation_markers.extend(matches[:3])  # Limit to avoid spam
-        
-        if len(validation_markers) < 2:
+
+        # Lower threshold: Allow statements with at least 1 financial marker OR if in auditor context
+        if len(validation_markers) < 1 and not auditor_context_found:
             logger.warning(f"❌ INSUFFICIENT FINANCIAL DATA in {statement.statement_type}: only {len(validation_markers)} markers")
             return False
         
-        # Update statement with validation markers and boost confidence
+        # If we have auditor context, be more lenient about financial markers
+        if auditor_context_found and len(validation_markers) == 0:
+            logger.info(f"ℹ️ ACCEPTING {statement.statement_type} due to auditor context (likely contains referenced financial data)")
+            return True        # Update statement with validation markers and boost confidence
         statement.validation_markers = validation_markers
         statement.confidence_score = min(0.95, statement.confidence_score + (len(validation_markers) * 0.05))
         
