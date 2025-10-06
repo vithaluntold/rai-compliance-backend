@@ -144,7 +144,10 @@ AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
 
 # Import smart metadata extractor from proper path - using enhanced standard identifier instead
 from services.standard_identifier import StandardIdentifier
+from services.company_metadata_extractor import CompanyMetadataExtractor
+
 smart_metadata_extractor = StandardIdentifier()
+company_metadata_extractor = CompanyMetadataExtractor()
 
 
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
@@ -239,26 +242,41 @@ async def _create_vector_index(document_id: str, full_text: str) -> None:
 
 
 async def _extract_document_metadata(document_id: str, full_text: str) -> dict:
-    """Extract metadata from full document text using optimized smart extraction."""
-    logger.info(f"🚀 Starting OPTIMIZED metadata extraction for document {document_id}")
-    logger.info(f"🔍 Using SmartMetadataExtractor with full text - no chunking required!")
+    """Extract metadata from full document text using independent company metadata extractor."""
+    logger.info(f"🚀 Starting INDEPENDENT metadata extraction for document {document_id}")
+    logger.info(f"🏢 Using CompanyMetadataExtractor for company-specific information")
     
-    # Use enhanced standard identifier to extract document metadata
+    # Extract company-specific metadata using independent extractor
+    company_metadata = company_metadata_extractor.extract_metadata_dict(full_text, document_id)
+    
+    # Also get standards identification for completeness
     identification_result = smart_metadata_extractor.identify_standards_in_notes(full_text, document_id)
     
-    # Format response for compatibility
+    # Format comprehensive metadata response
     metadata_result = {
         "document_id": document_id,
-        "company_metadata": identification_result.get('company_metadata', {}),
+        "company_metadata": {
+            "company_name": company_metadata.get('company_name', ''),
+            "nature_of_business": company_metadata.get('nature_of_business', ''),
+            "geography_of_operations": company_metadata.get('geography_of_operations', []),
+            "financial_statement_type": company_metadata.get('financial_statement_type', ''),
+            "confidence_score": company_metadata.get('confidence_score', 0.0)
+        },
+        "standards_metadata": {
+            "tagged_sentences": len(identification_result.get('tagged_sentences', [])),
+            "standards_found": identification_result.get('standards_found', []),
+            "standards_confidence": identification_result.get('confidence_score', 0.0)
+        },
         "processing_timestamp": datetime.now().isoformat(),
         "optimization_metrics": {
             "tokens_used": len(full_text) // 4,  # Rough estimate
-            "processing_method": "enhanced_standard_identification"
+            "processing_method": "independent_company_metadata_extraction"
         }
     }
     
-    logger.info(f"✅ Enhanced metadata extraction completed for document {document_id}")
-    logger.info(f"💰 Token usage estimate: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N/A')}")
+    logger.info(f"✅ Independent metadata extraction completed for document {document_id}")
+    logger.info(f"🏢 Company: {company_metadata.get('company_name', 'N/A')}, Business: {company_metadata.get('nature_of_business', 'N/A')}")
+    logger.info(f"📊 Statement Type: {company_metadata.get('financial_statement_type', 'N/A')}, Geography: {len(company_metadata.get('geography_of_operations', []))} locations")
     return metadata_result
 
 
