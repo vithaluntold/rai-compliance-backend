@@ -339,7 +339,7 @@ class XBRLTaxonomyParser:
                 if concepts_found > 0:
                     logger.info(f"  Found {concepts_found} concepts for {standard_name}")
                 else:
-                    logger.warning(f"  No concepts found for {standard_name}")
+                    logger.debug(f"  No concepts found for {standard_name} (using keyword-based fallback)")
                         
                 processed_standards += 1
                 
