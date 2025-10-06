@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import sys
 import time
 import traceback
 from datetime import datetime
@@ -29,9 +30,7 @@ from services.checklist_utils import (
     is_standard_available,
     load_checklist,
 )
-from services.document_chunker import document_chunker
 from services.progress_tracker import get_progress_tracker
-from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
 
 # Configure logging
@@ -143,8 +142,9 @@ AZURE_OPENAI_EMBEDDING_API_VERSION = os.getenv(
 )
 
 
-# Initialize smart metadata extractor
-smart_metadata_extractor = SmartMetadataExtractor()
+# Import smart metadata extractor from proper path - using enhanced standard identifier instead
+from services.standard_identifier import StandardIdentifier
+smart_metadata_extractor = StandardIdentifier()
 
 
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
@@ -221,53 +221,194 @@ def _initialize_processing_results(
     return initial_results
 
 
-def _process_document_chunks(document_id: str) -> list:
-    """Process document chunks based on file type."""
-    logger.info(f"Starting document chunking for {document_id}")
-    file_path = get_document_file_path(document_id)
-    if not file_path:
-        logger.error(f"No file found for document_id: {document_id}")
-        raise ValueError("No file found for document_id")
-
-    ext = file_path.suffix.lower()
-    if ext == ".pdf":
-        chunks = document_chunker.chunk_pdf(str(file_path), document_id)
-    elif ext == ".docx":
-        chunks = document_chunker.chunk_docx(str(file_path), document_id)
-    else:
-        raise ValueError(f"Unsupported file extension: {ext}")
-
-    if not chunks:
-        raise ValueError("No chunks generated from document")
-
-    logger.info(f"Generated {len(chunks)} chunks for document {document_id}")
-    return chunks
+# Removed duplicate _extract_document_text function - using the more complete one at line ~1431
 
 
-async def _create_vector_index(document_id: str, chunks: list) -> None:
-    """Index chunks in vector store."""
+async def _create_vector_index(document_id: str, full_text: str) -> None:
+    """Create vector index from full document text."""
     logger.info(f"Starting vector store indexing for document {document_id}")
     vs_svc = get_vector_store()
     if not vs_svc:
         raise ValueError("Vector store service not initialized")
 
-    index_created = await vs_svc.create_index(document_id, chunks)
+    index_created = await vs_svc.create_index_from_text(document_id, full_text)
     if not index_created:
         raise ValueError("Failed to create vector index")
 
     logger.info(f"Vector store indexing completed for document {document_id}")
 
 
-async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
-    """Extract metadata from document chunks using optimized smart extraction."""
+async def _extract_document_metadata(document_id: str, full_text: str) -> dict:
+    """Extract metadata from full document text using optimized smart extraction."""
     logger.info(f"🚀 Starting OPTIMIZED metadata extraction for document {document_id}")
-    logger.info(f"🔍 Using SmartMetadataExtractor - this should be DIFFERENT from old extraction!")
+    logger.info(f"🔍 Using SmartMetadataExtractor with full text - no chunking required!")
     
-    # Use smart metadata extractor for 80% token reduction
-    metadata_result = await smart_metadata_extractor.extract_metadata_optimized(document_id, chunks)
-    logger.info(f"✅ Smart metadata extraction completed for document {document_id}")
-    logger.info(f"💰 Token usage: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N/A')}")
+    # Use enhanced standard identifier to extract document metadata
+    identification_result = smart_metadata_extractor.identify_standards_in_notes(full_text, document_id)
+    
+    # Format response for compatibility
+    metadata_result = {
+        "document_id": document_id,
+        "company_metadata": identification_result.get('company_metadata', {}),
+        "processing_timestamp": datetime.now().isoformat(),
+        "optimization_metrics": {
+            "tokens_used": len(full_text) // 4,  # Rough estimate
+            "processing_method": "enhanced_standard_identification"
+        }
+    }
+    
+    logger.info(f"✅ Enhanced metadata extraction completed for document {document_id}")
+    logger.info(f"💰 Token usage estimate: {metadata_result.get('optimization_metrics', {}).get('tokens_used', 'N/A')}")
     return metadata_result
+
+
+async def _identify_financial_statements(document_id: str, text: str) -> dict:
+    """Identify financial statements using the financial statement detector."""
+    logger.info(f"🏦 Starting financial statement identification for document {document_id}")
+    
+    try:
+        from services.financial_statement_detector import FinancialStatementDetector
+        
+        detector = FinancialStatementDetector()
+        
+        # Use the provided text
+        full_text = text
+        
+        # Detect financial statements
+        financial_content = detector.detect_financial_statements(full_text, document_id)
+        
+        # Convert to serializable format
+        result = {
+            "document_id": document_id,
+            "has_financial_statements": len(financial_content.statements) > 0,
+            "financial_statements": [
+                {
+                    "statement_type": fs.statement_type,
+                    "confidence_score": fs.confidence_score,
+                    "page_numbers": fs.page_numbers,
+                    "content_snippet": fs.content[:200] + "..." if len(fs.content) > 200 else fs.content
+                }
+                for fs in financial_content.statements
+            ],
+            "validation_markers": [marker for fs in financial_content.statements for marker in fs.validation_markers],
+            "confidence_score": financial_content.total_confidence,
+            "processing_timestamp": datetime.now().isoformat()
+        }
+        
+        logger.info(f"✅ Financial statement identification completed: {len(financial_content.statements)} statements found")
+        return result
+        
+    except Exception as e:
+        logger.error(f"❌ Financial statement identification failed: {e}")
+        return {
+            "document_id": document_id,
+            "error": str(e),
+            "processing_timestamp": datetime.now().isoformat()
+        }
+
+
+async def _identify_accounting_standards(document_id: str, text: str) -> dict:
+    """Identify accounting standards in Notes to Accounts and aggregate by standard using intelligent accumulator."""
+    logger.info(f"📋 Starting accounting standards identification and aggregation for document {document_id}")
+    
+    try:
+        from services.standard_identifier import StandardIdentifier
+        from services.intelligent_notes_accumulator import consolidate_notes_by_standard
+        
+        identifier = StandardIdentifier()
+        
+        # Use the provided full document text
+        if not text or not text.strip():
+            raise ValueError("No text provided for standards identification")
+        
+        # Step 1: Identify standards in notes (gets tagged sentences)
+        standard_identifier_output = identifier.identify_standards_in_notes(text, document_id)
+        
+        logger.info(f"🏷️ Standard identification: {len(standard_identifier_output.get('tagged_sentences', []))} sentences tagged")
+        
+        # Step 2: Aggregate tagged sentences by accounting standard using intelligent accumulator
+        logger.info(f"🔄 Starting intelligent aggregation by accounting standard...")
+        aggregated_results = consolidate_notes_by_standard(standard_identifier_output)
+        
+        # Step 3: Create comprehensive result with both raw and aggregated data
+        result = {
+            "document_id": document_id,
+            "processing_timestamp": datetime.now().isoformat(),
+            
+            # Raw identification results
+            "identification_results": {
+                "total_tagged_sentences": len(standard_identifier_output.get('tagged_sentences', [])),
+                "standards_found": standard_identifier_output.get('standards_found', []),
+                "sample_tagged_sentences": standard_identifier_output.get('tagged_sentences', [])[:10]  # First 10 for reference
+            },
+            
+            # Aggregated results (main output for AI processing)
+            "aggregated_results": aggregated_results,
+            
+            # Summary statistics
+            "summary": {
+                "total_sentences_processed": len(standard_identifier_output.get('tagged_sentences', [])),
+                "standards_identified": len(standard_identifier_output.get('standards_found', [])),
+                "aggregated_sections_created": sum([
+                    data.get('metadata', {}).get('section_count', 0) 
+                    for data in aggregated_results.get('consolidated_content', {}).values()
+                ]),
+                "notes_processed": len(set([
+                    sentence.get('note', '') 
+                    for sentence in standard_identifier_output.get('tagged_sentences', [])
+                    if sentence.get('note')
+                ]))
+            }
+        }
+        
+        logger.info(f"✅ Standards identification and aggregation completed:")
+        logger.info(f"   - {result['summary']['standards_identified']} unique standards found")
+        logger.info(f"   - {result['summary']['aggregated_sections_created']} aggregated sections created")
+        return result
+        
+    except Exception as e:
+        logger.error(f"❌ Accounting standards identification failed: {e}")
+        return {
+            "document_id": document_id,
+            "error": str(e),
+            "processing_timestamp": datetime.now().isoformat()
+        }
+
+
+def _finalize_parallel_processing_results(document_id: str, parallel_results: dict) -> None:
+    """Finalize and save results from parallel processing pipeline."""
+    logger.info(f"📊 Finalizing parallel processing results for document {document_id}")
+    
+    try:
+        # Load existing results if any
+        results_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
+        if results_file.exists():
+            with open(results_file, 'r') as f:
+                existing_results = json.load(f)
+        else:
+            existing_results = {"document_id": document_id}
+        
+        # Ensure existing_results is treated as a mutable dict
+        existing_results_dict: Dict[str, Any] = dict(existing_results)
+        
+        # Add parallel processing results directly to the dict
+        existing_results_dict["parallel_processing"] = {
+            "completed": True,
+            "duration": parallel_results.get('parallel_duration', 0),
+            "timestamp": datetime.now().isoformat(),
+            "metadata_extraction": parallel_results.get('metadata'),
+            "financial_statement_identification": parallel_results.get('financial_statements'),
+            "accounting_standards_identification": parallel_results.get('accounting_standards')
+        }
+        
+        # Save updated results
+        with open(results_file, 'w') as f:
+            json.dump(existing_results_dict, f, indent=2, default=str)
+        
+        logger.info(f"✅ Parallel processing results saved for document {document_id}")
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to finalize parallel processing results: {e}")
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
@@ -520,7 +661,7 @@ def _handle_processing_error(document_id: str, error: Exception) -> None:
 async def process_upload_tasks(
     document_id: str, ai_svc: AIService, text: str = "", processing_mode: str = "smart"
 ) -> None:
-    """Run document processing tasks up to metadata extraction."""
+    """Run document processing tasks with parallel processing pipeline."""
     # Check for duplicate processing
     if _check_processing_locks(document_id):
         return
@@ -533,21 +674,82 @@ async def process_upload_tasks(
         # Initialize processing with processing mode
         _initialize_processing_results(document_id, processing_mode)
 
-        # Process document chunks
-        chunks = _process_document_chunks(document_id)
+        # Extract full document text
+        full_text_result = _extract_document_text(document_id)
+        
+        # Ensure we have string text, not JSONResponse
+        if isinstance(full_text_result, str):
+            full_text = full_text_result
+        else:
+            logger.error(f"Failed to extract text for document {document_id}")
+            raise ValueError("Could not extract document text")
 
-        # Create vector index
-        await _create_vector_index(document_id, chunks)
+        # Create vector index from full text (required for all parallel processes)
+        await _create_vector_index(document_id, full_text)
 
-        # Extract metadata
-        metadata_result = await _extract_document_metadata(document_id, chunks)
+        logger.info(f"🚀 Starting PARALLEL processing pipeline for document {document_id}")
+        
+        # **PARALLEL PROCESSING PIPELINE**
+        # Run metadata extraction, financial statement identification, and standard identification in parallel
+        parallel_tasks = []
+        
+        # Task 1: Metadata Extraction
+        parallel_tasks.append(
+            asyncio.create_task(
+                _extract_document_metadata(document_id, full_text),
+                name=f"metadata_extraction_{document_id}"
+            )
+        )
+        
+        # Task 2: Financial Statement Identification  
+        parallel_tasks.append(
+            asyncio.create_task(
+                _identify_financial_statements(document_id, full_text),
+                name=f"financial_identification_{document_id}"
+            )
+        )
+        
+        # Task 3: Standard Identification (Notes to Accounts processing)
+        parallel_tasks.append(
+            asyncio.create_task(
+                _identify_accounting_standards(document_id, full_text),
+                name=f"standard_identification_{document_id}"
+            )
+        )
+        
+        # Execute all tasks in parallel
+        logger.info(f"⚡ Running {len(parallel_tasks)} parallel processing tasks...")
+        start_time = time.time()
+        
+        results = await asyncio.gather(*parallel_tasks, return_exceptions=True)
+        
+        parallel_duration = time.time() - start_time
+        logger.info(f"✅ Parallel processing completed in {parallel_duration:.2f}s")
+        
+        # Process results
+        metadata_result, financial_result, standards_result = results
+        
+        # Handle any exceptions
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                task_name = parallel_tasks[i].get_name()
+                logger.error(f"❌ Task {task_name} failed: {result}")
+                # Continue processing other successful results
+        
+        # Finalize results with all parallel processing outputs
+        _finalize_parallel_processing_results(document_id, {
+            'metadata': metadata_result if not isinstance(metadata_result, Exception) else None,
+            'financial_statements': financial_result if not isinstance(financial_result, Exception) else None,
+            'accounting_standards': standards_result if not isinstance(standards_result, Exception) else None,
+            'parallel_duration': parallel_duration
+        })
 
-        # Finalize results
-        _finalize_processing_results(document_id, metadata_result)
-
-        # Create metadata completion lock file
+        # Create completion lock files
         metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"
         metadata_lock_file.touch()
+        
+        parallel_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.parallel_completed"
+        parallel_lock_file.touch()
 
         # Remove processing lock file
         if processing_lock_file.exists():
@@ -556,7 +758,7 @@ async def process_upload_tasks(
         # Cleanup uploaded file
         _cleanup_uploaded_file(document_id)
 
-        logger.info(f"Metadata extraction completed for document {document_id}")
+        logger.info(f"🎯 PARALLEL processing pipeline completed for document {document_id}")
 
     except Exception as e:
         # Handle error

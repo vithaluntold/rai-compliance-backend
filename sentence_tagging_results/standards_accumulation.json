@@ -1,0 +1,96 @@
+{
+  "IAS 1": {
+    "standard_code": "IAS 1",
+    "sentences": [
+      {
+        "sentence_id": 20,
+        "text": "Going concern The attached consolidated financial statements have been prepared on a going concern basis",
+        "note": "Note 2",
+        "keywords": [
+          "going concern"
+        ],
+        "confidence": 0.7
+      },
+      {
+        "sentence_id": 21,
+        "text": "While preparing the consolidated financial statements, the management has made an assessment of the Group's ability to continue as a going concern",
+        "note": "Note 3",
+        "keywords": [
+          "going concern"
+        ],
+        "confidence": 0.7
+      },
+      {
+        "sentence_id": 23,
+        "text": "The management has not come across any evidence other than disclosed above that causes it to believe that material uncertainties related to the events or conditions existed, which may cast significant doubt on the Group's ability to continue as a going concern",
+        "note": "Note 3",
+        "keywords": [
+          "going concern"
+        ],
+        "confidence": 0.7
+      },
+      {
+        "sentence_id": 28,
+        "text": "The consolidated financial statements set out on pages 9 to 69, which have been prepared on the going concern basis were approved by the Directors on the date of these consolidated financial statements and signed on behalf of the Group by: Directors  H.E Tareq Abdulraheem Ahmed Rashed Alhosani  Elham Alqasim  Fady M Y Dahalan  Munaf Ali  Seyedmohammad Alizadehfard (Resigned on 19 December 2024) Directors' statement to the disclosure to auditors In so far as the Directors are aware, there is no relevant information of which the Group auditors are unaware",
+        "note": "Note 3",
+        "keywords": [
+          "going concern"
+        ],
+        "confidence": 0.7
+      }
+    ],
+    "total_sentences": 4,
+    "total_characters": 1074,
+    "notes_covered": [
+      "Note 3",
+      "Note 2"
+    ],
+    "keywords_found": [
+      "going concern"
+    ]
+  },
+  "IAS 7": {
+    "standard_code": "IAS 7",
+    "sentences": [
+      {
+        "sentence_id": 22,
+        "text": "The management has made significant assumptions over mining and sale of digital assets to generate sufficient cash flows in foreseeable future to meet its obligations as and when they fall due",
+        "note": "Note 3",
+        "keywords": [
+          "cash flows"
+        ],
+        "confidence": 0.7
+      }
+    ],
+    "total_sentences": 1,
+    "total_characters": 192,
+    "notes_covered": [
+      "Note 3"
+    ],
+    "keywords_found": [
+      "cash flows"
+    ]
+  },
+  "IAS 8": {
+    "standard_code": "IAS 8",
+    "sentences": [
+      {
+        "sentence_id": 27,
+        "text": "The Directors also confirm that appropriate accounting policies have been selected and applied consistently in order for the consolidated financial statements to reflect fairly, the form and substance of the transactions carried out during the year under review and reasonably present the Group's financial conditions and results of its operations",
+        "note": "Note 3",
+        "keywords": [
+          "accounting policies"
+        ],
+        "confidence": 0.7
+      }
+    ],
+    "total_sentences": 1,
+    "total_characters": 347,
+    "notes_covered": [
+      "Note 3"
+    ],
+    "keywords_found": [
+      "accounting policies"
+    ]
+  }
+}

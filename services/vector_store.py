@@ -126,10 +126,118 @@ class VectorStore:
                     return None
                 time.sleep(1)  # Wait before retry
 
+    async def create_index_from_text(
+        self, document_id: str, full_text: str
+    ) -> bool:
+        """Create an index for a document from full text."""
+        try:
+            logger.info(f"Creating vector index from full text for document {document_id}")
+            
+            # Split text into manageable segments for embedding (not for chunking, just for API limits)
+            max_segment_length = 8000  # Stay well under token limits
+            segments = []
+            
+            # Split by sentences first to maintain context
+            sentences = full_text.split('. ')
+            current_segment = ""
+            
+            for sentence in sentences:
+                if len(current_segment) + len(sentence) + 2 < max_segment_length:
+                    current_segment += sentence + ". "
+                else:
+                    if current_segment.strip():
+                        segments.append(current_segment.strip())
+                    current_segment = sentence + ". "
+            
+            # Add the last segment
+            if current_segment.strip():
+                segments.append(current_segment.strip())
+            
+            logger.info(f"Split text into {len(segments)} segments for embedding")
+            
+            # Create embeddings for each segment
+            embeddings = []
+            segment_metadata = []
+            
+            loop = asyncio.get_running_loop()
+            for i in range(0, len(segments), CHUNK_SIZE):
+                batch = segments[i : i + CHUNK_SIZE]
+                tasks = [
+                    loop.run_in_executor(None, self._process_text_segment, segment, idx + i)
+                    for idx, segment in enumerate(batch)
+                ]
+                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                for result in batch_results:
+                    if isinstance(result, tuple) and not isinstance(result, Exception):
+                        embedding, metadata = result
+                        embeddings.append(embedding)
+                        segment_metadata.append(metadata)
+            
+            if not embeddings:
+                raise ValueError("No valid embeddings generated")
+            
+            # Create FAISS index
+            embeddings_array = np.vstack(embeddings)
+            dimension = embeddings_array.shape[1]
+            index = faiss.IndexFlatL2(dimension)
+            index.add(embeddings_array)  # type: ignore[call-arg]
+            
+            # Save index and metadata
+            index_path = self.index_dir / f"{document_id}_index.faiss"
+            metadata_path = self.index_dir / f"{document_id}_segments.json"
+            
+            faiss.write_index(index, str(index_path))
+            
+            # Save segment metadata with timestamp
+            segments_with_metadata = [
+                {**metadata, "processed_at": datetime.now().isoformat()}
+                for metadata in segment_metadata
+            ]
+            
+            with open(metadata_path, "w", encoding="utf-8") as f:
+                json.dump(segments_with_metadata, f, ensure_ascii=False, indent=2)
+            
+            # Cache the index (convert to chunk format for compatibility)
+            compatible_chunks = [{"text": meta["text"], "segment_index": meta["segment_index"]} for meta in segment_metadata]
+            self.index_cache[document_id] = (index, compatible_chunks)
+            
+            logger.info(f"Vector index created successfully for document {document_id} with {len(segments)} segments")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error creating index from text: {str(e)}")
+            logger.error(traceback.format_exc())
+            return False
+
+    def _process_text_segment(
+        self, text: str, segment_index: int
+    ) -> Optional[Tuple[np.ndarray, Dict[str, Any]]]:
+        """Process a text segment to create embedding."""
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = self.ai_client.embeddings.create(
+                    model=self.deployment_id, input=text
+                )
+                embedding = np.array(response.data[0].embedding, dtype=np.float32)
+                metadata = {
+                    "text": text,
+                    "segment_index": segment_index,
+                    "char_count": len(text)
+                }
+                return embedding, metadata
+            except Exception as e:
+                if attempt == MAX_RETRIES - 1:
+                    logger.error(
+                        f"Failed to process text segment after {MAX_RETRIES} attempts: {str(e)}"
+                    )
+                    return None
+                time.sleep(1)
+
     async def create_index(
         self, document_id: str, chunks: List[Dict[str, Any]]
     ) -> bool:
-        """Create an index for a document using parallel processing."""
+        """Create an index for a document using parallel processing (legacy method for compatibility)."""
         try:
             logger.info(f"Starting parallel index creation for document {document_id}")
             embeddings = []

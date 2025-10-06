@@ -1,0 +1,319 @@
+{
+  "document_id": "RAI-06102025-OWUHR-YR87O",
+  "processing_timestamp": "2025-10-06T06:53:04.289705",
+  "notes_content_length": 5312,
+  "total_sentences": 29,
+  "sentences_with_standards": 6,
+  "coverage_percentage": 20.69,
+  "sentence_details": [
+    {
+      "sentence_id": 1,
+      "text": "Notes to the consolidated financial statements 16 - 69 The Directors have the pleasure in submitting this report, together with the audited consolidated financial statements of the Phoenix Group PLC (the “Company”) and its subsidiaries (collectively referred to as the “Group”) for the year ended 31 December 2024",
+      "length": 313,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 2,
+      "text": "Principal activities The Group is a technology conglomerate bringing cutting-edge blockchain solutions to an expansive market",
+      "length": 125,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 3,
+      "text": "The Group offers a comprehensive range of services, from high-performance computing machines trading and data centre hosting",
+      "length": 124,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 4,
+      "text": "The Group develops, operates, and manages highly specialised data centres, hosting high performance computing power for digital asset across the UAE, Oman, USA and Canada",
+      "length": 170,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 5,
+      "text": "Additionally, the Group also hosts, operates and maintains equipment within its existing data centres and enables investment opportunities within cloud mining",
+      "length": 158,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 6,
+      "text": "The Group is the exclusive distributor of industry-leading equipment manufacturer MicroBT and prominent distributor of Digital wallet Ledgers and CoolWallets, across the Middle East",
+      "length": 181,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 7,
+      "text": "The Group has four business verticals including trading, hosting, mining and investments",
+      "length": 88,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 8,
+      "text": "Results for the year For the year ended 31 December 2024, the Group reported revenue of USD 205,686 thousand (2023: USD 288,187 thousand) and profit for the year attributable to the shareholders of USD 167,372 thousand (2023: USD 207,780 thousand)",
+      "length": 247,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 9,
+      "text": "The variance in revenue between 2024 and 2023 is primarily due to a 72% decrease in trading revenue, a 36% decrease in hosting revenue, and a significant 236% increase in self-mining revenue",
+      "length": 190,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 10,
+      "text": "This aligns with our strategic focus on enhancing self-mining operations to drive revenue growth",
+      "length": 96,
+      "estimated_note": "Note 1",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 11,
+      "text": "The total comprehensive income for the period is USD 218,832 thousand as compared to USD 220,936 thousand in 2023",
+      "length": 113,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 12,
+      "text": "Earnings per share is decreased from USD 0.040 in 2023 to USD 0.028 in 2024",
+      "length": 75,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 13,
+      "text": "The total assets grew from USD 834,005 thousand in 2023 to USD 962,371 thousand in 2024",
+      "length": 87,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 14,
+      "text": "Transactions with related parties Related party transactions are carried out as part of our normal course of business and in compliance with applicable laws and regulations",
+      "length": 172,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 15,
+      "text": "Related party transactions are disclosed in note 17 of the consolidated financial statements",
+      "length": 92,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 16,
+      "text": "Role of the Directors The Directors are the Group's principal decision-making forum",
+      "length": 83,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 17,
+      "text": "The Directors have the overall responsibility for leading and supervising the Group for delivering sustainable shareholder value through their guidance and supervision of the Group's business",
+      "length": 191,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 18,
+      "text": "The Directors set the strategies and policies of the Group",
+      "length": 58,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 19,
+      "text": "They monitor performance of the Group's business, guide and supervise its management",
+      "length": 84,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 20,
+      "text": "Going concern The attached consolidated financial statements have been prepared on a going concern basis",
+      "length": 104,
+      "estimated_note": "Note 2",
+      "estimated_page": 16,
+      "standards_identified": [
+        {
+          "standard": "IAS 1",
+          "keywords": [
+            "going concern"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 21,
+      "text": "While preparing the consolidated financial statements, the management has made an assessment of the Group's ability to continue as a going concern",
+      "length": 146,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [
+        {
+          "standard": "IAS 1",
+          "keywords": [
+            "going concern"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 22,
+      "text": "The management has made significant assumptions over mining and sale of digital assets to generate sufficient cash flows in foreseeable future to meet its obligations as and when they fall due",
+      "length": 192,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [
+        {
+          "standard": "IAS 7",
+          "keywords": [
+            "cash flows"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 23,
+      "text": "The management has not come across any evidence other than disclosed above that causes it to believe that material uncertainties related to the events or conditions existed, which may cast significant doubt on the Group's ability to continue as a going concern",
+      "length": 260,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [
+        {
+          "standard": "IAS 1",
+          "keywords": [
+            "going concern"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 24,
+      "text": "Statement of Directors' responsibilities The applicable requirements require the Directors to prepare the consolidated financial statements for each financial year which present fairly in all material respects, the consolidated financial position of the Group and its financial performance for the year then ended",
+      "length": 313,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 25,
+      "text": "The consolidated financial statements for the year have been prepared in conformity and in compliance with the relevant statutory requirements and other governing laws",
+      "length": 167,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 26,
+      "text": "The Directors confirm that sufficient care has been taken for the maintenance of proper and adequate accounting records that disclose with reasonable accuracy at any time, the consolidated financial position of the Group and enables them to ensure that the consolidated financial statements comply with the requirements of the applicable statute",
+      "length": 345,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [],
+      "total_standards": 0
+    },
+    {
+      "sentence_id": 27,
+      "text": "The Directors also confirm that appropriate accounting policies have been selected and applied consistently in order for the consolidated financial statements to reflect fairly, the form and substance of the transactions carried out during the year under review and reasonably present the Group's financial conditions and results of its operations",
+      "length": 347,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [
+        {
+          "standard": "IAS 8",
+          "keywords": [
+            "accounting policies"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 28,
+      "text": "The consolidated financial statements set out on pages 9 to 69, which have been prepared on the going concern basis were approved by the Directors on the date of these consolidated financial statements and signed on behalf of the Group by: Directors  H.E Tareq Abdulraheem Ahmed Rashed Alhosani  Elham Alqasim  Fady M Y Dahalan  Munaf Ali  Seyedmohammad Alizadehfard (Resigned on 19 December 2024) Directors' statement to the disclosure to auditors In so far as the Directors are aware, there is no relevant information of which the Group auditors are unaware",
+      "length": 564,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [
+        {
+          "standard": "IAS 1",
+          "keywords": [
+            "going concern"
+          ],
+          "confidence": 0.7
+        }
+      ],
+      "total_standards": 1
+    },
+    {
+      "sentence_id": 29,
+      "text": "The Group’s auditors have been provided with access to all information of which we are aware that is relevant to the preparation of consolidated financial statements",
+      "length": 165,
+      "estimated_note": "Note 3",
+      "estimated_page": 17,
+      "standards_identified": [],
+      "total_standards": 0
+    }
+  ]
+}

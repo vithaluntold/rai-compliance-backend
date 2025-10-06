@@ -14,11 +14,11 @@ from dotenv import load_dotenv  # type: ignore
 from openai import AzureOpenAI  # type: ignore
 
 from services.ai_prompts import ai_prompts
-
-
 from services.checklist_utils import load_checklist
 from services.intelligent_document_analyzer import enhance_compliance_analysis
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
+from services.standard_identifier import StandardIdentifier
+from services.intelligent_notes_accumulator import IntelligentNotesAccumulator
 
 logging.basicConfig(
     level=logging.INFO,
@@ -33,7 +33,7 @@ ai_service = None
 
 # Global settings for parallel processing
 NUM_WORKERS = min(32, (os.cpu_count() or 1) * 4)  # Optimize worker count
-CHUNK_SIZE = 50  # Increased from 10 - process more questions per batch for efficiency
+QUESTION_BATCH_SIZE = 10  # Optimized batch size for contextual processing with metadata
 
 # Azure OpenAI configuration
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
@@ -474,6 +474,58 @@ class AIService:
         )
         return "unknown"
 
+    # Removed duplicate analyze_contextual_batch method - using the one at line ~527
+    
+    def analyze_contextual_batch(
+        self, 
+        questions: List[Dict[str, Any]], 
+        company_metadata: Dict[str, Any],
+        financial_statements: Dict[str, Any],
+        relevant_content: Dict[str, str],
+        standard_id: Optional[str] = None
+    ) -> List[dict]:
+        """
+        Analyze a batch of questions with full contextual information:
+        1. Company metadata for context
+        2. Financial statements overview  
+        3. Relevant content chunks by accounting standard
+        4. Section and page number information
+        
+        Processes 10 questions per batch for optimal token usage and context preservation.
+        """
+        try:
+            if not self.current_document_id:
+                logger.error("analyze_contextual_batch called with no current_document_id set")
+                return [{"status": "Error", "confidence": 0.0, "explanation": "No document ID provided"} for _ in questions]
+            
+            # Build comprehensive context prompt
+            context_prompt = self._build_contextual_prompt(
+                company_metadata, financial_statements, relevant_content, standard_id
+            )
+            
+            # Build questions section
+            questions_prompt = self._build_questions_prompt(questions)
+            
+            # Combine for final prompt
+            full_prompt = f"{context_prompt}\n\n{questions_prompt}"
+            
+            # Log token estimate
+            estimated_tokens = len(full_prompt) // 4
+            logger.info(f"🔢 Processing batch of {len(questions)} questions - Est. tokens: {estimated_tokens:,}")
+            
+            if estimated_tokens > 25000:  # Conservative limit
+                logger.warning(f"⚠️ Large prompt: {estimated_tokens:,} tokens - may hit limits")
+            
+            # Process through AI
+            response = self._process_contextual_batch(full_prompt)
+            
+            # Parse and return results
+            return self._parse_batch_response(response, questions)
+            
+        except Exception as e:
+            logger.error(f"Error in analyze_contextual_batch: {str(e)}")
+            return [{"status": "Error", "confidence": 0.0, "explanation": str(e)} for _ in questions]
+    
     def analyze_chunk(
         self, chunk: str, question: str, standard_id: Optional[str] = None
     ) -> dict:
@@ -930,49 +982,28 @@ class AIService:
                     ),
                 }
 
-            # Add page number information from vector search results
+            # Add document segment information from vector search results (no page numbers since we're not chunking)
             if relevant_chunks:
-                page_numbers = []
-                document_sources = []
                 document_extracts = []
                 
-                for chunk_item in relevant_chunks:
-                    # Extract common chunk attributes once
-                    page_number = chunk_item.get("page_number", 0)
-                    chunk_index = chunk_item.get("chunk_index")
-                    chunk_text = chunk_item.get("text")
-                    chunk_type = chunk_item.get("chunk_type", "text")
-                    relevance_score = chunk_item.get("score", 0.0)
+                for segment_item in relevant_chunks:
+                    # Extract segment attributes
+                    segment_text = segment_item.get("text")
+                    segment_index = segment_item.get("segment_index", 0)
+                    relevance_score = segment_item.get("score", 0.0)
                     
-                    # Collect page numbers
-                    if page_number and page_number > 0:
-                        page_numbers.append(page_number)
-                    
-                    # Collect document sources
-                    if chunk_index is not None:
-                        document_sources.append({
-                            "page": page_number,
-                            "chunk_index": chunk_index,
-                            "chunk_type": chunk_type
-                        })
-                    
-                    # Include document extracts with page references
-                    if chunk_text:
+                    # Include document extracts without page references
+                    if segment_text:
                         extract_text = (
-                            chunk_text[:500] + "..." if len(chunk_text) > 500 
-                            else chunk_text
+                            segment_text[:500] + "..." if len(segment_text) > 500 
+                            else segment_text
                         )
                         document_extracts.append({
                             "text": extract_text,
-                            "page": page_number,
-                            "chunk_index": chunk_index or 0,
+                            "segment_index": segment_index,
                             "relevance_score": relevance_score
                         })
                 
-                if page_numbers:
-                    result["source_pages"] = sorted(list(set(page_numbers)))
-                if document_sources:
-                    result["document_sources"] = document_sources
                 if document_extracts:
                     result["document_extracts"] = document_extracts
 
@@ -998,19 +1029,14 @@ class AIService:
             if result.get("disclosure_recommendations"):
                 rec_count = len(result.get('disclosure_recommendations', []))
                 logger.info(f"   Disclosure Recommendations: {rec_count} suggestions")
-            if result.get("source_pages"):
-                logger.info(f"   Source Pages: {result.get('source_pages')}")
-            if result.get("document_sources"):
-                sources = result.get('document_sources', [])
-                source_info = [f"p{s['page']}" for s in sources]
-                logger.info(f"   Document Sources: {', '.join(source_info)}")
             if result.get("document_extracts"):
                 extract_count = len(result.get('document_extracts', []))
                 extracts = result.get('document_extracts', [])
                 total_score = sum(e.get('relevance_score', 0) for e in extracts)
                 avg_score = total_score / extract_count if extract_count > 0 else 0
+                segments_info = [f"seg{e.get('segment_index', 0)}" for e in extracts]
                 logger.info(
-                    f"   Document Extracts: {extract_count} chunks, "
+                    f"   Document Extracts: {extract_count} segments ({', '.join(segments_info)}), "
                     f"avg relevance: {avg_score:.3f}"
                 )
             if result.get("status") == "NO" and result.get("suggestion"):
@@ -1041,6 +1067,338 @@ class AIService:
                     "requirement."
                 ),
             }
+
+    def _build_contextual_prompt(
+        self, 
+        company_metadata: Dict[str, Any],
+        financial_statements: Dict[str, Any], 
+        relevant_content: Dict[str, str],
+        standard_id: Optional[str] = None
+    ) -> str:
+        """Build comprehensive contextual prompt with company metadata and financial statements"""
+        
+        prompt_parts = [
+            "=== DOCUMENT ANALYSIS CONTEXT ===",
+            "",
+            "📋 COMPANY INFORMATION:"
+        ]
+        
+        # Add company metadata
+        if company_metadata:
+            for key, value in company_metadata.items():
+                if value and str(value).strip():
+                    prompt_parts.append(f"• {key.replace('_', ' ').title()}: {value}")
+        
+        prompt_parts.extend([
+            "",
+            "📊 FINANCIAL STATEMENTS OVERVIEW:"
+        ])
+        
+        # Add financial statements info
+        if financial_statements:
+            for statement_type, details in financial_statements.items():
+                if isinstance(details, dict) and details.get('present', False):
+                    prompt_parts.append(f"• {statement_type}: Present ({details.get('confidence', 'N/A')} confidence)")
+                elif isinstance(details, str):
+                    prompt_parts.append(f"• {statement_type}: {details}")
+        
+        # Add relevant content by standard
+        if standard_id:
+            prompt_parts.extend([
+                "",
+                f"🎯 FOCUSED CONTENT - {standard_id}:"
+            ])
+            
+            standard_content = relevant_content.get(standard_id, "")
+            if standard_content:
+                # Truncate if too long but preserve structure
+                if len(standard_content) > 8000:
+                    standard_content = standard_content[:8000] + "... [content truncated]"
+                prompt_parts.append(standard_content)
+            else:
+                prompt_parts.append(f"No specific content found for {standard_id}")
+        else:
+            prompt_parts.extend([
+                "",
+                "📄 RELEVANT CONTENT SECTIONS:"
+            ])
+            
+            # Add top 3 most relevant standards
+            sorted_content = sorted(relevant_content.items(), key=lambda x: len(x[1]), reverse=True)
+            for i, (std, content) in enumerate(sorted_content[:3]):
+                if content:
+                    preview = content[:1000] + "..." if len(content) > 1000 else content
+                    prompt_parts.extend([
+                        "",
+                        f"--- {std} ---",
+                        preview
+                    ])
+        
+        return "\n".join(prompt_parts)
+    
+    def _build_questions_prompt(self, questions: List[Dict[str, Any]]) -> str:
+        """Build questions section of the prompt"""
+        
+        prompt_parts = [
+            "=== COMPLIANCE QUESTIONS ===",
+            "",
+            "Please analyze the following questions against the provided context.",
+            "For each question, provide:",
+            "- status: YES/NO/N/A", 
+            "- confidence: 0.0-1.0",
+            "- explanation: Clear reasoning",
+            "- evidence: Specific text from the document",
+            "- suggestion: Improvement advice if status is NO",
+            ""
+        ]
+        
+        for i, question in enumerate(questions, 1):
+            question_text = question.get('question', 'Unknown question')
+            question_id = question.get('id', f'Q{i}')
+            
+            prompt_parts.extend([
+                f"QUESTION {i} (ID: {question_id}):",
+                question_text,
+                ""
+            ])
+        
+        prompt_parts.append("Please respond with a JSON array containing analysis for all questions.")
+        return "\n".join(prompt_parts)
+    
+    def _process_contextual_batch(self, prompt: str) -> str:
+        """Process the contextual batch through AI service"""
+        try:
+            if not AZURE_OPENAI_ENDPOINT:
+                raise ValueError("AZURE_OPENAI_ENDPOINT is not configured")
+            
+            client = AzureOpenAI(
+                api_key=AZURE_OPENAI_API_KEY,
+                api_version=AZURE_OPENAI_API_VERSION,
+                azure_endpoint=AZURE_OPENAI_ENDPOINT,
+            )
+            
+            response = client.chat.completions.create(
+                model=AZURE_OPENAI_DEPLOYMENT_NAME,
+                messages=[
+                    {"role": "system", "content": "You are an expert financial analyst specializing in IFRS/IAS compliance."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.1,
+                max_tokens=4000
+            )
+            
+            content = response.choices[0].message.content
+            if content is None:
+                raise ValueError("AI response content is None")
+            return content
+            
+        except Exception as e:
+            logger.error(f"Error processing contextual batch: {str(e)}")
+            raise e
+    
+    def _parse_batch_response(self, response: str, questions: List[Dict[str, Any]]) -> List[dict]:
+        """Parse AI response into structured results"""
+        try:
+            # Try to parse as JSON
+            if response.strip().startswith('['):
+                return json.loads(response)
+            
+            # Fallback: create basic responses
+            results = []
+            for question in questions:
+                results.append({
+                    "status": "N/A",
+                    "confidence": 0.5,
+                    "explanation": "Response parsing failed - using fallback",
+                    "evidence": response[:200] + "..." if len(response) > 200 else response,
+                    "suggestion": "Manual review recommended"
+                })
+            
+            return results
+            
+        except Exception as e:
+            logger.error(f"Error parsing batch response: {str(e)}")
+            # Return error responses
+            return [{
+                "status": "Error",
+                "confidence": 0.0,
+                "explanation": f"Failed to parse response: {str(e)}",
+                "evidence": "",
+                "suggestion": "Please try again"
+            } for _ in questions]
+
+    async def process_document_with_enhanced_identification(
+        self,
+        document_id: Optional[str] = None,
+        text: Optional[str] = None,
+        framework: Optional[str] = None,
+        standard: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Enhanced document processing that integrates with the StandardIdentifier system
+        to provide company metadata, financial statements overview, and contextual content
+        organized by accounting standards.
+        
+        Processes questions in optimized 10-question batches with full context.
+        """
+        try:
+            # Initialize
+            if document_id is None:
+                document_id = generate_document_id()
+            self.current_document_id = document_id
+            
+            logger.info(f"🚀 Starting enhanced analysis for document {document_id}")
+            logger.info(f"   Framework: {framework}, Standard: {standard}")
+            
+            # Step 1: Run enhanced standard identification
+            logger.info("📊 Running enhanced standard identification...")
+            identifier = StandardIdentifier()
+            accumulator = IntelligentNotesAccumulator()
+            
+            # Process document through standard identification
+            identification_results = identifier.identify_standards_in_notes(text or "", document_id)
+            
+            if not identification_results or 'identified_standards' not in identification_results:
+                logger.warning("⚠️ Standard identification failed - proceeding with basic analysis")
+                fallback_text = (text or "")[:10000] if text else ""
+                identification_results = {
+                    'identified_standards': {'General': fallback_text},  # Fallback
+                    'company_metadata': {},
+                    'financial_statements': {}
+                }
+            
+            # Extract components
+            identified_standards = identification_results['identified_standards']
+            company_metadata = identification_results.get('company_metadata', {})
+            financial_statements = identification_results.get('financial_statements', {})
+            
+            logger.info(f"✅ Identified {len(identified_standards)} accounting standards")
+            logger.info(f"   Standards: {list(identified_standards.keys())}")
+            
+            # Step 2: Load compliance checklist
+            checklist = load_checklist(framework, standard)
+            if not checklist:
+                raise ValueError(f"Failed to load checklist for {framework}/{standard}")
+            
+            all_questions = []
+            for section in checklist:
+                for item in section.get("items", []):
+                    all_questions.append({
+                        'id': item.get('id', 'unknown'),
+                        'question': item.get('question', ''),
+                        'section': section.get('section', 'unknown'),
+                        'standard_id': item.get('standard_id', standard)
+                    })
+            
+            logger.info(f"📋 Loaded {len(all_questions)} compliance questions")
+            
+            # Step 3: Process questions in 10-question batches with contextual data
+            logger.info("🔄 Processing questions in optimized 10-question batches...")
+            
+            all_results = []
+            total_batches = (len(all_questions) + QUESTION_BATCH_SIZE - 1) // QUESTION_BATCH_SIZE
+            
+            for batch_idx in range(0, len(all_questions), QUESTION_BATCH_SIZE):
+                batch_num = (batch_idx // QUESTION_BATCH_SIZE) + 1
+                batch_questions = all_questions[batch_idx:batch_idx + QUESTION_BATCH_SIZE]
+                
+                logger.info(f"📦 Processing batch {batch_num}/{total_batches} ({len(batch_questions)} questions)")
+                
+                # Determine most relevant standard for this batch
+                batch_standards = set(q.get('standard_id', standard) for q in batch_questions)
+                primary_standard = max(batch_standards, key=lambda s: sum(1 for q in batch_questions if q.get('standard_id') == s))
+                
+                # Process batch with full context
+                try:
+                    batch_results = self.analyze_contextual_batch(
+                        questions=batch_questions,
+                        company_metadata=company_metadata,
+                        financial_statements=financial_statements,
+                        relevant_content=identified_standards,
+                        standard_id=primary_standard
+                    )
+                    
+                    # Add batch metadata to each result
+                    for i, result in enumerate(batch_results):
+                        if isinstance(result, dict):
+                            result['question_id'] = batch_questions[i].get('id', f'Q{batch_idx + i + 1}')
+                            result['section'] = batch_questions[i].get('section', 'unknown')
+                            result['batch_number'] = batch_num
+                            result['standard_id'] = batch_questions[i].get('standard_id', standard)
+                    
+                    all_results.extend(batch_results)
+                    logger.info(f"✅ Batch {batch_num} completed successfully")
+                    
+                except Exception as e:
+                    logger.error(f"❌ Error processing batch {batch_num}: {str(e)}")
+                    # Add error results for this batch
+                    error_results = [{
+                        "status": "Error",
+                        "confidence": 0.0,
+                        "explanation": f"Batch processing error: {str(e)}",
+                        "evidence": "",
+                        "suggestion": "Manual review required",
+                        "question_id": q.get('id', f'Q{batch_idx + i + 1}'),
+                        "section": q.get('section', 'unknown'),
+                        "batch_number": batch_num,
+                        "standard_id": q.get('standard_id', standard)
+                    } for i, q in enumerate(batch_questions)]
+                    all_results.extend(error_results)
+            
+            # Step 4: Organize results by section
+            logger.info("📊 Organizing results by section...")
+            
+            results_by_section = {}
+            for result in all_results:
+                section_name = result.get('section', 'unknown')
+                if section_name not in results_by_section:
+                    results_by_section[section_name] = []
+                results_by_section[section_name].append(result)
+            
+            # Step 5: Calculate summary statistics
+            total_questions = len(all_results)
+            yes_count = sum(1 for r in all_results if r.get('status') == 'YES')
+            no_count = sum(1 for r in all_results if r.get('status') == 'NO')
+            na_count = sum(1 for r in all_results if r.get('status') == 'N/A')
+            error_count = sum(1 for r in all_results if r.get('status') == 'Error')
+            
+            avg_confidence = sum(r.get('confidence', 0) for r in all_results) / total_questions if total_questions > 0 else 0
+            
+            logger.info("📈 Analysis Summary:")
+            logger.info(f"   Total Questions: {total_questions}")
+            logger.info(f"   YES: {yes_count} ({yes_count/total_questions*100:.1f}%)")
+            logger.info(f"   NO: {no_count} ({no_count/total_questions*100:.1f}%)")
+            logger.info(f"   N/A: {na_count} ({na_count/total_questions*100:.1f}%)")
+            logger.info(f"   Errors: {error_count} ({error_count/total_questions*100:.1f}%)")
+            logger.info(f"   Average Confidence: {avg_confidence:.3f}")
+            logger.info(f"   Identified Standards: {len(identified_standards)}")
+            
+            return {
+                "document_id": document_id,
+                "framework": framework,
+                "standard": standard,
+                "results_by_section": results_by_section,
+                "all_results": all_results,
+                "summary": {
+                    "total_questions": total_questions,
+                    "yes_count": yes_count,
+                    "no_count": no_count,
+                    "na_count": na_count,
+                    "error_count": error_count,
+                    "average_confidence": avg_confidence,
+                    "completion_rate": (total_questions - error_count) / total_questions if total_questions > 0 else 0
+                },
+                "enhanced_context": {
+                    "company_metadata": company_metadata,
+                    "financial_statements": financial_statements,
+                    "identified_standards": list(identified_standards.keys()),
+                    "total_content_tokens": sum(len(content) // 4 for content in identified_standards.values())
+                }
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Error in enhanced document processing: {str(e)}")
+            raise e
 
     def _calculate_adequacy(
         self, confidence: float, has_evidence: bool, status: str
@@ -1345,8 +1703,8 @@ class AIService:
             items = section.get("items", [])
             logger.info(f"Processing section {section_name} with {len(items)} items")
             processed_items = []
-            for i in range(0, len(items), CHUNK_SIZE):
-                batch = items[i : i + CHUNK_SIZE]
+            for i in range(0, len(items), QUESTION_BATCH_SIZE):
+                batch = items[i : i + QUESTION_BATCH_SIZE]
 
                 # ASYNC RATE LIMITING REMOVED - Process all questions without throttling
                 # async_semaphore = get_async_rate_semaphore()

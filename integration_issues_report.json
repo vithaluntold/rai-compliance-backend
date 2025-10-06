@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-10-06T08:31:20.199217",
+  "critical_issues": [
+    {
+      "issue": "Progress endpoint mismatch",
+      "frontend_calls": "/progress/{documentId}",
+      "backend_provides": "/api/v1/analysis/progress/{document_id}",
+      "impact": "CRITICAL - Progress polling will fail",
+      "fix": "Update frontend to use /api/v1/analysis/progress/{documentId}"
+    },
+    {
+      "issue": "Start processing endpoint mismatch",
+      "frontend_calls": "/api/v1/analysis/documents/{documentId}/start-checklist-processing",
+      "backend_provides": "/api/v1/analysis/documents/{document_id}/start-compliance",
+      "impact": "CRITICAL - Cannot start compliance analysis",
+      "fix": "Update frontend to use start-compliance endpoint"
+    }
+  ],
+  "warnings": [
+    "Frontend polling implementation needs manual verification"
+  ],
+  "backend_endpoints": [
+    "GET /api/v1/analysis/documents/{document_id}",
+    "POST /api/v1/analysis/documents/{document_id}/select-processing-mode",
+    "POST /api/v1/analysis/suggest-standards",
+    "GET /api/v1/analysis/rate-limit-status",
+    "GET /api/v1/analysis/progress/{document_id}",
+    "POST /api/v1/analysis/documents/{document_id}/start-compliance",
+    "GET /api/v1/analysis/metadata/fields",
+    "POST /api/v1/analysis/documents/{document_id}/framework",
+    "GET /api/v1/analysis/checklist/{framework}/{standard}",
+    "POST /api/v1/analysis/upload",
+    "GET /api/v1/analysis/documents/{document_id}/results",
+    "GET /api/v1/analysis/checklist",
+    "GET /api/v1/analysis/frameworks",
+    "POST /api/v1/analysis/documents/{document_id}/select-framework"
+  ],
+  "frontend_calls": [
+    "/api/v1/analysis/documents/{documentId}/select-framework",
+    "/api/v1/analysis/documents/{documentId}/select-processing-mode",
+    "/api/v1/analysis/upload",
+    "/api/v1/analysis/frameworks",
+    "/api/v1/analysis/metadata/fields",
+    "/api/v1/analysis/rate-limit-status",
+    "/api/v1/analysis/documents/{documentId}/items/{itemId}",
+    "/api/v1/analysis/documents/{documentId}/start-checklist-processing",
+    "/api/v1/analysis/documents",
+    "/api/v1/analysis/checklist/{framework}/{standard}",
+    "/api/v1/analysis/checklist",
+    "/api/v1/analysis/documents/{documentId}",
+    "/progress/{documentId}",
+    "/api/v1/analysis/suggest-standards",
+    "/api/v1/analysis/progress/{documentId}",
+    "/api/v1/analysis/documents/{documentId}/results"
+  ],
+  "recommendations": [
+    "Fix API endpoint mismatches immediately",
+    "Verify all service dependencies are working",
+    "Test complete workflow end-to-end",
+    "Implement proper error handling",
+    "Verify polling intervals and timeouts"
+  ]
+}
