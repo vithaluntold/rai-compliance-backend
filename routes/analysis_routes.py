@@ -30,6 +30,7 @@ from services.checklist_utils import (
     is_standard_available,
     load_checklist,
 )
+from services.persistent_storage import get_persistent_storage_manager
 from services.progress_tracker import get_progress_tracker
 from services.vector_store import generate_document_id, get_vector_store
 
@@ -1639,6 +1640,20 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 status = "PROCESSING"
             metadata_extraction = results.get("metadata_extraction", "PENDING")
             compliance_analysis = results.get("compliance_analysis", "PENDING")
+            
+            # Convert old metadata format to new company_metadata format for frontend compatibility
+            company_metadata = results.get("company_metadata", {})
+            if not company_metadata and results.get("metadata"):
+                old_metadata = results.get("metadata", {})
+                company_metadata = {
+                    "company_name": old_metadata.get('company_name', ''),
+                    "nature_of_business": old_metadata.get('nature_of_business', ''),
+                    "geography_of_operations": [old_metadata.get('operational_demographics', '')] if old_metadata.get('operational_demographics') else [],
+                    "financial_statement_type": old_metadata.get('financial_statements_type', 'Standalone'),
+                    "confidence_score": 90  # High confidence for structured data
+                }
+                logger.info(f"🔄 Converted old metadata to company_metadata format for {document_id}")
+            
             return {
                 "document_id": document_id,
                 "status": status,
@@ -1646,7 +1661,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 "compliance_analysis": compliance_analysis,
                 "processing_mode": results.get("processing_mode", "smart"),
                 "metadata": results.get("metadata", {}),
-                "company_metadata": results.get("company_metadata", {}),  # NEW: Independent metadata extractor results
+                "company_metadata": company_metadata,  # NEW: Converted or existing company metadata
                 "sections": results.get("sections", []),
                 "progress": results.get("progress", {}),
                 "framework": results.get("framework"),
@@ -1655,6 +1670,57 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 "extensiveSearch": results.get("extensiveSearch", False),
                 "message": results.get("message", "Analysis in progress"),
             }
+        # If no file results, check database for stored results
+        try:
+            storage_manager = get_persistent_storage_manager()
+            db_results = await storage_manager.get_analysis_results(document_id)
+            if db_results:
+                logger.info(f"📄 Found database results for {document_id}")
+                results = json.loads(db_results) if isinstance(db_results, str) else db_results
+                
+                # Normalize status values
+                status = results.get("status", "PROCESSING")
+                if status == "awaiting_framework_selection":
+                    status = "awaiting_framework_selection"
+                elif status.lower() == "completed":
+                    status = "COMPLETED"
+                elif status.lower() == "failed" or status.lower() == "error":
+                    status = "FAILED"
+                else:
+                    status = "PROCESSING"
+                
+                # Convert old metadata format to new company_metadata format for frontend compatibility
+                company_metadata = results.get("company_metadata", {})
+                if not company_metadata and results.get("metadata"):
+                    old_metadata = results.get("metadata", {})
+                    company_metadata = {
+                        "company_name": old_metadata.get('company_name', ''),
+                        "nature_of_business": old_metadata.get('nature_of_business', ''),
+                        "geography_of_operations": [old_metadata.get('operational_demographics', '')] if old_metadata.get('operational_demographics') else [],
+                        "financial_statement_type": old_metadata.get('financial_statements_type', 'Standalone'),
+                        "confidence_score": 90  # High confidence for structured data
+                    }
+                    logger.info(f"🔄 Converted database metadata to company_metadata format for {document_id}")
+                
+                return {
+                    "document_id": document_id,
+                    "status": status,
+                    "metadata_extraction": results.get("metadata_extraction", "PENDING"),
+                    "compliance_analysis": results.get("compliance_analysis", "PENDING"),
+                    "processing_mode": results.get("processing_mode", "smart"),
+                    "metadata": results.get("metadata", {}),
+                    "company_metadata": company_metadata,  # NEW: Converted or existing company metadata
+                    "sections": results.get("sections", []),
+                    "progress": results.get("progress", {}),
+                    "framework": results.get("framework"),
+                    "standards": results.get("standards", []),
+                    "specialInstructions": results.get("specialInstructions"),
+                    "extensiveSearch": results.get("extensiveSearch", False),
+                    "message": results.get("message", "Analysis in progress"),
+                }
+        except Exception as db_error:
+            logger.warning(f"Failed to get database results for {document_id}: {str(db_error)}")
+        
         # If no results, check if the document was even uploaded
         file_path = get_document_file_path(document_id)
         if not file_path:
@@ -1707,6 +1773,7 @@ async def get_document_results(document_id: str) -> Dict[str, Any]:
             "status": results.get("status", "unknown"),
             "document_id": document_id,
             "metadata": results.get("metadata", {}),
+            "company_metadata": results.get("company_metadata", {}),
             "sections": results.get("sections", []),
             "message": (
                 "Document analysis completed"
