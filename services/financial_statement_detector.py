@@ -31,6 +31,18 @@ class FinancialStatement:
     start_position: int
     end_position: int
     validation_markers: List[str]  # Evidence this is actual financial data
+    
+    def to_dict(self):
+        """Convert to JSON-serializable dictionary"""
+        return {
+            "statement_type": self.statement_type,
+            "content_length": len(self.content),
+            "page_numbers": self.page_numbers,
+            "confidence_score": self.confidence_score,
+            "start_position": self.start_position,
+            "end_position": self.end_position,
+            "validation_markers": self.validation_markers
+        }
 
 
 @dataclass
@@ -40,6 +52,25 @@ class FinancialContent:
     total_confidence: float
     validation_summary: str
     content_type: str  # "financial_statements" | "auditor_report" | "mixed"
+    
+    def to_dict(self):
+        """Convert to JSON-serializable dictionary"""
+        return {
+            "statements": [
+                {
+                    "statement_type": stmt.statement_type,
+                    "content_length": len(stmt.content),
+                    "page_numbers": stmt.page_numbers,
+                    "confidence_score": stmt.confidence_score,
+                    "start_position": stmt.start_position,
+                    "end_position": stmt.end_position,
+                    "validation_markers": stmt.validation_markers
+                } for stmt in self.statements
+            ],
+            "total_confidence": self.total_confidence,
+            "validation_summary": self.validation_summary,
+            "content_type": self.content_type
+        }
 
 
 class FinancialStatementDetector:
