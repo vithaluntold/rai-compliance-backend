@@ -612,7 +612,7 @@ async def _identify_financial_statements(document_id: str, text: str) -> dict:
         # Detect financial statements
         financial_content = detector.detect_financial_statements(text, document_id)
         
-        # Convert to serializable format
+        # Convert to serializable format - INCLUDE FULL CONTENT FOR AI ANALYSIS
         result = {
             "document_id": document_id,
             "has_financial_statements": len(financial_content.statements) > 0,
@@ -621,13 +621,16 @@ async def _identify_financial_statements(document_id: str, text: str) -> dict:
                     "statement_type": fs.statement_type,
                     "confidence_score": fs.confidence_score,
                     "page_numbers": fs.page_numbers,
-                    "content_snippet": fs.content[:200] + "..." if len(fs.content) > 200 else fs.content
+                    "content": fs.content,  # FULL CONTENT for AI analysis
+                    "content_snippet": fs.content[:200] + "..." if len(fs.content) > 200 else fs.content  # Keep snippet for display
                 }
                 for fs in financial_content.statements
             ],
             "validation_markers": [marker for fs in financial_content.statements for marker in fs.validation_markers],
             "confidence_score": financial_content.total_confidence,
-            "processing_timestamp": datetime.now().isoformat()
+            "processing_timestamp": datetime.now().isoformat(),
+            # Store the full FinancialContent object for AI service
+            "_financial_content_obj": financial_content
         }
         
         logger.info(f"✅ Financial statement identification completed: {len(financial_content.statements)} statements found")

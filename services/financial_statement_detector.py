@@ -182,11 +182,40 @@ class FinancialStatementDetector:
                 matches = list(re.finditer(pattern, text_upper, re.IGNORECASE | re.MULTILINE))
                 
                 for match in matches:
-                    # Extract content around the match (extend context for full statement)
-                    start_pos = max(0, match.start() - 500)  # Context before
-                    end_pos = min(len(text), match.end() + 5000)  # Extended content after
+                    # Extract FULL FINANCIAL STATEMENT CONTENT - not just snippets
+                    # Look for statement boundaries using headers and page breaks
+                    match_start = match.start()
                     
-                    content = text[start_pos:end_pos]
+                    # Find the start of this financial statement section
+                    # Look backwards for section headers or major breaks
+                    start_pos = max(0, match_start - 2000)  # Start search window
+                    section_start = match_start
+                    
+                    # Look forward for end of section boundaries
+                    # Could be next statement header, notes section, or significant break
+                    search_end = min(len(text), match.end() + 15000)  # Larger search window
+                    section_end = search_end
+                    
+                    # Try to find natural end of financial statement section
+                    text_after_match = text[match.end():search_end].upper()
+                    end_patterns = [
+                        r'\n\s*NOTES?\s+TO\s+.*FINANCIAL\s+STATEMENTS',
+                        r'\n\s*CONSOLIDATED\s+STATEMENT\s+OF\s+(?:PROFIT|COMPREHENSIVE|CASH|CHANGES)',
+                        r'\n\s*STATEMENT\s+OF\s+(?:PROFIT|COMPREHENSIVE|CASH|CHANGES)',
+                        r'\n\s*DIRECTORS?\s+REPORT',
+                        r'\n\s*INDEPENDENT\s+AUDITOR',
+                        r'\n\s*NOTE\s+\d+',
+                        r'\n\s*\d+\.\s+[A-Z]'  # Numbered sections
+                    ]
+                    
+                    for end_pattern in end_patterns:
+                        end_match = re.search(end_pattern, text_after_match)
+                        if end_match:
+                            section_end = match.end() + end_match.start()
+                            break
+                    
+                    # Extract the FULL content of the financial statement
+                    content = text[section_start:section_end]
                     
                     # Estimate page numbers (rough approximation)
                     page_estimate = [max(1, start_pos // 3000)]  # Assume ~3000 chars per page
@@ -199,8 +228,8 @@ class FinancialStatementDetector:
                         content=content,
                         page_numbers=page_estimate,
                         confidence_score=confidence,
-                        start_position=start_pos,
-                        end_position=end_pos,
+                        start_position=section_start,
+                        end_position=section_end,
                         validation_markers=[]
                     )
                     

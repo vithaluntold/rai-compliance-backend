@@ -1143,8 +1143,25 @@ class AIService:
             "📊 FINANCIAL STATEMENTS OVERVIEW:"
         ])
         
-        # Add financial statements info
-        if financial_statements:
+        # Add financial statements ACTUAL CONTENT - not just metadata
+        if financial_statements and hasattr(financial_statements, 'statements'):
+            # financial_statements is a FinancialContent object with .statements list
+            statements_list = getattr(financial_statements, 'statements', [])
+            prompt_parts.append(f"Found {len(statements_list)} financial statements:")
+            
+            for statement in statements_list:
+                prompt_parts.extend([
+                    "",
+                    f"=== {statement.statement_type.upper()} ===",
+                    f"Confidence: {statement.confidence_score:.1f}",
+                    f"Pages: {', '.join(map(str, statement.page_numbers))}",
+                    "",
+                    # Include the ACTUAL CONTENT of the financial statement
+                    statement.content[:8000] + ("..." if len(statement.content) > 8000 else ""),
+                    ""
+                ])
+        elif financial_statements:
+            # Fallback for old format
             for statement_type, details in financial_statements.items():
                 if isinstance(details, dict) and details.get('present', False):
                     prompt_parts.append(f"• {statement_type}: Present ({details.get('confidence', 'N/A')} confidence)")
@@ -1192,10 +1209,12 @@ class AIService:
             "=== COMPLIANCE QUESTIONS ===",
             "",
             "Please analyze the following questions against the provided context.",
+            "IMPORTANT: Adequacy is subjective - even partial disclosure should often be considered adequate if it provides meaningful information.",
+            "Be lenient with YES responses - if there is some relevant disclosure, consider it compliant rather than demanding perfect completeness.",
             "For each question, provide:",
             "- status: YES/NO/N/A", 
             "- confidence: 0.0-1.0",
-            "- explanation: Clear reasoning",
+            "- explanation: Clear reasoning (favor YES for partial but meaningful disclosures)",
             "- evidence: Specific text from the document",
             "- suggestion: Improvement advice if status is NO",
             ""
@@ -1452,14 +1471,20 @@ class AIService:
     def _calculate_adequacy(
         self, confidence: float, has_evidence: bool, status: str
     ) -> str:
+        """Calculate adequacy - be lenient with partial disclosures since adequacy is subjective"""
         if status == "N/A":
             return "low"
-        if confidence >= 0.8 and has_evidence:
-            return "high"
-        elif confidence >= 0.6 or has_evidence:
-            return "medium"
-        else:
+        elif status == "YES":
+            # If it's YES, even partial disclosure is adequate since adequacy is subjective
+            if confidence >= 0.5 or has_evidence:
+                return "high" 
+            else:
+                return "medium"
+        elif status == "NO":
             return "low"
+        else:
+            # Default case - be more lenient
+            return "medium" if has_evidence else "low"
 
     def query_ai_with_vector_context(
         self, document_id: Optional[str] = None, question: Optional[dict] = None
