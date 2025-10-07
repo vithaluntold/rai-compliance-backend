@@ -95,7 +95,7 @@ class IntelligentNotesAccumulator:
         standard_groups = defaultdict(list)
         
         for sentence in tagged_sentences:
-            standards = sentence.get('standards', [])
+            standards = sentence.get('standards', []) if isinstance(sentence, dict) else []
             
             # Add sentence to each applicable standard group
             for standard_code in standards:
@@ -141,8 +141,8 @@ class IntelligentNotesAccumulator:
         parameter_groups = defaultdict(list)
         
         for sentence in sentences:
-            note = sentence.get('note', 'unknown')
-            page = sentence.get('page', 0)
+            note = sentence.get('note', 'unknown') if isinstance(sentence, dict) else 'unknown'
+            page = sentence.get('page', 0) if isinstance(sentence, dict) else 0
             
             # Create parameter key for grouping
             param_key = f"note_{note}_page_{page}"
@@ -210,13 +210,13 @@ class IntelligentNotesAccumulator:
         
         # Extract common parameters from first sentence (for internal use only)
         first_sentence = sentences[0]
-        note = first_sentence.get('note', 'unknown')
-        page = first_sentence.get('page', 0)
+        note = first_sentence.get('note', 'unknown') if isinstance(first_sentence, dict) else 'unknown'
+        page = first_sentence.get('page', 0) if isinstance(first_sentence, dict) else 0
         
         # Aggregate all sentence texts
         sentence_texts = []
         for sentence in sentences:
-            text = sentence.get('text', '').strip()
+            text = (sentence.get('text', '') if isinstance(sentence, dict) else str(sentence)).strip()
             if text:
                 sentence_texts.append(text)
         

@@ -80,6 +80,17 @@ class PersistentStorageManager:
                     )
                 """)
                 
+                # Database migrations - add missing columns if they don't exist
+                try:
+                    # Check if status column exists, add it if missing
+                    cursor = conn.execute("PRAGMA table_info(analysis_results)")
+                    columns = [column[1] for column in cursor.fetchall()]
+                    if 'status' not in columns:
+                        logger.info("Adding missing 'status' column to analysis_results table")
+                        conn.execute("ALTER TABLE analysis_results ADD COLUMN status TEXT DEFAULT 'PROCESSING'")
+                except Exception as migration_error:
+                    logger.warning(f"Database migration warning: {migration_error}")
+                
                 # Indexes for performance
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_files_upload_date ON files(upload_date)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_results_status ON analysis_results(status)")
