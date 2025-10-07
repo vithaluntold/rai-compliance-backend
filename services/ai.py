@@ -63,9 +63,7 @@ _window_start = time.time()
 _consecutive_failures = 0
 _circuit_breaker_open = False
 _circuit_breaker_opened_at = 0
-_processed_questions = (
-    {}
-)  # Track processed questions per document to prevent duplicates
+_processed_questions = {}  # Track processed questions per document to prevent duplicates
 
 # Async rate limiting for Zap Mode
 _async_rate_semaphore = None  # Will be initialized when needed

@@ -663,22 +663,23 @@ async def _identify_accounting_standards(document_id: str, text: str) -> dict:
         # Aggregate by standards
         if tagged_sentences:
             aggregation_result = accumulator.consolidate_by_standard(identification_result)
+            consolidated_content = aggregation_result.get('consolidated_content', {})
             
             result = {
                 "document_id": document_id,
-                "standards_found": list(aggregation_result.keys()),
+                "standards_found": list(consolidated_content.keys()),
                 "total_sentences": len(tagged_sentences),
-                "aggregated_sections": len(aggregation_result),
+                "aggregated_sections": len(consolidated_content),
                 "confidence_score": identification_result.get('confidence_score', 0.0),
                 "processing_timestamp": datetime.now().isoformat(),
                 "details": {
                     "tagged_sentences_count": len(tagged_sentences),
                     "standards_detail": {
                         std: {
-                            "sentence_count": len(content),
-                            "content_length": sum(len(s.get('text', '') if isinstance(s, dict) else str(s)) for s in content)
+                            "sentence_count": len(content) if isinstance(content, (list, tuple)) else 1,
+                            "content_length": sum(len(s.get('text', '') if isinstance(s, dict) else str(s)) for s in (content if isinstance(content, (list, tuple)) else [content]))
                         }
-                        for std, content in aggregation_result.items()
+                        for std, content in consolidated_content.items()
                     }
                 }
             }
