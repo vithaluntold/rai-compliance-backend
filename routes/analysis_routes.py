@@ -662,7 +662,7 @@ async def _identify_accounting_standards(document_id: str, text: str) -> dict:
         
         # Aggregate by standards
         if tagged_sentences:
-            aggregation_result = accumulator.consolidate_by_standard(tagged_sentences)
+            aggregation_result = accumulator.consolidate_by_standard(identification_result)
             
             result = {
                 "document_id": document_id,
