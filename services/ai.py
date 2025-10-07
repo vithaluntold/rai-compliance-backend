@@ -677,13 +677,13 @@ class AIService:
                             parallel_context = results.get("parallel_processing_context", {})
                             financial_statements = parallel_context.get("financial_statements")
                             
-                            if financial_statements and hasattr(financial_statements, 'statements'):
+                            if financial_statements and financial_statements.get("financial_statements"):
                                 # Look for cash flow statement content
                                 cash_flow_content = ""
-                                for statement in financial_statements.statements:
-                                    if "cash" in statement.statement_type.lower():
-                                        cash_flow_content += f"\n=== {statement.statement_type.upper()} ===\n"
-                                        cash_flow_content += statement.content[:2000]  # Limit size
+                                for statement in financial_statements["financial_statements"]:
+                                    if "cash" in statement.get("statement_type", "").lower():
+                                        cash_flow_content += f"\n=== {statement.get('statement_type', 'Cash Flow Statement').upper()} ===\n"
+                                        cash_flow_content += statement.get("content", "")[:2000]  # Limit size
                                         break
                                 
                                 if cash_flow_content:
