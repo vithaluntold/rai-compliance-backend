@@ -165,13 +165,42 @@ class StandardIdentifier:
             r"\n\s*(\d+)\s+([A-Z][A-Za-z][^\n]{10,100}?)(?=\n)",
         ]
         
-        # Exclusion patterns for financial statements and audit reports
+        # COMPREHENSIVE EXCLUSION PATTERNS - Filter out financial statements AND audit reports
         self.exclusion_patterns = [
+            # Financial statement patterns (we want notes, not primary statements)
             r"CONSOLIDATED\s+(?:STATEMENT|BALANCE\s+SHEET)",
-            r"INDEPENDENT\s+AUDITOR'?S\s+REPORT",
-            r"AUDITOR'?S\s+REPORT", 
-            r"BASIS\s+FOR\s+OPINION",
-            r"KEY\s+AUDIT\s+MATTERS"
+            r"STATEMENT\s+OF\s+(?:FINANCIAL\s+POSITION|COMPREHENSIVE\s+INCOME|CASH\s+FLOWS)",
+            r"BALANCE\s+SHEET",
+            r"INCOME\s+STATEMENT",
+            r"CASH\s+FLOW\s+STATEMENT",
+            
+            # COMPREHENSIVE AUDIT REPORT EXCLUSION - SAME AS FINANCIAL DETECTOR
+            r"INDEPENDENT\s+AUDITOR'?S\s+(?:REPORT|OPINION)",
+            r"AUDITOR'?S\s+(?:REPORT|OPINION)",
+            r"REPORT\s+OF\s+INDEPENDENT\s+AUDITORS?",
+            r"IN\s+OUR\s+OPINION\s*,?",
+            r"WE\s+HAVE\s+AUDITED\s+THE\s+(?:ACCOMPANYING|CONSOLIDATED|FINANCIAL)",
+            r"WE\s+(?:BELIEVE|CONSIDER)\s+THAT\s+THE\s+AUDIT\s+EVIDENCE",
+            r"OUR\s+AUDIT\s+INVOLVED\s+PERFORMING",
+            r"WE\s+CONDUCTED\s+OUR\s+AUDIT\s+IN\s+ACCORDANCE",
+            r"BASIS\s+FOR\s+(?:OPINION|QUALIFIED\s+OPINION)",
+            r"KEY\s+AUDIT\s+MATTERS",
+            r"MATERIAL\s+UNCERTAINTY\s+RELATED\s+TO\s+GOING\s+CONCERN",
+            r"OTHER\s+INFORMATION",
+            r"RESPONSIBILITIES\s+OF\s+(?:MANAGEMENT|DIRECTORS|THOSE\s+CHARGED)",
+            r"AUDITOR'?S\s+RESPONSIBILITIES\s+FOR\s+THE\s+AUDIT",
+            r"REASONABLE\s+ASSURANCE\s+(?:ABOUT|THAT)",
+            r"AUDIT\s+EVIDENCE\s+(?:WE\s+HAVE\s+)?OBTAINED",
+            r"PROFESSIONAL\s+(?:JUDGMENT|SKEPTICISM)",
+            r"EMPHASIS\s+OF\s+MATTER",
+            r"OTHER\s+MATTER",
+            r"REPORT\s+ON\s+OTHER\s+LEGAL",
+            r"CHARTERED\s+ACCOUNTANTS?",
+            r"PUBLIC\s+ACCOUNTANTS?",
+            r"REGISTERED\s+AUDITORS?",
+            r"\d{1,2}\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+\d{4}.*?AUDITORS?",
+            r"AUDIT\s+PARTNER",
+            r"FOR\s+AND\s+ON\s+BEHALF\s+OF.*?AUDITORS?"
         ]
     
     def _is_valid_standard(self, standard_code: str) -> bool:
@@ -888,7 +917,10 @@ class StandardIdentifier:
         # Extract notes content (exclude financial statements and audit reports)
         notes_content = document_text[notes_start:]
         
-        # Remove audit report content if present
+        # COMPREHENSIVE AUDIT REPORT REMOVAL - Same approach as financial detector
+        notes_content = self._remove_audit_report_content(notes_content, document_id)
+        
+        # Remove any remaining exclusion patterns  
         for exclusion_pattern in self.exclusion_patterns:
             notes_content = re.sub(exclusion_pattern + r".*?(?=\n\n|$)", "", 
                                   notes_content, flags=re.IGNORECASE | re.DOTALL)
@@ -1479,6 +1511,75 @@ class StandardIdentifier:
         """Load standard keyword mappings (fallback when taxonomy unavailable)"""
         # This is already implemented in _identify_via_keywords method
         pass
+    
+    def _remove_audit_report_content(self, document_text: str, document_id: Optional[str] = None) -> str:
+        """
+        COMPLETELY REMOVE audit report content before processing notes
+        
+        Same comprehensive filtering as financial statement detector
+        """
+        logger.info(f"🧹 Pre-filtering audit report content from notes for {document_id or 'document'}")
+        
+        original_length = len(document_text)
+        cleaned_text = document_text
+        
+        # Step 1: Remove large audit report sections using section boundaries
+        audit_section_patterns = [
+            # Match entire audit report sections from start to end
+            r"INDEPENDENT\s+AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+            r"AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+            r"REPORT\s+OF\s+INDEPENDENT\s+AUDITORS?.*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+        ]
+        
+        for pattern in audit_section_patterns:
+            matches = list(re.finditer(pattern, cleaned_text, re.IGNORECASE | re.DOTALL))
+            for match in reversed(matches):  # Remove from end to preserve positions
+                audit_content = match.group(0)
+                logger.info(f"🗑️ REMOVING audit section from notes: {len(audit_content)} characters")
+                cleaned_text = cleaned_text[:match.start()] + cleaned_text[match.end():]
+        
+        # Step 2: Remove individual audit phrases that might be embedded
+        audit_exclusion_patterns = [
+            r"IN\\s+OUR\\s+OPINION\\s*,?",
+            r"WE\\s+HAVE\\s+AUDITED\\s+THE\\s+(?:ACCOMPANYING|CONSOLIDATED|FINANCIAL)",
+            r"WE\\s+(?:BELIEVE|CONSIDER)\\s+THAT\\s+THE\\s+AUDIT\\s+EVIDENCE",
+            r"OUR\\s+AUDIT\\s+INVOLVED\\s+PERFORMING", 
+            r"WE\\s+CONDUCTED\\s+OUR\\s+AUDIT\\s+IN\\s+ACCORDANCE",
+            r"BASIS\\s+FOR\\s+(?:OPINION|QUALIFIED\\s+OPINION)",
+            r"KEY\\s+AUDIT\\s+MATTERS",
+            r"MATERIAL\\s+UNCERTAINTY\\s+RELATED\\s+TO\\s+GOING\\s+CONCERN",
+            r"RESPONSIBILITIES\\s+OF\\s+(?:MANAGEMENT|DIRECTORS|THOSE\\s+CHARGED)",
+            r"AUDITOR'?S\\s+RESPONSIBILITIES\\s+FOR\\s+THE\\s+AUDIT",
+            r"REASONABLE\\s+ASSURANCE\\s+(?:ABOUT|THAT)",
+            r"AUDIT\\s+EVIDENCE\\s+(?:WE\\s+HAVE\\s+)?OBTAINED",
+            r"PROFESSIONAL\\s+(?:JUDGMENT|SKEPTICISM)",
+            r"EMPHASIS\\s+OF\\s+MATTER",
+            r"OTHER\\s+MATTER",
+            r"REPORT\\s+ON\\s+OTHER\\s+LEGAL",
+            r"CHARTERED\\s+ACCOUNTANTS?",
+            r"PUBLIC\\s+ACCOUNTANTS?",
+            r"REGISTERED\\s+AUDITORS?",
+            r"AUDIT\\s+PARTNER",
+            r"FOR\\s+AND\\s+ON\\s+BEHALF\\s+OF.*?AUDITORS?"
+        ]
+        
+        for pattern in audit_exclusion_patterns:
+            # Remove entire paragraphs/sentences containing audit language
+            paragraph_pattern = r'[^\n]*' + pattern + r'[^\n]*(?:\n[^\n]*)*?(?=\n\s*\n|\Z)'
+            cleaned_text = re.sub(paragraph_pattern, '', cleaned_text, flags=re.IGNORECASE | re.DOTALL)
+        
+        # Step 3: Clean up extra whitespace
+        cleaned_text = re.sub(r'\n\s*\n\s*\n', '\n\n', cleaned_text)
+        cleaned_text = cleaned_text.strip()
+        
+        removed_chars = original_length - len(cleaned_text)
+        if removed_chars > 0:
+            removal_percentage = (removed_chars / original_length) * 100
+            logger.info(f"✂️ AUDIT CONTENT REMOVED FROM NOTES: {removed_chars} characters ({removal_percentage:.1f}%)")
+        else:
+            logger.info("✅ No audit content detected in notes for removal")
+        
+        return cleaned_text
     
 
 

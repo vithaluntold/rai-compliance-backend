@@ -1597,10 +1597,16 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             operational_demo = extract_value(metadata.get('operational_demographics', ''))
             financial_type = extract_value(metadata.get('financial_statements_type', 'Standalone'))
             
+            # Split geography string into individual countries for frontend array
+            geography_list = []
+            if operational_demo:
+                # Split by comma and clean up each country name
+                geography_list = [country.strip() for country in operational_demo.split(',') if country.strip()]
+            
             company_metadata = {
                 "company_name": company_name,
                 "nature_of_business": nature_of_business,
-                "geography_of_operations": [operational_demo] if operational_demo else [],
+                "geography_of_operations": geography_list,
                 "financial_statement_type": financial_type,
                 "confidence_score": 90
             }
@@ -1646,10 +1652,17 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 company_metadata = results.get("company_metadata", {})
                 if not company_metadata and results.get("metadata"):
                     old_metadata = results.get("metadata", {})
+                    # Split geography string into individual countries for frontend array
+                    geography_str = old_metadata.get('operational_demographics', '')
+                    geography_list = []
+                    if geography_str:
+                        # Split by comma and clean up each country name
+                        geography_list = [country.strip() for country in geography_str.split(',') if country.strip()]
+                    
                     company_metadata = {
                         "company_name": old_metadata.get('company_name', ''),
                         "nature_of_business": old_metadata.get('nature_of_business', ''),
-                        "geography_of_operations": [old_metadata.get('operational_demographics', '')] if old_metadata.get('operational_demographics') else [],
+                        "geography_of_operations": geography_list,
                         "financial_statement_type": old_metadata.get('financial_statements_type', 'Standalone'),
                         "confidence_score": 90  # High confidence for structured data
                     }

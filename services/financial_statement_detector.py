@@ -131,18 +131,43 @@ class FinancialStatementDetector:
             r"Net\s+cash\s+(?:inflow|outflow)"
         ]
         
-        # AUDITOR REPORT EXCLUSION PATTERNS - These indicate we're NOT in financial statements
+        # COMPREHENSIVE AUDITOR REPORT EXCLUSION PATTERNS - COMPLETELY FILTER OUT AUDIT REPORTS
         self.auditor_exclusion_patterns = [
-            r"INDEPENDENT\s+AUDITOR'?S\s+REPORT",
-            r"AUDITOR'?S\s+REPORT",
-            r"BASIS\s+FOR\s+OPINION",
-            r"KEY\s+AUDIT\s+MATTERS", 
-            r"RESPONSIBILITIES\s+OF\s+(?:MANAGEMENT|DIRECTORS)",
-            r"AUDITOR'?S\s+RESPONSIBILITIES",
-            r"In\s+our\s+opinion",
-            r"We\s+have\s+audited",
-            r"Our\s+audit\s+involved",
-            r"EMPHASIS\s+OF\s+MATTER"
+            # Primary audit report indicators
+            r"INDEPENDENT\s+AUDITOR'?S\s+(?:REPORT|OPINION)",
+            r"AUDITOR'?S\s+(?:REPORT|OPINION)",
+            r"REPORT\s+OF\s+INDEPENDENT\s+AUDITORS?",
+            
+            # Audit opinion language
+            r"IN\s+OUR\s+OPINION\s*,?",
+            r"WE\s+HAVE\s+AUDITED\s+THE\s+(?:ACCOMPANYING|CONSOLIDATED|FINANCIAL)",
+            r"WE\s+(?:BELIEVE|CONSIDER)\s+THAT\s+THE\s+AUDIT\s+EVIDENCE",
+            r"OUR\s+AUDIT\s+INVOLVED\s+PERFORMING",
+            r"WE\s+CONDUCTED\s+OUR\s+AUDIT\s+IN\s+ACCORDANCE",
+            
+            # Audit sections
+            r"BASIS\s+FOR\s+(?:OPINION|QUALIFIED\s+OPINION)",
+            r"KEY\s+AUDIT\s+MATTERS",
+            r"MATERIAL\s+UNCERTAINTY\s+RELATED\s+TO\s+GOING\s+CONCERN",
+            r"OTHER\s+INFORMATION",
+            r"RESPONSIBILITIES\s+OF\s+(?:MANAGEMENT|DIRECTORS|THOSE\s+CHARGED)",
+            r"AUDITOR'?S\s+RESPONSIBILITIES\s+FOR\s+THE\s+AUDIT",
+            
+            # Specific audit terminology that never appears in financial statements
+            r"REASONABLE\s+ASSURANCE\s+(?:ABOUT|THAT)",
+            r"AUDIT\s+EVIDENCE\s+(?:WE\s+HAVE\s+)?OBTAINED",
+            r"PROFESSIONAL\s+(?:JUDGMENT|SKEPTICISM)",
+            r"EMPHASIS\s+OF\s+MATTER",
+            r"OTHER\s+MATTER",
+            r"REPORT\s+ON\s+OTHER\s+LEGAL",
+            r"CHARTERED\s+ACCOUNTANTS?",
+            r"PUBLIC\s+ACCOUNTANTS?",
+            r"REGISTERED\s+AUDITORS?",
+            
+            # Date and signature patterns in audit reports
+            r"\d{1,2}\s+(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+\d{4}.*?AUDITORS?",
+            r"AUDIT\s+PARTNER",
+            r"FOR\s+AND\s+ON\s+BEHALF\s+OF.*?AUDITORS?"
         ]
         
         # POLICY/GENERIC CONTENT EXCLUSION PATTERNS - Made less aggressive
@@ -161,8 +186,11 @@ class FinancialStatementDetector:
         """
         logger.info(f"🎯 Starting GUARANTEED financial statement detection for {document_id or 'document'}")
         
+        # STEP 0: COMPLETELY REMOVE AUDIT REPORT CONTENT BEFORE PROCESSING
+        cleaned_document = self._remove_audit_report_content(document_text, document_id)
+        
         # Step 1: Find all potential financial statement sections
-        potential_statements = self._find_statement_sections(document_text)
+        potential_statements = self._find_statement_sections(cleaned_document)
         logger.info(f"🔍 Found {len(potential_statements)} potential financial statement sections")
         
         # Step 2: Validate each section contains actual financial data
@@ -657,3 +685,49 @@ class FinancialStatementDetector:
         logger.info(f"🔍 Content type: {financial_content.content_type}, Confidence: {financial_content.total_confidence:.1f}%")
         
         return result
+    
+    def _remove_audit_report_content(self, document_text: str, document_id: Optional[str] = None) -> str:
+        """
+        COMPLETELY REMOVE audit report content before any financial statement processing
+        
+        This is the first line of defense to ensure audit reports never contaminate
+        financial statement analysis
+        """
+        logger.info(f"🧹 Pre-filtering audit report content from {document_id or 'document'}")
+        
+        original_length = len(document_text)
+        cleaned_text = document_text
+        
+        # Step 1: Remove large audit report sections using section boundaries
+        audit_section_patterns = [
+            # Match entire audit report sections from start to end
+            r"INDEPENDENT\s+AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+            r"AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+            r"REPORT\s+OF\s+INDEPENDENT\s+AUDITORS?.*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+        ]
+        
+        for pattern in audit_section_patterns:
+            matches = list(re.finditer(pattern, cleaned_text, re.IGNORECASE | re.DOTALL))
+            for match in reversed(matches):  # Remove from end to preserve positions
+                audit_content = match.group(0)
+                logger.info(f"🗑️ REMOVING audit section: {len(audit_content)} characters")
+                cleaned_text = cleaned_text[:match.start()] + cleaned_text[match.end():]
+        
+        # Step 2: Remove individual audit phrases that might be embedded
+        for pattern in self.auditor_exclusion_patterns:
+            # Remove entire paragraphs/sentences containing audit language
+            paragraph_pattern = r'[^\n]*' + pattern + r'[^\n]*(?:\n[^\n]*)*?(?=\n\s*\n|\Z)'
+            cleaned_text = re.sub(paragraph_pattern, '', cleaned_text, flags=re.IGNORECASE | re.DOTALL)
+        
+        # Step 3: Clean up extra whitespace
+        cleaned_text = re.sub(r'\n\s*\n\s*\n', '\n\n', cleaned_text)
+        cleaned_text = cleaned_text.strip()
+        
+        removed_chars = original_length - len(cleaned_text)
+        if removed_chars > 0:
+            removal_percentage = (removed_chars / original_length) * 100
+            logger.info(f"✂️ AUDIT CONTENT REMOVED: {removed_chars} characters ({removal_percentage:.1f}%)")
+        else:
+            logger.info("✅ No audit content detected for removal")
+        
+        return cleaned_text
