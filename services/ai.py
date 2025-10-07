@@ -644,6 +644,13 @@ class AIService:
                     ),
                 }
 
+            # ENHANCED: Check if this is a cash flow or financial statement question
+            cash_flow_keywords = [
+                "cash flow", "statement of cash", "operating activities", "investing activities", 
+                "financing activities", "cash flows during the period", "classified by operating"
+            ]
+            is_cash_flow_question = any(keyword.lower() in question.lower() for keyword in cash_flow_keywords)
+            
             # Use enhanced evidence if available, otherwise fall back to original chunks
             if enhanced_evidence and enhanced_evidence.get("primary_evidence"):
                 context = enhanced_evidence["primary_evidence"]
@@ -655,8 +662,52 @@ class AIService:
                     f"Using enhanced evidence from: {evidence_source}"
                 )
             else:
-                context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                logger.info("Using standard vector search evidence")
+                # For cash flow questions, try to include detected financial statements
+                if is_cash_flow_question:
+                    try:
+                        # Get financial statement content from the document analysis
+                        results_path = os.path.join(
+                            os.path.dirname(os.path.dirname(__file__)), 
+                            "analysis_results", 
+                            f"{document_id}.json"
+                        )
+                        if os.path.exists(results_path):
+                            with open(results_path, "r", encoding="utf-8") as f:
+                                results = json.load(f)
+                            
+                            # Check for detected financial statements
+                            parallel_context = results.get("parallel_processing_context", {})
+                            financial_statements = parallel_context.get("financial_statements")
+                            
+                            if financial_statements and hasattr(financial_statements, 'statements'):
+                                # Look for cash flow statement content
+                                cash_flow_content = ""
+                                for statement in financial_statements.statements:
+                                    if "cash" in statement.statement_type.lower():
+                                        cash_flow_content += f"\n=== {statement.statement_type.upper()} ===\n"
+                                        cash_flow_content += statement.content[:2000]  # Limit size
+                                        break
+                                
+                                if cash_flow_content:
+                                    # Combine cash flow content with vector search results
+                                    vector_context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                                    context = cash_flow_content + "\n\n=== ADDITIONAL CONTEXT ===\n" + vector_context
+                                    logger.info(f"✅ Enhanced cash flow question with detected cash flow statement content")
+                                else:
+                                    context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                                    logger.warning(f"⚠️ No cash flow statement content found for cash flow question")
+                            else:
+                                context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                                logger.warning(f"⚠️ No financial statements available for cash flow question: {question[:50]}...")
+                        else:
+                            context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                            logger.warning(f"⚠️ No analysis results available for enhanced cash flow context")
+                    except Exception as e:
+                        context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                        logger.error(f"❌ Error enhancing cash flow context: {str(e)}")
+                else:
+                    context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
+                    logger.info("Using standard vector search evidence")
 
             # Construct the prompt for the AI using the prompts library
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
