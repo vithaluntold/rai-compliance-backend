@@ -294,6 +294,11 @@ class PersistentStorageManager:
 _storage_manager_instance = None
 _storage_manager_lock = threading.Lock()
 
+def get_persistent_storage() -> PersistentStorageManager:
+    """Get global persistent storage instance (alias for backward compatibility)"""
+    return get_persistent_storage_manager()
+
+
 def get_persistent_storage_manager() -> PersistentStorageManager:
     """Get or create the global persistent storage manager instance."""
     global _storage_manager_instance
