@@ -669,7 +669,7 @@ class AIService:
                         results_path = os.path.join(
                             os.path.dirname(os.path.dirname(__file__)), 
                             "analysis_results", 
-                            f"{document_id}.json"
+                            f"{self.current_document_id}.json"
                         )
                         if os.path.exists(results_path):
                             with open(results_path, "r", encoding="utf-8") as f:
