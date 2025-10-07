@@ -151,12 +151,37 @@ smart_metadata_extractor = StandardIdentifier()
 company_metadata_extractor = CompanyMetadataExtractor()
 
 
+class JSONEncoder(json.JSONEncoder):
+    """Custom JSON encoder to handle numpy and pandas data types."""
+    def default(self, o):
+        # Handle numpy/pandas integer types
+        if hasattr(o, 'dtype'):
+            if 'int' in str(o.dtype):
+                return int(o)
+            elif 'float' in str(o.dtype):
+                return float(o)
+        
+        # Handle numpy/pandas specific types
+        if str(type(o).__name__) in ['int64', 'int32', 'int16', 'int8']:
+            return int(o)
+        elif str(type(o).__name__) in ['float64', 'float32', 'float16']:
+            return float(o)
+        elif str(type(o).__name__) in ['bool_', 'bool8']:
+            return bool(o)
+        
+        # Handle other common types
+        if hasattr(o, 'item'):  # numpy scalars
+            return o.item()
+        
+        return super().default(o)
+
+
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """Save analysis results to JSON file."""
     try:
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(results, f, indent=2, ensure_ascii=False)
+            json.dump(results, f, indent=2, ensure_ascii=False, cls=JSONEncoder)
         logger.info(f"Saved analysis results for document {document_id}")
     except Exception as e:
         logger.error(f"Error saving analysis results: {str(e)}")
@@ -2488,7 +2513,7 @@ async def process_compliance_comparison(
         # Save initial progress
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(initial_results, f, indent=2, ensure_ascii=False)
+            json.dump(initial_results, f, indent=2, ensure_ascii=False, cls=JSONEncoder)
 
         # Run both modes and gather results
         smart_metrics, smart_results = await _run_smart_mode_comparison(
@@ -2532,7 +2557,7 @@ async def process_compliance_comparison(
 
         # Save final results
         with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(final_results, f, indent=2, ensure_ascii=False)
+            json.dump(final_results, f, indent=2, ensure_ascii=False, cls=JSONEncoder)
 
         logger.info(
             f"Comparison analysis completed for document {document_id} - "
@@ -2550,7 +2575,7 @@ async def process_compliance_comparison(
                 "error": str(e),
             }
             with open(results_path, "w", encoding="utf-8") as f:
-                json.dump(error_results, f, indent=2, ensure_ascii=False)
+                json.dump(error_results, f, indent=2, ensure_ascii=False, cls=JSONEncoder)
         except Exception as save_error:
             # Failed to save error state - log but continue
             logger.error(
@@ -2847,7 +2872,7 @@ def _preprocess_checklist_with_standard_numbers(
     """
     try:
         # Create a copy to avoid modifying the original
-        processed_checklist = json.loads(json.dumps(checklist))
+        processed_checklist = json.loads(json.dumps(checklist, cls=JSONEncoder))
 
         for section in processed_checklist.get("sections", []):
             # Get the standard number from the section itself
