@@ -261,107 +261,32 @@ def _initialize_processing_results(
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Transform metadata from smart extractor format to enhanced frontend presentation."""
+    """Transform metadata from smart extractor format to simple frontend format."""
+    # Extract simple values from smart extractor format for frontend compatibility
     transformed_metadata = {}
 
-    # Fields that need to be transformed
-    metadata_fields = ["company_name", "nature_of_business", "operational_demographics", "financial_statements_type"]
+    # Fields mapping from smart extractor to frontend expected format
+    field_mapping = {
+        "company_name": "company_name",
+        "nature_of_business": "nature_of_business", 
+        "operational_demographics": "operational_demographics",
+        "financial_statements_type": "financial_statements_type"
+    }
 
-    for field in metadata_fields:
-        if field in metadata_result:
-            value = metadata_result[field]
+    for smart_field, frontend_field in field_mapping.items():
+        if smart_field in metadata_result:
+            value = metadata_result[smart_field]
             # Smart extractor returns objects with value, confidence, extraction_method, context
             if isinstance(value, dict) and "value" in value:
-                transformed_field = {
-                    "value": value.get("value", ""),
-                    "confidence": value.get("confidence", 0.0),
-                    "extraction_method": value.get("extraction_method", "unknown"),
-                    "context": value.get("context", ""),
-                    "confidence_level": _get_confidence_level(value.get("confidence", 0.0)),
-                    "presentation": _format_field_presentation(field, value)
-                }
-                
-                # Special handling for operational_demographics to extract geography
-                if field == "operational_demographics":
-                    # Extract geography-specific information for result page
-                    geography_parts = []
-                    
-                    # Add primary location if available
-                    if value.get("primary_location"):
-                        geography_parts.append(value["primary_location"])
-                    
-                    # Add regions detected
-                    if value.get("regions_detected") and isinstance(value["regions_detected"], list):
-                        geography_parts.extend(value["regions_detected"])
-                    
-                    # Add geographical entities
-                    if value.get("geographical_entities") and isinstance(value["geographical_entities"], list):
-                        for entity in value["geographical_entities"]:
-                            if isinstance(entity, dict):
-                                location_name = (
-                                    entity.get("name") or 
-                                    entity.get("location") or 
-                                    entity.get("place") or 
-                                    entity.get("country") or 
-                                    entity.get("region")
-                                )
-                                if location_name and location_name not in geography_parts:
-                                    geography_parts.append(str(location_name))
-                    
-                    # Create geography_of_operations field
-                    if geography_parts:
-                        # Remove duplicates while preserving order
-                        unique_parts = []
-                        for part in geography_parts:
-                            part_clean = str(part).strip()
-                            if part_clean and part_clean not in unique_parts:
-                                unique_parts.append(part_clean)
-                        geography_value = ", ".join(unique_parts)
-                    else:
-                        geography_value = value.get("value", "Geographic operations not specified")
-                    
-                    transformed_field["geography_of_operations"] = geography_value
-                
-                transformed_metadata[field] = transformed_field
+                # Extract just the value for simple frontend format
+                transformed_metadata[frontend_field] = value.get("value", "")
             else:
                 # Handle legacy string format
-                transformed_metadata[field] = {
-                    "value": str(value) if value is not None else "",
-                    "confidence": 0.85,
-                    "extraction_method": "legacy",
-                    "context": "",
-                    "confidence_level": "High",
-                    "presentation": str(value) if value else "Not specified"
-                }
-                
-                # Add geography field for legacy format too
-                if field == "operational_demographics":
-                    transformed_metadata[field]["geography_of_operations"] = str(value) if value else "Geographic operations not specified"
-        else:
-            # Provide default structure for missing fields
-            default_field = {
-                "value": "", 
-                "confidence": 0.0,
-                "extraction_method": "none",
-                "context": "",
-                "confidence_level": "None",
-                "presentation": "Not specified"
-            }
-            
-            # Add geography field for operational demographics
-            if field == "operational_demographics":
-                default_field["geography_of_operations"] = "Geographic operations not specified"
-            
-            transformed_metadata[field] = default_field
+                transformed_metadata[frontend_field] = str(value) if value is not None else ""
 
-    # Copy optimization metrics and other fields
-    for field, value in metadata_result.items():
-        if field not in metadata_fields:
-            transformed_metadata[field] = value
-
-    # Add enhanced presentation summary
-    transformed_metadata["extraction_summary"] = _create_extraction_summary(transformed_metadata)
-
+    # Add confidence score for frontend display
+    transformed_metadata["confidence_score"] = 90  # High confidence for smart extraction
+    
     return transformed_metadata
 
 
@@ -1662,18 +1587,19 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             metadata_extraction = results.get("metadata_extraction", "PENDING")
             compliance_analysis = results.get("compliance_analysis", "PENDING")
             
-            # Convert old metadata format to new company_metadata format for frontend compatibility
-            company_metadata = results.get("company_metadata", {})
-            if not company_metadata and results.get("metadata"):
-                old_metadata = results.get("metadata", {})
-                company_metadata = {
-                    "company_name": old_metadata.get('company_name', ''),
-                    "nature_of_business": old_metadata.get('nature_of_business', ''),
-                    "geography_of_operations": [old_metadata.get('operational_demographics', '')] if old_metadata.get('operational_demographics') else [],
-                    "financial_statement_type": old_metadata.get('financial_statements_type', 'Standalone'),
-                    "confidence_score": 90  # High confidence for structured data
-                }
-                logger.info(f"🔄 Converted old metadata to company_metadata format for {document_id}")
+            # Convert metadata format for frontend compatibility
+            metadata = results.get("metadata", {})
+            
+            # Create company_metadata in the format frontend expects
+            company_metadata = {
+                "company_name": metadata.get('company_name', ''),
+                "nature_of_business": metadata.get('nature_of_business', ''),
+                "geography_of_operations": [metadata.get('operational_demographics', '')] if metadata.get('operational_demographics') else [],
+                "financial_statement_type": metadata.get('financial_statements_type', 'Standalone'),
+                "confidence_score": metadata.get('confidence_score', 90)
+            }
+            
+            logger.info(f"🔄 Created company_metadata for frontend: {company_metadata}")
             
             return {
                 "document_id": document_id,
