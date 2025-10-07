@@ -1569,6 +1569,12 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             # Convert metadata format for frontend compatibility
             metadata = results.get("metadata", {})
             
+            # DEBUG: Log the metadata structure to understand the format
+            logger.info(f"🔍 DEBUG - Raw metadata structure: {list(metadata.keys()) if metadata else 'No metadata'}")
+            if metadata:
+                for key, value in metadata.items():
+                    logger.info(f"🔍 DEBUG - {key}: {type(value)} = {str(value)[:100]}...")
+            
             # Extract simple values from nested smart extractor format for company_metadata
             def extract_value(field_data):
                 if isinstance(field_data, dict) and "value" in field_data:
