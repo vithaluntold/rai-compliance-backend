@@ -1089,6 +1089,7 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
 
 
 @router.get("/progress/{document_id}", response_model=None)
+@router.get("/api/v1/analysis/progress/{document_id}", response_model=None)
 async def get_analysis_progress(
     document_id: str,
 ) -> Union[Dict[str, Any], JSONResponse]:
@@ -1706,6 +1707,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
 
 
 @router.get("/documents/{document_id}/results")
+@router.get("/api/v1/analysis/documents/{document_id}/results")
 async def get_document_results(document_id: str) -> Dict[str, Any]:
     """Get the results of a document analysis."""
     try:
