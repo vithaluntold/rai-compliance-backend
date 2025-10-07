@@ -261,33 +261,11 @@ def _initialize_processing_results(
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Transform metadata from smart extractor format to simple frontend format."""
-    # Extract simple values from smart extractor format for frontend compatibility
-    transformed_metadata = {}
-
-    # Fields mapping from smart extractor to frontend expected format
-    field_mapping = {
-        "company_name": "company_name",
-        "nature_of_business": "nature_of_business", 
-        "operational_demographics": "operational_demographics",
-        "financial_statements_type": "financial_statements_type"
-    }
-
-    for smart_field, frontend_field in field_mapping.items():
-        if smart_field in metadata_result:
-            value = metadata_result[smart_field]
-            # Smart extractor returns objects with value, confidence, extraction_method, context
-            if isinstance(value, dict) and "value" in value:
-                # Extract just the value for simple frontend format
-                transformed_metadata[frontend_field] = value.get("value", "")
-            else:
-                # Handle legacy string format
-                transformed_metadata[frontend_field] = str(value) if value is not None else ""
-
-    # Add confidence score for frontend display
-    transformed_metadata["confidence_score"] = 90  # High confidence for smart extraction
-    
-    return transformed_metadata
+    """Keep the original smart extractor format for internal processes."""
+    # DON'T transform - keep the original format that other processes expect
+    # Other processes like independent_metadata_extractor.py and metadata_models.py 
+    # expect the nested format with value/confidence/extraction_method/context
+    return metadata_result
 
 
 def _get_confidence_level(confidence: float) -> str:
@@ -1590,13 +1568,19 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             # Convert metadata format for frontend compatibility
             metadata = results.get("metadata", {})
             
-            # Create company_metadata in the format frontend expects
+            # Extract simple values from nested smart extractor format for company_metadata
+            def extract_value(field_data):
+                if isinstance(field_data, dict) and "value" in field_data:
+                    return field_data.get("value", "")
+                return str(field_data) if field_data else ""
+            
+            # Create company_metadata in the format frontend expects (simple values)
             company_metadata = {
-                "company_name": metadata.get('company_name', ''),
-                "nature_of_business": metadata.get('nature_of_business', ''),
-                "geography_of_operations": [metadata.get('operational_demographics', '')] if metadata.get('operational_demographics') else [],
-                "financial_statement_type": metadata.get('financial_statements_type', 'Standalone'),
-                "confidence_score": metadata.get('confidence_score', 90)
+                "company_name": extract_value(metadata.get('company_name', '')),
+                "nature_of_business": extract_value(metadata.get('nature_of_business', '')),
+                "geography_of_operations": [extract_value(metadata.get('operational_demographics', ''))] if metadata.get('operational_demographics') else [],
+                "financial_statement_type": extract_value(metadata.get('financial_statements_type', 'Standalone')),
+                "confidence_score": 90
             }
             
             logger.info(f"🔄 Created company_metadata for frontend: {company_metadata}")
