@@ -676,7 +676,7 @@ async def _identify_accounting_standards(document_id: str, text: str) -> dict:
                     "standards_detail": {
                         std: {
                             "sentence_count": len(content),
-                            "content_length": sum(len(s.get('text', '')) for s in content)
+                            "content_length": sum(len(s.get('text', '') if isinstance(s, dict) else str(s)) for s in content)
                         }
                         for std, content in aggregation_result.items()
                     }
