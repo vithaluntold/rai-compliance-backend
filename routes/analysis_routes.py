@@ -569,9 +569,21 @@ async def process_upload_tasks(
             logger.error(f"Metadata extraction failed: {metadata_result}")
             raise metadata_result
 
-        # Also save parallel processing results for additional context
+        # Also save parallel processing results for additional context (make serializable)
+        serializable_financial = None
+        if not isinstance(financial_result, Exception) and financial_result and isinstance(financial_result, dict):
+            # Convert FinancialContent objects to serializable format
+            serializable_financial = {}
+            for k, v in financial_result.items():
+                if k == '_financial_content_obj':
+                    continue  # Skip non-serializable objects
+                elif hasattr(v, 'to_dict'):
+                    serializable_financial[k] = v.to_dict()
+                else:
+                    serializable_financial[k] = v
+        
         _save_parallel_processing_context(document_id, {
-            'financial_statements': financial_result if not isinstance(financial_result, Exception) else None,
+            'financial_statements': serializable_financial,
             'accounting_standards': standards_result if not isinstance(standards_result, Exception) else None,
             'parallel_duration': parallel_duration
         })
@@ -629,8 +641,8 @@ async def _identify_financial_statements(document_id: str, text: str) -> dict:
             "validation_markers": [marker for fs in financial_content.statements for marker in fs.validation_markers],
             "confidence_score": financial_content.total_confidence,
             "processing_timestamp": datetime.now().isoformat(),
-            # Store the full FinancialContent object for AI service
-            "_financial_content_obj": financial_content
+            # Store serializable financial content summary
+            "_financial_content_summary": financial_content.to_dict()
         }
         
         logger.info(f"✅ Financial statement identification completed: {len(financial_content.statements)} statements found")
