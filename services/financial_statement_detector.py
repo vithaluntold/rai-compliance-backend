@@ -688,45 +688,50 @@ class FinancialStatementDetector:
     
     def _remove_audit_report_content(self, document_text: str, document_id: Optional[str] = None) -> str:
         """
-        COMPLETELY REMOVE audit report content before any financial statement processing
+        CONSERVATIVE removal of audit report content - preserve financial statements!
         
-        This is the first line of defense to ensure audit reports never contaminate
-        financial statement analysis
+        Only remove clearly identified audit sections, never touch financial statement content
         """
-        logger.info(f"🧹 Pre-filtering audit report content from {document_id or 'document'}")
+        logger.info(f"🧹 Conservative pre-filtering of audit content from {document_id or 'document'}")
         
         original_length = len(document_text)
         cleaned_text = document_text
         
-        # Step 1: Remove large audit report sections using section boundaries
+        # VERY CONSERVATIVE: Only remove sections that are CLEARLY audit reports
+        # and have strong boundaries to prevent removing financial statements
+        
         audit_section_patterns = [
-            # Match entire audit report sections from start to end
-            r"INDEPENDENT\s+AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
-            r"AUDITOR'?S\s+(?:REPORT|OPINION).*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
-            r"REPORT\s+OF\s+INDEPENDENT\s+AUDITORS?.*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF|NOTES?\s+TO|DIRECTORS?\s+REPORT|\d+\s+[A-Z])|\Z)",
+            # Only match complete audit report sections with very clear boundaries
+            r"INDEPENDENT\s+AUDITOR'?S\s+REPORT\s+TO\s+.*?(?=\n\s*(?:CONSOLIDATED\s+STATEMENT|STATEMENT\s+OF\s+(?:COMPREHENSIVE\s+INCOME|FINANCIAL\s+POSITION|CASH\s*FLOWS?|CHANGES\s+IN\s+EQUITY)|NOTES?\s+TO\s+THE\s+(?:CONSOLIDATED\s+)?FINANCIAL\s+STATEMENTS))",
         ]
         
+        sections_removed = 0
         for pattern in audit_section_patterns:
             matches = list(re.finditer(pattern, cleaned_text, re.IGNORECASE | re.DOTALL))
             for match in reversed(matches):  # Remove from end to preserve positions
                 audit_content = match.group(0)
-                logger.info(f"🗑️ REMOVING audit section: {len(audit_content)} characters")
-                cleaned_text = cleaned_text[:match.start()] + cleaned_text[match.end():]
+                # Extra safety check: don't remove if contains financial statement indicators
+                if not any(fs_indicator in audit_content.upper() for fs_indicator in [
+                    'CONSOLIDATED STATEMENT', 'STATEMENT OF', 'OPERATING ACTIVITIES', 
+                    'FINANCING ACTIVITIES', 'INVESTING ACTIVITIES', 'CASH FLOWS FROM'
+                ]):
+                    logger.info(f"🗑️ REMOVING audit section: {len(audit_content)} characters")
+                    cleaned_text = cleaned_text[:match.start()] + cleaned_text[match.end():]
+                    sections_removed += 1
+                else:
+                    logger.warning(f"⚠️ PRESERVED potential audit content containing financial data")
         
-        # Step 2: Remove individual audit phrases that might be embedded
-        for pattern in self.auditor_exclusion_patterns:
-            # Remove entire paragraphs/sentences containing audit language
-            paragraph_pattern = r'[^\n]*' + pattern + r'[^\n]*(?:\n[^\n]*)*?(?=\n\s*\n|\Z)'
-            cleaned_text = re.sub(paragraph_pattern, '', cleaned_text, flags=re.IGNORECASE | re.DOTALL)
+        # Step 2: SKIP paragraph-level removal - too risky
+        # (We used to remove paragraphs containing audit phrases, but this was removing financial content)
         
-        # Step 3: Clean up extra whitespace
+        # Step 3: Clean up extra whitespace only
         cleaned_text = re.sub(r'\n\s*\n\s*\n', '\n\n', cleaned_text)
         cleaned_text = cleaned_text.strip()
         
         removed_chars = original_length - len(cleaned_text)
         if removed_chars > 0:
             removal_percentage = (removed_chars / original_length) * 100
-            logger.info(f"✂️ AUDIT CONTENT REMOVED: {removed_chars} characters ({removal_percentage:.1f}%)")
+            logger.info(f"✂️ CONSERVATIVE AUDIT REMOVAL: {removed_chars} characters ({removal_percentage:.1f}%) - {sections_removed} sections")
         else:
             logger.info("✅ No audit content detected for removal")
         
