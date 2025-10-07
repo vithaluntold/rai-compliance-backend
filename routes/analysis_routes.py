@@ -261,11 +261,17 @@ def _initialize_processing_results(
 
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
-    """Keep the original smart extractor format for internal processes."""
-    # DON'T transform - keep the original format that other processes expect
-    # Other processes like independent_metadata_extractor.py and metadata_models.py 
-    # expect the nested format with value/confidence/extraction_method/context
-    return metadata_result
+    """Transform smart extractor format to maintain both nested and simple formats."""
+    # Keep the original nested format for internal processes
+    transformed = metadata_result.copy()
+    
+    # Add simplified version for easy frontend access
+    for field_name, field_data in metadata_result.items():
+        if isinstance(field_data, dict) and "value" in field_data:
+            # Keep the original nested format AND add a simple version
+            transformed[f"{field_name}_simple"] = field_data.get("value", "")
+    
+    return transformed
 
 
 def _get_confidence_level(confidence: float) -> str:
@@ -1592,10 +1598,15 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 return str(field_data) if field_data else ""
             
             # Create company_metadata in the format frontend expects (simple values)
-            company_name = extract_value(metadata.get('company_name', ''))
-            nature_of_business = extract_value(metadata.get('nature_of_business', ''))
-            operational_demo = extract_value(metadata.get('operational_demographics', ''))
-            financial_type = extract_value(metadata.get('financial_statements_type', 'Standalone'))
+            # Try simplified version first, then fall back to nested format
+            company_name = metadata.get('company_name_simple', '') or extract_value(metadata.get('company_name', ''))
+            nature_of_business = metadata.get('nature_of_business_simple', '') or extract_value(metadata.get('nature_of_business', ''))
+            operational_demo = metadata.get('operational_demographics_simple', '') or extract_value(metadata.get('operational_demographics', ''))
+            financial_type = metadata.get('financial_statements_type_simple', '') or extract_value(metadata.get('financial_statements_type', 'Standalone'))
+            
+            # DEBUG: Log what we're extracting
+            logger.info(f"🔍 DEBUG - Metadata keys available: {list(metadata.keys())}")
+            logger.info(f"🔍 DEBUG - Extracted values: company_name='{company_name}', nature='{nature_of_business[:50]}...', demo='{operational_demo}', type='{financial_type}'")
             
             # Split geography string into individual countries for frontend array
             geography_list = []
