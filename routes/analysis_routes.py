@@ -1685,9 +1685,10 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                         "confidence_score": 90  # High confidence for structured data
                     }
                     logger.info(f"🔄 Converted database metadata to company_metadata format for {document_id}")
-                    logger.debug(f"📊 Extracted company_metadata: {company_metadata}")
+                    logger.info(f"📊 FINAL company_metadata being sent to frontend: {company_metadata}")
                 
-                return {
+                # Final response logging
+                response_data = {
                     "document_id": document_id,
                     "status": status,
                     "metadata_extraction": results.get("metadata_extraction", "PENDING"),
@@ -1703,6 +1704,8 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                     "extensiveSearch": results.get("extensiveSearch", False),
                     "message": results.get("message", "Analysis in progress"),
                 }
+                logger.info(f"🎯 FINAL RESPONSE for {document_id}: company_metadata = {response_data.get('company_metadata', 'NOT FOUND')}")
+                return response_data
         except Exception as db_error:
             logger.warning(f"Failed to get database results for {document_id}: {str(db_error)}")
         
@@ -1736,6 +1739,14 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 "message": f"Failed to get document status: {str(e)}",
             },
         )
+
+
+# Add API v1 alias for document status endpoint to match frontend expectations
+@router.get("/api/v1/analysis/documents/{document_id}")
+@router.get("/api/v1/analysis/documents/{document_id}/status")
+async def get_document_status_api_v1(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
+    """Get document status and metadata (API v1 endpoint)."""
+    return await get_document_status(document_id)
 
 
 @router.get("/documents/{document_id}/results")
