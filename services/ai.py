@@ -248,43 +248,7 @@ def check_rate_limit(tokens: int = 0) -> None:
 
 
 class AIService:
-    def resolve_document_id(self, filename_or_company: str) -> str:
-        """
-        Map filename/company name to actual document_id from analysis_results.
-        """
-        import glob
-        import json
-        import os
-        
-        # Clean input
-        clean_input = filename_or_company.lower().replace(".pdf", "")
-        
-        results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis_results")
-        
-        # Search for matching metadata
-        for json_path in glob.glob(os.path.join(results_dir, "*.json")):
-            try:
-                with open(json_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                
-                company_name = data.get("metadata", {}).get("company_name", "").lower()
-                
-                # Match company name (e.g., "phoenix" matches "Phoenix Group PLC")
-                if clean_input in company_name or any(word in company_name for word in clean_input.split()):
-                    return data.get("document_id", filename_or_company)
-                    
-            except Exception:
-                continue
-        
-        # Fallback to first available document ID
-        try:
-            for item in os.listdir(results_dir):
-                if item.startswith("RAI-"):
-                    return item.replace(".json", "")
-        except:
-            pass
-            
-        return filename_or_company
+
     def __init__(
         self,
         api_key: str,
@@ -577,23 +541,20 @@ class AIService:
           - suggestion: str containing suggestion when status is "NO"
         """
         try:
-            # Ensure document_id is set
+            # Ensure document_id is set - should be set by the calling route
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. Attempting to resolve dynamically."
+                    "analyze_chunk called with no current_document_id set. This should be set by the calling route."
                 )
-                # Try to resolve using filename or company name
-                self.current_document_id = self.resolve_document_id(chunk if chunk else "")
-                if not self.current_document_id:
-                    return {
-                        "status": "Error",
-                        "confidence": 0.0,
-                        "explanation": "No document ID provided for vector search.",
-                        "evidence": "",
-                        "suggestion": (
-                            "Check backend logic to ensure document_id is always set."
-                        ),
-                    }
+                return {
+                    "status": "Error",
+                    "confidence": 0.0,
+                    "explanation": "No document ID provided - ensure document is uploaded and processed first.",
+                    "evidence": "",
+                    "suggestion": (
+                        "Upload and process a document first to establish a live session document ID."
+                    ),
+                }
 
             # Check for duplicate questions
             if check_duplicate_question(question, self.current_document_id):
