@@ -88,8 +88,8 @@ async def list_documents():
 
                     except Exception as json_err:
                         logger.warning(
-                            f"Could not read or parse result file {
-                                item.name}: {json_err}"
+                            f"Could not read or parse result file "
+                            f"{item.name}: {json_err}"
                         )
                         if (
                             doc_id in documents
