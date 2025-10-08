@@ -6,7 +6,7 @@ import os
 import signal
 import sys
 import uvicorn
-from minimal import app
+from main import app
 
 def signal_handler(sig, frame):
     print('Gracefully shutting down...')

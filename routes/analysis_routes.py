@@ -1663,21 +1663,29 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                 company_metadata = results.get("company_metadata", {})
                 if not company_metadata and results.get("metadata"):
                     old_metadata = results.get("metadata", {})
+                    
+                    # Helper function to extract values from nested format
+                    def _extract_field_value(field_data):
+                        if isinstance(field_data, dict) and 'value' in field_data:
+                            return field_data['value']
+                        return field_data if field_data else ''
+                    
                     # Split geography string into individual countries for frontend array
-                    geography_str = old_metadata.get('operational_demographics', '')
+                    geography_str = _extract_field_value(old_metadata.get('operational_demographics', ''))
                     geography_list = []
-                    if geography_str:
+                    if geography_str and isinstance(geography_str, str):
                         # Split by comma and clean up each country name
                         geography_list = [country.strip() for country in geography_str.split(',') if country.strip()]
                     
                     company_metadata = {
-                        "company_name": old_metadata.get('company_name', ''),
-                        "nature_of_business": old_metadata.get('nature_of_business', ''),
+                        "company_name": _extract_field_value(old_metadata.get('company_name', '')),
+                        "nature_of_business": _extract_field_value(old_metadata.get('nature_of_business', '')),
                         "geography_of_operations": geography_list,
-                        "financial_statement_type": old_metadata.get('financial_statements_type', 'Standalone'),
+                        "financial_statement_type": _extract_field_value(old_metadata.get('financial_statements_type', 'Standalone')),
                         "confidence_score": 90  # High confidence for structured data
                     }
                     logger.info(f"🔄 Converted database metadata to company_metadata format for {document_id}")
+                    logger.debug(f"📊 Extracted company_metadata: {company_metadata}")
                 
                 return {
                     "document_id": document_id,
