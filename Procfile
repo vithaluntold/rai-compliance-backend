@@ -1,0 +1,1 @@
+web: python main_postgres.py

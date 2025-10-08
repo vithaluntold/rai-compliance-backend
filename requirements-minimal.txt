@@ -1,0 +1,12 @@
+# Core FastAPI dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# PostgreSQL support
+asyncpg==0.29.0
+
+# Data validation
+pydantic==2.5.0
+
+# Optional but useful
+python-dotenv==1.0.0

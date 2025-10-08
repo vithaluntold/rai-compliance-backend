@@ -1,0 +1,17 @@
+version: "1"
+
+services:
+  # FastAPI Backend Web Service
+  - type: web
+    name: bluecart-backend
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main_postgres.py"
+    envVars:
+      - key: DATABASE_URL
+        value: "postgresql://bluecart_database_user:k4d6Bn9Q2Jo0uJ2UbMkBVJwdzGzqZ8YA@dpg-d3id75ripnbc73e3adfg-a/bluecart_database"
+      - key: ENVIRONMENT
+        value: "production"
+    healthCheckPath: "/health"
