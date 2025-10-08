@@ -1742,8 +1742,8 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
 
 
 # Add API v1 alias for document status endpoint to match frontend expectations
-@router.get("/api/v1/analysis/documents/{document_id}")
-@router.get("/api/v1/analysis/documents/{document_id}/status")
+@router.get("/api/v1/analysis/documents/{document_id}", response_model=None)
+@router.get("/api/v1/analysis/documents/{document_id}/status", response_model=None)
 async def get_document_status_api_v1(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
     """Get document status and metadata (API v1 endpoint)."""
     return await get_document_status(document_id)
