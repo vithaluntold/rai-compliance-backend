@@ -248,6 +248,29 @@ def check_rate_limit(tokens: int = 0) -> None:
 
 
 class AIService:
+    def resolve_document_id(self, filename_or_company: str) -> str:
+        """
+        Dynamically resolve the analysis_results document_id for a given filename or company name.
+        Returns the best match document_id, or the input if no match found.
+        """
+        import glob
+        import json
+        import os
+        results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis_results")
+        # Search for all .json metadata files
+        for json_path in glob.glob(os.path.join(results_dir, "*.json")):
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                # Match by company name or filename
+                if (
+                    data.get("metadata", {}).get("company_name", "").lower() in filename_or_company.lower()
+                    or filename_or_company.lower() in json_path.lower()
+                ):
+                    return data.get("document_id", filename_or_company)
+            except Exception:
+                continue
+        return filename_or_company
     def __init__(
         self,
         api_key: str,
@@ -543,18 +566,20 @@ class AIService:
             # Ensure document_id is set
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. "
-                    "Cannot perform vector search."
+                    "analyze_chunk called with no current_document_id set. Attempting to resolve dynamically."
                 )
-                return {
-                    "status": "Error",
-                    "confidence": 0.0,
-                    "explanation": "No document ID provided for vector search.",
-                    "evidence": "",
-                    "suggestion": (
-                        "Check backend logic to ensure document_id is always set."
-                    ),
-                }
+                # Try to resolve using filename or company name
+                self.current_document_id = self.resolve_document_id(chunk if chunk else "")
+                if not self.current_document_id:
+                    return {
+                        "status": "Error",
+                        "confidence": 0.0,
+                        "explanation": "No document ID provided for vector search.",
+                        "evidence": "",
+                        "suggestion": (
+                            "Check backend logic to ensure document_id is always set."
+                        ),
+                    }
 
             # Check for duplicate questions
             if check_duplicate_question(question, self.current_document_id):
