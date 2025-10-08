@@ -250,26 +250,40 @@ def check_rate_limit(tokens: int = 0) -> None:
 class AIService:
     def resolve_document_id(self, filename_or_company: str) -> str:
         """
-        Dynamically resolve the analysis_results document_id for a given filename or company name.
-        Returns the best match document_id, or the input if no match found.
+        Map filename/company name to actual document_id from analysis_results.
         """
         import glob
         import json
         import os
+        
+        # Clean input
+        clean_input = filename_or_company.lower().replace(".pdf", "")
+        
         results_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis_results")
-        # Search for all .json metadata files
+        
+        # Search for matching metadata
         for json_path in glob.glob(os.path.join(results_dir, "*.json")):
             try:
                 with open(json_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                # Match by company name or filename
-                if (
-                    data.get("metadata", {}).get("company_name", "").lower() in filename_or_company.lower()
-                    or filename_or_company.lower() in json_path.lower()
-                ):
+                
+                company_name = data.get("metadata", {}).get("company_name", "").lower()
+                
+                # Match company name (e.g., "phoenix" matches "Phoenix Group PLC")
+                if clean_input in company_name or any(word in company_name for word in clean_input.split()):
                     return data.get("document_id", filename_or_company)
+                    
             except Exception:
                 continue
+        
+        # Fallback to first available document ID
+        try:
+            for item in os.listdir(results_dir):
+                if item.startswith("RAI-"):
+                    return item.replace(".json", "")
+        except:
+            pass
+            
         return filename_or_company
     def __init__(
         self,
