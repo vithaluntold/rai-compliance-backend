@@ -174,12 +174,54 @@ class JSONEncoder(json.JSONEncoder):
 def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
     """Save analysis results to JSON file."""
     try:
+        # Ensure the directory exists
+        ANALYSIS_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        
         results_path = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
+        
+        # Add debugging logs
+        logger.info(f"🔄 Attempting to save analysis results for {document_id} to {results_path}")
+        logger.info(f"📊 Results data keys: {list(results.keys()) if isinstance(results, dict) else type(results)}")
+        
+        # CRITICAL DEBUG: Log the actual metadata being saved
+        if isinstance(results, dict) and "metadata" in results:
+            metadata_content = results["metadata"]
+            if isinstance(metadata_content, dict):
+                logger.info(f"🔍 SAVE DEBUG - Metadata keys being saved: {list(metadata_content.keys())}")
+                for key, value in metadata_content.items():
+                    if isinstance(value, dict) and "value" in value:
+                        logger.info(f"🔍 SAVE DEBUG - {key}: {value['value'][:100]}..." if len(str(value['value'])) > 100 else f"🔍 SAVE DEBUG - {key}: {value['value']}")
+                    else:
+                        logger.info(f"🔍 SAVE DEBUG - {key}: {str(value)[:100]}..." if len(str(value)) > 100 else f"🔍 SAVE DEBUG - {key}: {value}")
+            else:
+                logger.info(f"🔍 SAVE DEBUG - Metadata is not dict: {type(metadata_content)} - {metadata_content}")
+        else:
+            logger.info(f"🔍 SAVE DEBUG - No metadata in results or results not dict")
+        
+        # Test JSON serialization first
+        try:
+            test_json = json.dumps(results, cls=JSONEncoder, ensure_ascii=False)
+            logger.info(f"✅ JSON serialization test passed ({len(test_json)} chars)")
+        except Exception as json_err:
+            logger.error(f"❌ JSON serialization failed: {json_err}")
+            logger.error(f"❌ Problematic results keys: {list(results.keys()) if isinstance(results, dict) else type(results)}")
+            raise
+        
+        # Write with better error handling
         with open(results_path, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2, ensure_ascii=False, cls=JSONEncoder)
-        logger.info(f"Saved analysis results for document {document_id}")
+            f.flush()  # Force write to disk
+            
+        # Verify the file was written
+        if results_path.exists():
+            file_size = results_path.stat().st_size
+            logger.info(f"✅ Successfully saved analysis results for document {document_id} ({file_size} bytes)")
+        else:
+            logger.error(f"❌ File was not created: {results_path}")
+            raise FileNotFoundError(f"Analysis results file was not created for {document_id}")
+            
     except Exception as e:
-        logger.error(f"Error saving analysis results: {str(e)}")
+        logger.error(f"❌ Error saving analysis results for {document_id}: {str(e)}", exc_info=True)
         raise
 
 
@@ -262,6 +304,8 @@ def _initialize_processing_results(
 
 def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
     """Transform smart extractor format to maintain both nested and simple formats."""
+    logger.info(f"🔄 TRANSFORM INPUT: {type(metadata_result)} with keys: {list(metadata_result.keys()) if isinstance(metadata_result, dict) else 'Not a dict'}")
+    
     # Keep the original nested format for internal processes
     transformed = metadata_result.copy()
     
@@ -269,8 +313,11 @@ def _transform_metadata_for_frontend(metadata_result: dict) -> dict:
     for field_name, field_data in metadata_result.items():
         if isinstance(field_data, dict) and "value" in field_data:
             # Keep the original nested format AND add a simple version
-            transformed[f"{field_name}_simple"] = field_data.get("value", "")
+            simple_value = field_data.get("value", "")
+            transformed[f"{field_name}_simple"] = simple_value
+            logger.info(f"🔄 Added {field_name}_simple = '{simple_value[:100]}...'")
     
+    logger.info(f"🔄 TRANSFORM OUTPUT: {list(transformed.keys())}")
     return transformed
 
 
@@ -360,8 +407,13 @@ def _create_extraction_summary(metadata: dict) -> dict:
 
 def _finalize_processing_results(document_id: str, metadata_result: dict) -> dict:
     """Create final results after successful processing."""
+    logger.info(f"🔧 FINALIZING RESULTS for {document_id}")
+    logger.info(f"📊 Input metadata_result keys: {list(metadata_result.keys()) if isinstance(metadata_result, dict) else type(metadata_result)}")
+    logger.info(f"📊 Sample metadata values: {dict(list(metadata_result.items())[:2]) if isinstance(metadata_result, dict) else 'Not a dict'}")
+    
     # Transform metadata for frontend compatibility
     transformed_metadata = _transform_metadata_for_frontend(metadata_result)
+    logger.info(f"🔄 Transformed metadata keys: {list(transformed_metadata.keys()) if isinstance(transformed_metadata, dict) else type(transformed_metadata)}")
 
     final_results = {
         "status": "awaiting_framework_selection",
@@ -376,6 +428,8 @@ def _finalize_processing_results(document_id: str, metadata_result: dict) -> dic
             "and standard for compliance analysis."
         ),
     }
+    
+    logger.info(f"💾 About to save final_results with metadata keys: {list(final_results['metadata'].keys()) if isinstance(final_results.get('metadata'), dict) else 'No metadata dict'}")
     save_analysis_results(document_id, final_results)
 
     return final_results
@@ -570,6 +624,7 @@ async def process_upload_tasks(
         # Finalize results using the working metadata extraction
         if not isinstance(metadata_result, Exception):
             # Type guard ensures metadata_result is dict here
+            logger.info(f"🎯 PASSING METADATA TO FINALIZE: type={type(metadata_result)}, keys={list(metadata_result.keys()) if isinstance(metadata_result, dict) else 'Not a dict'}")
             _finalize_processing_results(document_id, metadata_result)  # type: ignore
         else:
             logger.error(f"Metadata extraction failed: {metadata_result}")
@@ -670,49 +725,27 @@ async def _identify_accounting_standards(document_id: str, text: str) -> dict:
     try:
         # Import here to avoid circular dependencies
         from services.standard_identifier import StandardIdentifier
-        from services.intelligent_notes_accumulator import IntelligentNotesAccumulator
         
         identifier = StandardIdentifier()
-        accumulator = IntelligentNotesAccumulator()
         
         # Identify standards in the document
         identification_result = identifier.identify_standards_in_notes(text, document_id)
         
-        # Get tagged sentences
+        # Use standard identifier results directly (no accumulator needed)
+        identified_standards = identification_result.get('identified_standards', [])
         tagged_sentences = identification_result.get('tagged_sentences', [])
         
-        # Aggregate by standards
-        if tagged_sentences:
-            aggregation_result = accumulator.consolidate_by_standard(identification_result)
-            consolidated_content = aggregation_result.get('consolidated_content', {})
-            
-            result = {
-                "document_id": document_id,
-                "standards_found": list(consolidated_content.keys()),
-                "total_sentences": len(tagged_sentences),
-                "aggregated_sections": len(consolidated_content),
-                "confidence_score": identification_result.get('confidence_score', 0.0),
-                "processing_timestamp": datetime.now().isoformat(),
-                "details": {
-                    "tagged_sentences_count": len(tagged_sentences),
-                    "standards_detail": {
-                        std: {
-                            "sentence_count": len(content) if isinstance(content, (list, tuple)) else 1,
-                            "content_length": sum(len(s.get('text', '') if isinstance(s, dict) else str(s)) for s in (content if isinstance(content, (list, tuple)) else [content]))
-                        }
-                        for std, content in consolidated_content.items()
-                    }
-                }
+        result = {
+            "document_id": document_id,
+            "standards_found": identified_standards,
+            "total_sentences": len(tagged_sentences),
+            "confidence_score": identification_result.get('confidence_score', 0.0),
+            "processing_timestamp": datetime.now().isoformat(),
+            "details": {
+                "tagged_sentences_count": len(tagged_sentences),
+                "identification_result": identification_result
             }
-        else:
-            result = {
-                "document_id": document_id,
-                "standards_found": [],
-                "total_sentences": 0,
-                "aggregated_sections": 0,
-                "confidence_score": 0.0,
-                "processing_timestamp": datetime.now().isoformat()
-            }
+        }
         
         logger.info(f"✅ Standards identification completed: {len(result['standards_found'])} standards found")
         return result
@@ -1563,9 +1596,18 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
         results_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.json")
         logger.info(f"🔍 Results path: {results_path}")
         if os.path.exists(results_path):
-            # Read results
+            # Read results with detailed debugging
+            logger.info(f"📁 Reading results file: {results_path}")
+            with open(results_path, "r", encoding="utf-8") as f:
+                file_content = f.read()
+                logger.info(f"📄 File content length: {len(file_content)} characters")
+                logger.info(f"📄 File content preview: {file_content[:500]}...")
+                
+            # Parse JSON
             with open(results_path, "r", encoding="utf-8") as f:
                 results = json.load(f)
+                logger.info(f"📊 Loaded JSON keys: {list(results.keys())}")
+                logger.info(f"📊 Metadata in file: {results.get('metadata', 'NO METADATA KEY')}")
             # Check for errors
             if "error" in results:
                 return {
@@ -1590,6 +1632,9 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             
             # Convert metadata format for frontend compatibility
             metadata = results.get("metadata", {})
+            logger.info(f"🔍 RAW METADATA from results: {metadata}")
+            logger.info(f"🔍 RAW METADATA type: {type(metadata)}")
+            logger.info(f"🔍 RAW METADATA keys: {list(metadata.keys()) if isinstance(metadata, dict) else 'Not a dict'}")
             
             # Extract simple values from nested smart extractor format for company_metadata
             def extract_value(field_data):
@@ -1606,7 +1651,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             
             # DEBUG: Log what we're extracting
             logger.info(f"🔍 DEBUG - Metadata keys available: {list(metadata.keys())}")
-            logger.info(f"🔍 DEBUG - Extracted values: company_name='{company_name}', nature='{nature_of_business[:50]}...', demo='{operational_demo}', type='{financial_type}'")
+            logger.info(f"🔍 DEBUG - Extracted values: company_name='{company_name}', nature='{nature_of_business[:50] if nature_of_business else ''}...', demo='{operational_demo}', type='{financial_type}'")
             
             # Split geography string into individual countries for frontend array
             geography_list = []
