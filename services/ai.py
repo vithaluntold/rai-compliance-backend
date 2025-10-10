@@ -14,11 +14,11 @@ from dotenv import load_dotenv  # type: ignore
 from openai import AzureOpenAI  # type: ignore
 
 from services.ai_prompts import ai_prompts
+
+# from services.progress import progress_service, ProgressStatus # Removed unused import
 from services.checklist_utils import load_checklist
-from services.intelligent_document_analyzer import enhance_compliance_analysis
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
-from services.standard_identifier import StandardIdentifier
-from services.intelligent_notes_accumulator import IntelligentNotesAccumulator
+# Removed deleted modules: enhanced_chunk_selector, intelligent_chunk_accumulator, intelligent_document_analyzer, intelligent_notes_accumulator
 
 logging.basicConfig(
     level=logging.INFO,
@@ -33,13 +33,13 @@ ai_service = None
 
 # Global settings for parallel processing
 NUM_WORKERS = min(32, (os.cpu_count() or 1) * 4)  # Optimize worker count
-QUESTION_BATCH_SIZE = 10  # Optimized batch size for contextual processing with metadata
+CHUNK_SIZE = 50  # Increased from 10 - process more questions per batch for efficiency
 
 # Azure OpenAI configuration
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "o3-mini")
-AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME", "model-router")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
 AZURE_OPENAI_EMBEDDING_DEPLOYMENT = os.getenv(
     "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-large"
 )
@@ -52,9 +52,7 @@ REQUESTS_PER_MINUTE = 30  # Conservative limit for S0 tier
 TOKENS_PER_MINUTE = 40_000  # Conservative limit for S0 tier
 MAX_RETRIES = 3
 EXPONENTIAL_BACKOFF_BASE = 2
-CIRCUIT_BREAKER_THRESHOLD = (
-    10  # Number of consecutive failures before circuit breaker opens
-)
+CIRCUIT_BREAKER_THRESHOLD = 10  # Number of consecutive failures before circuit breaker opens
 
 _rate_lock = threading.Lock()
 _request_count = 0
@@ -63,7 +61,9 @@ _window_start = time.time()
 _consecutive_failures = 0
 _circuit_breaker_open = False
 _circuit_breaker_opened_at = 0
-_processed_questions = {}  # Track processed questions per document to prevent duplicates
+_processed_questions = (
+    {}
+)  # Track processed questions per document to prevent duplicates
 
 # Async rate limiting for Zap Mode
 _async_rate_semaphore = None  # Will be initialized when needed
@@ -195,6 +195,9 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
         now = time.time()
         elapsed = now - _window_start
 
+        # Reset window if a minute has passednow = time.time()
+        elapsed = now - _window_start
+
         # Reset window if a minute has passed
         if elapsed >= 60:
             _window_start = now
@@ -219,8 +222,7 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
             sleep_time = max(backoff_time, remaining_window)
 
             logger.warning(
-                f"Rate limit would be exceeded. Backing off for "
-                f"{sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
+                f"Rate limit would be exceeded. Backing off for {sleep_time:.2f} seconds (retry {retry_count + 1}/{MAX_RETRIES})"
             )
             time.sleep(sleep_time)
 
@@ -236,8 +238,7 @@ def check_rate_limit_with_backoff(tokens: int = 0, retry_count: int = 0) -> None
         _request_count += 1
         _token_count += tokens
         logger.debug(
-            f"Rate limit check passed. Requests: {_request_count}/"
-            f"{REQUESTS_PER_MINUTE}, Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
+            f"Rate limit check passed. Requests: {_request_count}/{REQUESTS_PER_MINUTE}, Tokens: {_token_count}/{TOKENS_PER_MINUTE}"
         )
 
 
@@ -248,7 +249,6 @@ def check_rate_limit(tokens: int = 0) -> None:
 
 
 class AIService:
-
     def __init__(
         self,
         api_key: str,
@@ -285,6 +285,180 @@ class AIService:
             )
             logger.info("Vector store initialized successfully (Azure)")
 
+    def _get_standard_specific_context(self, question: str, standard_id: Optional[str]) -> str:
+        """
+        Get context using standard-specific tagged sentences from StandardIdentifier.
+        Enhanced with dual file pattern support to fix production file mismatch issue.
+        """
+        try:
+            # Get analysis results containing tagged sentences - check both file patterns
+            base_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "analysis_results")
+            
+            # Try main results file first
+            main_results_path = os.path.join(base_dir, f"{self.current_document_id}.json")
+            parallel_results_path = os.path.join(base_dir, f"{self.current_document_id}_parallel_context.json")
+            
+            results = None
+            results_source = None
+            
+            if os.path.exists(main_results_path):
+                with open(main_results_path, "r", encoding="utf-8") as f:
+                    results = json.load(f)
+                results_source = "main"
+                logger.info(f"✅ Found main results file for document {self.current_document_id}")
+                
+            elif os.path.exists(parallel_results_path):
+                with open(parallel_results_path, "r", encoding="utf-8") as f:
+                    results = json.load(f)
+                results_source = "parallel"
+                logger.info(f"✅ Found parallel context file for document {self.current_document_id}")
+                
+            else:
+                logger.warning(f"No analysis results found for document {self.current_document_id}")
+                logger.warning(f"Checked: {main_results_path}")
+                logger.warning(f"Checked: {parallel_results_path}")
+                return ""
+            
+            # Get standard identification results - handle both file formats
+            identification_result = None
+            tagged_sentences = []
+            
+            if results_source == "main":
+                # Main results file format - check for direct structure
+                if "tagged_sentences" in results:
+                    identification_result = results
+                    tagged_sentences = results.get("tagged_sentences", [])
+                    logger.info("✅ Using tagged sentences from main results file")
+                else:
+                    # Check for nested structure in main file
+                    parallel_context = results.get("parallel_processing_context", {})
+                    standards_result = parallel_context.get("accounting_standards")
+                    if standards_result and standards_result.get("details", {}).get("identification_result"):
+                        identification_result = standards_result["details"]["identification_result"]
+                        tagged_sentences = identification_result.get("tagged_sentences", [])
+                        logger.info("✅ Using nested tagged sentences from main results file")
+                        
+            elif results_source == "parallel":
+                # Parallel context file format
+                if "accounting_standards" in results:
+                    standards_result = results.get("accounting_standards", {})
+                    if standards_result.get("details", {}).get("identification_result"):
+                        identification_result = standards_result["details"]["identification_result"]
+                        tagged_sentences = identification_result.get("tagged_sentences", [])
+                        logger.info("✅ Using tagged sentences from parallel context file")
+                elif "tagged_sentences" in results:
+                    # Direct format in parallel file
+                    identification_result = results
+                    tagged_sentences = results.get("tagged_sentences", [])
+                    logger.info("✅ Using direct tagged sentences from parallel context file")
+            
+            if not tagged_sentences:
+                logger.warning("No tagged sentences found in results")
+                logger.warning(f"Results keys: {list(results.keys())}")
+                return ""
+            
+            # 📊 DETAILED CONTEXT LOGGING FOR PRODUCTION
+            logger.info("=" * 60)
+            logger.info("🔍 CONTEXT RETRIEVAL - FINANCIAL CONTENT ANALYSIS")
+            logger.info("=" * 60)
+            logger.info(f"📄 DOCUMENT_ID: {self.current_document_id}")
+            logger.info(f"📋 QUESTION: {question}")
+            logger.info(f"🎯 TARGET_STANDARD: {standard_id}")
+            logger.info(f"📊 TOTAL_TAGGED_SENTENCES: {len(tagged_sentences)}")
+            
+            # Extract standard code from question or use provided standard_id
+            target_standards = []
+            
+            if standard_id:
+                target_standards.append(standard_id.upper())
+            
+            # Also try to detect standard from question text
+            question_upper = question.upper()
+            standard_patterns = [
+                r'IAS\s*(\d+)', r'IFRS\s*(\d+)', r'IPSAS\s*(\d+)', 
+                r'ASC\s*(\d+)', r'GAAP', r'REVENUE', r'LEASE'
+            ]
+            
+            for pattern in standard_patterns:
+                matches = re.findall(pattern, question_upper)
+                for match in matches:
+                    if match.isdigit():
+                        target_standards.extend([f"IAS {match}", f"IFRS {match}"])
+                    else:
+                        target_standards.append(match)
+            
+            # Find relevant sentences for target standards
+            relevant_sentences = []
+            for sentence_data in tagged_sentences:
+                if isinstance(sentence_data, dict):
+                    sentence_text = sentence_data.get("text", "").lower()
+                    standards = sentence_data.get("standards", [])
+                    
+                    # Check if this sentence relates to target standards
+                    is_relevant = False
+                    
+                    # Check standards tags
+                    for std in standards:
+                        std_str = str(std).lower()
+                        for target in target_standards:
+                            if target.lower() in std_str:
+                                is_relevant = True
+                                break
+                        if is_relevant:
+                            break
+                    
+                    # Check text content for standard mentions
+                    for target in target_standards:
+                        if target.lower() in sentence_text:
+                            is_relevant = True
+                            break
+                    
+                    # Add keyword-based matching for common standards
+                    if standard_id:
+                        if standard_id.upper() == 'IAS 7':
+                            if any(keyword in sentence_text for keyword in ['cash flow', 'indirect method', 'operating activities']):
+                                is_relevant = True
+                        elif standard_id.upper() == 'IFRS 15':
+                            if any(keyword in sentence_text for keyword in ['revenue', 'contract', 'performance obligation']):
+                                is_relevant = True
+                        elif standard_id.upper() == 'IAS 16':
+                            if any(keyword in sentence_text for keyword in ['property', 'plant', 'equipment', 'depreciation']):
+                                is_relevant = True
+                    
+                    if is_relevant:
+                        relevant_sentences.append(sentence_data)
+            
+            logger.info(f"🎯 RELEVANT_SENTENCES_FOUND: {len(relevant_sentences)}")
+            
+            # Build context from relevant sentences
+            if not relevant_sentences:
+                logger.warning(f"📊 CONTEXT RETRIEVAL: No sentences found for target standards {target_standards}")
+                logger.warning(f"📄 Document: {self.current_document_id}, Question: {question[:100]}...")
+                return ""
+            
+            context_parts = []
+            for i, sentence_data in enumerate(relevant_sentences[:15]):  # Limit to prevent token overflow
+                if isinstance(sentence_data, dict):
+                    text = sentence_data.get("text", "")
+                    standards = sentence_data.get("standards", [])
+                    if text:
+                        context_parts.append(f"[{', '.join(map(str, standards))}] {text}")
+                        # Log each sentence being used
+                        logger.info(f"📝 SENTENCE_{i+1}: [{', '.join(map(str, standards))}] {text[:200]}{'...' if len(text) > 200 else ''}")
+                elif isinstance(sentence_data, str):
+                    context_parts.append(sentence_data)
+                    logger.info(f"📝 SENTENCE_{i+1}: {sentence_data[:200]}{'...' if len(sentence_data) > 200 else ''}")
+            
+            final_context = "\n\n".join(context_parts)
+            logger.info(f"📊 FINAL_CONTEXT_LENGTH: {len(final_context)} characters")
+            logger.info("=" * 60)
+            
+            return final_context
+            
+        except Exception as e:
+            logger.error(f"Error getting standard-specific context: {str(e)}")
+            return ""
+
     async def process_document(
         self,
         document_id: Optional[str] = None,
@@ -314,8 +488,7 @@ class AIService:
                 document_id = generate_document_id()
             self.current_document_id = document_id  # Ensure it's set at the start
             logger.info(
-                f"Starting compliance analysis for document {document_id} "
-                f"using framework={framework}, standard={standard}"
+                f"Starting compliance analysis for document {document_id} using framework={framework}, standard={standard}"
             )
             checklist = load_checklist(framework, standard)
             if not checklist or not isinstance(checklist, dict):
@@ -326,8 +499,7 @@ class AIService:
                     "Invalid checklist format: 'sections' key must be a list"
                 )
             logger.info(
-                f"Loaded checklist with {len(sections)} sections "
-                f"for {framework}/{standard}"
+                f"Loaded checklist with {len(sections)} sections for {framework}/{standard}"
             )
             results = {
                 "document_id": document_id,
@@ -343,8 +515,7 @@ class AIService:
                 )
                 if not model_section:
                     logger.info(
-                        f"No model choice section found in {framework}/{standard} "
-                        f"checklist, processing all sections"
+                        f"No model choice section found in {framework}/{standard} checklist, processing all sections"
                     )
                     model_used = "unknown"
                 else:
@@ -389,8 +560,7 @@ class AIService:
                         logger.info(f"Processing section {section_name}")
                     else:
                         logger.info(
-                            f"Skipping section {section_name} based on "
-                            f"model {model_used}"
+                            f"Skipping section {section_name} based on model {model_used}"
                         )
                 processed_sections = await asyncio.gather(
                     *section_tasks, return_exceptions=True
@@ -406,8 +576,7 @@ class AIService:
                 results["status"] = "completed"
                 results["completed_at"] = datetime.now().isoformat()
                 logger.info(
-                    f"Successfully processed document {document_id} using "
-                    f"{framework}/{standard}"
+                    f"Successfully processed document {document_id} using {framework}/{standard}"
                 )
                 return results
             except Exception as e:
@@ -449,10 +618,7 @@ class AIService:
             return True
 
     def _determine_model_from_results(self, results: List[Dict[str, Any]]) -> str:
-        """
-        Determine which model is used based on the results of model choice
-        questions.
-        """
+        """Determine which model is used based on the results of model choice questions."""
         for result in results:
             if result["status"] != "N/A":
                 # Safely handle evidence that could be string or list
@@ -468,71 +634,16 @@ class AIService:
                     return "cost"
 
         logger.warning(
-            "Could not determine which model is used - defaulting to 'unknown' "
-            "and processing ALL sections"
+            "Could not determine which model is used - defaulting to 'unknown' and processing ALL sections"
         )
         return "unknown"
 
-    # Removed duplicate analyze_contextual_batch method - using the one at line ~527
-    
-    def analyze_contextual_batch(
-        self, 
-        questions: List[Dict[str, Any]], 
-        company_metadata: Dict[str, Any],
-        financial_statements: Dict[str, Any],
-        relevant_content: Dict[str, str],
-        standard_id: Optional[str] = None
-    ) -> List[dict]:
-        """
-        Analyze a batch of questions with full contextual information:
-        1. Company metadata for context
-        2. Financial statements overview  
-        3. Relevant content chunks by accounting standard
-        4. Section and page number information
-        
-        Processes 10 questions per batch for optimal token usage and context preservation.
-        """
-        try:
-            if not self.current_document_id:
-                logger.error("analyze_contextual_batch called with no current_document_id set")
-                return [{"status": "Error", "confidence": 0.0, "explanation": "No document ID provided"} for _ in questions]
-            
-            # Build comprehensive context prompt
-            context_prompt = self._build_contextual_prompt(
-                company_metadata, financial_statements, relevant_content, standard_id
-            )
-            
-            # Build questions section
-            questions_prompt = self._build_questions_prompt(questions)
-            
-            # Combine for final prompt
-            full_prompt = f"{context_prompt}\n\n{questions_prompt}"
-            
-            # Log token estimate
-            estimated_tokens = len(full_prompt) // 4
-            logger.info(f"🔢 Processing batch of {len(questions)} questions - Est. tokens: {estimated_tokens:,}")
-            
-            if estimated_tokens > 25000:  # Conservative limit
-                logger.warning(f"⚠️ Large prompt: {estimated_tokens:,} tokens - may hit limits")
-            
-            # Process through AI
-            response = self._process_contextual_batch(full_prompt)
-            
-            # Parse and return results
-            return self._parse_batch_response(response, questions)
-            
-        except Exception as e:
-            logger.error(f"Error in analyze_contextual_batch: {str(e)}")
-            return [{"status": "Error", "confidence": 0.0, "explanation": str(e)} for _ in questions]
-    
     def analyze_chunk(
         self, chunk: str, question: str, standard_id: Optional[str] = None
     ) -> dict:
         """
-        Analyze a chunk of annual report content against a compliance
-        checklist question.
-        Enhanced with intelligent document analysis, rate limiting, and
-        duplicate prevention.
+        Analyze a chunk of annual report content against a compliance checklist question.
+        Enhanced with intelligent document analysis, rate limiting, and duplicate prevention.
         Returns a JSON response with:
           - status: "YES", "NO", or "N/A"
           - confidence: float between 0 and 1
@@ -541,33 +652,28 @@ class AIService:
           - suggestion: str containing suggestion when status is "NO"
         """
         try:
-            # Ensure document_id is set - should be set by the calling route
+            # Ensure document_id is set
             if not self.current_document_id:
                 logger.error(
-                    "analyze_chunk called with no current_document_id set. This should be set by the calling route."
+                    "analyze_chunk called with no current_document_id set. Cannot perform vector search."
                 )
                 return {
                     "status": "Error",
                     "confidence": 0.0,
-                    "explanation": "No document ID provided - ensure document is uploaded and processed first.",
+                    "explanation": "No document ID provided for vector search.",
                     "evidence": "",
-                    "suggestion": (
-                        "Upload and process a document first to establish a live session document ID."
-                    ),
+                    "suggestion": "Check backend logic to ensure document_id is always set.",
                 }
 
             # Check for duplicate questions
             if check_duplicate_question(question, self.current_document_id):
                 logger.warning(
-                    f"Skipping duplicate question for document "
-                    f"{self.current_document_id}"
+                    f"Skipping duplicate question for document {self.current_document_id}"
                 )
                 return {
                     "status": "N/A",
                     "confidence": 0.0,
-                    "explanation": (
-                        "This question has already been processed for this document."
-                    ),
+                    "explanation": "This question has already been processed for this document.",
                     "evidence": "Duplicate question detected.",
                     "suggestion": "Question already analyzed - check previous results.",
                 }
@@ -585,15 +691,63 @@ class AIService:
                     "suggestion": "Please wait and retry the analysis later.",
                 }
 
-            # Get relevant chunks using vector search (existing method)
-            vs_svc = get_vector_store()
-            if not vs_svc:
-                raise ValueError("Vector store service not initialized")
-
-            # Search for relevant chunks using the question
-            relevant_chunks = vs_svc.search(
-                query=question, document_id=self.current_document_id, top_k=3
-            )
+            # Enhanced chunk selection for financial statement identification questions
+            relevant_chunks = []
+            context = ""
+            
+            # Check if this is a financial statement identification question OR equity/share capital question
+            fs_identification_keywords = [
+                # Financial statement identification (IAS 1.49-51)
+                "financial statements identified", "clearly identified", "distinguished from other information",
+                "unambiguous title", "statement of financial position", "statement of profit", 
+                "statement of comprehensive", "statement of changes", "statement of cash flows",
+                "present a statement", "entity present",
+                
+                # Share capital and equity disclosures (IAS 1.79)
+                "shares issued", "shares authorised", "share capital", "shares outstanding",
+                "par value per share", "shares reserved", "treasury shares", "shares held by",
+                "dividend", "cumulative preference", "nature and purpose of each reserve",
+                "rights, preferences and restrictions", "reconciliation of shares",
+                
+                # Other equity-related disclosures
+                "equity reserve", "retained earnings", "share premium", "revaluation reserve",
+                "borrowing costs", "defined benefit plan", "subsequent events", "non-adjusting events"
+            ]
+            
+            is_fs_identification = any(keyword in question.lower() for keyword in fs_identification_keywords)
+            
+            # Enhanced diagnostic logging
+            matched_keywords = [keyword for keyword in fs_identification_keywords if keyword in question.lower()]
+            logger.info(f"🔍 Question keyword analysis: {len(matched_keywords)} matches found")
+            if matched_keywords:
+                logger.info(f"📝 Matched keywords: {matched_keywords[:3]}")  # Show first 3 matches
+            
+            if is_fs_identification:
+                logger.info(f"🏦 Enhanced chunking system being rebuilt - using standard search for: {question[:50]}...")
+                # PLACEHOLDER: Enhanced chunk selector being rebuilt from scratch
+                logger.info("� REBUILDING: Enhanced chunk selector system removed, using fallback")
+                
+                # Fallback to standard vector search
+                vs_svc = get_vector_store()
+                if vs_svc:
+                    relevant_chunks = vs_svc.search(
+                        query=question, document_id=self.current_document_id, top_k=3
+                    )
+                    logger.info(f"📊 Vector search returned {len(relevant_chunks)} chunks (fallback mode)")
+                else:
+                    relevant_chunks = []
+                    logger.warning("Vector store not available")
+            else:
+                # Use standard vector search for other questions
+                logger.info(f"🔍 Using standard vector search (no keyword matches)")
+                vs_svc = get_vector_store()
+                if not vs_svc:
+                    raise ValueError("Vector store service not initialized")
+                
+                relevant_chunks = vs_svc.search(
+                    query=question, document_id=self.current_document_id, top_k=3
+                )
+                logger.info(f"📊 Vector search returned {len(relevant_chunks)} chunks")
 
             # Enhanced: Use intelligent document analyzer if we have full document
             # text and standard ID
@@ -619,13 +773,11 @@ class AIService:
                     quality_score = enhanced_analysis.get(
                         'evidence_quality_assessment', {}).get('overall_quality', 0)
                     logger.info(
-                        f"Intelligent analysis completed with quality score: "
-                        f"{quality_score}"
+                        f"Intelligent analysis completed with quality score: {quality_score}"
                     )
                 except Exception as e:
                     logger.warning(
-                        f"Intelligent document analysis failed, falling back to "
-                        f"standard method: {str(e)}"
+                        f"Intelligent document analysis failed, falling back to standard method: {str(e)}"
                     )
                     enhanced_evidence = None
 
@@ -636,20 +788,14 @@ class AIService:
                     "confidence": 0.0,
                     "explanation": "No relevant content found in the document",
                     "evidence": "",
-                    "suggestion": (
-                        "Add a clear statement in the financial statement "
-                        "disclosures addressing this requirement."
-                    ),
+                    "suggestion": "Add a clear statement in the financial statement disclosures addressing this requirement.",
                 }
 
-            # ENHANCED: Check if this is a cash flow or financial statement question
-            cash_flow_keywords = [
-                "cash flow", "statement of cash", "operating activities", "investing activities", 
-                "financing activities", "cash flows during the period", "classified by operating"
-            ]
-            is_cash_flow_question = any(keyword.lower() in question.lower() for keyword in cash_flow_keywords)
+            # 🎯 ENHANCED: Use intelligent context retrieval from StandardIdentifier results
+            logger.info(f"🔍 Attempting enhanced context retrieval for standard: {standard_id}")
+            enhanced_context = self._get_standard_specific_context(question, standard_id)
             
-            # Use enhanced evidence if available, otherwise fall back to original chunks
+            # Use enhanced evidence if available, otherwise fall back to chunk-based context
             if enhanced_evidence and enhanced_evidence.get("primary_evidence"):
                 context = enhanced_evidence["primary_evidence"]
                 evidence_quality = enhanced_evidence.get(
@@ -659,58 +805,93 @@ class AIService:
                 logger.info(
                     f"Using enhanced evidence from: {evidence_source}"
                 )
-            else:
-                # For cash flow questions, try to include detected financial statements
-                if is_cash_flow_question:
-                    try:
-                        # Get financial statement content from the document analysis
-                        results_path = os.path.join(
-                            os.path.dirname(os.path.dirname(__file__)), 
-                            "analysis_results", 
-                            f"{self.current_document_id}.json"
-                        )
-                        if os.path.exists(results_path):
-                            with open(results_path, "r", encoding="utf-8") as f:
-                                results = json.load(f)
+                
+                # 🎯 COMBINE enhanced context with evidence for better accuracy
+                if enhanced_context:
+                    context = f"=== STANDARD-SPECIFIC CONTEXT ({standard_id}) ===\n{enhanced_context}\n\n=== ENHANCED EVIDENCE ===\n{context}"
+                    logger.info(f"✅ Combined enhanced evidence with {len(enhanced_context)} chars of standard-specific context")
+                    
+            elif enhanced_context:
+                # 🎯 PRIMARY: Use standard-specific tagged sentences as main context
+                context = enhanced_context
+                logger.info(f"✅ Using standard-specific context ({len(enhanced_context)} characters) for {standard_id}")
+                
+            elif not context and relevant_chunks:
+                # Only build context from chunks if we don't already have it from enhanced selection
+                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
+                logger.info("Using standard vector search evidence")
+            elif context:
+                logger.info("Using enhanced chunk selector context")
+
+            # ENHANCED: Include detected financial statements in context for cash flow and statement-specific questions
+            financial_statement_keywords = [
+                "cash flow", "cash flows", "statement of cash", "operating activities", "investing activities", 
+                "financing activities", "balance sheet", "statement of financial position",
+                "comprehensive income", "changes in equity", "financial statements",
+                "dividends paid", "interest paid", "interest and dividends received",
+                "ias 7", "ifrs", "disclosure", "classify", "entity disclose"
+            ]
+            
+            needs_financial_statements = any(keyword.lower() in question.lower() for keyword in financial_statement_keywords)
+            
+            if needs_financial_statements and self.current_document_id:
+                try:
+                    # Access financial statements directly from analysis results JSON
+                    from pathlib import Path
+                    
+                    results_path = Path("analysis_results") / self.current_document_id / "analysis_results.json"
+                    if results_path.exists():
+                        with open(results_path, "r", encoding="utf-8") as f:
+                            results = json.load(f)
+                        
+                        # Extract financial statements from parallel processing context
+                        parallel_context = results.get("parallel_processing_context", {})
+                        financial_statements = parallel_context.get("financial_statements", {})
+                        
+                        if financial_statements.get("financial_statements"):
+                            # Build consolidated financial statement content
+                            financial_content = ""
+                            for statement in financial_statements["financial_statements"]:
+                                statement_type = statement.get("statement_type", "Financial Statement")
+                                content = statement.get("content", "")
+                                if content.strip():
+                                    financial_content += f"\n=== {statement_type.upper()} ===\n{content}\n"
                             
-                            # Check for detected financial statements
-                            parallel_context = results.get("parallel_processing_context", {})
-                            financial_statements = parallel_context.get("financial_statements")
-                            
-                            if financial_statements and financial_statements.get("financial_statements"):
-                                # Look for cash flow statement content
-                                cash_flow_content = ""
-                                for statement in financial_statements["financial_statements"]:
-                                    if "cash" in statement.get("statement_type", "").lower():
-                                        cash_flow_content += f"\n=== {statement.get('statement_type', 'Cash Flow Statement').upper()} ===\n"
-                                        cash_flow_content += statement.get("content", "")[:2000]  # Limit size
-                                        break
-                                
-                                if cash_flow_content:
-                                    # Combine cash flow content with vector search results
-                                    vector_context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                                    context = cash_flow_content + "\n\n=== ADDITIONAL CONTEXT ===\n" + vector_context
-                                    logger.info(f"✅ Enhanced cash flow question with detected cash flow statement content")
-                                else:
-                                    context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                                    logger.warning(f"⚠️ No cash flow statement content found for cash flow question")
+                            if financial_content.strip():
+                                # Prepend financial statement content to existing context
+                                context = f"=== FINANCIAL STATEMENTS ===\n{financial_content}\n\n=== ADDITIONAL CONTEXT ===\n{context}" if context else financial_content
+                                logger.info(f"🎯 Added {len(financial_content)} characters of financial statement content for: {question[:50]}...")
                             else:
-                                context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                                logger.warning(f"⚠️ No financial statements available for cash flow question: {question[:50]}...")
+                                logger.warning(f"⚠️ No financial statement content found for: {question[:50]}...")
                         else:
-                            context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                            logger.warning(f"⚠️ No analysis results available for enhanced cash flow context")
-                    except Exception as e:
-                        context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                        logger.error(f"❌ Error enhancing cash flow context: {str(e)}")
-                else:
-                    context = "\n\n".join([chunk_data["text"] for chunk_data in relevant_chunks])
-                    logger.info("Using standard vector search evidence")
+                            logger.warning(f"⚠️ No financial statements available in analysis results for: {question[:50]}...")
+                    else:
+                        logger.warning(f"⚠️ No analysis results found for document {self.current_document_id}")
+                except Exception as e:
+                    logger.warning(f"⚠️ Failed to get financial statement content: {str(e)}")
 
             # Construct the prompt for the AI using the prompts library
             prompt = ai_prompts.get_full_compliance_analysis_prompt(
                 question=question, context=context, enhanced_evidence=enhanced_evidence
             )
+
+            # 📊 PRODUCTION LOGGING - Log the complete AI request for debugging
+            logger.info("=" * 80)
+            logger.info("🤖 AI REQUEST - PRODUCTION ANALYSIS")
+            logger.info("=" * 80)
+            logger.info(f"📄 DOCUMENT_ID: {self.current_document_id}")
+            logger.info(f"📋 QUESTION: {question}")
+            logger.info(f"🎯 STANDARD_ID: {standard_id}")
+            logger.info(f"📝 CONTEXT_LENGTH: {len(context) if context else 0} characters")
+            logger.info(f"🔧 ENHANCED_EVIDENCE: {'Available' if enhanced_evidence else 'None'}")
+            logger.info(f"🧠 MODEL: {self.deployment_name}")
+            
+            # Log context excerpt for debugging
+            if context:
+                context_excerpt = context[:500] + "..." if len(context) > 500 else context
+                logger.info(f"📖 CONTEXT_EXCERPT: {context_excerpt}")
+            else:
+                logger.warning("⚠️  NO CONTEXT AVAILABLE - This may result in poor analysis!")
 
             # Enhanced rate limiting with retries and circuit breaker
             max_api_retries = 3
@@ -725,9 +906,7 @@ class AIService:
                         messages=[
                             {
                                 "role": "system",
-                                "content": (
-                                    ai_prompts.get_compliance_analysis_system_prompt()
-                                ),
+                                "content": ai_prompts.get_compliance_analysis_system_prompt(),
                             },
                             {"role": "user", "content": prompt},
                         ],
@@ -736,6 +915,13 @@ class AIService:
                     # If we get here, the API call was successful
                     reset_circuit_breaker()  # Reset circuit breaker on success
                     content = response.choices[0].message.content
+                    
+                    # 📊 PRODUCTION LOGGING - Log the AI response
+                    logger.info(f"✅ AI_RESPONSE_RECEIVED: {len(content) if content else 0} characters")
+                    if content:
+                        content_excerpt = content[:300] + "..." if len(content) > 300 else content
+                        logger.info(f"💬 RESPONSE_EXCERPT: {content_excerpt}")
+                    logger.info("=" * 80)
                     break
 
                 except Exception as api_error:
@@ -746,8 +932,7 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE ** (api_retry + 1)
                             logger.warning(
-                                f"Rate limit hit, retrying in {backoff_time} seconds "
-                                f"(attempt {api_retry + 1}/{max_api_retries})"
+                                f"Rate limit hit, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -758,15 +943,9 @@ class AIService:
                             return {
                                 "status": "N/A",
                                 "confidence": 0.0,
-                                "explanation": (
-                                    "Analysis could not be completed due to "
-                                    "persistent API rate limits."
-                                ),
+                                "explanation": "Analysis could not be completed due to persistent API rate limits.",
                                 "evidence": "Multiple rate limit errors occurred.",
-                                "suggestion": (
-                                    "Please retry the analysis later when API rate "
-                                    "limits reset."
-                                ),
+                                "suggestion": "Please retry the analysis later when API rate limits reset.",
                             }
 
                     elif "timeout" in error_message or "connection" in error_message:
@@ -774,8 +953,7 @@ class AIService:
                         if api_retry < max_api_retries - 1:
                             backoff_time = EXPONENTIAL_BACKOFF_BASE**api_retry
                             logger.warning(
-                                f"Connection error, retrying in {backoff_time} seconds "
-                                f"(attempt {api_retry + 1}/{max_api_retries})"
+                                f"Connection error, retrying in {backoff_time} seconds (attempt {api_retry + 1}/{max_api_retries})"
                             )
                             time.sleep(backoff_time)
                             continue
@@ -786,15 +964,9 @@ class AIService:
                             return {
                                 "status": "N/A",
                                 "confidence": 0.0,
-                                "explanation": (
-                                    f"Analysis failed due to connection issues: "
-                                    f"{str(api_error)}"
-                                ),
+                                "explanation": f"Analysis failed due to connection issues: {str(api_error)}",
                                 "evidence": "Connection error occurred.",
-                                "suggestion": (
-                                    "Please check network connectivity and retry the "
-                                    "analysis."
-                                ),
+                                "suggestion": "Please check network connectivity and retry the analysis.",
                             }
 
                     else:
@@ -804,14 +976,9 @@ class AIService:
                         return {
                             "status": "N/A",
                             "confidence": 0.0,
-                            "explanation": (
-                                f"Analysis failed due to API error: {str(api_error)}"
-                            ),
+                            "explanation": f"Analysis failed due to API error: {str(api_error)}",
                             "evidence": "API error occurred.",
-                            "suggestion": (
-                                "Please retry the analysis or check system logs for "
-                                "details."
-                            ),
+                            "suggestion": "Please retry the analysis or check system logs for details.",
                         }
             else:
                 # This should not happen due to the break statement, but just in case
@@ -859,8 +1026,7 @@ class AIService:
             except json.JSONDecodeError:
                 # If that fails, try to extract JSON from the text
                 logger.warning(
-                    f"Response is not valid JSON, attempting to extract "
-                    f"structured data: {content[:100]}..."
+                    f"Response is not valid JSON, attempting to extract structured data: {content[:100]}..."
                 )
 
                 # Extract using regex-like approach for key fields
@@ -915,10 +1081,7 @@ class AIService:
                         result["suggestion"] = suggestion_match.group(1).strip()
                     else:
                         result["suggestion"] = (
-                            "Provide a concrete, practical sample disclosure that "
-                            "would satisfy this IAS 40 requirement. For example: "
-                            "'The entity should disclose [required information] in "
-                            "accordance with IAS 40.[paragraph]'."
+                            "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
                         )
 
                 # Extract content_analysis
@@ -930,9 +1093,7 @@ class AIService:
                 if content_analysis_match:
                     result["content_analysis"] = content_analysis_match.group(1).strip()
                 else:
-                    result["content_analysis"] = (
-                        "No detailed content analysis provided."
-                    )
+                    result["content_analysis"] = "No detailed content analysis provided."
 
                 # Extract disclosure_recommendations
                 disclosure_recommendations = []
@@ -956,18 +1117,11 @@ class AIService:
                         re.DOTALL,
                     )
                     if single_disclosure_match:
-                        disclosure_recommendations.append(
-                            single_disclosure_match.group(1).strip()
-                        )
+                        disclosure_recommendations.append(single_disclosure_match.group(1).strip())
                 
-                default_rec = (
-                    "Consider enhancing the disclosure to provide more "
-                    "comprehensive information addressing this requirement."
-                )
-                result["disclosure_recommendations"] = (
-                    disclosure_recommendations if disclosure_recommendations 
-                    else [default_rec]
-                )
+                result["disclosure_recommendations"] = disclosure_recommendations if disclosure_recommendations else [
+                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
+                ]
 
             # Validate and clean the response
             if "status" not in result or result["status"] not in ["YES", "NO", "N/A"]:
@@ -984,14 +1138,11 @@ class AIService:
                 result["content_analysis"] = "No detailed content analysis provided."
             if "disclosure_recommendations" not in result:
                 result["disclosure_recommendations"] = [
-                    "Consider enhancing the disclosure to provide more "
-                    "comprehensive information addressing this requirement."
+                    "Consider enhancing the disclosure to provide more comprehensive information addressing this requirement."
                 ]
             elif not isinstance(result["disclosure_recommendations"], list):
                 # Convert single string to list if needed
-                result["disclosure_recommendations"] = [
-                    str(result["disclosure_recommendations"])
-                ]
+                result["disclosure_recommendations"] = [str(result["disclosure_recommendations"])]
 
             # Ensure evidence is structured and meaningful
             if result["evidence"] == "" or all(
@@ -1002,10 +1153,7 @@ class AIService:
             # Add a suggestion when status is "NO" and no suggestion provided
             if result["status"] == "NO" and "suggestion" not in result:
                 result["suggestion"] = (
-                    "Provide a concrete, practical sample disclosure that would "
-                    "satisfy this IAS 40 requirement. For example: 'The entity "
-                    "should disclose [required information] in accordance with "
-                    "IAS 40.[paragraph]'."
+                    "Provide a concrete, practical sample disclosure that would satisfy this IAS 40 requirement. For example: 'The entity should disclose [required information] in accordance with IAS 40.[paragraph]'."
                 )
 
             # Add enhanced evidence metadata if available
@@ -1031,28 +1179,34 @@ class AIService:
                     ),
                 }
 
-            # Add document segment information from vector search results (no page numbers since we're not chunking)
+            # Add page number information from vector search results
             if relevant_chunks:
+                page_numbers = []
+                document_sources = []
                 document_extracts = []
-                
-                for segment_item in relevant_chunks:
-                    # Extract segment attributes
-                    segment_text = segment_item.get("text")
-                    segment_index = segment_item.get("segment_index", 0)
-                    relevance_score = segment_item.get("score", 0.0)
-                    
-                    # Include document extracts without page references
-                    if segment_text:
-                        extract_text = (
-                            segment_text[:500] + "..." if len(segment_text) > 500 
-                            else segment_text
-                        )
+                for chunk_data in relevant_chunks:
+                    if chunk_data.get("page_number") and chunk_data["page_number"] > 0:
+                        page_numbers.append(chunk_data["page_number"])
+                    if chunk_data.get("chunk_index") is not None:
+                        document_sources.append({
+                            "page": chunk_data.get("page_number", 0),
+                            "chunk_index": chunk_data.get("chunk_index", 0),
+                            "chunk_type": chunk_data.get("chunk_type", "text")
+                        })
+                    # Include document extracts with page references
+                    if chunk_data.get("text"):
+                        extract_text = chunk_data["text"][:500] + "..." if len(chunk_data["text"]) > 500 else chunk_data["text"]
                         document_extracts.append({
                             "text": extract_text,
-                            "segment_index": segment_index,
-                            "relevance_score": relevance_score
+                            "page": chunk_data.get("page_number", 0),
+                            "chunk_index": chunk_data.get("chunk_index", 0),
+                            "relevance_score": chunk_data.get("score", 0.0)
                         })
                 
+                if page_numbers:
+                    result["source_pages"] = sorted(list(set(page_numbers)))
+                if document_sources:
+                    result["document_sources"] = document_sources
                 if document_extracts:
                     result["document_extracts"] = document_extracts
 
@@ -1060,43 +1214,37 @@ class AIService:
             logger.info("✅ PROCESSED RESULT:")
             logger.info(f"   Status: {result.get('status', 'N/A')}")
             logger.info(f"   Confidence: {result.get('confidence', 0.0):.2f}")
-            explanation = result.get('explanation', 'N/A')
-            truncated_explanation = (
-                explanation[:150] + ('...' if len(str(explanation)) > 150 else '')
+            logger.info(
+                f"   Explanation: {result.get('explanation', 'N/A')[:150]}{'...' if len(str(result.get('explanation', ''))) > 150 else ''}"
             )
-            logger.info(f"   Explanation: {truncated_explanation}")
             evidence = result.get('evidence', [])
             evidence_count = len(evidence) if isinstance(evidence, list) else 1
             logger.info(
                 f"   Evidence Count: {evidence_count}"
             )
             if result.get("content_analysis"):
-                content_analysis = result.get('content_analysis', 'N/A')[:100]
-                content_len = len(str(result.get('content_analysis', '')))
-                content_suffix = '...' if content_len > 100 else ''
-                logger.info(f"   Content Analysis: {content_analysis}{content_suffix}")
+                logger.info(
+                    f"   Content Analysis: {result.get('content_analysis', 'N/A')[:100]}{'...' if len(str(result.get('content_analysis', ''))) > 100 else ''}"
+                )
             if result.get("disclosure_recommendations"):
-                rec_count = len(result.get('disclosure_recommendations', []))
-                logger.info(f"   Disclosure Recommendations: {rec_count} suggestions")
+                logger.info(
+                    f"   Disclosure Recommendations: {len(result.get('disclosure_recommendations', []))} suggestions"
+                )
+            if result.get("source_pages"):
+                logger.info(f"   Source Pages: {result.get('source_pages')}")
+            if result.get("document_sources"):
+                source_info = [f"p{s['page']}" for s in result.get('document_sources', [])]
+                logger.info(f"   Document Sources: {', '.join(source_info)}")
             if result.get("document_extracts"):
                 extract_count = len(result.get('document_extracts', []))
-                extracts = result.get('document_extracts', [])
-                total_score = sum(e.get('relevance_score', 0) for e in extracts)
-                avg_score = total_score / extract_count if extract_count > 0 else 0
-                segments_info = [f"seg{e.get('segment_index', 0)}" for e in extracts]
-                logger.info(
-                    f"   Document Extracts: {extract_count} segments ({', '.join(segments_info)}), "
-                    f"avg relevance: {avg_score:.3f}"
-                )
+                avg_score = sum(e.get('relevance_score', 0) for e in result.get('document_extracts', [])) / extract_count if extract_count > 0 else 0
+                logger.info(f"   Document Extracts: {extract_count} chunks, avg relevance: {avg_score:.3f}")
             if result.get("status") == "NO" and result.get("suggestion"):
-                suggestion = result.get('suggestion', 'N/A')
-                truncated_suggestion = (
-                    suggestion[:100] + ('...' if len(str(suggestion)) > 100 else '')
+                logger.info(
+                    f"   Suggestion: {result.get('suggestion', 'N/A')[:100]}{'...' if len(str(result.get('suggestion', ''))) > 100 else ''}"
                 )
-                logger.info(f"   Suggestion: {truncated_suggestion}")
             if enhanced_evidence:
-                enhanced = result.get('enhanced_analysis', {})
-                quality_score = enhanced.get('evidence_quality_score', 0)
+                quality_score = result.get('enhanced_analysis', {}).get('evidence_quality_score', 0)
                 logger.info(
                     f"   Enhanced Analysis: Quality Score {quality_score}/100"
                 )
@@ -1111,380 +1259,20 @@ class AIService:
                 "confidence": 0.0,
                 "explanation": f"Error during analysis: {str(e)}",
                 "evidence": "",
-                "suggestion": (
-                    "Consider adding explicit disclosure addressing this "
-                    "requirement."
-                ),
+                "suggestion": "Consider adding explicit disclosure addressing this requirement.",
             }
-
-    def _build_contextual_prompt(
-        self, 
-        company_metadata: Dict[str, Any],
-        financial_statements: Dict[str, Any], 
-        relevant_content: Dict[str, str],
-        standard_id: Optional[str] = None
-    ) -> str:
-        """Build comprehensive contextual prompt with company metadata and financial statements"""
-        
-        prompt_parts = [
-            "=== DOCUMENT ANALYSIS CONTEXT ===",
-            "",
-            "📋 COMPANY INFORMATION:"
-        ]
-        
-        # Add company metadata
-        if company_metadata:
-            for key, value in company_metadata.items():
-                if value and str(value).strip():
-                    prompt_parts.append(f"• {key.replace('_', ' ').title()}: {value}")
-        
-        prompt_parts.extend([
-            "",
-            "📊 FINANCIAL STATEMENTS OVERVIEW:"
-        ])
-        
-        # Add financial statements ACTUAL CONTENT - not just metadata
-        if financial_statements and hasattr(financial_statements, 'statements'):
-            # financial_statements is a FinancialContent object with .statements list
-            statements_list = getattr(financial_statements, 'statements', [])
-            prompt_parts.append(f"Found {len(statements_list)} financial statements:")
-            
-            for statement in statements_list:
-                prompt_parts.extend([
-                    "",
-                    f"=== {statement.statement_type.upper()} ===",
-                    f"Confidence: {statement.confidence_score:.1f}",
-                    f"Pages: {', '.join(map(str, statement.page_numbers))}",
-                    "",
-                    # Include the ACTUAL CONTENT of the financial statement
-                    statement.content[:8000] + ("..." if len(statement.content) > 8000 else ""),
-                    ""
-                ])
-        elif financial_statements:
-            # Fallback for old format
-            for statement_type, details in financial_statements.items():
-                if isinstance(details, dict) and details.get('present', False):
-                    prompt_parts.append(f"• {statement_type}: Present ({details.get('confidence', 'N/A')} confidence)")
-                elif isinstance(details, str):
-                    prompt_parts.append(f"• {statement_type}: {details}")
-        
-        # Add relevant content by standard
-        if standard_id:
-            prompt_parts.extend([
-                "",
-                f"🎯 FOCUSED CONTENT - {standard_id}:"
-            ])
-            
-            standard_content = relevant_content.get(standard_id, "")
-            if standard_content:
-                # Truncate if too long but preserve structure
-                if len(standard_content) > 8000:
-                    standard_content = standard_content[:8000] + "... [content truncated]"
-                prompt_parts.append(standard_content)
-            else:
-                prompt_parts.append(f"No specific content found for {standard_id}")
-        else:
-            prompt_parts.extend([
-                "",
-                "📄 RELEVANT CONTENT SECTIONS:"
-            ])
-            
-            # Add top 3 most relevant standards
-            sorted_content = sorted(relevant_content.items(), key=lambda x: len(x[1]), reverse=True)
-            for i, (std, content) in enumerate(sorted_content[:3]):
-                if content:
-                    preview = content[:1000] + "..." if len(content) > 1000 else content
-                    prompt_parts.extend([
-                        "",
-                        f"--- {std} ---",
-                        preview
-                    ])
-        
-        return "\n".join(prompt_parts)
-    
-    def _build_questions_prompt(self, questions: List[Dict[str, Any]]) -> str:
-        """Build questions section of the prompt"""
-        
-        prompt_parts = [
-            "=== COMPLIANCE QUESTIONS ===",
-            "",
-            "Please analyze the following questions against the provided context.",
-            "IMPORTANT: Adequacy is subjective - even partial disclosure should often be considered adequate if it provides meaningful information.",
-            "Be lenient with YES responses - if there is some relevant disclosure, consider it compliant rather than demanding perfect completeness.",
-            "For each question, provide:",
-            "- status: YES/NO/N/A", 
-            "- confidence: 0.0-1.0",
-            "- explanation: Clear reasoning (favor YES for partial but meaningful disclosures)",
-            "- evidence: Specific text from the document",
-            "- suggestion: Improvement advice if status is NO",
-            ""
-        ]
-        
-        for i, question in enumerate(questions, 1):
-            question_text = question.get('question', 'Unknown question')
-            question_id = question.get('id', f'Q{i}')
-            
-            prompt_parts.extend([
-                f"QUESTION {i} (ID: {question_id}):",
-                question_text,
-                ""
-            ])
-        
-        prompt_parts.append("Please respond with a JSON array containing analysis for all questions.")
-        return "\n".join(prompt_parts)
-    
-    def _process_contextual_batch(self, prompt: str) -> str:
-        """Process the contextual batch through AI service"""
-        try:
-            if not AZURE_OPENAI_ENDPOINT:
-                raise ValueError("AZURE_OPENAI_ENDPOINT is not configured")
-            
-            client = AzureOpenAI(
-                api_key=AZURE_OPENAI_API_KEY,
-                api_version=AZURE_OPENAI_API_VERSION,
-                azure_endpoint=AZURE_OPENAI_ENDPOINT,
-            )
-            
-            response = client.chat.completions.create(
-                model=AZURE_OPENAI_DEPLOYMENT_NAME,
-                messages=[
-                    {"role": "system", "content": "You are an expert financial analyst specializing in IFRS/IAS compliance."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.1,
-                max_tokens=4000
-            )
-            
-            content = response.choices[0].message.content
-            if content is None:
-                raise ValueError("AI response content is None")
-            return content
-            
-        except Exception as e:
-            logger.error(f"Error processing contextual batch: {str(e)}")
-            raise e
-    
-    def _parse_batch_response(self, response: str, questions: List[Dict[str, Any]]) -> List[dict]:
-        """Parse AI response into structured results"""
-        try:
-            # Try to parse as JSON
-            if response.strip().startswith('['):
-                return json.loads(response)
-            
-            # Fallback: create basic responses
-            results = []
-            for question in questions:
-                results.append({
-                    "status": "N/A",
-                    "confidence": 0.5,
-                    "explanation": "Response parsing failed - using fallback",
-                    "evidence": response[:200] + "..." if len(response) > 200 else response,
-                    "suggestion": "Manual review recommended"
-                })
-            
-            return results
-            
-        except Exception as e:
-            logger.error(f"Error parsing batch response: {str(e)}")
-            # Return error responses
-            return [{
-                "status": "Error",
-                "confidence": 0.0,
-                "explanation": f"Failed to parse response: {str(e)}",
-                "evidence": "",
-                "suggestion": "Please try again"
-            } for _ in questions]
-
-    async def process_document_with_enhanced_identification(
-        self,
-        document_id: Optional[str] = None,
-        text: Optional[str] = None,
-        framework: Optional[str] = None,
-        standard: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """
-        Enhanced document processing that integrates with the StandardIdentifier system
-        to provide company metadata, financial statements overview, and contextual content
-        organized by accounting standards.
-        
-        Processes questions in optimized 10-question batches with full context.
-        """
-        try:
-            # Initialize
-            if document_id is None:
-                document_id = generate_document_id()
-            self.current_document_id = document_id
-            
-            logger.info(f"🚀 Starting enhanced analysis for document {document_id}")
-            logger.info(f"   Framework: {framework}, Standard: {standard}")
-            
-            # Step 1: Run enhanced standard identification
-            logger.info("📊 Running enhanced standard identification...")
-            identifier = StandardIdentifier()
-            accumulator = IntelligentNotesAccumulator()
-            
-            # Process document through standard identification
-            identification_results = identifier.identify_standards_in_notes(text or "", document_id)
-            
-            if not identification_results or 'identified_standards' not in identification_results:
-                logger.warning("⚠️ Standard identification failed - proceeding with basic analysis")
-                fallback_text = (text or "")[:10000] if text else ""
-                identification_results = {
-                    'identified_standards': {'General': fallback_text},  # Fallback
-                    'company_metadata': {},
-                    'financial_statements': {}
-                }
-            
-            # Extract components
-            identified_standards = identification_results['identified_standards']
-            company_metadata = identification_results.get('company_metadata', {})
-            financial_statements = identification_results.get('financial_statements', {})
-            
-            logger.info(f"✅ Identified {len(identified_standards)} accounting standards")
-            logger.info(f"   Standards: {list(identified_standards.keys())}")
-            
-            # Step 2: Load compliance checklist
-            checklist = load_checklist(framework, standard)
-            if not checklist:
-                raise ValueError(f"Failed to load checklist for {framework}/{standard}")
-            
-            all_questions = []
-            for section in checklist:
-                for item in section.get("items", []):
-                    all_questions.append({
-                        'id': item.get('id', 'unknown'),
-                        'question': item.get('question', ''),
-                        'section': section.get('section', 'unknown'),
-                        'standard_id': item.get('standard_id', standard)
-                    })
-            
-            logger.info(f"📋 Loaded {len(all_questions)} compliance questions")
-            
-            # Step 3: Process questions in 10-question batches with contextual data
-            logger.info("🔄 Processing questions in optimized 10-question batches...")
-            
-            all_results = []
-            total_batches = (len(all_questions) + QUESTION_BATCH_SIZE - 1) // QUESTION_BATCH_SIZE
-            
-            for batch_idx in range(0, len(all_questions), QUESTION_BATCH_SIZE):
-                batch_num = (batch_idx // QUESTION_BATCH_SIZE) + 1
-                batch_questions = all_questions[batch_idx:batch_idx + QUESTION_BATCH_SIZE]
-                
-                logger.info(f"📦 Processing batch {batch_num}/{total_batches} ({len(batch_questions)} questions)")
-                
-                # Determine most relevant standard for this batch
-                batch_standards = set(q.get('standard_id', standard) for q in batch_questions)
-                primary_standard = max(batch_standards, key=lambda s: sum(1 for q in batch_questions if q.get('standard_id') == s))
-                
-                # Process batch with full context
-                try:
-                    batch_results = self.analyze_contextual_batch(
-                        questions=batch_questions,
-                        company_metadata=company_metadata,
-                        financial_statements=financial_statements,
-                        relevant_content=identified_standards,
-                        standard_id=primary_standard
-                    )
-                    
-                    # Add batch metadata to each result
-                    for i, result in enumerate(batch_results):
-                        if isinstance(result, dict):
-                            result['question_id'] = batch_questions[i].get('id', f'Q{batch_idx + i + 1}')
-                            result['section'] = batch_questions[i].get('section', 'unknown')
-                            result['batch_number'] = batch_num
-                            result['standard_id'] = batch_questions[i].get('standard_id', standard)
-                    
-                    all_results.extend(batch_results)
-                    logger.info(f"✅ Batch {batch_num} completed successfully")
-                    
-                except Exception as e:
-                    logger.error(f"❌ Error processing batch {batch_num}: {str(e)}")
-                    # Add error results for this batch
-                    error_results = [{
-                        "status": "Error",
-                        "confidence": 0.0,
-                        "explanation": f"Batch processing error: {str(e)}",
-                        "evidence": "",
-                        "suggestion": "Manual review required",
-                        "question_id": q.get('id', f'Q{batch_idx + i + 1}'),
-                        "section": q.get('section', 'unknown'),
-                        "batch_number": batch_num,
-                        "standard_id": q.get('standard_id', standard)
-                    } for i, q in enumerate(batch_questions)]
-                    all_results.extend(error_results)
-            
-            # Step 4: Organize results by section
-            logger.info("📊 Organizing results by section...")
-            
-            results_by_section = {}
-            for result in all_results:
-                section_name = result.get('section', 'unknown')
-                if section_name not in results_by_section:
-                    results_by_section[section_name] = []
-                results_by_section[section_name].append(result)
-            
-            # Step 5: Calculate summary statistics
-            total_questions = len(all_results)
-            yes_count = sum(1 for r in all_results if r.get('status') == 'YES')
-            no_count = sum(1 for r in all_results if r.get('status') == 'NO')
-            na_count = sum(1 for r in all_results if r.get('status') == 'N/A')
-            error_count = sum(1 for r in all_results if r.get('status') == 'Error')
-            
-            avg_confidence = sum(r.get('confidence', 0) for r in all_results) / total_questions if total_questions > 0 else 0
-            
-            logger.info("📈 Analysis Summary:")
-            logger.info(f"   Total Questions: {total_questions}")
-            logger.info(f"   YES: {yes_count} ({yes_count/total_questions*100:.1f}%)")
-            logger.info(f"   NO: {no_count} ({no_count/total_questions*100:.1f}%)")
-            logger.info(f"   N/A: {na_count} ({na_count/total_questions*100:.1f}%)")
-            logger.info(f"   Errors: {error_count} ({error_count/total_questions*100:.1f}%)")
-            logger.info(f"   Average Confidence: {avg_confidence:.3f}")
-            logger.info(f"   Identified Standards: {len(identified_standards)}")
-            
-            return {
-                "document_id": document_id,
-                "framework": framework,
-                "standard": standard,
-                "results_by_section": results_by_section,
-                "all_results": all_results,
-                "summary": {
-                    "total_questions": total_questions,
-                    "yes_count": yes_count,
-                    "no_count": no_count,
-                    "na_count": na_count,
-                    "error_count": error_count,
-                    "average_confidence": avg_confidence,
-                    "completion_rate": (total_questions - error_count) / total_questions if total_questions > 0 else 0
-                },
-                "enhanced_context": {
-                    "company_metadata": company_metadata,
-                    "financial_statements": financial_statements,
-                    "identified_standards": list(identified_standards.keys()),
-                    "total_content_tokens": sum(len(content) // 4 for content in identified_standards.values())
-                }
-            }
-            
-        except Exception as e:
-            logger.error(f"❌ Error in enhanced document processing: {str(e)}")
-            raise e
 
     def _calculate_adequacy(
         self, confidence: float, has_evidence: bool, status: str
     ) -> str:
-        """Calculate adequacy - be lenient with partial disclosures since adequacy is subjective"""
         if status == "N/A":
             return "low"
-        elif status == "YES":
-            # If it's YES, even partial disclosure is adequate since adequacy is subjective
-            if confidence >= 0.5 or has_evidence:
-                return "high" 
-            else:
-                return "medium"
-        elif status == "NO":
-            return "low"
+        if confidence >= 0.8 and has_evidence:
+            return "high"
+        elif confidence >= 0.6 or has_evidence:
+            return "medium"
         else:
-            # Default case - be more lenient
-            return "medium" if has_evidence else "low"
+            return "low"
 
     def query_ai_with_vector_context(
         self, document_id: Optional[str] = None, question: Optional[dict] = None
@@ -1523,12 +1311,24 @@ class AIService:
 
             # For metadata fields, use direct AI analysis without vector search
             if field_type == "metadata_field":
+                
+                # 📊 METADATA EXTRACTION LOGGING
+                logger.info("=" * 60)
+                logger.info("📋 METADATA EXTRACTION - PRODUCTION REQUEST")
+                logger.info("=" * 60)
+                logger.info(f"📄 DOCUMENT_ID: {document_id}")
+                logger.info(f"📝 QUESTION: {question_text}")
+                logger.info(f"📖 REFERENCE: {reference}")
+                logger.info(f"🏷️  FIELD_TYPE: {field_type}")
+                
                 system_prompt = ai_prompts.get_metadata_extraction_system_prompt()
 
                 # Metadata-specific prompt
                 user_prompt = ai_prompts.get_metadata_extraction_user_prompt(
                     reference, question_text
                 )
+                
+                logger.info(f"📤 PROMPT_LENGTH: {len(user_prompt)} characters")
 
                 response = self.openai_client.chat.completions.create(
                     model=self.deployment_name,
@@ -1540,6 +1340,10 @@ class AIService:
                 )
 
                 content = response.choices[0].message.content
+                
+                # 📊 LOG METADATA RESPONSE
+                logger.info(f"📥 METADATA_RESPONSE: {content if content else 'NONE'}")
+                logger.info("=" * 60)
 
                 # Handle potential None content
                 if content is None:
@@ -1613,13 +1417,11 @@ class AIService:
             vector_index_exists = vs_svc.index_exists(document_id)
             if not vector_index_exists:
                 logger.warning(
-                    f"Vector index not found for document {document_id}. "
-                    f"Using direct questioning without vector context."
+                    f"Vector index not found for document {document_id}. Using direct questioning without vector context."
                 )
 
             logger.info(
-                f"Directly querying AI about document {document_id} using "
-                f"vector store as context"
+                f"Directly querying AI about document {document_id} using vector store as context"
             )
 
             # Choose system prompt based on question type and vector index status
@@ -1777,8 +1579,8 @@ class AIService:
             items = section.get("items", [])
             logger.info(f"Processing section {section_name} with {len(items)} items")
             processed_items = []
-            for i in range(0, len(items), QUESTION_BATCH_SIZE):
-                batch = items[i : i + QUESTION_BATCH_SIZE]
+            for i in range(0, len(items), CHUNK_SIZE):
+                batch = items[i : i + CHUNK_SIZE]
 
                 # ASYNC RATE LIMITING REMOVED - Process all questions without throttling
                 # async_semaphore = get_async_rate_semaphore()
@@ -1852,8 +1654,9 @@ class AIService:
                 "items": processed_items,
             }
         except Exception as e:
-            section_name = section.get('section', 'unknown')
-            logger.error(f"Error processing section {section_name}: {str(e)}")
+            logger.error(
+                f"Error processing section {section.get('section', 'unknown')}: {str(e)}"
+            )
             return {
                 "section": section.get("section", "unknown"),
                 "title": section.get("title", ""),
@@ -1865,12 +1668,10 @@ class AIService:
         self, document_id: str, text: str, framework: str, standard: str
     ) -> Dict[str, Any]:
         """
-        Analyze a document for compliance with a specified framework and
-        standard (async).
+        Analyze a document for compliance with a specified framework and standard (async).
         """
         logger.info(
-            f"Starting compliance analysis for document {document_id} with "
-            f"framework {framework} and standard {standard}"
+            f"Starting compliance analysis for document {document_id} with framework {framework} and standard {standard}"
         )
         try:
             results = await self.process_document(
@@ -1929,8 +1730,7 @@ def get_ai_service() -> AIService:
                 or not embedding_deployment
             ):
                 raise ValueError(
-                    "Azure OpenAI configuration missing in environment "
-                    "variables (chat or embedding)"
+                    "Azure OpenAI configuration missing in environment variables (chat or embedding)"
                 )
 
             ai_service_instance = AIService(
@@ -1958,9 +1758,7 @@ try:
     embedding_api_version = AZURE_OPENAI_EMBEDDING_API_VERSION
     if not api_key or not api_base or not deployment_id or not embedding_deployment:
         raise ValueError(
-            "Azure OpenAI configuration missing in environment variables "
-            "(chat or embedding)"
-        )
+            "Azure OpenAI configuration missing in environment variables (chat or embedding)"        )
     ai_service_instance = AIService(
         api_key,
         api_base,
