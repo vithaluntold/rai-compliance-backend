@@ -817,9 +817,34 @@ class AIService:
                 logger.info(f"✅ Using standard-specific context ({len(enhanced_context)} characters) for {standard_id}")
                 
             elif not context and relevant_chunks:
-                # Only build context from chunks if we don't already have it from enhanced selection
-                context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
-                logger.info("Using standard vector search evidence")
+                # 🚫 CONTENT FILTER: Filter out audit report chunks before using as context
+                try:
+                    from services.content_filter import get_content_filter
+                    
+                    content_filter = get_content_filter()
+                    filtered_chunks = []
+                    
+                    for chunk in relevant_chunks:
+                        chunk_text = chunk.get("text", "")
+                        analysis = content_filter.analyze_content_type(chunk_text, self.current_document_id or "")
+                        
+                        if analysis["should_process"]:
+                            filtered_chunks.append(chunk)
+                            logger.info(f"✅ AI Context - Accepted chunk: {analysis['content_type']} (confidence: {analysis['confidence']:.2f})")
+                        else:
+                            logger.warning(f"❌ AI Context - Rejected chunk: {analysis['rejection_reason']} (confidence: {analysis['confidence']:.2f})")
+                    
+                    if filtered_chunks:
+                        context = "\n\n".join([chunk["text"] for chunk in filtered_chunks])
+                        logger.info(f"🔍 Using filtered vector search evidence: {len(filtered_chunks)}/{len(relevant_chunks)} chunks accepted")
+                    else:
+                        logger.error(f"❌ All vector chunks rejected as audit reports - no financial content available")
+                        context = "ERROR: Document contains only audit report content, no financial statements available for analysis."
+                        
+                except Exception as filter_error:
+                    logger.error(f"Content filter failed, using unfiltered chunks: {filter_error}")
+                    context = "\n\n".join([chunk["text"] for chunk in relevant_chunks])
+                    logger.info("Using standard vector search evidence (unfiltered - filter failed)")
             elif context:
                 logger.info("Using enhanced chunk selector context")
 

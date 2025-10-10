@@ -101,6 +101,16 @@ class PersistentStorageManager:
                 except Exception as migration_error:
                     logger.warning(f"Database migration warning for processing_locks: {migration_error}")
                 
+                # Check and add results_json column to analysis_results if missing
+                try:
+                    cursor = conn.execute("PRAGMA table_info(analysis_results)")
+                    analysis_columns = [column[1] for column in cursor.fetchall()]
+                    if 'results_json' not in analysis_columns:
+                        logger.info("Adding missing 'results_json' column to analysis_results table")
+                        conn.execute("ALTER TABLE analysis_results ADD COLUMN results_json TEXT")
+                except Exception as migration_error:
+                    logger.warning(f"Database migration warning for analysis_results: {migration_error}")
+                
                 # Indexes for performance
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_files_upload_date ON files(upload_date)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_results_status ON analysis_results(status)")
