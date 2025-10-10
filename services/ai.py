@@ -823,23 +823,14 @@ class AIService:
             elif context:
                 logger.info("Using enhanced chunk selector context")
 
-            # ENHANCED: Include detected financial statements in context for cash flow and statement-specific questions
-            financial_statement_keywords = [
-                "cash flow", "cash flows", "statement of cash", "operating activities", "investing activities", 
-                "financing activities", "balance sheet", "statement of financial position",
-                "comprehensive income", "changes in equity", "financial statements",
-                "dividends paid", "interest paid", "interest and dividends received",
-                "ias 7", "ifrs", "disclosure", "classify", "entity disclose"
-            ]
-            
-            needs_financial_statements = any(keyword.lower() in question.lower() for keyword in financial_statement_keywords)
-            
-            if needs_financial_statements and self.current_document_id:
+            # ENHANCED: Include detected financial statements in context if they exist
+            # Always check for financial statements from financial_statement_detector results
+            if self.current_document_id:
                 try:
                     # Access financial statements directly from analysis results JSON
                     from pathlib import Path
                     
-                    results_path = Path("analysis_results") / self.current_document_id / "analysis_results.json"
+                    results_path = Path("analysis_results") / f"{self.current_document_id}.json"
                     if results_path.exists():
                         with open(results_path, "r", encoding="utf-8") as f:
                             results = json.load(f)
@@ -848,7 +839,10 @@ class AIService:
                         parallel_context = results.get("parallel_processing_context", {})
                         financial_statements = parallel_context.get("financial_statements", {})
                         
-                        if financial_statements.get("financial_statements"):
+                        # Check if financial statements were detected by financial_statement_detector
+                        has_financial_statements = financial_statements.get("has_financial_statements", False)
+                        
+                        if has_financial_statements and financial_statements.get("financial_statements"):
                             # Build consolidated financial statement content
                             financial_content = ""
                             for statement in financial_statements["financial_statements"]:
@@ -860,11 +854,11 @@ class AIService:
                             if financial_content.strip():
                                 # Prepend financial statement content to existing context
                                 context = f"=== FINANCIAL STATEMENTS ===\n{financial_content}\n\n=== ADDITIONAL CONTEXT ===\n{context}" if context else financial_content
-                                logger.info(f"🎯 Added {len(financial_content)} characters of financial statement content for: {question[:50]}...")
+                                logger.info(f"🎯 Added {len(financial_content)} characters of financial statement content (detected by financial_statement_detector)")
                             else:
-                                logger.warning(f"⚠️ No financial statement content found for: {question[:50]}...")
+                                logger.warning(f"⚠️ Financial statements detected but no content found")
                         else:
-                            logger.warning(f"⚠️ No financial statements available in analysis results for: {question[:50]}...")
+                            logger.info(f"ℹ️ No financial statements detected by financial_statement_detector for document {self.current_document_id}")
                     else:
                         logger.warning(f"⚠️ No analysis results found for document {self.current_document_id}")
                 except Exception as e:
