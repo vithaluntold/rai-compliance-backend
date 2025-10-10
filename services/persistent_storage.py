@@ -108,6 +108,9 @@ class PersistentStorageManager:
                     if 'results_json' not in analysis_columns:
                         logger.info("Adding missing 'results_json' column to analysis_results table")
                         conn.execute("ALTER TABLE analysis_results ADD COLUMN results_json TEXT")
+                    if 'updated_at' not in analysis_columns:
+                        logger.info("Adding missing 'updated_at' column to analysis_results table")
+                        conn.execute("ALTER TABLE analysis_results ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
                 except Exception as migration_error:
                     logger.warning(f"Database migration warning for analysis_results: {migration_error}")
                 
