@@ -30,6 +30,7 @@ from services.checklist_utils import (
     is_standard_available,
     load_checklist,
 )
+from services.content_filter import get_content_filter
 from services.persistent_storage import get_persistent_storage, get_persistent_storage_manager
 from services.progress_tracker import get_progress_tracker
 # Document processing uses existing _extract_document_text function
@@ -510,13 +511,13 @@ def _process_document_chunks(document_id: str) -> list:
     logger.info(f"📄 Extracted {len(full_text)} characters from {document_id}")
     
     # Create simple chunks for metadata extraction - just split by size
-    chunks = []
+    raw_chunks = []
     chunk_size = 3000
     chunk_id = 1
     
     for i in range(0, len(full_text), chunk_size):
         chunk_text = full_text[i:i + chunk_size]
-        chunks.append({
+        raw_chunks.append({
             "id": f"{document_id}_chunk_{chunk_id}",
             "text": chunk_text,
             "chunk_number": chunk_id,
@@ -524,8 +525,34 @@ def _process_document_chunks(document_id: str) -> list:
         })
         chunk_id += 1
     
-    logger.info(f"✅ Created {len(chunks)} chunks for document {document_id}")
-    return chunks
+    logger.info(f"📄 Created {len(raw_chunks)} raw chunks for document {document_id}")
+    
+    # 🚫 APPLY CONTENT FILTER - REJECT AUDIT REPORTS
+    content_filter = get_content_filter()
+    accepted_chunks, rejected_chunks = content_filter.filter_chunks(raw_chunks, document_id)
+    
+    # Get detailed filter statistics
+    filter_stats = content_filter.get_filter_stats(raw_chunks)
+    
+    logger.info(f"🔍 CONTENT FILTER RESULTS for {document_id}:")
+    logger.info(f"   📊 Total chunks: {filter_stats['total_chunks']}")
+    logger.info(f"   ✅ Accepted: {filter_stats['accepted_chunks']} chunks ({filter_stats['financial_content_percentage']:.1f}% financial content)")
+    logger.info(f"   ❌ Rejected: {filter_stats['rejected_chunks']} chunks (likely audit reports)")
+    logger.info(f"   📈 Average confidence: {filter_stats['average_confidence']:.2f}")
+    
+    # Log rejection reasons
+    if filter_stats['rejection_reasons']:
+        logger.info(f"   🚫 Rejection breakdown:")
+        for reason, count in filter_stats['rejection_reasons'].items():
+            logger.info(f"      - {reason}: {count} chunks")
+    
+    # Ensure we have some content to process
+    if not accepted_chunks:
+        logger.error(f"❌ NO FINANCIAL CONTENT FOUND - All chunks rejected as audit reports for {document_id}")
+        raise ValueError(f"No financial statement content found in document {document_id}. Document appears to contain only audit reports, which are not processed.")
+    
+    logger.info(f"✅ Content filtering completed: {len(accepted_chunks)} financial chunks ready for processing")
+    return accepted_chunks
 
 
 async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
@@ -540,18 +567,40 @@ async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
 
 
 async def _create_vector_index(document_id: str, chunks: list) -> None:
-    """Index chunks in vector store."""
+    """Index chunks in vector store - only financial content, no audit reports."""
     logger.info(f"🚀 STARTING VECTOR INDEX CREATION: document={document_id}, chunks={len(chunks)}")
+    
+    # Note: chunks should already be filtered by _process_document_chunks, but double-check
+    financial_chunks = []
+    audit_chunks = []
+    
+    for chunk in chunks:
+        if 'content_analysis' in chunk:
+            if chunk['content_analysis']['should_process']:
+                financial_chunks.append(chunk)
+            else:
+                audit_chunks.append(chunk)
+        else:
+            # If not analyzed, assume it's financial content (already filtered upstream)
+            financial_chunks.append(chunk)
+    
+    if audit_chunks:
+        logger.warning(f"⚠️ Found {len(audit_chunks)} audit report chunks in vector indexing - these will be excluded")
+    
+    if not financial_chunks:
+        raise ValueError(f"No financial content to index for document {document_id}")
+    
+    logger.info(f"📊 Vector indexing: {len(financial_chunks)} financial chunks, {len(audit_chunks)} audit chunks excluded")
     
     vs_svc = get_vector_store()
     if not vs_svc:
         raise ValueError("Vector store service not initialized")
 
-    index_created = await vs_svc.create_index(document_id, chunks)
+    index_created = await vs_svc.create_index(document_id, financial_chunks)
     if not index_created:
         raise ValueError("Failed to create vector index")
     
-    logger.info(f"✅ Vector store index created successfully for {document_id}")
+    logger.info(f"✅ Vector store index created successfully for {document_id} with {len(financial_chunks)} financial chunks")
 
 
 def _archive_document_file(document_id: str) -> None:
