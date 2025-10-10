@@ -47,7 +47,7 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "version": "1.0.0",
+        "version": "1.0.1",
         "features": {
             "file_upload": True,
             "ai_analysis": True,
