@@ -32,7 +32,7 @@ from services.checklist_utils import (
 )
 from services.persistent_storage import get_persistent_storage, get_persistent_storage_manager
 from services.progress_tracker import get_progress_tracker
-# Removed basic chunker - using proper text extraction instead
+# Document processing uses existing _extract_document_text function
 from services.financial_statement_detector import FinancialStatementDetector
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
@@ -495,10 +495,10 @@ def _handle_processing_error(document_id: str, error: Exception) -> None:
 
 
 def _process_document_chunks(document_id: str) -> list:
-    """Extract text and create proper chunks for document processing."""
-    logger.info(f"🔄 Processing document chunks for {document_id}")
+    """Create chunks from document text for metadata extraction."""
+    logger.info(f"🔄 Creating chunks for metadata extraction: {document_id}")
     
-    # Extract full document text using proper extraction
+    # Extract full document text using existing proper extraction
     full_text_result = _extract_document_text(document_id)
     if not isinstance(full_text_result, str):
         raise ValueError(f"Failed to extract text from document {document_id}")
@@ -509,67 +509,22 @@ def _process_document_chunks(document_id: str) -> list:
     
     logger.info(f"📄 Extracted {len(full_text)} characters from {document_id}")
     
-    # Create chunks from extracted text
-    chunks = _create_text_chunks(full_text, document_id)
-    logger.info(f"✅ Created {len(chunks)} chunks for document {document_id}")
-    return chunks
-
-
-def _create_text_chunks(text: str, document_id: str) -> list:
-    """Create chunks from text content."""
+    # Create simple chunks for metadata extraction - just split by size
     chunks = []
-    
-    # Split by paragraphs and create reasonable-sized chunks
-    paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
-    
-    current_chunk = ""
+    chunk_size = 3000
     chunk_id = 1
-    max_chunk_size = 3000  # Characters per chunk
     
-    for paragraph in paragraphs:
-        # If adding this paragraph would make chunk too large, save current chunk
-        if len(current_chunk) + len(paragraph) > max_chunk_size and current_chunk:
-            chunks.append({
-                "id": f"{document_id}_chunk_{chunk_id}",
-                "text": current_chunk.strip(),
-                "chunk_number": chunk_id,
-                "document_id": document_id,
-                "metadata": {
-                    "length": len(current_chunk.strip()),
-                    "type": "text_chunk"
-                }
-            })
-            chunk_id += 1
-            current_chunk = paragraph + "\n\n"
-        else:
-            current_chunk += paragraph + "\n\n"
-    
-    # Add the last chunk if it has content
-    if current_chunk.strip():
+    for i in range(0, len(full_text), chunk_size):
+        chunk_text = full_text[i:i + chunk_size]
         chunks.append({
             "id": f"{document_id}_chunk_{chunk_id}",
-            "text": current_chunk.strip(),
+            "text": chunk_text,
             "chunk_number": chunk_id,
-            "document_id": document_id,
-            "metadata": {
-                "length": len(current_chunk.strip()),
-                "type": "text_chunk"
-            }
+            "document_id": document_id
         })
+        chunk_id += 1
     
-    # If no chunks were created, create one with all content
-    if not chunks:
-        chunks.append({
-            "id": f"{document_id}_chunk_1",
-            "text": text,
-            "chunk_number": 1,
-            "document_id": document_id,
-            "metadata": {
-                "length": len(text),
-                "type": "full_document_chunk"
-            }
-        })
-    
+    logger.info(f"✅ Created {len(chunks)} chunks for document {document_id}")
     return chunks
 
 
