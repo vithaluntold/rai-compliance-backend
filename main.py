@@ -4,7 +4,6 @@ from datetime import datetime
 
 # Import routers
 from routes import analysis_router, documents_router, sessions_router
-from routes.test_routes import test_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -36,7 +35,6 @@ app.add_middleware(
 app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"])
 app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
 app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
-app.include_router(test_router, prefix="/api/v1", tags=["testing"])
 
 # Root endpoint
 @app.get("/")
