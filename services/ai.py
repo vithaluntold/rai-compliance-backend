@@ -827,14 +827,15 @@ class AIService:
             # No file dependencies - uses database storage that persists on Render
             if self.current_document_id:
                 try:
+                    import asyncio
                     from services.persistent_storage import get_ai_context_for_standard
                     
                     # Get complete AI context with metadata, financial statements, and standard chunks
-                    complete_context = await get_ai_context_for_standard(
+                    complete_context = asyncio.run(get_ai_context_for_standard(
                         document_id=self.current_document_id,
                         standard_id=standard_id or "UNKNOWN", 
                         question=question
-                    )
+                    ))
                     
                     if complete_context and not complete_context.startswith("ERROR:"):
                         # Use the complete persistent context
