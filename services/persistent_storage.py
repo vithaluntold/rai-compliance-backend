@@ -91,10 +91,28 @@ class PersistentStorageManager:
                 except Exception as migration_error:
                     logger.warning(f"Database migration warning: {migration_error}")
                 
+                # Check and add expires_at column to processing_locks if missing
+                try:
+                    cursor = conn.execute("PRAGMA table_info(processing_locks)")
+                    lock_columns = [column[1] for column in cursor.fetchall()]
+                    if 'expires_at' not in lock_columns:
+                        logger.info("Adding missing 'expires_at' column to processing_locks table")
+                        conn.execute("ALTER TABLE processing_locks ADD COLUMN expires_at TIMESTAMP")
+                except Exception as migration_error:
+                    logger.warning(f"Database migration warning for processing_locks: {migration_error}")
+                
                 # Indexes for performance
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_files_upload_date ON files(upload_date)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_results_status ON analysis_results(status)")
-                conn.execute("CREATE INDEX IF NOT EXISTS idx_locks_expires ON processing_locks(expires_at)")
+                
+                # Only create expires_at index if column exists
+                try:
+                    cursor = conn.execute("PRAGMA table_info(processing_locks)")
+                    lock_columns = [column[1] for column in cursor.fetchall()]
+                    if 'expires_at' in lock_columns:
+                        conn.execute("CREATE INDEX IF NOT EXISTS idx_locks_expires ON processing_locks(expires_at)")
+                except Exception as index_error:
+                    logger.warning(f"Could not create expires_at index: {index_error}")
                 
                 conn.commit()
                 self._initialized = True
