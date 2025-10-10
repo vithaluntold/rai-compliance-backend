@@ -823,46 +823,31 @@ class AIService:
             elif context:
                 logger.info("Using enhanced chunk selector context")
 
-            # ENHANCED: Include detected financial statements in context if they exist
-            # Always check for financial statements from financial_statement_detector results
+            # 🎯 DIRECT PERSISTENT STORAGE APPROACH: Get ALL context from persistent storage
+            # No file dependencies - uses database storage that persists on Render
             if self.current_document_id:
                 try:
-                    # Access financial statements directly from analysis results JSON
-                    from pathlib import Path
+                    from services.persistent_storage import get_ai_context_for_standard
                     
-                    results_path = Path("analysis_results") / f"{self.current_document_id}.json"
-                    if results_path.exists():
-                        with open(results_path, "r", encoding="utf-8") as f:
-                            results = json.load(f)
-                        
-                        # Extract financial statements from parallel processing context
-                        parallel_context = results.get("parallel_processing_context", {})
-                        financial_statements = parallel_context.get("financial_statements", {})
-                        
-                        # Check if financial statements were detected by financial_statement_detector
-                        has_financial_statements = financial_statements.get("has_financial_statements", False)
-                        
-                        if has_financial_statements and financial_statements.get("financial_statements"):
-                            # Build consolidated financial statement content
-                            financial_content = ""
-                            for statement in financial_statements["financial_statements"]:
-                                statement_type = statement.get("statement_type", "Financial Statement")
-                                content = statement.get("content", "")
-                                if content.strip():
-                                    financial_content += f"\n=== {statement_type.upper()} ===\n{content}\n"
-                            
-                            if financial_content.strip():
-                                # Prepend financial statement content to existing context
-                                context = f"=== FINANCIAL STATEMENTS ===\n{financial_content}\n\n=== ADDITIONAL CONTEXT ===\n{context}" if context else financial_content
-                                logger.info(f"🎯 Added {len(financial_content)} characters of financial statement content (detected by financial_statement_detector)")
-                            else:
-                                logger.warning(f"⚠️ Financial statements detected but no content found")
-                        else:
-                            logger.info(f"ℹ️ No financial statements detected by financial_statement_detector for document {self.current_document_id}")
+                    # Get complete AI context with metadata, financial statements, and standard chunks
+                    complete_context = await get_ai_context_for_standard(
+                        document_id=self.current_document_id,
+                        standard_id=standard_id or "UNKNOWN", 
+                        question=question
+                    )
+                    
+                    if complete_context and not complete_context.startswith("ERROR:"):
+                        # Use the complete persistent context
+                        context = complete_context
+                        logger.info(f"🎯 USING PERSISTENT STORAGE CONTEXT: {len(complete_context)} characters of complete document context")
+                        logger.info(f"📋 Context includes: metadata, financial statements, standard-specific chunks")
                     else:
-                        logger.warning(f"⚠️ No analysis results found for document {self.current_document_id}")
+                        logger.warning(f"⚠️ No persistent context available - falling back to vector search context")
+                        # Keep existing vector search context as fallback
+                        
                 except Exception as e:
-                    logger.warning(f"⚠️ Failed to get financial statement content: {str(e)}")
+                    logger.error(f"❌ Failed to get persistent context: {str(e)}", exc_info=True)
+                    # Keep existing vector search context as fallback
 
             # Construct the prompt for the AI using the prompts library
             prompt = ai_prompts.get_full_compliance_analysis_prompt(

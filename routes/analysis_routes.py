@@ -680,6 +680,27 @@ async def process_upload_tasks(
 
         # Also save parallel processing context separately for compatibility
         _save_parallel_processing_context(document_id, parallel_context)
+        
+        # 🎯 NEW: Store complete document context in persistent storage for AI
+        try:
+            from services.persistent_storage import store_complete_document_context
+            
+            # Prepare complete context data
+            complete_context = {
+                "metadata": metadata_result if not isinstance(metadata_result, Exception) else {},
+                "financial_statements": serializable_financial.get("financial_statements", []) if serializable_financial else [],
+                "parallel_processing_context": parallel_context,
+                "standard_chunks": {},  # Will be populated during standard identification
+                "standard_questions": {}  # Will be populated during compliance analysis
+            }
+            
+            # Store in persistent storage 
+            await store_complete_document_context(document_id, complete_context)
+            
+            logger.info(f"🎯 Successfully stored complete document context in persistent storage for {document_id}")
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to store complete document context: {str(e)}")
 
         # Create metadata completion lock file
         metadata_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.metadata_completed"

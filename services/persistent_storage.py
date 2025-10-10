@@ -344,3 +344,109 @@ async def get_analysis_results_persistent(document_id: str) -> Optional[Dict[str
     """Helper function to get analysis results from persistent storage."""
     manager = get_persistent_storage_manager()
     return await manager.get_analysis_results(document_id)
+
+# 🎯 NEW: Complete Document Context Storage for AI Analysis
+async def store_complete_document_context(document_id: str, context_data: Dict[str, Any]) -> bool:
+    """
+    Store complete document context for AI analysis including:
+    1. METADATA (company info)
+    2. FINANCIAL STATEMENTS (full content)
+    3. AS RELATED CHUNKS (standard-specific)
+    4. AS RELATED QUESTIONS (compliance questions)
+    """
+    manager = get_persistent_storage_manager()
+    
+    # Store as analysis results with special context marker
+    complete_context = {
+        "document_id": document_id,
+        "context_type": "COMPLETE_AI_CONTEXT", 
+        "timestamp": datetime.now().isoformat(),
+        "metadata": context_data.get("metadata", {}),
+        "financial_statements": context_data.get("financial_statements", []),
+        "standard_chunks": context_data.get("standard_chunks", {}),
+        "standard_questions": context_data.get("standard_questions", {}),
+        "parallel_processing_context": context_data.get("parallel_processing_context", {})
+    }
+    
+    return await manager.store_analysis_results(f"{document_id}_CONTEXT", complete_context)
+
+async def get_complete_document_context(document_id: str) -> Optional[Dict[str, Any]]:
+    """Get complete document context for AI analysis"""
+    manager = get_persistent_storage_manager()
+    return await manager.get_analysis_results(f"{document_id}_CONTEXT")
+
+async def get_ai_context_for_standard(document_id: str, standard_id: str, question: str) -> str:
+    """
+    Generate complete AI context string for a specific standard and question.
+    This is what gets sent directly to AI prompts.
+    """
+    context_data = await get_complete_document_context(document_id)
+    
+    if not context_data:
+        logger.error(f"❌ No complete context found for document {document_id}")
+        return f"ERROR: No complete context available for document {document_id}"
+    
+    context_parts = []
+    
+    # 1. METADATA SECTION
+    metadata = context_data.get("metadata", {})
+    if metadata:
+        context_parts.append("=== COMPANY METADATA ===")
+        context_parts.append(f"Company Name: {_extract_value(metadata.get('company_name', ''))}")
+        context_parts.append(f"Nature of Business: {_extract_value(metadata.get('nature_of_business', ''))}")
+        context_parts.append(f"Operational Demographics: {_extract_value(metadata.get('operational_demographics', ''))}")
+        context_parts.append(f"Financial Statements Type: {_extract_value(metadata.get('financial_statements_type', ''))}")
+        context_parts.append("")
+    
+    # 2. FINANCIAL STATEMENTS SECTION
+    financial_statements = context_data.get("financial_statements", [])
+    if financial_statements:
+        context_parts.append("=== FINANCIAL STATEMENTS ===")
+        for stmt in financial_statements:
+            stmt_type = stmt.get('statement_type', 'Financial Statement')
+            content = stmt.get('content', '')
+            if content.strip():
+                context_parts.append(f"--- {stmt_type.upper()} ---")
+                context_parts.append(content)
+                context_parts.append("")
+    
+    # 3. STANDARD-SPECIFIC CHUNKS (if available)
+    standard_chunks = context_data.get("standard_chunks", {})
+    if standard_id in standard_chunks:
+        context_parts.append(f"=== {standard_id} RELATED CONTENT ===")
+        for chunk in standard_chunks[standard_id]:
+            chunk_text = chunk.get('text', '')
+            if chunk_text.strip():
+                context_parts.append(f"Relevant Extract: {chunk_text}")
+                context_parts.append("")
+    
+    # 4. PARALLEL PROCESSING CONTEXT (fallback for financial statements)
+    if not financial_statements:
+        ppc = context_data.get("parallel_processing_context", {})
+        fs_data = ppc.get("financial_statements", {})
+        if fs_data and fs_data.get("has_financial_statements"):
+            context_parts.append("=== FINANCIAL STATEMENTS (FROM PARALLEL PROCESSING) ===")
+            for stmt in fs_data.get("financial_statements", []):
+                stmt_type = stmt.get('statement_type', 'Financial Statement')
+                content = stmt.get('content', '')
+                if content.strip():
+                    context_parts.append(f"--- {stmt_type.upper()} ---")
+                    context_parts.append(content)
+                    context_parts.append("")
+    
+    # 5. CURRENT QUESTION CONTEXT
+    context_parts.append(f"=== CURRENT ANALYSIS ===")
+    context_parts.append(f"Standard: {standard_id}")
+    context_parts.append(f"Question: {question}")
+    
+    return "\n".join(context_parts)
+
+def _extract_value(value: Any) -> str:
+    """Extract string value from various data types"""
+    if isinstance(value, str):
+        return value
+    elif isinstance(value, dict):
+        # Handle metadata with 'value' field
+        return str(value.get('value', ''))
+    else:
+        return str(value) if value else ""
