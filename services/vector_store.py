@@ -112,8 +112,10 @@ class VectorStore:
         """Process a single chunk with retries."""
         for attempt in range(MAX_RETRIES):
             try:
+                # Handle both "text" and "content" field names for backward compatibility
+                text_content = chunk.get("text") or chunk.get("content", "")
                 response = self.ai_client.embeddings.create(
-                    model=self.deployment_id, input=chunk["text"]
+                    model=self.deployment_id, input=text_content
                 )
                 embedding = np.array(response.data[0].embedding, dtype=np.float32)
                 return embedding, chunk
@@ -344,9 +346,11 @@ class VectorStore:
             for i, (distance, idx) in enumerate(zip(distances[0], indices[0])):
                 if idx < len(chunks):  # Ensure index is valid
                     chunk = chunks[idx]
+                    # Handle both "text" and "content" field names for backward compatibility
+                    text_content = chunk.get("text") or chunk.get("content", "")
                     results.append(
                         {
-                            "text": chunk["text"],
+                            "text": text_content,
                             "score": float(
                                 1.0 / (1.0 + distance)
                             ),  # Convert distance to similarity score
