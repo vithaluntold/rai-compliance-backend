@@ -27,3 +27,22 @@ pycountry>=24.6.1
 spacy>=3.7.0
 # Note: spaCy models need to be installed separately:
 # python -m spacy download en_core_web_sm
+
+# Financial AI and NLP models
+transformers>=4.21.0
+torch>=2.0.0
+datasets>=2.14.0
+sentencepiece>=0.1.99
+
+# FinBERT and financial NLP models
+# FinBERT: Financial sentiment analysis and document understanding
+# Models available: ProsusAI/finbert, yiyanghkust/finbert-tone, etc.
+
+# Financial document processing
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+pandas>=2.0.0
+
+# Additional financial analysis libraries
+nltk>=3.8.0
+textblob>=0.17.0
