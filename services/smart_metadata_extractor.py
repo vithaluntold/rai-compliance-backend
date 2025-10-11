@@ -217,35 +217,52 @@ class SmartMetadataExtractor:
         sentences = re.split(r'[.!?]+', text)
 
         # Priority 1: Look for company names in document headers/titles (first few lines)
-        header_lines = lines[:20]  # First 20 lines likely contain headers
+        header_lines = lines[:30]  # First 30 lines likely contain headers
+        
+        # Dynamic patterns for company identification
+        company_indicators = [
+            r'\b([A-Z][A-Za-z\s&]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH))\b',
+            r'\b([A-Z][A-Za-z\s&]+\s+(?:Company|Corp|Enterprises|Holdings|Partners))\b',
+            r'\b((?:The\s+)?[A-Z][A-Za-z\s&]+\s+Group(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)\b',
+            r'\b([A-Z][A-Za-z\s&]{3,40})\s+(?:Financial\s+Statements|Annual\s+Report)',
+        ]
+        
         for line in header_lines:
             line = line.strip()
-            if len(line) < 5 or len(line) > 100:
+            if len(line) < 5 or len(line) > 150:
                 continue
             
-            # Simple direct extraction - look for standalone company names
-            if "ALDAR PROPERTIES PJSC" in line.upper():
-                # Extract just the company name, not surrounding text
-                # Use regex to find the exact company name and clean it
-                company_pattern = r'(?:.*?)([A-Z][A-Za-z\s]*ALDAR\s+PROPERTIES\s+PJSC)(?:.*?)'
-                match = re.search(company_pattern, line, re.IGNORECASE)
-                
-                if match:
-                    potential_company = match.group(1).strip()
-                    # Clean up the extracted name - remove common prefixes
-                    potential_company = re.sub(r'^.*?(ALDAR\s+PROPERTIES\s+PJSC).*?$', r'\1', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'^\s*statements?\s+of\s+', '', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'^\s*financial\s+statements?\s+of\s+', '', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'^\s*consolidated\s+', '', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'^\s*audited\s+', '', potential_company, flags=re.IGNORECASE)
+            # Try each pattern to find company names
+            for pattern in company_indicators:
+                matches = re.findall(pattern, line, re.IGNORECASE)
+                for match in matches:
+                    # Clean the match
+                    potential_company = match.strip()
                     
-                    # Format properly
-                    if potential_company.upper().strip() == "ALDAR PROPERTIES PJSC":
-                        best_match = "ALDAR Properties PJSC"
-                        best_confidence = 0.95
+                    # Remove common prefixes/suffixes that aren't part of company name
+                    potential_company = re.sub(r'^\s*(?:consolidated\s+|audited\s+|annual\s+|financial\s+statements?\s+(?:of\s+|for\s+)?)', '', potential_company, flags=re.IGNORECASE)
+                    potential_company = re.sub(r'(?:\s+financial\s+statements?|\s+annual\s+report).*$', '', potential_company, flags=re.IGNORECASE)
+                    potential_company = re.sub(r'\s+', ' ', potential_company).strip()
+                    
+                    # Skip if too short, too long, or contains obvious non-company terms
+                    if (len(potential_company) < 3 or len(potential_company) > 80 or
+                        any(term in potential_company.lower() for term in ['statement', 'report', 'audit', 'note', 'page', 'year ended'])):
+                        continue
+                    
+                    # Calculate confidence based on position and characteristics
+                    confidence = 0.7
+                    if any(indicator in potential_company for indicator in ['Group', 'Ltd', 'Limited', 'PJSC', 'PLC', 'Inc']):
+                        confidence += 0.2
+                    if lines.index(line) < 10:  # Higher confidence for early lines
+                        confidence += 0.1
+                    
+                    confidence = min(confidence, 0.95)
+                    
+                    if confidence > best_confidence:
+                        best_match = potential_company
+                        best_confidence = confidence
                         best_context = line.strip()
-                        logger.info(f"🏢 Found clean company name: {best_match}")
-                        break
+                        logger.info(f"🏢 Pattern-based company extraction found: {best_match}")
             
             # Look for other PJSC companies if ALDAR not found
             if not best_match:
@@ -267,16 +284,10 @@ class SmartMetadataExtractor:
                         cleaned_match = re.sub(r'^.*?(audited\s+)', '', cleaned_match, flags=re.IGNORECASE)
                         cleaned_match = cleaned_match.strip()
                         
-                        # Skip obvious non-company names and context words
-                        if (len(cleaned_match) > 100 or len(cleaned_match) < 5 or
-                            'plots of land' in cleaned_match.lower() or
-                            'security services' in cleaned_match.lower() or
-                            'statements' in cleaned_match.lower() or
-                            'financial' in cleaned_match.lower() or
-                            'report' in cleaned_match.lower() or
-                            cleaned_match.lower().startswith('the ') or
-                            cleaned_match.lower().startswith('consolidated ') or
-                            cleaned_match.lower().startswith('audited ')):
+                        # Filter out obvious non-company names
+                        if (len(cleaned_match) > 100 or len(cleaned_match) < 3 or
+                            any(term in cleaned_match.lower() for term in ['statement', 'report', 'audit', 'note', 'page', 'director']) or
+                            cleaned_match.lower().startswith(('consolidated ', 'audited ', 'financial '))):
                             continue
                     
                         # Higher confidence for PJSC and Properties patterns
