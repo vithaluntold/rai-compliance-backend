@@ -91,10 +91,17 @@ class PersistentStorageManager:
                 except Exception as migration_error:
                     logger.warning(f"Database migration warning: {migration_error}")
                 
-                # Check and add expires_at column to processing_locks if missing
+                # Check and migrate processing_locks table schema
                 try:
                     cursor = conn.execute("PRAGMA table_info(processing_locks)")
                     lock_columns = [column[1] for column in cursor.fetchall()]
+                    
+                    # If lock_type exists but we don't use it, we need to handle this gracefully
+                    # The current schema doesn't use lock_type, but old databases might have it
+                    if 'lock_type' in lock_columns:
+                        logger.info("Found legacy 'lock_type' column in processing_locks - schema migration needed")
+                        # For now, we'll work with the existing schema
+                    
                     if 'expires_at' not in lock_columns:
                         logger.info("Adding missing 'expires_at' column to processing_locks table")
                         conn.execute("ALTER TABLE processing_locks ADD COLUMN expires_at TIMESTAMP")
@@ -110,9 +117,26 @@ class PersistentStorageManager:
                         conn.execute("ALTER TABLE analysis_results ADD COLUMN results_json TEXT")
                     if 'updated_at' not in analysis_columns:
                         logger.info("Adding missing 'updated_at' column to analysis_results table")
-                        conn.execute("ALTER TABLE analysis_results ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+                        # SQLite doesn't support CURRENT_TIMESTAMP as DEFAULT in ALTER TABLE
+                        conn.execute("ALTER TABLE analysis_results ADD COLUMN updated_at TIMESTAMP")
                 except Exception as migration_error:
                     logger.warning(f"Database migration warning for analysis_results: {migration_error}")
+                
+                # Check and add missing columns to files table
+                try:
+                    cursor = conn.execute("PRAGMA table_info(files)")
+                    files_columns = [column[1] for column in cursor.fetchall()]
+                    if 'file_data' not in files_columns:
+                        logger.info("Adding missing 'file_data' column to files table")
+                        conn.execute("ALTER TABLE files ADD COLUMN file_data BLOB")
+                    if 'file_size' not in files_columns:
+                        logger.info("Adding missing 'file_size' column to files table")
+                        conn.execute("ALTER TABLE files ADD COLUMN file_size INTEGER")
+                    if 'metadata' not in files_columns:
+                        logger.info("Adding missing 'metadata' column to files table")
+                        conn.execute("ALTER TABLE files ADD COLUMN metadata TEXT DEFAULT '{}'")
+                except Exception as migration_error:
+                    logger.warning(f"Database migration warning for files: {migration_error}")
                 
                 # Indexes for performance
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_files_upload_date ON files(upload_date)")
@@ -228,11 +252,32 @@ class PersistentStorageManager:
             status = results.get('status', 'UNKNOWN')
             
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
-                conn.execute("""
-                    INSERT OR REPLACE INTO analysis_results 
-                    (document_id, results_json, status, updated_at)
-                    VALUES (?, ?, ?, ?)
-                """, (document_id, results_json, status, datetime.now().isoformat()))
+                # Check available columns to handle schema variations
+                cursor = conn.execute("PRAGMA table_info(analysis_results)")
+                columns = {row[1]: row for row in cursor.fetchall()}
+                
+                if 'updated_at' in columns and 'status' in columns:
+                    # Full schema
+                    conn.execute("""
+                        INSERT OR REPLACE INTO analysis_results 
+                        (document_id, results_json, status, updated_at)
+                        VALUES (?, ?, ?, ?)
+                    """, (document_id, results_json, status, datetime.now().isoformat()))
+                elif 'status' in columns:
+                    # Has status but no updated_at
+                    conn.execute("""
+                        INSERT OR REPLACE INTO analysis_results 
+                        (document_id, results_json, status)
+                        VALUES (?, ?, ?)
+                    """, (document_id, results_json, status))
+                else:
+                    # Minimal schema - only document_id and results_json
+                    conn.execute("""
+                        INSERT OR REPLACE INTO analysis_results 
+                        (document_id, results_json)
+                        VALUES (?, ?)
+                    """, (document_id, results_json))
+                    
                 conn.commit()
             
             logger.info(f"✅ Stored analysis results in persistent storage: {document_id} (status: {status})")
@@ -286,11 +331,24 @@ class PersistentStorageManager:
             lock_json = json.dumps(lock_data, ensure_ascii=False)
             
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
-                conn.execute("""
-                    INSERT OR REPLACE INTO processing_locks 
-                    (document_id, lock_data, created_at)
-                    VALUES (?, ?, ?)
-                """, (document_id, lock_json, datetime.now().isoformat()))
+                # Check table schema to handle both old and new versions
+                cursor = conn.execute("PRAGMA table_info(processing_locks)")
+                columns = {row[1]: row for row in cursor.fetchall()}
+                
+                if 'lock_type' in columns:
+                    # Legacy schema with lock_type column - provide a default value
+                    conn.execute("""
+                        INSERT OR REPLACE INTO processing_locks 
+                        (document_id, lock_data, lock_type, created_at)
+                        VALUES (?, ?, ?, ?)
+                    """, (document_id, lock_json, "processing", datetime.now().isoformat()))
+                else:
+                    # Current schema without lock_type
+                    conn.execute("""
+                        INSERT OR REPLACE INTO processing_locks 
+                        (document_id, lock_data, created_at)
+                        VALUES (?, ?, ?)
+                    """, (document_id, lock_json, datetime.now().isoformat()))
                 conn.commit()
             
             logger.info(f"🔐 Set processing lock in persistent storage: {document_id}")
