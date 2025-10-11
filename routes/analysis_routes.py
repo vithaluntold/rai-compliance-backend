@@ -1309,7 +1309,7 @@ async def get_analysis_progress(
         # SECOND: Check persistent storage for processing locks
         try:
             storage_manager = get_persistent_storage_manager()
-            processing_lock = storage_manager.get_processing_lock(document_id)
+            processing_lock = await storage_manager.get_processing_lock(document_id)
             
             if processing_lock:
                 # Document is being processed, return progress
@@ -3980,3 +3980,43 @@ async def get_session_by_document_id(document_id: str):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get session by document ID: {str(e)}")
+
+
+@router.delete("/admin/processing-lock/{document_id}")
+async def clear_processing_lock(document_id: str) -> Dict[str, Any]:
+    """
+    Admin endpoint to clear stuck processing locks.
+    Use this when a document is stuck in processing state.
+    """
+    try:
+        storage_manager = get_persistent_storage_manager()
+        success = await storage_manager.remove_processing_lock(document_id)
+        
+        # Also remove filesystem lock if exists
+        processing_lock_file = (
+            Path(__file__).parent.parent
+            / "analysis_results"
+            / f"{document_id}_processing.lock"
+        )
+        
+        filesystem_removed = False
+        if processing_lock_file.exists():
+            try:
+                processing_lock_file.unlink()
+                filesystem_removed = True
+            except Exception as e:
+                logger.warning(f"Failed to remove filesystem lock: {e}")
+        
+        return {
+            "document_id": document_id,
+            "database_lock_removed": success,
+            "filesystem_lock_removed": filesystem_removed,
+            "message": f"Processing lock cleared for document {document_id}"
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to clear processing lock for {document_id}: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to clear processing lock: {str(e)}"
+        )

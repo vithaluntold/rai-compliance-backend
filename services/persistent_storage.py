@@ -167,22 +167,33 @@ class PersistentStorageManager:
         """Retrieve a file from persistent storage."""
         try:
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
-                cursor = conn.execute("""
-                    SELECT filename, file_data, mime_type, file_size, upload_date, metadata
-                    FROM files WHERE document_id = ?
-                """, (document_id,))
+                # Check available columns first
+                cursor = conn.execute("PRAGMA table_info(files)")
+                columns = {row[1]: row for row in cursor.fetchall()}
+                
+                # Build query with available columns
+                required_fields = ["filename"]
+                optional_fields = ["file_data", "mime_type", "file_size", "upload_date", "metadata"]
+                select_fields = required_fields + [field for field in optional_fields if field in columns]
+                
+                query = f"SELECT {', '.join(select_fields)} FROM files WHERE document_id = ?"
+                cursor = conn.execute(query, (document_id,))
                 row = cursor.fetchone()
                 
                 if row:
-                    filename, file_data, mime_type, file_size, upload_date, metadata_json = row
-                    return {
-                        'filename': filename,
-                        'file_data': file_data,
-                        'mime_type': mime_type,
-                        'file_size': file_size,
-                        'upload_date': upload_date,
-                        'metadata': json.loads(metadata_json or '{}')
-                    }
+                    result = {'filename': row[0]}  # filename is always first
+                    
+                    # Map remaining fields based on what we selected
+                    field_idx = 1
+                    for field in optional_fields:
+                        if field in columns and field_idx < len(row):
+                            if field == 'metadata':
+                                result[field] = json.loads(row[field_idx] or '{}')
+                            else:
+                                result[field] = row[field_idx]
+                            field_idx += 1
+                    
+                    return result
                 return None
                 
         except Exception as e:
@@ -235,21 +246,33 @@ class PersistentStorageManager:
         """Retrieve analysis results from persistent storage."""
         try:
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
-                cursor = conn.execute("""
-                    SELECT results_json, status, updated_at 
-                    FROM analysis_results WHERE document_id = ?
-                """, (document_id,))
+                # Check available columns first
+                cursor = conn.execute("PRAGMA table_info(analysis_results)")
+                columns = {row[1]: row for row in cursor.fetchall()}
+                
+                # Build query based on available columns
+                select_fields = ["results_json"]
+                if "status" in columns:
+                    select_fields.append("status")
+                if "updated_at" in columns:
+                    select_fields.append("updated_at")
+                
+                query = f"SELECT {', '.join(select_fields)} FROM analysis_results WHERE document_id = ?"
+                cursor = conn.execute(query, (document_id,))
                 row = cursor.fetchone()
                 
                 if row:
-                    results_json, status, updated_at = row
+                    results_json = row[0]
                     results = json.loads(results_json)
-                    # Add metadata about storage
-                    results['_persistent_storage'] = {
-                        'status': status,
-                        'updated_at': updated_at,
-                        'source': 'persistent_database'
-                    }
+                    
+                    # Add metadata about storage with available fields
+                    storage_meta = {'source': 'persistent_database'}
+                    if len(row) > 1 and "status" in columns:
+                        storage_meta['status'] = row[1]
+                    if len(row) > 2 and "updated_at" in columns:
+                        storage_meta['updated_at'] = row[2]
+                    
+                    results['_persistent_storage'] = storage_meta
                     return results
                 return None
                 
