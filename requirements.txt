@@ -22,3 +22,8 @@ httpx>=0.25.0
 # Geographical detection dependencies
 country_converter>=1.2.0
 pycountry>=24.6.1
+
+# NER and advanced NLP dependencies  
+spacy>=3.7.0
+# Note: spaCy models need to be installed separately:
+# python -m spacy download en_core_web_sm

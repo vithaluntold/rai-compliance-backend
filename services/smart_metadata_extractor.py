@@ -83,13 +83,20 @@ class SmartMetadataExtractor:
             "financial_statements_type": {"value": "", "confidence": 0.0, "extraction_method": "ai", "context": ""}
         }
 
-        # Pattern-based approach for company name (keyword matching for headers/titles)
-        logger.info("🔍 Extracting company name using improved pattern matching")
-        company_name, company_confidence, company_context = self._extract_company_name_pattern(text)
+        # AI-powered company name extraction with pattern fallback
+        logger.info("🔍 Extracting company name using AI-powered approach")
+        company_name, company_confidence, company_context = await self._extract_company_name_ai(text)
+        
+        # Fallback to pattern-based if AI fails
+        if not company_name:
+            logger.info("🔄 AI extraction failed, using pattern fallback")
+            company_name, company_confidence, company_context = self._extract_company_name_pattern(text)
+            
         if company_name:
             results["company_name"]["value"] = company_name
             results["company_name"]["confidence"] = company_confidence
             results["company_name"]["context"] = company_context
+            logger.info(f"🏢 Company extraction found: {company_name} (confidence: {company_confidence})")
 
         # Keyword→Semantic→AI approach for all other fields
         logger.info("🤖 Extracting business nature using keyword→semantic→AI approach")
@@ -206,6 +213,119 @@ class SmartMetadataExtractor:
 
         return results
 
+    async def _extract_company_name_ai(self, text: str) -> Tuple[str, float, str]:
+        """AI-powered company name extraction with NER fallback"""
+        try:
+            # Try spaCy NER first if available
+            ner_result = self._extract_company_name_ner(text)
+            if ner_result[0]:  # If NER found something
+                logger.info(f"🔧 NER extracted company name: {ner_result[0]}")
+                return ner_result
+            
+            # Fallback to AI-based extraction
+            lines = text.split('\n')
+            header_text = '\n'.join(lines[:50])  # Focus on document headers
+            
+            # Prepare AI prompt for company name extraction
+            system_prompt = """You are an expert at extracting company names from financial documents. 
+            Your task is to identify the PRIMARY company name that is the main subject of the document.
+            
+            Rules:
+            1. Extract the OFFICIAL company name (not generic terms like "The Group")
+            2. Include legal suffixes (Ltd, PJSC, PLC, Inc, Group, etc.)
+            3. Prioritize names in document headers, titles, and official sections
+            4. If multiple entities exist, choose the PRIMARY subject company
+            5. Return ONLY the company name, nothing else
+            6. If no clear company name exists, return "NONE"
+            
+            Examples:
+            - "Phoenix Digital Assets Group" not "The Group"
+            - "ALDAR Properties PJSC" not "The Company"
+            - "Microsoft Corporation" not "The Corporation"
+            """
+            
+            user_prompt = f"""Extract the primary company name from this financial document header:
+
+{header_text}
+
+Company name:"""
+
+            response = self.ai_service.openai_client.chat.completions.create(
+                model=self.ai_service.deployment_name,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                max_completion_tokens=50
+            )
+            
+            ai_company = response.choices[0].message.content.strip() if response.choices[0].message.content else ""
+            
+            if ai_company and ai_company != "NONE" and len(ai_company) > 2:
+                # Clean and validate AI result
+                ai_company = re.sub(r'[^\w\s&\-\.,()]+', '', ai_company)  # Keep valid company name characters
+                ai_company = ai_company.strip(' ."')
+                
+                if len(ai_company) < 80 and not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document']):
+                    logger.info(f"🤖 AI extracted company name: {ai_company}")
+                    return ai_company, 0.9, header_text[:200]
+            
+            return "", 0.0, ""
+            
+        except Exception as e:
+            logger.error(f"Error in AI company name extraction: {str(e)}")
+            return "", 0.0, ""
+    
+    def _extract_company_name_ner(self, text: str) -> Tuple[str, float, str]:
+        """Extract company name using spaCy NER if available"""
+        try:
+            import spacy
+            
+            # Try to load English model
+            try:
+                nlp = spacy.load("en_core_web_sm")
+            except OSError:
+                logger.warning("spaCy model en_core_web_sm not found. Install with: python -m spacy download en_core_web_sm")
+                return "", 0.0, ""
+            
+            # Process document headers where company names are most likely
+            lines = text.split('\n')
+            header_text = '\n'.join(lines[:30])
+            
+            doc = nlp(header_text)
+            
+            # Find organizations and company entities
+            companies = []
+            for ent in doc.ents:
+                if ent.label_ in ["ORG", "PERSON"]:  # Organizations and sometimes persons (for company names)
+                    company_candidate = ent.text.strip()
+                    
+                    # Filter for likely company names
+                    if (len(company_candidate) > 5 and len(company_candidate) < 60 and
+                        not any(term in company_candidate.lower() for term in ['statement', 'report', 'audit', 'year', 'ended'])):
+                        
+                        # Higher confidence for entities with company indicators
+                        confidence = 0.75
+                        if any(suffix in company_candidate for suffix in ['Ltd', 'PJSC', 'PLC', 'Inc', 'Group', 'Corp', 'LLC']):
+                            confidence = 0.85
+                        
+                        companies.append((company_candidate, confidence, ent.sent.text[:100]))
+            
+            # Return the highest confidence company name
+            if companies:
+                best_company = max(companies, key=lambda x: x[1])
+                logger.info(f"🔧 NER found company: {best_company[0]} (confidence: {best_company[1]})")
+                return best_company
+            
+            return "", 0.0, ""
+            
+        except ImportError:
+            logger.info("spaCy not available, skipping NER extraction")
+            return "", 0.0, ""
+        except Exception as e:
+            logger.error(f"Error in NER company extraction: {str(e)}")
+            return "", 0.0, ""
+    
     def _extract_company_name_pattern(self, text: str) -> Tuple[str, float, str]:
         """Extract company name with priority on document headers and main entity"""
         best_match = ""
