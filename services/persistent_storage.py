@@ -173,11 +173,49 @@ class PersistentStorageManager:
             file_size = len(file_data)
             
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
-                conn.execute("""
-                    INSERT OR REPLACE INTO files 
-                    (document_id, filename, file_data, mime_type, file_size, upload_date)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                """, (document_id, filename, file_data, mime_type, file_size, datetime.now().isoformat()))
+                # Check available columns to handle schema variations
+                cursor = conn.execute("PRAGMA table_info(files)")
+                columns = {row[1]: row for row in cursor.fetchall()}
+                column_names = list(columns.keys())
+                logger.info(f"🔧 DEBUG: Available files columns: {column_names}")
+                
+                # Handle different schema variants
+                if 'content' in columns and 'file_data' in columns:
+                    # Both old and new columns exist - use both
+                    conn.execute("""
+                        INSERT OR REPLACE INTO files 
+                        (document_id, filename, file_data, content, mime_type, file_size, upload_date)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, (document_id, filename, file_data, file_data, mime_type, file_size, datetime.now().isoformat()))
+                elif 'content' in columns:
+                    # Legacy schema with content column
+                    conn.execute("""
+                        INSERT OR REPLACE INTO files 
+                        (document_id, filename, content, mime_type, upload_date)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, (document_id, filename, file_data, mime_type, datetime.now().isoformat()))
+                elif 'file_data' in columns:
+                    # New schema with file_data
+                    insert_fields = ["document_id", "filename", "file_data", "mime_type", "upload_date"]
+                    insert_values = [document_id, filename, file_data, mime_type, datetime.now().isoformat()]
+                    
+                    if 'file_size' in columns:
+                        insert_fields.append("file_size")
+                        insert_values.append(file_size)
+                    
+                    placeholders = ", ".join(["?" for _ in insert_values])
+                    conn.execute(f"""
+                        INSERT OR REPLACE INTO files 
+                        ({", ".join(insert_fields)})
+                        VALUES ({placeholders})
+                    """, insert_values)
+                else:
+                    # Minimal schema
+                    conn.execute("""
+                        INSERT OR REPLACE INTO files 
+                        (document_id, filename)
+                        VALUES (?, ?)
+                    """, (document_id, filename))
                 conn.commit()
             
             logger.info(f"✅ Stored file in persistent storage: {document_id} ({file_size} bytes)")
@@ -259,27 +297,68 @@ class PersistentStorageManager:
                 column_names = list(columns.keys())
                 logger.info(f"🔧 DEBUG: Available analysis_results columns: {column_names}")
                 
-                if 'updated_at' in columns and 'status' in columns:
-                    # Full schema
-                    conn.execute("""
-                        INSERT OR REPLACE INTO analysis_results 
-                        (document_id, results_json, status, updated_at)
-                        VALUES (?, ?, ?, ?)
-                    """, (document_id, results_json, status, datetime.now().isoformat()))
-                elif 'status' in columns:
-                    # Has status but no updated_at
-                    conn.execute("""
-                        INSERT OR REPLACE INTO analysis_results 
-                        (document_id, results_json, status)
-                        VALUES (?, ?, ?)
-                    """, (document_id, results_json, status))
+                # Handle different schema variants including legacy 'results' column
+                if 'results' in columns and 'results_json' in columns:
+                    # Both legacy and new columns exist
+                    if 'updated_at' in columns and 'status' in columns:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json, results, status, updated_at)
+                            VALUES (?, ?, ?, ?, ?)
+                        """, (document_id, results_json, results_json, status, datetime.now().isoformat()))
+                    elif 'status' in columns:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json, results, status)
+                            VALUES (?, ?, ?, ?)
+                        """, (document_id, results_json, results_json, status))
+                    else:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json, results)
+                            VALUES (?, ?, ?)
+                        """, (document_id, results_json, results_json))
+                elif 'results' in columns:
+                    # Legacy schema with only 'results' column
+                    if 'status' in columns:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results, status)
+                            VALUES (?, ?, ?)
+                        """, (document_id, results_json, status))
+                    else:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results)
+                            VALUES (?, ?)
+                        """, (document_id, results_json))
+                elif 'results_json' in columns:
+                    # New schema with results_json
+                    if 'updated_at' in columns and 'status' in columns:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json, status, updated_at)
+                            VALUES (?, ?, ?, ?)
+                        """, (document_id, results_json, status, datetime.now().isoformat()))
+                    elif 'status' in columns:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json, status)
+                            VALUES (?, ?, ?)
+                        """, (document_id, results_json, status))
+                    else:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results_json)
+                            VALUES (?, ?)
+                        """, (document_id, results_json))
                 else:
-                    # Minimal schema - only document_id and results_json
+                    # Fallback - minimal schema
                     conn.execute("""
                         INSERT OR REPLACE INTO analysis_results 
-                        (document_id, results_json)
-                        VALUES (?, ?)
-                    """, (document_id, results_json))
+                        (document_id)
+                        VALUES (?)
+                    """, (document_id,))
                     
                 conn.commit()
             
