@@ -290,12 +290,18 @@ class PersistentStorageManager:
             status = results.get('status', 'UNKNOWN')
             logger.info(f"🔧 DEBUG: Storing analysis results for {document_id} with status {status}")
             
+            # Force a fresh connection to ensure we get latest schema
+            if hasattr(self, '_schema_cache'):
+                delattr(self, '_schema_cache')
+            
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
                 # Check available columns to handle schema variations
                 cursor = conn.execute("PRAGMA table_info(analysis_results)")
                 columns = {row[1]: row for row in cursor.fetchall()}
                 column_names = list(columns.keys())
                 logger.info(f"🔧 DEBUG: Available analysis_results columns: {column_names}")
+                logger.info(f"🔧 DEBUG: Document ID being stored: {document_id}")
+                logger.info(f"🔧 DEBUG: Results JSON length: {len(results_json)} chars")
                 
                 # Handle different schema variants including legacy 'results' column
                 if 'results' in columns and 'results_json' in columns:
@@ -353,12 +359,22 @@ class PersistentStorageManager:
                             VALUES (?, ?)
                         """, (document_id, results_json))
                 else:
-                    # Fallback - minimal schema
-                    conn.execute("""
-                        INSERT OR REPLACE INTO analysis_results 
-                        (document_id)
-                        VALUES (?)
-                    """, (document_id,))
+                    # Fallback - minimal schema, but try a few variants
+                    try:
+                        # Try with just document_id and results (legacy)
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id, results)
+                            VALUES (?, ?)
+                        """, (document_id, results_json))
+                    except Exception as fallback_error:
+                        logger.warning(f"Legacy results column failed: {fallback_error}")
+                        # Last resort - just document_id
+                        conn.execute("""
+                            INSERT OR REPLACE INTO analysis_results 
+                            (document_id)
+                            VALUES (?)
+                        """, (document_id,))
                     
                 conn.commit()
             
