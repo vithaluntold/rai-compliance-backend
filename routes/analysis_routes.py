@@ -226,15 +226,15 @@ def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
 
 
 # Utility to get the file path for a document_id, regardless of extension
-def get_document_file_path(document_id: str) -> Optional[Path]:
+async def get_document_file_path(document_id: str) -> Optional[Path]:
     # First check persistent storage
     try:
         storage_manager = get_persistent_storage_manager()
-        file_info = storage_manager.get_file_info(document_id)
-        if file_info:
-            logger.info(f"Found document {document_id} in persistent storage: {file_info.get('filename')}")
+        file_data = await storage_manager.get_file(document_id)
+        if file_data:
+            logger.info(f"Found document {document_id} in persistent storage: {file_data.get('filename')}")
             # Return a dummy path since file is in database, not filesystem
-            return Path(f"/persistent/{file_info['filename']}")
+            return Path(f"/persistent/{file_data['filename']}")
     except Exception as e:
         logger.warning(f"Error checking persistent storage for {document_id}: {str(e)}")
     
@@ -472,9 +472,9 @@ def _finalize_processing_results(document_id: str, metadata_result: dict, parall
     return final_results
 
 
-def _cleanup_uploaded_file(document_id: str) -> None:
+async def _cleanup_uploaded_file(document_id: str) -> None:
     """Auto-delete uploaded file after vectorization and chunking."""
-    file_path = get_document_file_path(document_id)
+    file_path = await get_document_file_path(document_id)
     try:
         if file_path and file_path.exists():
             file_path.unlink()
@@ -507,12 +507,12 @@ def _handle_processing_error(document_id: str, error: Exception) -> None:
     error_lock_file.touch()
 
 
-def _process_document_chunks(document_id: str) -> list:
+async def _process_document_chunks(document_id: str) -> list:
     """Create chunks from document text for metadata extraction."""
     logger.info(f"🔄 Creating chunks for metadata extraction: {document_id}")
     
     # Extract full document text using existing proper extraction
-    full_text_result = _extract_document_text(document_id)
+    full_text_result = await _extract_document_text(document_id)
     if not isinstance(full_text_result, str):
         raise ValueError(f"Failed to extract text from document {document_id}")
     
@@ -615,13 +615,13 @@ async def _create_vector_index(document_id: str, chunks: list) -> None:
     logger.info(f"✅ Vector store index created successfully for {document_id} with {len(financial_chunks)} financial chunks")
 
 
-def _archive_document_file(document_id: str) -> None:
+async def _archive_document_file(document_id: str) -> None:
     """Archive uploaded file to document-specific folder for audit trail."""
     try:
         from pathlib import Path
         
         # Get the current file path
-        file_path = get_document_file_path(document_id)
+        file_path = await get_document_file_path(document_id)
         if not file_path or not file_path.exists():
             logger.warning(f"No file found to archive for document: {document_id}")
             return
@@ -653,7 +653,7 @@ async def process_upload_tasks(
     # Create processing lock in persistent storage
     try:
         storage_manager = get_persistent_storage_manager()
-        storage_manager.create_processing_lock(document_id, {"status": "PROCESSING", "started_at": datetime.now().isoformat()})
+        await storage_manager.set_processing_lock(document_id, {"status": "PROCESSING", "started_at": datetime.now().isoformat()})
         logger.info(f"Created persistent processing lock for document: {document_id}")
         
         # Also create filesystem lock for compatibility
@@ -668,13 +668,13 @@ async def process_upload_tasks(
         _initialize_processing_results(document_id, processing_mode)
 
         # Step 1: Process document chunks (required for metadata extraction)
-        chunks = _process_document_chunks(document_id)
+        chunks = await _process_document_chunks(document_id)
 
         # Step 2: Create vector index (required for compliance analysis)
         await _create_vector_index(document_id, chunks)
 
         # Step 3: Extract full document text for parallel processing
-        full_text_result = _extract_document_text(document_id)
+        full_text_result = await _extract_document_text(document_id)
         if isinstance(full_text_result, str):
             full_text = full_text_result
         else:
@@ -781,7 +781,7 @@ async def process_upload_tasks(
             processing_lock_file.unlink()
 
         # Archive uploaded file for audit trail  
-        _archive_document_file(document_id)
+        await _archive_document_file(document_id)
 
         logger.info(f"Hybrid processing completed for document {document_id} in {parallel_duration:.2f}s")
 
@@ -967,22 +967,28 @@ async def upload_document(
         upload_ext = f".{ext}"
         filename = f"{document_id}{upload_ext}"
         try:
-            # Save to persistent SQLite database
-            storage_manager = get_persistent_storage_manager()
-            storage_manager.save_file(document_id, filename, content)
-            logger.info(f"Saved uploaded file to persistent storage: {filename}")
-            
-            # Also save to filesystem for compatibility (but this is ephemeral on Render)
+            # Save to filesystem first (required for existing processing pipeline)
             upload_path = UPLOADS_DIR / filename
             with open(upload_path, "wb") as f:
                 f.write(content)
-            logger.info(f"Also saved to filesystem: {upload_path}")
+            logger.info(f"Saved to filesystem: {upload_path}")
+            
+            # Try to save to persistent SQLite database for durability
+            try:
+                storage_manager = get_persistent_storage_manager()
+                mime_type = "application/pdf" if ext == "pdf" else "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                await storage_manager.store_file(document_id, upload_path, filename, mime_type)
+                logger.info(f"Saved uploaded file to persistent storage: {filename}")
+            except Exception as storage_error:
+                logger.warning(f"Persistent storage failed, but file saved to filesystem: {str(storage_error)}")
+                # Continue with workflow even if persistent storage fails
+            
         except Exception as e:
             logger.error(f"Error saving uploaded file: {str(e)}")
             response = {
                 "status": "error",
-                "error": "File save failed",
-                "message": "Failed to save uploaded file to persistent storage",
+                "error": "File save failed", 
+                "message": f"Failed to save uploaded file: {str(e)}",
             }
             logger.info(
                 f"Returning response for file save error: {json.dumps(response)}"
@@ -1588,9 +1594,9 @@ def _validate_document_exists(document_id: str) -> Optional[JSONResponse]:
     return None
 
 
-def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
+async def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from document file or chunks."""
-    file_path = get_document_file_path(document_id)
+    file_path = await get_document_file_path(document_id)
 
     if file_path and file_path.exists():
         return _extract_text_from_file(file_path)
@@ -1913,7 +1919,7 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             logger.warning(f"Failed to get database results for {document_id}: {str(db_error)}")
         
         # If no results, check if the document was even uploaded
-        file_path = get_document_file_path(document_id)
+        file_path = await get_document_file_path(document_id)
         if not file_path:
             logger.warning(f"Document file not found: {document_id}")
             return JSONResponse(
@@ -2137,7 +2143,7 @@ async def select_framework(
         save_analysis_results(document_id, results)
 
         # Extract document text
-        text = _extract_document_text(document_id)
+        text = await _extract_document_text(document_id)
         if isinstance(text, JSONResponse):
             return text
 

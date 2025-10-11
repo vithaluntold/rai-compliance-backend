@@ -87,7 +87,7 @@ PORT = 10000
 ## 🔄 **Step 4: Deploy with Database**
 
 ### 4.1 Your Code is Ready ✅
-Your `persistent_storage_enhanced.py` already supports PostgreSQL:
+Your `persistent_storage.py` already supports PostgreSQL:
 - Auto-detects DATABASE_URL environment variable
 - Creates tables automatically on first run
 - Handles both SQLite (dev) and PostgreSQL (production)
