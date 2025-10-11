@@ -1596,9 +1596,47 @@ def _validate_document_exists(document_id: str) -> Optional[JSONResponse]:
 
 async def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from document file or chunks."""
+    
+    # First try to extract from persistent storage
+    try:
+        storage_manager = get_persistent_storage_manager()
+        file_data = await storage_manager.get_file(document_id)
+        if file_data:
+            logger.info(f"Extracting text from persistent storage for {document_id}")
+            
+            # Handle different schema variants for file data
+            file_content = None
+            if 'file_data' in file_data:
+                file_content = file_data['file_data']
+            elif 'content' in file_data:  # Legacy schema
+                file_content = file_data['content']
+            
+            if file_content:
+                # Create temporary file from blob data
+                import tempfile
+                filename = file_data.get('filename', f"{document_id}.pdf")
+                suffix = Path(filename).suffix or ".pdf"
+                
+                with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temp_file:
+                    temp_file.write(file_content)
+                    temp_path = Path(temp_file.name)
+            else:
+                logger.error(f"No file content found in persistent storage for {document_id}")
+                raise ValueError("No file content available")
+            
+            try:
+                text_result = _extract_text_from_file(temp_path)
+                temp_path.unlink()  # Clean up temp file
+                return text_result
+            except Exception as e:
+                temp_path.unlink()  # Clean up on error
+                logger.error(f"Failed to extract text from persistent storage file: {e}")
+    except Exception as e:
+        logger.warning(f"Error accessing persistent storage for text extraction: {e}")
+    
+    # Fallback to filesystem
     file_path = await get_document_file_path(document_id)
-
-    if file_path and file_path.exists():
+    if file_path and file_path.exists() and not str(file_path).startswith('/persistent/'):
         return _extract_text_from_file(file_path)
     else:
         return _extract_text_from_chunks(document_id)
