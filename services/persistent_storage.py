@@ -250,11 +250,14 @@ class PersistentStorageManager:
         try:
             results_json = json.dumps(results, ensure_ascii=False, indent=2)
             status = results.get('status', 'UNKNOWN')
+            logger.info(f"🔧 DEBUG: Storing analysis results for {document_id} with status {status}")
             
             with sqlite3.connect(self.db_path, timeout=30.0) as conn:
                 # Check available columns to handle schema variations
                 cursor = conn.execute("PRAGMA table_info(analysis_results)")
                 columns = {row[1]: row for row in cursor.fetchall()}
+                column_names = list(columns.keys())
+                logger.info(f"🔧 DEBUG: Available analysis_results columns: {column_names}")
                 
                 if 'updated_at' in columns and 'status' in columns:
                     # Full schema
@@ -480,7 +483,9 @@ async def store_complete_document_context(document_id: str, context_data: Dict[s
         "parallel_processing_context": context_data.get("parallel_processing_context", {})
     }
     
-    return await manager.store_analysis_results(f"{document_id}_CONTEXT", complete_context)
+    context_document_id = f"{document_id}_CONTEXT"
+    logger.info(f"🔧 Storing complete document context for {context_document_id}")
+    return await manager.store_analysis_results(context_document_id, complete_context)
 
 async def get_complete_document_context(document_id: str) -> Optional[Dict[str, Any]]:
     """Get complete document context for AI analysis"""
