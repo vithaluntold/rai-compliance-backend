@@ -227,6 +227,18 @@ def save_analysis_results(document_id: str, results: Dict[str, Any]) -> None:
 
 # Utility to get the file path for a document_id, regardless of extension
 def get_document_file_path(document_id: str) -> Optional[Path]:
+    # First check persistent storage
+    try:
+        storage_manager = get_persistent_storage_manager()
+        file_info = storage_manager.get_file_info(document_id)
+        if file_info:
+            logger.info(f"Found document {document_id} in persistent storage: {file_info.get('filename')}")
+            # Return a dummy path since file is in database, not filesystem
+            return Path(f"/persistent/{file_info['filename']}")
+    except Exception as e:
+        logger.warning(f"Error checking persistent storage for {document_id}: {str(e)}")
+    
+    # Fallback to filesystem check
     for ext in [".pdf", ".docx"]:
         candidate = UPLOADS_DIR / f"{document_id}{ext}"
         if candidate.exists():
@@ -638,9 +650,18 @@ async def process_upload_tasks(
     if _check_processing_locks(document_id):
         return
 
-    # Create processing lock
-    processing_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.processing"
-    processing_lock_file.touch()
+    # Create processing lock in persistent storage
+    try:
+        storage_manager = get_persistent_storage_manager()
+        storage_manager.create_processing_lock(document_id, {"status": "PROCESSING", "started_at": datetime.now().isoformat()})
+        logger.info(f"Created persistent processing lock for document: {document_id}")
+        
+        # Also create filesystem lock for compatibility
+        processing_lock_file = ANALYSIS_RESULTS_DIR / f"{document_id}.processing"
+        processing_lock_file.touch()
+    except Exception as e:
+        logger.error(f"Failed to create processing lock: {str(e)}")
+        return
 
     try:
         # Initialize processing with processing mode
@@ -942,19 +963,26 @@ async def upload_document(
         document_id = generate_document_id()
         logger.info(f"Processing document upload with ID: {document_id}")
 
-        # Save uploaded file with original extension
+        # Save uploaded file to persistent storage (NOT ephemeral filesystem)
         upload_ext = f".{ext}"
-        upload_path = UPLOADS_DIR / f"{document_id}{upload_ext}"
+        filename = f"{document_id}{upload_ext}"
         try:
+            # Save to persistent SQLite database
+            storage_manager = get_persistent_storage_manager()
+            storage_manager.save_file(document_id, filename, content)
+            logger.info(f"Saved uploaded file to persistent storage: {filename}")
+            
+            # Also save to filesystem for compatibility (but this is ephemeral on Render)
+            upload_path = UPLOADS_DIR / filename
             with open(upload_path, "wb") as f:
                 f.write(content)
-            logger.info(f"Saved uploaded file to: {upload_path}")
+            logger.info(f"Also saved to filesystem: {upload_path}")
         except Exception as e:
             logger.error(f"Error saving uploaded file: {str(e)}")
             response = {
                 "status": "error",
                 "error": "File save failed",
-                "message": "Failed to save uploaded file",
+                "message": "Failed to save uploaded file to persistent storage",
             }
             logger.info(
                 f"Returning response for file save error: {json.dumps(response)}"
@@ -1231,7 +1259,6 @@ async def suggest_accounting_standards(request: Dict[str, Any]) -> Union[Dict[st
 
 
 @router.get("/progress/{document_id}", response_model=None)
-@router.get("/api/v1/analysis/progress/{document_id}", response_model=None)
 async def get_analysis_progress(
     document_id: str,
 ) -> Union[Dict[str, Any], JSONResponse]:
@@ -1273,12 +1300,40 @@ async def get_analysis_progress(
                 "completed": True,
             }
 
-        # SECOND: Check progress tracker for active analysis
+        # SECOND: Check persistent storage for processing locks
+        try:
+            storage_manager = get_persistent_storage_manager()
+            processing_lock = storage_manager.get_processing_lock(document_id)
+            
+            if processing_lock:
+                # Document is being processed, return progress
+                logger.info(f"Found persistent processing lock for document: {document_id}")
+                return {
+                    "document_id": document_id,
+                    "status": "PROCESSING",
+                    "overall_progress": {
+                        "percentage": 50.0,  # Mid-processing
+                        "elapsed_time_seconds": 30.0,
+                        "elapsed_time_formatted": "30s",
+                        "completed_standards": 1,
+                        "total_standards": 2,
+                        "current_standard": "AI analysis in progress...",
+                    },
+                    "percentage": 50,
+                    "currentStandard": "AI analysis in progress...",
+                    "completedStandards": 1,
+                    "totalStandards": 2,
+                    "completed": False,
+                }
+        except Exception as e:
+            logger.error(f"Error checking persistent storage: {str(e)}")
+        
+        # THIRD: Check progress tracker for active analysis
         tracker = get_progress_tracker()
         progress = tracker.get_progress(document_id)
 
         if not progress:
-            # Check if analysis is running by looking for lock file
+            # Check if analysis is running by looking for filesystem lock file (fallback)
             processing_lock_file = (
                 Path(__file__).parent.parent
                 / "analysis_results"
@@ -1890,15 +1945,13 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
 
 
 # Add API v1 alias for document status endpoint to match frontend expectations
-@router.get("/api/v1/analysis/documents/{document_id}", response_model=None)
-@router.get("/api/v1/analysis/documents/{document_id}/status", response_model=None)
+@router.get("/documents/{document_id}/status", response_model=None)
 async def get_document_status_api_v1(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
     """Get document status and metadata (API v1 endpoint)."""
     return await get_document_status(document_id)
 
 
 @router.get("/documents/{document_id}/results")
-@router.get("/api/v1/analysis/documents/{document_id}/results")
 async def get_document_results(document_id: str) -> Dict[str, Any]:
     """Get the results of a document analysis."""
     try:
