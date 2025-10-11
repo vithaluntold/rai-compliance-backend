@@ -1594,7 +1594,7 @@ def _validate_document_exists(document_id: str) -> Optional[JSONResponse]:
     return None
 
 
-async def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
+async def _extract_document_text(document_id: str) -> str:
     """Extract text from document file or chunks."""
     
     logger.info(f"🔧 NEW CODE: Starting text extraction for {document_id} with persistent storage support")
@@ -1606,47 +1606,58 @@ async def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
         logger.info(f"🔧 Persistent storage query result for {document_id}: {file_data is not None}")
         if file_data:
             logger.info(f"🔧 File data keys: {list(file_data.keys()) if file_data else 'None'}")
-            logger.info(f"Extracting text from persistent storage for {document_id}")
+            logger.info(f"✅ Extracting text from persistent storage for {document_id}")
             
             # Handle different schema variants for file data
             file_content = None
             if 'file_data' in file_data:
                 file_content = file_data['file_data']
+                logger.info(f"🔧 Using 'file_data' field, size: {len(file_content) if file_content else 0} bytes")
             elif 'content' in file_data:  # Legacy schema
                 file_content = file_data['content']
+                logger.info(f"🔧 Using legacy 'content' field, size: {len(file_content) if file_content else 0} bytes")
             
             if file_content:
                 # Create temporary file from blob data
                 import tempfile
                 filename = file_data.get('filename', f"{document_id}.pdf")
                 suffix = Path(filename).suffix or ".pdf"
+                logger.info(f"🔧 Creating temp file with suffix: {suffix}")
                 
                 with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temp_file:
                     temp_file.write(file_content)
                     temp_path = Path(temp_file.name)
+                logger.info(f"🔧 Created temp file: {temp_path}, size: {temp_path.stat().st_size} bytes")
+                
+                try:
+                    text_result = _extract_text_from_file(temp_path)
+                    temp_path.unlink()  # Clean up temp file
+                    logger.info(f"✅ Successfully extracted text from persistent storage, length: {len(text_result)} chars")
+                    return text_result
+                except Exception as e:
+                    if temp_path.exists():
+                        temp_path.unlink()  # Clean up on error
+                    logger.error(f"Failed to extract text from persistent storage file: {e}")
+                    raise e
             else:
                 logger.error(f"No file content found in persistent storage for {document_id}")
-                raise ValueError("No file content available")
-            
-            try:
-                text_result = _extract_text_from_file(temp_path)
-                temp_path.unlink()  # Clean up temp file
-                return text_result
-            except Exception as e:
-                temp_path.unlink()  # Clean up on error
-                logger.error(f"Failed to extract text from persistent storage file: {e}")
+                raise ValueError("No file content available in persistent storage")
+                
     except Exception as e:
         logger.warning(f"Error accessing persistent storage for text extraction: {e}")
+        # Continue to fallback options
     
     # Fallback to filesystem
     file_path = await get_document_file_path(document_id)
     if file_path and file_path.exists() and not str(file_path).startswith('/persistent/'):
+        logger.info(f"🔧 Fallback: Extracting from filesystem: {file_path}")
         return _extract_text_from_file(file_path)
     else:
+        logger.info(f"🔧 Final fallback: Extracting from chunks for {document_id}")
         return _extract_text_from_chunks(document_id)
 
 
-def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
+def _extract_text_from_file(file_path: Path) -> str:
     """Extract text from PDF or DOCX file."""
     if file_path.suffix.lower() == ".pdf":
         # Use PyMuPDF (fitz) instead of document_extractor for consistency
@@ -1661,36 +1672,21 @@ def _extract_text_from_file(file_path: Path) -> Union[str, JSONResponse]:
             return text.strip()
         except Exception as e:
             logger.error(f"Error extracting text from PDF: {str(e)}")
-            return JSONResponse(
-                status_code=500,
-                content={"error": "PDF text extraction failed", "detail": str(e)}
-            )
+            raise ValueError(f"PDF text extraction failed: {str(e)}")
     elif file_path.suffix.lower() == ".docx":
         if DocxDocument is None:
             logger.error("DOCX support not available (python-docx not installed)")
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "DOCX support not available",
-                    "detail": "python-docx package is not installed",
-                },
-            )
+            raise ValueError("DOCX support not available - python-docx package is not installed")
         text = "\n".join(
             [p.text for p in DocxDocument(str(file_path)).paragraphs if p.text.strip()]
         )
         return text
     else:
         logger.error(f"Unsupported file extension for document: {file_path.suffix}")
-        return JSONResponse(
-            status_code=400,
-            content={
-                "error": "Unsupported file type",
-                "detail": f"File extension {file_path.suffix} is not supported",
-            },
-        )
+        raise ValueError(f"Unsupported file type: {file_path.suffix}")
 
 
-def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
+def _extract_text_from_chunks(document_id: str) -> str:
     """Extract text from chunk data."""
     chunks_path = Path("vector_indices") / f"{document_id}_chunks.json"
     if chunks_path.exists():
@@ -1702,13 +1698,7 @@ def _extract_text_from_chunks(document_id: str) -> Union[str, JSONResponse]:
         logger.error(
             f"Document file and chunk data not found for document_id: {document_id}"
         )
-        return JSONResponse(
-            status_code=404,
-            content={
-                "error": "File not found",
-                "detail": "Document file and chunk data not found",
-            },
-        )
+        raise ValueError(f"Document file and chunk data not found for document_id: {document_id}")
 
 
 # Define framework mappings
