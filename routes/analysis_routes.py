@@ -1597,11 +1597,15 @@ def _validate_document_exists(document_id: str) -> Optional[JSONResponse]:
 async def _extract_document_text(document_id: str) -> Union[str, JSONResponse]:
     """Extract text from document file or chunks."""
     
+    logger.info(f"🔧 NEW CODE: Starting text extraction for {document_id} with persistent storage support")
+    
     # First try to extract from persistent storage
     try:
         storage_manager = get_persistent_storage_manager()
         file_data = await storage_manager.get_file(document_id)
+        logger.info(f"🔧 Persistent storage query result for {document_id}: {file_data is not None}")
         if file_data:
+            logger.info(f"🔧 File data keys: {list(file_data.keys()) if file_data else 'None'}")
             logger.info(f"Extracting text from persistent storage for {document_id}")
             
             # Handle different schema variants for file data
