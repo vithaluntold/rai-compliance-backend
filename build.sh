@@ -17,4 +17,8 @@ python -c "import psutil; print(f'psutil version: {psutil.__version__}')"
 echo "Installing remaining dependencies..."
 pip install --no-cache-dir -r requirements.txt
 
+# Download spaCy English model for NER
+echo "Installing spaCy English model for NER..."
+python -m spacy download en_core_web_sm || echo "Warning: spaCy model download failed, NER will be unavailable"
+
 echo "Build script completed successfully!"
