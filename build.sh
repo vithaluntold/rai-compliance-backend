@@ -21,4 +21,22 @@ pip install --no-cache-dir -r requirements.txt
 echo "Installing spaCy English model for NER..."
 python -m spacy download en_core_web_sm || echo "Warning: spaCy model download failed, NER will be unavailable"
 
+# Download NLTK data for NER (lightweight alternative)
+echo "Installing NLTK data for NER..."
+python -c "
+import nltk
+try:
+    nltk.download('punkt', quiet=True)
+    nltk.download('averaged_perceptron_tagger', quiet=True) 
+    nltk.download('maxent_ne_chunker', quiet=True)
+    nltk.download('words', quiet=True)
+    print('✅ NLTK data downloaded successfully')
+except Exception as e:
+    print(f'⚠️ NLTK data download failed: {e}')
+" || echo "Warning: NLTK data download failed, will download on first use"
+
+# Run deployment verification
+echo "Running deployment verification..."
+python verify_deployment.py || echo "Warning: Verification issues detected, but continuing deployment"
+
 echo "Build script completed successfully!"

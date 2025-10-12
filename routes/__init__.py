@@ -1,14 +1,14 @@
-"""AUDRIC API Routes - Consolidated"""
+"""AUDRIC API Routes - Individual Routers"""
 
-# Import the consolidated router that contains all endpoints
-from routes.analysis_routes import router as api_router
+# Import individual routers
+from routes.analysis_routes import router as analysis_router
+from routes.documents_routes import router as documents_router  
+from routes.sessions_routes import router as sessions_router
+from routes.checklist_routes import router as checklist_router
+from routes.health_routes import router as health_router
 
-# Export all routers for compatibility
-analysis_router = api_router  # Main consolidated router
-documents_router = api_router  # Same router, different alias
-sessions_router = api_router   # Same router, different alias
-checklist_router = api_router  # Same router, different alias
-health_router = api_router     # Same router, different alias
+# Main API router is the analysis router (contains most endpoints)
+api_router = analysis_router
 
 __all__ = [
     "api_router", 

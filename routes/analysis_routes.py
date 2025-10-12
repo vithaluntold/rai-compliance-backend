@@ -37,6 +37,7 @@ from services.progress_tracker import get_progress_tracker
 from services.financial_statement_detector import FinancialStatementDetector
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
+from services.multi_process_document_analyzer import get_document_analyzer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -1784,25 +1785,34 @@ async def get_metadata_fields() -> JSONResponse:
 
 @router.get("/documents/{document_id}", response_model=None)
 async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
-    """Get document status and metadata."""
-    logger.info(f"🔍 GET /documents/{document_id} - Starting request")
+    """Get document status and metadata - Multi-Process Edition!"""
+    logger.info(f"🔍 GET /documents/{document_id} - Starting multi-process status check")
+    
     try:
-        logger.info(f"🔍 Checking results path for document: {document_id}")
-        # Check if analysis results exist
-        results_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.json")
-        logger.info(f"🔍 Results path: {results_path}")
-        if os.path.exists(results_path):
-            # Read results with detailed debugging
-            logger.info(f"📁 Reading results file: {results_path}")
-            with open(results_path, "r", encoding="utf-8") as f:
-                file_content = f.read()
-                logger.info(f"📄 File content length: {len(file_content)} characters")
-                logger.info(f"📄 File content preview: {file_content[:500]}...")
-                
-            # Parse JSON
-            with open(results_path, "r", encoding="utf-8") as f:
-                results = json.load(f)
-                logger.info(f"📊 Loaded JSON keys: {list(results.keys())}")
+        # Use multi-process document analyzer
+        analyzer = get_document_analyzer()
+        result = analyzer.get_document_status(document_id)
+        
+        logger.info(f"� Multi-process status result: {result.get('status')} for document {document_id}")
+        
+        if result.get("status") == "NOT_FOUND":
+            # Fall back to legacy file-based system for backwards compatibility
+            logger.info(f"🔍 No multi-process data found, checking legacy results for document: {document_id}")
+            results_path = os.path.join(ANALYSIS_RESULTS_DIR, f"{document_id}.json")
+            logger.info(f"🔍 Legacy results path: {results_path}")
+            
+            if os.path.exists(results_path):
+                # Read results with detailed debugging
+                logger.info(f"📁 Reading results file: {results_path}")
+                with open(results_path, "r", encoding="utf-8") as f:
+                    file_content = f.read()
+                    logger.info(f"📄 File content length: {len(file_content)} characters")
+                    logger.info(f"📄 File content preview: {file_content[:500]}...")
+                    
+                # Parse JSON
+                with open(results_path, "r", encoding="utf-8") as f:
+                    results = json.load(f)
+                    logger.info(f"📊 Loaded JSON keys: {list(results.keys())}")
                 logger.info(f"📊 Metadata in file: {results.get('metadata', 'NO METADATA KEY')}")
             # Check for errors
             if "error" in results:
@@ -1858,8 +1868,8 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             company_metadata = {
                 "company_name": company_name,
                 "nature_of_business": nature_of_business,
-                "geography_of_operations": geography_list,
-                "financial_statement_type": financial_type,
+                "geography_of_operations": geography_list,      # Frontend expects array format
+                "financial_statement_type": financial_type,     # Frontend expects no 's' in field name
                 "confidence_score": 90
             }
             
@@ -1918,11 +1928,17 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                         # Split by comma and clean up each country name
                         geography_list = [country.strip() for country in geography_str.split(',') if country.strip()]
                     
+                    # Split geography string into individual countries for frontend array
+                    geography_list = []
+                    if geography_str and isinstance(geography_str, str):
+                        # Split by comma and clean up each country name
+                        geography_list = [country.strip() for country in geography_str.split(',') if country.strip()]
+                    
                     company_metadata = {
                         "company_name": _extract_field_value(old_metadata.get('company_name', '')),
                         "nature_of_business": _extract_field_value(old_metadata.get('nature_of_business', '')),
-                        "geography_of_operations": geography_list,
-                        "financial_statement_type": _extract_field_value(old_metadata.get('financial_statements_type', 'Standalone')),
+                        "geography_of_operations": geography_list,  # Frontend expects array format
+                        "financial_statement_type": _extract_field_value(old_metadata.get('financial_statements_type', 'Standalone')),  # Frontend expects no 's' in field name
                         "confidence_score": 90  # High confidence for structured data
                     }
                     logger.info(f"🔄 Converted database metadata to company_metadata format for {document_id}")
@@ -1946,6 +1962,18 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                     "message": results.get("message", "Analysis in progress"),
                 }
                 logger.info(f"🎯 FINAL RESPONSE for {document_id}: company_metadata = {response_data.get('company_metadata', 'NOT FOUND')}")
+                
+                # 🚀 NEW: Use multi-process status system
+                from services.multiprocess_status_endpoint import get_multiprocess_document_status
+                try:
+                    mp_status = get_multiprocess_document_status(document_id)
+                    if mp_status and mp_status.get('company_metadata'):
+                        logger.info(f"📊 Multi-process metadata found for {document_id}")
+                        response_data["company_metadata"] = mp_status["company_metadata"]
+                        response_data["status"] = mp_status.get("status", response_data["status"])
+                except Exception as mp_error:
+                    logger.warning(f"Multi-process status failed for {document_id}: {mp_error}")
+                
                 return response_data
         except Exception as db_error:
             logger.warning(f"Failed to get database results for {document_id}: {str(db_error)}")
@@ -1982,11 +2010,35 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
         )
 
 
-# Add API v1 alias for document status endpoint to match frontend expectations
-@router.get("/documents/{document_id}/status", response_model=None)
+# RACE-CONDITION FREE Multi-Process Status Endpoint
+@router.get("/documents/{document_id}/status", response_model=None)  
 async def get_document_status_api_v1(document_id: str) -> Union[Dict[str, Any], JSONResponse]:
-    """Get document status and metadata (API v1 endpoint)."""
-    return await get_document_status(document_id)
+    """Get document status - MULTI-PROCESS RACE CONDITION FREE VERSION!
+    
+    Uses your brilliant solution: separate JSON files per document/process!
+    No more shared resources = no more wrong company data!
+    """
+    logger.info(f"🔍 Multi-Process Status API v1: /documents/{document_id}/status")
+    
+    try:
+        # Import and use the race-condition-free multi-process system
+        from services.multiprocess_status_endpoint import get_document_status_multiprocess
+        
+        result = await get_document_status_multiprocess(document_id)
+        
+        logger.info(f"✅ Multi-process status API v1 completed for {document_id}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"❌ Multi-process status API v1 error for {document_id}: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "Server error", 
+                "message": f"Multi-process status failed: {str(e)}",
+                "document_id": document_id
+            }
+        )
 
 
 @router.get("/documents/{document_id}/results")

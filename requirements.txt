@@ -28,6 +28,10 @@ spacy>=3.7.0
 # Note: spaCy models need to be installed separately:
 # python -m spacy download en_core_web_sm
 
+# Lightweight NLP alternatives (no compilation issues)
+nltk>=3.8.0
+textblob>=0.17.0
+
 # Financial AI and NLP models
 transformers>=4.21.0
 torch>=2.0.0
