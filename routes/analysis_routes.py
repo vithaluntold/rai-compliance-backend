@@ -620,27 +620,72 @@ async def _archive_document_file(document_id: str) -> None:
     """Archive uploaded file to document-specific folder for audit trail."""
     try:
         from pathlib import Path
+        import shutil
         
-        # Get the current file path
+        # Check persistent storage first
+        try:
+            storage_manager = get_persistent_storage_manager()
+            file_data = await storage_manager.get_file(document_id)
+            
+            if file_data:
+                # Create document archive directory
+                archive_dir = Path("document_archives") / document_id
+                archive_dir.mkdir(parents=True, exist_ok=True)
+                
+                # Save file from persistent storage to archive
+                archived_file_path = archive_dir / f"original_{file_data['filename']}"
+                
+                with open(archived_file_path, 'wb') as f:
+                    f.write(file_data['content'])
+                    
+                logger.info(f"📁 Document archived from persistent storage: {archived_file_path}")
+                return
+                
+        except Exception as db_e:
+            logger.warning(f"Could not retrieve {document_id} from persistent storage: {str(db_e)}")
+        
+        # Fallback: Try filesystem archive
         file_path = await get_document_file_path(document_id)
-        if not file_path or not file_path.exists():
-            logger.warning(f"No file found to archive for document: {document_id}")
+        if file_path and file_path.exists() and not str(file_path).startswith("/persistent/"):
+            # Create document archive directory
+            archive_dir = Path("document_archives") / document_id
+            archive_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Archive original file
+            archived_file_path = archive_dir / f"original_{file_path.name}"
+            
+            shutil.copy2(str(file_path), str(archived_file_path))
+            logger.info(f"📁 Document archived from filesystem: {archived_file_path}")
             return
             
-        # Create document archive directory
+        # Neither persistent storage nor filesystem has the file
+        logger.warning(f"⚠️  Document {document_id} not found for archival - may have been processed in memory or already cleaned up")
+        
+        # Create archive directory with metadata even if no file exists
         archive_dir = Path("document_archives") / document_id
         archive_dir.mkdir(parents=True, exist_ok=True)
         
-        # Archive original file
-        archived_file_path = archive_dir / f"original_{file_path.name}"
+        # Write processing metadata for audit trail
+        metadata_file = archive_dir / "processing_metadata.txt"
+        with open(metadata_file, 'w') as f:
+            f.write(f"Document ID: {document_id}\n")
+            f.write(f"Processing Date: {datetime.now().isoformat()}\n")
+            f.write("Note: Original file not available for archival (processed in memory or cleanup completed)\n")
         
-        # Move file to archive
-        import shutil
-        shutil.copy2(str(file_path), str(archived_file_path))
-        logger.info(f"📁 Document archived: {archived_file_path}")
+        logger.info(f"� Processing metadata archived for {document_id}")
         
     except Exception as e:
         logger.error(f"Failed to archive document {document_id}: {str(e)}")
+        # Ensure archive directory exists even on error for audit trail
+        try:
+            archive_dir = Path("document_archives") / document_id
+            archive_dir.mkdir(parents=True, exist_ok=True)
+            error_file = archive_dir / "archival_error.txt"
+            with open(error_file, 'w') as f:
+                f.write(f"Archival Error: {str(e)}\n")
+                f.write(f"Timestamp: {datetime.now().isoformat()}\n")
+        except:
+            pass  # Silent fail to prevent cascading errors
 
 
 async def process_upload_tasks(

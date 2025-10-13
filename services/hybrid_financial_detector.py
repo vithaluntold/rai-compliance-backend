@@ -21,7 +21,6 @@ class DetectionStrategy(Enum):
     PATTERN_ONLY = "pattern_based"
     AI_ENHANCED = "ai_enhanced" 
     HYBRID_CONSENSUS = "hybrid_consensus"
-    FALLBACK_RECOVERY = "fallback_recovery"
 
 
 @dataclass 
@@ -62,7 +61,7 @@ class HybridFinancialContent:
     total_confidence: float
     strategy_breakdown: Dict[str, int]
     processing_metrics: Dict[str, float]
-    fallback_activations: int = 0
+
     # API compatibility fields
     validation_summary: str = ""
     content_type: str = "hybrid_financial_content"
@@ -89,7 +88,6 @@ class HybridFinancialContent:
             "total_confidence": self.total_confidence,
             "strategy_breakdown": self.strategy_breakdown,
             "processing_metrics": self.processing_metrics,
-            "fallback_activations": self.fallback_activations,
             "validation_summary": self.validation_summary,
             "content_type": self.content_type,
             "pattern_consensus": self.pattern_consensus
@@ -242,17 +240,9 @@ class LightweightAIEnhancer:
         # AI confidence boost calculation
         ai_confidence = min(0.8, semantic_score)  # Cap at 80% for rule-based AI
         
-        # Determine if AI should enhance pattern result
-        should_enhance = (
-            pattern_result["confidence"] < 0.5 and  # Low pattern confidence
-            ai_confidence > 0.3  # But AI sees financial indicators
-        )
-        
         return {
             "ai_confidence": ai_confidence,
-            "semantic_indicators": semantic_indicators,
-            "should_enhance": should_enhance,
-            "enhancement_reason": "semantic_context" if should_enhance else None
+            "semantic_indicators": semantic_indicators
         }
 
 
@@ -276,8 +266,7 @@ class HybridFinancialDetector:
         self.metrics = {
             "pattern_only_count": 0,
             "ai_enhanced_count": 0,
-            "hybrid_consensus_count": 0,
-            "fallback_activations": 0
+            "hybrid_consensus_count": 0
         }
         
         logger.info("✅ Hybrid system ready: Pattern-first with AI enhancement")
@@ -316,17 +305,11 @@ class HybridFinancialDetector:
                 self.metrics["hybrid_consensus_count"] += 1
                 
             else:
-                # Low pattern confidence - try AI enhancement
+                # Low pattern confidence - use AI enhancement
                 ai_result = self.ai_enhancer.ai_enhance_detection(document_text, pattern_result)
-                
-                if ai_result["should_enhance"]:
-                    strategy = DetectionStrategy.AI_ENHANCED
-                    final_confidence = max(pattern_confidence, ai_result["ai_confidence"])
-                    self.metrics["ai_enhanced_count"] += 1
-                else:
-                    strategy = DetectionStrategy.FALLBACK_RECOVERY
-                    final_confidence = pattern_confidence  # Keep original
-                    self.metrics["fallback_activations"] += 1
+                strategy = DetectionStrategy.AI_ENHANCED
+                final_confidence = max(pattern_confidence, ai_result["ai_confidence"])
+                self.metrics["ai_enhanced_count"] += 1
             
             # Phase 3: Generate results
             statements = self._generate_hybrid_statements(
@@ -338,8 +321,7 @@ class HybridFinancialDetector:
             strategy_breakdown = {
                 "pattern_only": self.metrics["pattern_only_count"],
                 "ai_enhanced": self.metrics["ai_enhanced_count"], 
-                "hybrid_consensus": self.metrics["hybrid_consensus_count"],
-                "fallback_recovery": self.metrics["fallback_activations"]
+                "hybrid_consensus": self.metrics["hybrid_consensus_count"]
             }
             
             processing_metrics = {
@@ -355,8 +337,7 @@ class HybridFinancialDetector:
                 statements=statements,
                 total_confidence=final_confidence * 100,  # Convert to percentage
                 strategy_breakdown=strategy_breakdown,
-                processing_metrics=processing_metrics,
-                fallback_activations=self.metrics["fallback_activations"]
+                processing_metrics=processing_metrics
             )
             
         except Exception as e:

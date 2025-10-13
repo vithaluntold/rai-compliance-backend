@@ -94,15 +94,49 @@ async def get_document_status_multiprocess(document_id: str) -> Union[Dict[str, 
                 "message": results.get("message", "Analysis completed")
             }
         
-        # Document not found anywhere
+        # Document not found anywhere - provide helpful debugging info
         logger.warning(f"❌ Document {document_id} not found in multi-process or legacy systems")
         
+        # Check if document was recently processed but files cleaned up
+        import os
+        from pathlib import Path
+        
+        debug_info = {
+            "checked_locations": [
+                "Multi-process analyzer memory",
+                "Legacy results files",
+                "Persistent storage database"
+            ],
+            "possible_causes": [
+                "Document never uploaded",
+                "Document processed and cleaned up", 
+                "Document ID format error",
+                "Processing failed and cleaned up"
+            ]
+        }
+        
+        # Check for any evidence the document existed
+        uploads_dir = Path("uploads")
+        if uploads_dir.exists():
+            matching_files = list(uploads_dir.glob(f"*{document_id}*"))
+            debug_info["upload_files_found"] = [f.name for f in matching_files]
+        
+        archive_dir = Path("document_archives") / document_id
+        if archive_dir.exists():
+            debug_info["archive_exists"] = True
+            debug_info["archive_files"] = [f.name for f in archive_dir.glob("*")]
+        else:
+            debug_info["archive_exists"] = False
+            
         return JSONResponse(
             status_code=404,
             content={
                 "error": "Document not found",
-                "message": f"Document {document_id} not found in system",
-                "document_id": document_id
+                "message": f"Document {document_id} not found in system - may have been processed and cleaned up, or never uploaded",
+                "document_id": document_id,
+                "status": "not_found",
+                "metadata_extraction": "not_found",
+                "debug_info": debug_info
             }
         )
         
