@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional
 from openai import AzureOpenAI  # type: ignore
 
 from services.ai_prompts import ai_prompts
-from services.financial_statement_detector import FinancialStatementDetector
+from services.hybrid_financial_detector import detect_financial_statements_hybrid
 from services.rate_limiter import (
     check_rate_limit_with_backoff,
     check_duplicate_question,
@@ -155,20 +155,35 @@ class ComplianceAnalyzer:
             
             # STEP 2: MANDATORY Financial Statement Detection
             try:
-                logger.info(f"🎯 EXCLUSIVE PIPELINE: Financial Statement Detector (MANDATORY)")
+                logger.info(f"🎯 EXCLUSIVE PIPELINE: Hybrid Financial Statement Detector (MANDATORY)")
                 
-                # Initialize financial statement detector
-                fs_detector = FinancialStatementDetector()
-                
-                # Detect financial statements in the document
-                financial_content = fs_detector.detect_financial_statements(
+                # Use hybrid financial statement detection
+                financial_content = detect_financial_statements_hybrid(
                     document_text=document_text_for_processing, 
                     document_id=current_document_id
                 )
                 
                 if financial_content and financial_content.statements:
-                    # Get validated financial statement content for AI analysis
-                    validated_financial_content = fs_detector.get_content_for_compliance_analysis(financial_content)
+                    # Extract validated financial statement content for AI analysis
+                    validated_financial_content = self._get_content_for_compliance_analysis(financial_content)
+                    
+                    # EXTRACT STRUCTURED FINANCIAL DATA FOR JSON OUTPUT
+                    try:
+                        logger.info("📊 Extracting structured financial data for JSON compliance analysis...")
+                        structured_financial_data = self._extract_structured_financial_data(financial_content)
+                        
+                        if structured_financial_data and structured_financial_data.get("financial_data"):
+                            logger.info(f"✅ STRUCTURED FINANCIAL DATA EXTRACTED: {len(structured_financial_data['financial_data'])} statements")
+                            
+                            # Store structured data for inclusion in final result
+                            self.structured_financial_data = structured_financial_data
+                        else:
+                            logger.warning("⚠️ No structured financial data could be extracted")
+                            self.structured_financial_data = {"financial_data": [], "extraction_status": "no_data"}
+                    
+                    except Exception as extraction_error:
+                        logger.error(f"❌ Structured financial data extraction failed: {extraction_error}")
+                        self.structured_financial_data = {"financial_data": [], "extraction_status": "extraction_failed", "error": str(extraction_error)}
                     
                     if validated_financial_content and not validated_financial_content.startswith("ERROR:"):
                         # SUCCESS: Use ONLY validated financial statement content
@@ -627,6 +642,11 @@ class ComplianceAnalyzer:
             if document_extracts:
                 result["document_extracts"] = document_extracts
 
+        # Include structured financial data if available
+        if hasattr(self, 'structured_financial_data') and self.structured_financial_data:
+            result["structured_financial_data"] = self.structured_financial_data
+            logger.info(f"📊 Added structured financial data to compliance result: {len(self.structured_financial_data.get('financial_data', []))} statements")
+
         return result
 
     def _log_processed_result(self, result: dict):
@@ -684,3 +704,83 @@ class ComplianceAnalyzer:
             return "medium"
         else:
             return "low"
+    
+    def _get_content_for_compliance_analysis(self, financial_content) -> str:
+        """Extract validated financial statement content for compliance analysis"""
+        try:
+            if not financial_content or not financial_content.statements:
+                return "ERROR: No financial statements found"
+            
+            # Combine all statement content with metadata
+            content_parts = []
+            content_parts.append(f"Financial Statement Analysis Summary:")
+            content_parts.append(f"Total Confidence: {financial_content.total_confidence:.1f}%")
+            content_parts.append(f"Content Type: {financial_content.content_type}")
+            content_parts.append(f"Validation Summary: {financial_content.validation_summary}")
+            content_parts.append("")
+            
+            for i, stmt in enumerate(financial_content.statements, 1):
+                content_parts.append(f"Statement {i}: {stmt.statement_type}")
+                content_parts.append(f"Confidence: {stmt.confidence_score:.1f}%")
+                if hasattr(stmt, 'strategy_used'):
+                    content_parts.append(f"Strategy: {stmt.strategy_used.value}")
+                if hasattr(stmt, 'content'):
+                    # Truncate content to reasonable length for analysis
+                    content_preview = stmt.content[:2000] + "..." if len(stmt.content) > 2000 else stmt.content
+                    content_parts.append(f"Content Preview: {content_preview}")
+                content_parts.append("-" * 50)
+            
+            return "\n".join(content_parts)
+            
+        except Exception as e:
+            logger.error(f"Error extracting content for compliance analysis: {e}")
+            return f"ERROR: Failed to extract content - {str(e)}"
+    
+    def _extract_structured_financial_data(self, financial_content) -> dict:
+        """Extract structured financial data for JSON output"""
+        try:
+            if not financial_content or not financial_content.statements:
+                return {"financial_data": [], "extraction_status": "no_statements"}
+            
+            structured_data = {
+                "financial_data": [],
+                "extraction_status": "success",
+                "total_confidence": financial_content.total_confidence,
+                "content_type": financial_content.content_type,
+                "validation_summary": financial_content.validation_summary
+            }
+            
+            # Add hybrid-specific metadata if available
+            if hasattr(financial_content, 'strategy_breakdown'):
+                structured_data["strategy_breakdown"] = financial_content.strategy_breakdown
+            
+            if hasattr(financial_content, 'processing_metrics'):
+                structured_data["processing_metrics"] = financial_content.processing_metrics
+            
+            for stmt in financial_content.statements:
+                stmt_data = {
+                    "statement_type": stmt.statement_type,
+                    "confidence_score": stmt.confidence_score if hasattr(stmt, 'confidence_score') else 0.0
+                }
+                
+                # Add hybrid-specific data
+                if hasattr(stmt, 'strategy_used'):
+                    stmt_data["strategy_used"] = stmt.strategy_used.value
+                if hasattr(stmt, 'pattern_confidence'):
+                    stmt_data["pattern_confidence"] = stmt.pattern_confidence
+                if hasattr(stmt, 'ai_confidence'):
+                    stmt_data["ai_confidence"] = stmt.ai_confidence
+                if hasattr(stmt, 'validation_markers'):
+                    stmt_data["validation_markers"] = stmt.validation_markers
+                
+                structured_data["financial_data"].append(stmt_data)
+            
+            return structured_data
+            
+        except Exception as e:
+            logger.error(f"Error extracting structured financial data: {e}")
+            return {
+                "financial_data": [],
+                "extraction_status": "extraction_failed",
+                "error": str(e)
+            }

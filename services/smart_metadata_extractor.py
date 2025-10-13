@@ -214,7 +214,7 @@ class SmartMetadataExtractor:
         return results
 
     async def _extract_company_name_ai(self, text: str) -> Tuple[str, float, str]:
-        """AI-powered company name extraction with NER fallback"""
+        """AI-powered company name extraction with intelligent document analysis"""
         try:
             # Try spaCy NER first if available
             ner_result = self._extract_company_name_ner(text)
@@ -222,32 +222,64 @@ class SmartMetadataExtractor:
                 logger.info(f"🔧 NER extracted company name: {ner_result[0]}")
                 return ner_result
             
-            # Fallback to AI-based extraction
+            # Smart extraction: Look for document title patterns first
             lines = text.split('\n')
-            header_text = '\n'.join(lines[:50])  # Focus on document headers
             
-            # Prepare AI prompt for company name extraction
-            system_prompt = """You are an expert at extracting company names from financial documents. 
-            Your task is to identify the PRIMARY company name that is the main subject of the document.
+            # Strategy 1: Find lines that look like document titles
+            title_lines = []
+            for i, line in enumerate(lines[:20]):  # Only first 20 lines for titles
+                line = line.strip()
+                if not line:
+                    continue
+                
+                # Look for title patterns
+                if (any(pattern in line.lower() for pattern in [
+                    'financial statements', 'annual report', 'consolidated statements',
+                    'audited financial', 'consolidated financial'
+                ]) and len(line) > 20 and len(line) < 150):
+                    title_lines.append((i, line))
             
-            Rules:
-            1. Extract the OFFICIAL company name (not generic terms like "The Group")
-            2. Include legal suffixes (Ltd, PJSC, PLC, Inc, Group, etc.)
-            3. Prioritize names in document headers, titles, and official sections
-            4. If multiple entities exist, choose the PRIMARY subject company
+            # Strategy 2: Extract company name from title context only
+            title_context = ""
+            if title_lines:
+                # Get 5 lines before and after each title line for context
+                for line_num, title_line in title_lines:
+                    start_line = max(0, line_num - 2)
+                    end_line = min(len(lines), line_num + 3)
+                    context_block = '\n'.join(lines[start_line:end_line])
+                    title_context += context_block + '\n\n'
+            
+            # If no title context found, use first 10 lines as fallback
+            if not title_context:
+                title_context = '\n'.join(lines[:10])
+            
+            # Prepare focused AI prompt for company name extraction
+            system_prompt = """You are an expert at extracting company names from financial document titles and headers. 
+            Your task is to identify the PRIMARY company name from document titles, NOT from business descriptions.
+            
+            CRITICAL RULES:
+            1. Look ONLY in document titles like "Consolidated Financial Statements of [COMPANY NAME]"
+            2. Extract the OFFICIAL company name (not generic terms like "The Group", "The Company")
+            3. Include legal suffixes (Ltd, PJSC, PLC, Inc, Group, etc.)
+            4. IGNORE business activity descriptions or revenue statements
             5. Return ONLY the company name, nothing else
-            6. If no clear company name exists, return "NONE"
+            6. If no clear company name exists in titles, return "NONE"
             
-            Examples:
-            - "Phoenix Digital Assets Group" not "The Group"
-            - "ALDAR Properties PJSC" not "The Company"
-            - "Microsoft Corporation" not "The Corporation"
+            Examples of CORRECT extraction:
+            - From "Consolidated Financial Statements of Phoenix Group PLC" → "Phoenix Group PLC"
+            - From "Annual Report - ALDAR Properties PJSC" → "ALDAR Properties PJSC"
+            - From "Microsoft Corporation Financial Statements" → "Microsoft Corporation"
+            
+            Examples of WRONG extraction:
+            - From "The Group recognises revenue..." → DO NOT extract "The Group"
+            - From "The Company operates in..." → DO NOT extract "The Company"
             """
             
-            user_prompt = f"""Extract the primary company name from this financial document header:
+            user_prompt = f"""Extract the primary company name from these document title/header lines ONLY:
 
-{header_text}
+{title_context.strip()}
 
+Look for the official company name in document titles, not in business descriptions.
 Company name:"""
 
             response = self.ai_service.openai_client.chat.completions.create(
@@ -266,9 +298,12 @@ Company name:"""
                 ai_company = re.sub(r'[^\w\s&\-\.,()]+', '', ai_company)  # Keep valid company name characters
                 ai_company = ai_company.strip(' ."')
                 
-                if len(ai_company) < 80 and not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document']):
+                # Reject generic terms
+                if (len(ai_company) < 80 and 
+                    not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document', 'the group', 'the company']) and
+                    ai_company.lower() not in ['the group', 'the company', 'group', 'company']):
                     logger.info(f"🤖 AI extracted company name: {ai_company}")
-                    return ai_company, 0.9, header_text[:200]
+                    return ai_company, 0.9, title_context[:200]
             
             return "", 0.0, ""
             
@@ -327,153 +362,123 @@ Company name:"""
             return "", 0.0, ""
     
     def _extract_company_name_pattern(self, text: str) -> Tuple[str, float, str]:
-        """Extract company name with priority on document headers and main entity"""
+        """Extract company name from document titles and official sections only"""
         best_match = ""
         best_confidence = 0.0
         best_context = ""
 
-        # Split text into lines and sentences for better context analysis
         lines = text.split('\n')
-        sentences = re.split(r'[.!?]+', text)
-
-        # Priority 1: Look for company names in document headers/titles (first few lines)
-        header_lines = lines[:30]  # First 30 lines likely contain headers
         
-        # Dynamic patterns for company identification
-        company_indicators = [
-            r'\b([A-Z][A-Za-z\s&]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH))\b',
-            r'\b([A-Z][A-Za-z\s&]+\s+(?:Company|Corp|Enterprises|Holdings|Partners))\b',
-            r'\b((?:The\s+)?[A-Z][A-Za-z\s&]+\s+Group(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)\b',
-            r'\b([A-Z][A-Za-z\s&]{3,40})\s+(?:Financial\s+Statements|Annual\s+Report)',
+        # Strategy 1: Look for company names in document title patterns
+        title_patterns = [
+            # "Consolidated Financial Statements of Phoenix Group PLC"
+            r'(?:consolidated|audited|annual)?\s*financial\s+statements?\s+(?:of\s+|for\s+)?([A-Z][A-Za-z\s&\-\.]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings)(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)',
+            
+            # "Phoenix Group PLC - Annual Report"
+            r'^([A-Z][A-Za-z\s&\-\.]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings)(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)\s*[-–—]\s*(?:annual|financial|consolidated)',
+            
+            # "Annual Report 2024 - Phoenix Group PLC"
+            r'(?:annual\s+report|financial\s+statements?)\s+\d{4}\s*[-–—]\s*([A-Z][A-Za-z\s&\-\.]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings)(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)',
         ]
         
-        for line in header_lines:
+        # Search in first 15 lines for document titles
+        for i, line in enumerate(lines[:15]):
             line = line.strip()
-            if len(line) < 5 or len(line) > 150:
+            if len(line) < 10 or len(line) > 200:
                 continue
             
-            # Try each pattern to find company names
-            for pattern in company_indicators:
+            for pattern in title_patterns:
                 matches = re.findall(pattern, line, re.IGNORECASE)
                 for match in matches:
-                    # Clean the match
-                    potential_company = match.strip()
+                    company_name = match.strip()
                     
-                    # Remove common prefixes/suffixes that aren't part of company name
-                    potential_company = re.sub(r'^\s*(?:consolidated\s+|audited\s+|annual\s+|financial\s+statements?\s+(?:of\s+|for\s+)?)', '', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'(?:\s+financial\s+statements?|\s+annual\s+report).*$', '', potential_company, flags=re.IGNORECASE)
-                    potential_company = re.sub(r'\s+', ' ', potential_company).strip()
+                    # Clean up the company name
+                    company_name = re.sub(r'\s+', ' ', company_name)
+                    company_name = company_name.strip(' .,')
                     
-                    # Skip if too short, too long, or contains obvious non-company terms
-                    if (len(potential_company) < 3 or len(potential_company) > 80 or
-                        any(term in potential_company.lower() for term in ['statement', 'report', 'audit', 'note', 'page', 'year ended'])):
-                        continue
-                    
-                    # Calculate confidence based on position and characteristics
-                    confidence = 0.7
-                    if any(indicator in potential_company for indicator in ['Group', 'Ltd', 'Limited', 'PJSC', 'PLC', 'Inc']):
-                        confidence += 0.2
-                    if lines.index(line) < 10:  # Higher confidence for early lines
-                        confidence += 0.1
-                    
-                    confidence = min(confidence, 0.95)
-                    
-                    if confidence > best_confidence:
-                        best_match = potential_company
-                        best_confidence = confidence
-                        best_context = line.strip()
-                        logger.info(f"🏢 Pattern-based company extraction found: {best_match}")
-            
-            # Look for other PJSC companies if ALDAR not found
-            if not best_match:
-                # Look for PJSC patterns in headers
-                header_patterns = [
-                    r'([A-Z][A-Za-z\s]+\s+PJSC)(?=\s|$|\.)',  # Company PJSC pattern
-                    r'([A-Z][A-Za-z\s]+\s+(?:LLC|Ltd|Limited|Corporation|Inc))(?=\s|$|\.)'  # Other entities
-                ]
-                
-                for pattern in header_patterns:
-                    matches = re.findall(pattern, line, re.IGNORECASE)
-                    for match in matches:
-                        cleaned_match = re.sub(r'\s+', ' ', match.strip())
+                    # Validate company name
+                    if (len(company_name) >= 5 and len(company_name) <= 80 and
+                        not any(term in company_name.lower() for term in ['statement', 'report', 'audit', 'note', 'year', 'ended', 'page']) and
+                        company_name.lower() not in ['the group', 'the company', 'group', 'company']):
                         
-                        # Clean up common prefixes that get captured
-                        cleaned_match = re.sub(r'^.*?(statements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(financial\s+statements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(consolidated\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(audited\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = cleaned_match.strip()
-                        
-                        # Filter out obvious non-company names
-                        if (len(cleaned_match) > 100 or len(cleaned_match) < 3 or
-                            any(term in cleaned_match.lower() for term in ['statement', 'report', 'audit', 'note', 'page', 'director']) or
-                            cleaned_match.lower().startswith(('consolidated ', 'audited ', 'financial '))):
-                            continue
-                    
-                        # Higher confidence for PJSC and Properties patterns
-                        confidence = 0.95 if 'PJSC' in cleaned_match else 0.8
-                        
-                        if confidence > best_confidence:
-                            best_match = cleaned_match
-                            best_confidence = confidence
-                            best_context = line.strip()
-
-        # Priority 2: Look in structured sections if no header match
-        if not best_match:
-            for sentence in sentences:
-                sentence = sentence.strip()
-                if len(sentence) < 20:
-                    continue
-                
-                # Look for company patterns in sentences
-                for pattern in self.company_patterns:
-                    matches = re.findall(pattern, sentence, re.IGNORECASE)
-                    for match in matches:
-                        cleaned_match = re.sub(r'\s+', ' ', match.strip())
-                        
-                        # Clean up common prefixes and suffixes that get captured incorrectly
-                        original_match = cleaned_match
-                        cleaned_match = re.sub(r'^.*?(\bstatements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(\bfinancial\s+statements?\s+of\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(\bconsolidated\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(\baudited\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = re.sub(r'^.*?(\breports?\s+and\s+)', '', cleaned_match, flags=re.IGNORECASE)
-                        cleaned_match = cleaned_match.strip()
-                        
-                        # If we cleaned too much, try to extract just the company name part
-                        if not cleaned_match and "ALDAR PROPERTIES PJSC" in original_match.upper():
-                            # Extract the company name specifically
-                            company_match = re.search(r'(ALDAR\s+PROPERTIES\s+PJSC)', original_match, re.IGNORECASE)
-                            if company_match:
-                                cleaned_match = "ALDAR Properties PJSC"
-                        
-                        # Skip obviously wrong matches
-                        if (len(cleaned_match) < 5 or len(cleaned_match) > 100 or
-                            'plots of land' in cleaned_match.lower() or
-                            'security services' in cleaned_match.lower() or
-                            'sole proprietorship' in cleaned_match.lower() or
-                            'statements' in cleaned_match.lower() or
-                            'financial' in cleaned_match.lower() or
-                            'report' in cleaned_match.lower() or
-                            len(cleaned_match.split()) > 8):
-                            continue
-                        
-                        # Calculate confidence
-                        confidence = 0.6  # Base confidence
-                        
-                        # Higher confidence for business entity indicators
-                        if re.search(r'\b(Properties|Holdings|Group|Bank|Company|PJSC|PLC)\b', cleaned_match, re.IGNORECASE):
-                            confidence = 0.8
-                        
-                        # Prefer main entity over subsidiaries
-                        if 'Properties' in cleaned_match and 'PJSC' in cleaned_match:
+                        # Higher confidence for legal entity indicators
+                        confidence = 0.8
+                        if any(suffix in company_name for suffix in ['PJSC', 'PLC', 'Ltd', 'Limited', 'Inc', 'Corporation']):
+                            confidence = 0.95
+                        elif 'Group' in company_name:
                             confidence = 0.9
                         
+                        # Prefer earlier lines
+                        if i < 5:
+                            confidence = min(confidence + 0.05, 0.99)
+                        
                         if confidence > best_confidence:
-                            best_match = cleaned_match
+                            best_match = company_name
                             best_confidence = confidence
-                            best_context = sentence.strip()
-                            logger.info(f"🏢 Pattern-based company extraction found: {best_match}")
+                            best_context = line
+                            logger.info(f"🏢 Title pattern found company: {best_match} (confidence: {confidence})")
+        
+        # Strategy 2: If no title match, look for company registration/incorporation info
+        if not best_match:
+            incorporation_patterns = [
+                # "Phoenix Group PLC (incorporated in England and Wales)"
+                r'([A-Z][A-Za-z\s&\-\.]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings)(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)\s*\([^)]*(?:incorporated|registered|domiciled)[^)]*\)',
+                
+                # "Company Name: Phoenix Group PLC"
+                r'(?:company\s+name|entity\s+name|legal\s+name):\s*([A-Z][A-Za-z\s&\-\.]+(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings)(?:\s+(?:Ltd|Limited|LLC|Inc|PJSC|PLC))?)',
+            ]
+            
+            for line in lines[:30]:  # Search more lines for incorporation info
+                line = line.strip()
+                if len(line) < 10:
+                    continue
+                
+                for pattern in incorporation_patterns:
+                    matches = re.findall(pattern, line, re.IGNORECASE)
+                    for match in matches:
+                        company_name = match.strip()
+                        company_name = re.sub(r'\s+', ' ', company_name)
+                        company_name = company_name.strip(' .,')
+                        
+                        if (len(company_name) >= 5 and len(company_name) <= 80 and
+                            not any(term in company_name.lower() for term in ['statement', 'report', 'audit', 'note', 'year', 'ended']) and
+                            company_name.lower() not in ['the group', 'the company', 'group', 'company']):
+                            
+                            confidence = 0.85
+                            if any(suffix in company_name for suffix in ['PJSC', 'PLC', 'Ltd', 'Limited']):
+                                confidence = 0.9
+                            
+                            if confidence > best_confidence:
+                                best_match = company_name
+                                best_confidence = confidence
+                                best_context = line
+                                logger.info(f"🏢 Incorporation pattern found company: {best_match}")
+        
+        # Strategy 3: Last resort - look for standalone legal entity names in early lines
+        if not best_match:
+            for i, line in enumerate(lines[:10]):
+                line = line.strip()
+                if len(line) < 5 or len(line) > 100:
+                    continue
+                
+                # Simple pattern for standalone company names with legal suffixes
+                standalone_pattern = r'^([A-Z][A-Za-z\s&\-\.]{5,50}(?:Group|Ltd|Limited|LLC|Inc|Corporation|PJSC|PLC|AG|GmbH|Holdings))$'
+                match = re.match(standalone_pattern, line)
+                
+                if match:
+                    company_name = match.group(1).strip()
+                    if (company_name.lower() not in ['the group', 'the company', 'group', 'company'] and
+                        not any(term in company_name.lower() for term in ['statement', 'report', 'audit'])):
+                        
+                        confidence = 0.75
+                        if any(suffix in company_name for suffix in ['PJSC', 'PLC', 'Ltd', 'Limited']):
+                            confidence = 0.85
+                        
+                        if confidence > best_confidence:
+                            best_match = company_name
+                            best_confidence = confidence
+                            best_context = line
+                            logger.info(f"🏢 Standalone pattern found company: {best_match}")
 
         return best_match, best_confidence, best_context
 

@@ -18,7 +18,7 @@ from services.document_processor import DocumentProcessor
 # from services.progress import progress_service, ProgressStatus # Removed unused import
 from services.checklist_utils import load_checklist
 from services.vector_store import VectorStore, generate_document_id, get_vector_store
-from services.financial_statement_detector import FinancialStatementDetector
+from services.hybrid_financial_detector import detect_financial_statements_hybrid
 from services.rate_limiter import (
     check_rate_limit_with_backoff,
     check_duplicate_question,
@@ -101,6 +101,9 @@ class AIService:
         
         # Initialize document processor
         self.document_processor = DocumentProcessor(ai_service=self)
+        
+        # Storage for structured financial data (extracted once per document)
+        self.structured_financial_data = None
         logger.info(f"AIService (Azure) initialized with {NUM_WORKERS} workers")
         global vector_store
         if vector_store is None:
@@ -294,6 +297,13 @@ class AIService:
         Process a document for compliance analysis.
         Delegates to the document processor for modular processing.
         """
+        # Set current document ID
+        self.current_document_id = document_id
+        
+        # Extract structured financial data once at the start
+        if text and not self.structured_financial_data:
+            self.extract_structured_financial_data_once(text)
+        
         return await self.document_processor.process_document(
             document_id=document_id,
             text=text,
@@ -303,6 +313,45 @@ class AIService:
 
     # Model determination and section processing methods moved to document processor
 
+    def extract_structured_financial_data_once(self, document_text: str) -> None:
+        """
+        Extract structured financial data once per document and cache it.
+        This should be called at the start of compliance analysis.
+        """
+        try:
+            if self.structured_financial_data is not None:
+                logger.info("📊 Structured financial data already extracted for this document")
+                return
+            
+            logger.info("📊 Extracting structured financial data for compliance analysis...")
+            
+            # Use hybrid financial statement detector to detect and extract structured data
+            financial_content = detect_financial_statements_hybrid(
+                document_text=document_text, 
+                document_id=self.current_document_id
+            )
+            
+            if financial_content and financial_content.statements:
+                # Extract structured data using the same format as compliance analyzer
+                structured_data = self._extract_structured_financial_data_for_ai(financial_content)
+                self.structured_financial_data = structured_data
+                
+                logger.info(f"✅ Structured financial data extracted: {len(structured_data.get('financial_data', []))} statements")
+            else:
+                logger.info("📊 No financial statements found for structured extraction")
+                self.structured_financial_data = {
+                    "financial_data": [], 
+                    "extraction_status": "no_financial_statements"
+                }
+                
+        except Exception as e:
+            logger.error(f"❌ Error extracting structured financial data: {e}")
+            self.structured_financial_data = {
+                "financial_data": [], 
+                "extraction_status": "extraction_error",
+                "error": str(e)
+            }
+
     def analyze_chunk(
         self, chunk: str, question: str, standard_id: Optional[str] = None
     ) -> dict:
@@ -310,7 +359,7 @@ class AIService:
         Analyze a chunk of annual report content against a compliance checklist question.
         Delegates to the compliance analyzer for modular processing.
         """
-        return self.compliance_analyzer.analyze_chunk(
+        result = self.compliance_analyzer.analyze_chunk(
             chunk=chunk,
             question=question, 
             standard_id=standard_id,
@@ -318,6 +367,12 @@ class AIService:
             standard_specific_context_func=self._get_standard_specific_context,
             enhanced_evidence=None  # Can be passed through if needed
         )
+        
+        # Include structured financial data in the result if available
+        if self.structured_financial_data:
+            result["structured_financial_data"] = self.structured_financial_data
+            
+        return result
 
     def _calculate_adequacy(
         self, confidence: float, has_evidence: bool, status: str

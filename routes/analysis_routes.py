@@ -34,7 +34,7 @@ from services.content_filter import get_content_filter
 from services.persistent_storage import get_persistent_storage, get_persistent_storage_manager
 from services.progress_tracker import get_progress_tracker
 # Document processing uses existing _extract_document_text function
-from services.financial_statement_detector import FinancialStatementDetector
+from services.hybrid_financial_detector import detect_financial_statements_hybrid
 from services.smart_metadata_extractor import SmartMetadataExtractor
 from services.vector_store import generate_document_id, get_vector_store
 from services.multi_process_document_analyzer import get_document_analyzer
@@ -800,14 +800,12 @@ async def process_upload_tasks(
 
 
 async def _identify_financial_statements(document_id: str, text: str) -> dict:
-    """Identify financial statements using the financial statement detector."""
+    """Identify financial statements using the hybrid financial statement detector."""
     logger.info(f"🏦 Starting financial statement identification for document {document_id}")
     
     try:
-        detector = FinancialStatementDetector()
-        
-        # Detect financial statements
-        financial_content = detector.detect_financial_statements(text, document_id)
+        # Use hybrid detection approach
+        financial_content = detect_financial_statements_hybrid(text, document_id)
         
         # Convert to serializable format - INCLUDE FULL CONTENT FOR AI ANALYSIS
         result = {
