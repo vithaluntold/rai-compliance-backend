@@ -239,31 +239,51 @@ class SmartMetadataExtractor:
                 ]) and len(line) > 20 and len(line) < 150):
                     title_lines.append((i, line))
             
-            # Strategy 2: Extract company name from title context only
+            # Strategy 2: Extract company name from title context only (prioritize main title, exclude auditor sections)
             title_context = ""
+            main_title_context = ""
+            
             if title_lines:
-                # Get 5 lines before and after each title line for context
+                # Get context around title lines, but prioritize main document title
                 for line_num, title_line in title_lines:
                     start_line = max(0, line_num - 2)
                     end_line = min(len(lines), line_num + 3)
                     context_block = '\n'.join(lines[start_line:end_line])
+                    
+                    # Skip auditor-related sections
+                    if not any(auditor_term in context_block.lower() for auditor_term in [
+                        'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report',
+                        'we have audited', 'audit opinion'
+                    ]):
+                        main_title_context += context_block + '\n\n'
+                    
                     title_context += context_block + '\n\n'
             
-            # If no title context found, use first 10 lines as fallback
-            if not title_context:
-                title_context = '\n'.join(lines[:10])
+            # Prioritize main title context if found, otherwise use all title context
+            if main_title_context.strip():
+                title_context = main_title_context
+            elif not title_context:
+                # If no title context found, use first 10 lines but skip auditor sections
+                first_lines = []
+                for line in lines[:15]:
+                    if not any(auditor_term in line.lower() for auditor_term in [
+                        'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report'
+                    ]):
+                        first_lines.append(line)
+                title_context = '\n'.join(first_lines[:10])
             
             # Prepare focused AI prompt for company name extraction
-            system_prompt = """You are an expert at extracting company names from financial document titles and headers. 
-            Your task is to identify the PRIMARY company name from document titles, NOT from business descriptions.
+            system_prompt = """You are an expert at extracting CLIENT company names from financial document titles and headers. 
+            Your task is to identify the PRIMARY CLIENT company name, NOT the auditor or audit firm.
             
             CRITICAL RULES:
             1. Look ONLY in document titles like "Consolidated Financial Statements of [COMPANY NAME]"
-            2. Extract the OFFICIAL company name (not generic terms like "The Group", "The Company")
+            2. Extract the OFFICIAL CLIENT company name (not generic terms like "The Group", "The Company")
             3. Include legal suffixes (Ltd, PJSC, PLC, Inc, Group, etc.)
             4. IGNORE business activity descriptions or revenue statements
-            5. Return ONLY the company name, nothing else
-            6. If no clear company name exists in titles, return "NONE"
+            5. IGNORE auditor names (companies ending in LLP, Chartered Accountants, audit firms)
+            6. Return ONLY the client company name, nothing else
+            7. If no clear client company name exists in titles, return "NONE"
             
             Examples of CORRECT extraction:
             - From "Consolidated Financial Statements of Phoenix Group PLC" → "Phoenix Group PLC"
@@ -273,6 +293,11 @@ class SmartMetadataExtractor:
             Examples of WRONG extraction:
             - From "The Group recognises revenue..." → DO NOT extract "The Group"
             - From "The Company operates in..." → DO NOT extract "The Company"
+            - From "RAI LLP, Chartered Accountants" → DO NOT extract "RAI LLP" (this is the auditor)
+            - From "KPMG LLP, Dubai" → DO NOT extract "KPMG LLP" (this is the auditor)
+            - From "Ernst & Young LLP" → DO NOT extract (this is the auditor)
+            
+            PRIORITY: The company in the main title/header is the CLIENT, not companies mentioned in auditor sections.
             """
             
             user_prompt = f"""Extract the primary company name from these document title/header lines ONLY:
@@ -298,12 +323,26 @@ Company name:"""
                 ai_company = re.sub(r'[^\w\s&\-\.,()]+', '', ai_company)  # Keep valid company name characters
                 ai_company = ai_company.strip(' ."')
                 
-                # Reject generic terms
+                # Reject generic terms AND auditor names
+                auditor_indicators = [
+                    'chartered accountants', 'audit', 'auditor', 'kpmg', 'ey', 'pwc', 
+                    'deloitte', 'ernst', 'young', 'rai llp', 'chartered', 'RAi'
+                ]
+                
+                is_likely_auditor = (
+                    ai_company.lower().endswith('llp') or 
+                    any(indicator in ai_company.lower() for indicator in auditor_indicators)
+                )
+                
+                # Reject if it looks like an auditor or generic term
                 if (len(ai_company) < 80 and 
+                    not is_likely_auditor and
                     not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document', 'the group', 'the company']) and
                     ai_company.lower() not in ['the group', 'the company', 'group', 'company']):
-                    logger.info(f"🤖 AI extracted company name: {ai_company}")
+                    logger.info(f"🤖 AI extracted client company name: {ai_company}")
                     return ai_company, 0.9, title_context[:200]
+                else:
+                    logger.info(f"🚫 Rejected potential auditor name: {ai_company}")
             
             return "", 0.0, ""
             
