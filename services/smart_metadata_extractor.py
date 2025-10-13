@@ -323,26 +323,36 @@ Company name:"""
                 ai_company = re.sub(r'[^\w\s&\-\.,()]+', '', ai_company)  # Keep valid company name characters
                 ai_company = ai_company.strip(' ."')
                 
-                # Reject generic terms AND auditor names
+                # ENHANCED AUDITOR REJECTION LOGIC
                 auditor_indicators = [
                     'chartered accountants', 'audit', 'auditor', 'kpmg', 'ey', 'pwc', 
-                    'deloitte', 'ernst', 'young', 'rai llp', 'chartered', 'RAi'
+                    'deloitte', 'ernst', 'young', 'rai llp', 'chartered', 'rai', 'accountants'
                 ]
                 
+                # Multiple checks to catch all auditor patterns
                 is_likely_auditor = (
                     ai_company.lower().endswith('llp') or 
+                    ai_company.lower().endswith('chartered accountants') or
+                    'rai' in ai_company.lower() or  # Specifically catch RAI variations
                     any(indicator in ai_company.lower() for indicator in auditor_indicators)
                 )
+                
+                # Log detailed filtering decision
+                logger.info(f"🔍 AUDITOR FILTER DEBUG - Testing: '{ai_company}'")
+                logger.info(f"   - Ends with 'llp': {ai_company.lower().endswith('llp')}")
+                logger.info(f"   - Contains 'rai': {'rai' in ai_company.lower()}")
+                logger.info(f"   - Contains auditor indicators: {any(indicator in ai_company.lower() for indicator in auditor_indicators)}")
+                logger.info(f"   - Final decision - is_likely_auditor: {is_likely_auditor}")
                 
                 # Reject if it looks like an auditor or generic term
                 if (len(ai_company) < 80 and 
                     not is_likely_auditor and
                     not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document', 'the group', 'the company']) and
                     ai_company.lower() not in ['the group', 'the company', 'group', 'company']):
-                    logger.info(f"🤖 AI extracted client company name: {ai_company}")
+                    logger.info(f"✅ AI extracted CLIENT company name: {ai_company}")
                     return ai_company, 0.9, title_context[:200]
                 else:
-                    logger.info(f"🚫 Rejected potential auditor name: {ai_company}")
+                    logger.info(f"🚫 REJECTED auditor/generic name: '{ai_company}' (is_auditor: {is_likely_auditor})")
             
             return "", 0.0, ""
             
@@ -963,21 +973,23 @@ Company name:"""
             return ""
 
     def _create_company_name_prompt_with_context(self, text: str) -> Dict[str, str]:
-        """Create enhanced company name extraction prompt with context"""
+        """Create enhanced company name extraction prompt with context and auditor filtering"""
         return {
             "system": (
-                "You are an expert at extracting company names from financial documents. "
-                "Your goal is to find the EXACT legal company name, not descriptions or activities. "
-                "Look for the official registered name that would appear on legal documents."
+                "You are an expert at extracting CLIENT company names from financial documents. "
+                "Your task is to identify the PRIMARY CLIENT company name, NOT the auditor or audit firm. "
+                "Look for the official registered client company name that would appear on legal documents."
             ),
             "user": (
                 f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
-                "EXTRACT THE EXACT COMPANY NAME:\n"
-                "- Look for the official legal entity name (usually in headers, titles, or signature sections)\n"
-                "- Include legal suffixes like PJSC, Ltd, LLC, Inc, Corporation\n"
-                "- Avoid descriptions like 'real estate company' or business activities\n"
-                "- If multiple companies mentioned, extract the main subject company\n\n"
-                "Return ONLY the exact company name, nothing else."
+                "EXTRACT THE CLIENT COMPANY NAME (NOT AUDITOR):\n"
+                "- Look for the official CLIENT company name in document titles like 'Consolidated Financial Statements of [CLIENT NAME]'\n"
+                "- Include legal suffixes like PJSC, Ltd, LLC, Inc, Corporation, Group, PLC\n"
+                "- IGNORE auditor firms ending in LLP, Chartered Accountants\n"
+                "- IGNORE audit firms like RAI LLP, KPMG, EY, PWC, Deloitte\n"
+                "- Extract the company being audited, NOT the company doing the auditing\n"
+                "- If multiple companies mentioned, extract the main CLIENT subject company\n\n"
+                "Return ONLY the CLIENT company name (not auditor name), nothing else."
             )
         }
 
