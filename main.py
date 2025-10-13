@@ -36,6 +36,13 @@ app.include_router(analysis_router, prefix="/api/v1/analysis", tags=["analysis"]
 app.include_router(documents_router, prefix="/api/v1/documents", tags=["documents"])
 app.include_router(sessions_router, prefix="/api/v1/sessions", tags=["sessions"])
 
+# Add test router for demonstration  
+try:
+    from routes.test_routes import router as test_router
+    app.include_router(test_router, prefix="/api/v1/test", tags=["test"])
+except ImportError:
+    pass  # Test routes not available
+
 # Root endpoint
 @app.get("/")
 async def root():
