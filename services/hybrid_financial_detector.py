@@ -35,6 +35,11 @@ class HybridDetectionResult:
     ai_confidence: Optional[float] = None
     consensus_factors: Dict[str, float] = None
     validation_markers: List[str] = None
+    page_numbers: List[int] = None
+    
+    def __post_init__(self):
+        if self.page_numbers is None:
+            self.page_numbers = []
     
     def to_dict(self):
         return {
@@ -45,7 +50,8 @@ class HybridDetectionResult:
             "pattern_confidence": self.pattern_confidence,
             "ai_confidence": self.ai_confidence,
             "consensus_factors": self.consensus_factors or {},
-            "validation_markers": self.validation_markers or []
+            "validation_markers": self.validation_markers or [],
+            "page_numbers": self.page_numbers or []
         }
 
 
@@ -410,7 +416,8 @@ class HybridFinancialDetector:
                 pattern_confidence=pattern_result["confidence"],
                 ai_confidence=ai_result.get("ai_confidence") if ai_result else None,
                 consensus_factors=consensus_factors,
-                validation_markers=pattern_result.get("core_patterns", [])
+                validation_markers=pattern_result.get("core_patterns", []),
+                page_numbers=[]  # Initialize empty page numbers for hybrid detection
             )
             
             statements.append(statement)
