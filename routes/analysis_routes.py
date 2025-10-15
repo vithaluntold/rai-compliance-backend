@@ -4168,7 +4168,7 @@ async def update_document_metadata(
     """Update document metadata after user edits."""
     try:
         # Load existing results
-        results_file = Path(f"analysis_results/test-staged-doc-{document_id}/results.json")
+        results_file = Path(f"analysis_results/{document_id}.json")
         if not results_file.exists():
             raise HTTPException(
                 status_code=404,
