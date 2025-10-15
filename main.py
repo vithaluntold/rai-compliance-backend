@@ -16,15 +16,9 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://raicastingengine.vercel.app",
-        "https://raicastingengine-*.vercel.app", 
-        "https://complianceengine.vercel.app",
-        "https://complianceengine-*.vercel.app",
-        "https://compliance-engine.vercel.app",
-        "https://compliance-engine-*.vercel.app",
         "https://rai-compliance-frontend.onrender.com",
         "http://localhost:3000",
-        "*"
+        "http://127.0.0.1:3000"
     ],
     allow_credentials=True,
     allow_methods=["*"],

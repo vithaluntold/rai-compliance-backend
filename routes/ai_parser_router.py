@@ -9,6 +9,7 @@ import logging
 from pathlib import Path
 from typing import List, Dict, Any
 from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
+from config.settings import MAX_FILE_SIZE
 from fastapi.responses import FileResponse
 import asyncio
 
@@ -43,6 +44,12 @@ async def upload_files(
             # Read and parse JSON file
             try:
                 file_content = await file.read()
+                
+                # Validate file size (more lenient for JSON config files)
+                if len(file_content) > MAX_FILE_SIZE:
+                    logger.warning(f"File {file.filename} too large: {len(file_content)} bytes")
+                    continue
+                
                 # Handle UTF-8 BOM by trying utf-8-sig first, then fallback to utf-8
                 try:
                     text_content = file_content.decode('utf-8-sig')

@@ -23,6 +23,7 @@ from fastapi import (
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from config.settings import MAX_FILE_SIZE
 from services.ai import AIService, get_ai_service
 from services.ai_prompts import AIPrompts
 from services.checklist_utils import (
@@ -1002,6 +1003,16 @@ async def upload_document(
                 "message": "Failed to read uploaded file content",
             }
             return response
+
+        # Validate file size
+        if len(content) > MAX_FILE_SIZE:
+            response = {
+                "status": "error",
+                "error": "File too large",
+                "message": f"File size ({len(content) / 1024 / 1024:.1f}MB) exceeds maximum allowed size ({MAX_FILE_SIZE / 1024 / 1024:.0f}MB)",
+            }
+            logger.warning(f"Upload failed: File too large ({len(content)} bytes > {MAX_FILE_SIZE} bytes)")
+            return JSONResponse(status_code=413, content=response)
 
         # Generate unique document ID
         document_id = generate_document_id()
