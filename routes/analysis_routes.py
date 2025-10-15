@@ -4158,3 +4158,50 @@ async def clear_processing_lock(document_id: str) -> Dict[str, Any]:
             status_code=500, 
             detail=f"Failed to clear processing lock: {str(e)}"
         )
+
+
+@router.patch("/documents/{document_id}/metadata")
+async def update_document_metadata(
+    document_id: str,
+    request: dict
+) -> dict:
+    """Update document metadata after user edits."""
+    try:
+        # Load existing results
+        results_file = Path(f"analysis_results/test-staged-doc-{document_id}/results.json")
+        if not results_file.exists():
+            raise HTTPException(
+                status_code=404,
+                detail=f"Document {document_id} not found"
+            )
+        
+        with open(results_file, 'r') as f:
+            results = json.load(f)
+        
+        # Update the company metadata
+        company_metadata = request.get('company_metadata', {})
+        if 'company_metadata' not in results:
+            results['company_metadata'] = {}
+        
+        results['company_metadata'].update(company_metadata)
+        
+        # Save updated results
+        with open(results_file, 'w') as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        
+        logger.info(f"Updated metadata for document {document_id}")
+        
+        return {
+            "success": True,
+            "message": "Metadata updated successfully",
+            "updated_fields": list(company_metadata.keys())
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update metadata for document {document_id}: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update metadata: {str(e)}"
+        )
