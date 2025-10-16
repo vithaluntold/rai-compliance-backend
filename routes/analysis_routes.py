@@ -1908,13 +1908,14 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                     # Remove common verbose patterns
                     value = value.strip()
                     
-                    # For company names, reject generic terms and verbose descriptions
+                    # For company names, reject ONLY purely generic terms and verbose descriptions
                     lower_val = value.lower()
-                    if any(term in lower_val for term in [
-                        'the group', 'the company', 'based on the document',
-                        'from the financial statements', 'according to the document',
-                        'the entity', 'this company', 'the client'
-                    ]):
+                    # Only reject if the value is EXACTLY these generic terms or starts with verbose phrases
+                    if (lower_val in ['the group', 'the company', 'the entity', 'this company', 'the client'] or
+                        any(lower_val.startswith(phrase) for phrase in [
+                            'based on the document', 'from the financial statements', 
+                            'according to the document', 'the document shows', 'from the text'
+                        ])):
                         return ""
                     
                     # If it's longer than 100 characters, it's probably verbose - truncate or reject
@@ -2013,13 +2014,14 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                         if value:
                             value = value.strip()
                             
-                            # For company names, reject generic terms and verbose descriptions
+                            # For company names, reject ONLY purely generic terms and verbose descriptions
                             lower_val = value.lower()
-                            if any(term in lower_val for term in [
-                                'the group', 'the company', 'based on the document',
-                                'from the financial statements', 'according to the document',
-                                'the entity', 'this company', 'the client'
-                            ]):
+                            # Only reject if the value is EXACTLY these generic terms or starts with verbose phrases
+                            if (lower_val in ['the group', 'the company', 'the entity', 'this company', 'the client'] or
+                                any(lower_val.startswith(phrase) for phrase in [
+                                    'based on the document', 'from the financial statements', 
+                                    'according to the document', 'the document shows', 'from the text'
+                                ])):
                                 return ""
                             
                             # If it's longer than 100 characters, it's probably verbose - truncate or reject
