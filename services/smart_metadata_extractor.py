@@ -1,12 +1,13 @@
 """
 Smart Metadata Extractor Service
 
-Optimized metadata extraction using pattern matching + AI validation
+Optimized metadata extraction using robust NER (Transformers) + AI validation
 to reduce token usage from 75K to 15K per document while maintaining accuracy.
 """
 
 import logging
 import re
+import warnings
 from typing import Any, Dict, List, Tuple, Union
 
 from services.geographical_service import GeographicalDetectionService
@@ -15,11 +16,14 @@ from services.ai import get_ai_service
 from services.ai_prompts import AIPrompts
 from config.extraction_config import get_config
 
+# Suppress transformers warnings for cleaner logs
+warnings.filterwarnings('ignore', category=UserWarning, module='transformers')
+
 logger = logging.getLogger(__name__)
 
 
 class SmartMetadataExtractor:
-    """Optimized metadata extraction using pattern matching + AI validation"""
+    """Optimized metadata extraction using robust NER + AI validation"""
 
     def __init__(self):
         self.geographical_service = GeographicalDetectionService()
@@ -27,11 +31,34 @@ class SmartMetadataExtractor:
         self.ai_service = get_ai_service()
         self.config = get_config()
 
-        # Company name regex patterns from config
+        # Initialize robust NER pipeline
+        self._init_ner_pipeline()
+
+        # Company name regex patterns from config (fallback only)
         self.company_patterns = self.config.get_company_pattern_regex()
 
         # Business type classification patterns from config
         self.business_patterns = self.config.get_business_keywords()
+
+    def _init_ner_pipeline(self):
+        """Initialize the NER pipeline using Transformers"""
+        try:
+            from transformers import pipeline
+            logger.info("🧠 Initializing robust NER pipeline (Transformers)")
+            
+            # Use a high-quality BERT model fine-tuned for NER
+            self.ner_pipeline = pipeline(
+                'ner',
+                model='dbmdz/bert-large-cased-finetuned-conll03-english',
+                aggregation_strategy='simple'
+            )
+            self.ner_available = True
+            logger.info("✅ Robust NER pipeline initialized successfully")
+            
+        except Exception as e:
+            logger.warning(f"❌ Failed to initialize NER pipeline: {e}")
+            self.ner_pipeline = None
+            self.ner_available = False
 
     async def extract_metadata_optimized(
         self, document_id: str, chunks: List[Union[str, Dict[str, Any]]]
@@ -83,13 +110,13 @@ class SmartMetadataExtractor:
             "financial_statements_type": {"value": "", "confidence": 0.0, "extraction_method": "ai", "context": ""}
         }
 
-        # AI-powered company name extraction with pattern fallback
-        logger.info("🔍 Extracting company name using AI-powered approach")
-        company_name, company_confidence, company_context = await self._extract_company_name_ai(text)
+        # Robust NER-powered company name extraction with pattern fallback
+        logger.info("🧠 Extracting company name using robust NER approach")
+        company_name, company_confidence, company_context = self._extract_company_name_robust_ner(text)
         
-        # Fallback to pattern-based if AI fails
+        # Fallback to pattern-based if NER fails
         if not company_name:
-            logger.info("🔄 AI extraction failed, using pattern fallback")
+            logger.info("🔄 NER extraction failed, using pattern fallback")
             company_name, company_confidence, company_context = self._extract_company_name_pattern(text)
             
         if company_name:
@@ -213,151 +240,166 @@ class SmartMetadataExtractor:
 
         return results
 
-    async def _extract_company_name_ai(self, text: str) -> Tuple[str, float, str]:
-        """AI-powered company name extraction with intelligent document analysis"""
+    def _extract_company_name_robust_ner(self, text: str) -> Tuple[str, float, str]:
+        """
+        Extract company name using robust NER with high-confidence filtering.
+        Returns (company_name, confidence, context)
+        """
         try:
-            # Try spaCy NER first if available
-            ner_result = self._extract_company_name_ner(text)
-            if ner_result[0]:  # If NER found something
-                logger.info(f"🔧 NER extracted company name: {ner_result[0]}")
-                return ner_result
+            # Get relevant context from title page and first few pages
+            title_context = self._get_title_page_context(text)
             
-            # Smart extraction: Look for document title patterns first
-            lines = text.split('\n')
-            
-            # Strategy 1: Find lines that look like document titles
-            title_lines = []
-            for i, line in enumerate(lines[:20]):  # Only first 20 lines for titles
-                line = line.strip()
-                if not line:
-                    continue
+            # Use NER pipeline to extract organizations
+            if self.ner_pipeline:
+                # Process in chunks to handle long text
+                chunks = [title_context[i:i+500] for i in range(0, min(len(title_context), 2000), 400)]
                 
-                # Look for title patterns
-                if (any(pattern in line.lower() for pattern in [
-                    'financial statements', 'annual report', 'consolidated statements',
-                    'audited financial', 'consolidated financial'
-                ]) and len(line) > 20 and len(line) < 150):
-                    title_lines.append((i, line))
-            
-            # Strategy 2: Extract company name from title context only (prioritize main title, exclude auditor sections)
-            title_context = ""
-            main_title_context = ""
-            
-            if title_lines:
-                # Get context around title lines, but prioritize main document title
-                for line_num, title_line in title_lines:
-                    start_line = max(0, line_num - 2)
-                    end_line = min(len(lines), line_num + 3)
-                    context_block = '\n'.join(lines[start_line:end_line])
+                all_entities = []
+                for chunk in chunks:
+                    entities = self.ner_pipeline(chunk)
+                    org_entities = [e for e in entities if e['entity_group'] == 'ORG' and e['score'] > 0.90]
+                    all_entities.extend(org_entities)
+                
+                if all_entities:
+                    # Sort by confidence and get the best candidates
+                    sorted_entities = sorted(all_entities, key=lambda x: x['score'], reverse=True)
                     
-                    # Skip auditor-related sections
-                    if not any(auditor_term in context_block.lower() for auditor_term in [
-                        'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report',
-                        'we have audited', 'audit opinion'
-                    ]):
-                        main_title_context += context_block + '\n\n'
-                    
+                    for entity in sorted_entities[:5]:  # Check top 5 candidates
+                        company_name = entity['word'].strip()
+                        confidence = entity['score']
+                        
+                        logger.info(f"🔍 NER candidate: '{company_name}' (confidence: {confidence:.3f})")
+                        
+                        # Validate the extracted name
+                        if self._validate_company_name(company_name):
+                            logger.info(f"✅ ACCEPTED NER company: '{company_name}' (confidence: {confidence:.3f})")
+                            return company_name, confidence, title_context[:200]
+                        else:
+                            logger.info(f"🚫 REJECTED NER candidate: '{company_name}' (failed validation)")
+            
+            # Fallback to improved regex patterns for high-confidence matches
+            return self._extract_company_name_regex_enhanced(title_context)
+            
+        except Exception as e:
+            logger.error(f"Error in robust NER company extraction: {str(e)}")
+            return "", 0.0, ""
+    
+    def _validate_company_name(self, name: str) -> bool:
+        """Validate if the extracted name is a legitimate company name."""
+        if not name or len(name.strip()) < 3:
+            return False
+        
+        name_lower = name.lower().strip()
+        
+        # Reject generic terms
+        generic_terms = [
+            'the company', 'the group', 'the entity', 'the corporation',
+            'company', 'group', 'entity', 'corporation', 'organization',
+            'client', 'customer', 'business', 'firm', 'enterprise'
+        ]
+        
+        if name_lower in generic_terms:
+            return False
+        
+        # Reject auditor names
+        if self._is_likely_auditor_name(name):
+            return False
+        
+        # Reject if it's too generic or short
+        if len(name.split()) == 1 and len(name) < 4:
+            return False
+        
+        # Accept if it has proper company indicators
+        company_indicators = ['inc', 'corp', 'ltd', 'llc', 'plc', 'sa', 'gmbh', 'ag', 'srl', 'spa', 'pjsc']
+        if any(indicator in name_lower for indicator in company_indicators):
+            return True
+        
+        # Accept if it's a reasonable length and contains proper nouns
+        if 3 <= len(name.split()) <= 6 and any(word[0].isupper() for word in name.split()):
+            return True
+        
+        return False
+    
+    def _is_likely_auditor_name(self, name: str) -> bool:
+        """Check if the given name is likely an auditor firm."""
+        name_lower = name.lower().strip()
+        
+        auditor_indicators = [
+            'chartered accountants', 'audit', 'auditor', 'kpmg', 'ey', 'pwc', 
+            'deloitte', 'ernst', 'young', 'rai llp', 'chartered', 'rai', 'accountants'
+        ]
+        
+        return (name_lower.endswith('llp') or 
+                name_lower.endswith('chartered accountants') or
+                'rai' in name_lower or
+                any(indicator in name_lower for indicator in auditor_indicators))
+    
+    def _get_title_page_context(self, text: str) -> str:
+        """Extract title page context from document text."""
+        lines = text.split('\n')
+        
+        # Strategy 1: Find lines that look like document titles
+        title_lines = []
+        for i, line in enumerate(lines[:20]):  # Only first 20 lines for titles
+            line = line.strip()
+            if not line:
+                continue
+            
+            # Look for title patterns
+            if (any(pattern in line.lower() for pattern in [
+                'financial statements', 'annual report', 'consolidated statements',
+                'audited financial', 'consolidated financial'
+            ]) and len(line) > 20 and len(line) < 150):
+                title_lines.append((i, line))
+        
+        # Extract context around title lines
+        title_context = ""
+        if title_lines:
+            for line_num, title_line in title_lines:
+                start_line = max(0, line_num - 2)
+                end_line = min(len(lines), line_num + 3)
+                context_block = '\n'.join(lines[start_line:end_line])
+                
+                # Skip auditor-related sections
+                if not any(auditor_term in context_block.lower() for auditor_term in [
+                    'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report',
+                    'we have audited', 'audit opinion'
+                ]):
                     title_context += context_block + '\n\n'
+        
+        # If no title context found, use first 10 lines but skip auditor sections
+        if not title_context.strip():
+            first_lines = []
+            for line in lines[:15]:
+                if not any(auditor_term in line.lower() for auditor_term in [
+                    'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report'
+                ]):
+                    first_lines.append(line)
+            title_context = '\n'.join(first_lines[:10])
+        
+        return title_context.strip()
+    
+    def _extract_company_name_regex_enhanced(self, text: str) -> Tuple[str, float, str]:
+        """Enhanced regex-based extraction as fallback."""
+        try:
+            # Enhanced patterns for company names
+            patterns = [
+                r'([A-Z][a-zA-Z\s&-]+(?:Inc\.?|Corporation|Corp\.?|Ltd\.?|Limited|LLC|PLC|PJSC))',
+                r'([A-Z][a-zA-Z\s&-]+(?:Group|Holdings|International|Technologies|Systems))',
+                r'((?:[A-Z][a-zA-Z]+\s+){1,3}(?:Inc\.?|Corp\.?|Ltd\.?|PLC|PJSC))',
+            ]
             
-            # Prioritize main title context if found, otherwise use all title context
-            if main_title_context.strip():
-                title_context = main_title_context
-            elif not title_context:
-                # If no title context found, use first 10 lines but skip auditor sections
-                first_lines = []
-                for line in lines[:15]:
-                    if not any(auditor_term in line.lower() for auditor_term in [
-                        'independent auditor', 'chartered accountants', 'llp', 'auditor\'s report'
-                    ]):
-                        first_lines.append(line)
-                title_context = '\n'.join(first_lines[:10])
-            
-            # Prepare focused AI prompt for company name extraction
-            system_prompt = """You are an expert at extracting CLIENT company names from financial document titles and headers. 
-            Your task is to identify the PRIMARY CLIENT company name, NOT the auditor or audit firm.
-            
-            CRITICAL RULES:
-            1. Look ONLY in document titles like "Consolidated Financial Statements of [COMPANY NAME]"
-            2. Extract the OFFICIAL CLIENT company name (not generic terms like "The Group", "The Company")
-            3. Include legal suffixes (Ltd, PJSC, PLC, Inc, Group, etc.)
-            4. IGNORE business activity descriptions or revenue statements
-            5. IGNORE auditor names (companies ending in LLP, Chartered Accountants, audit firms)
-            6. Return ONLY the client company name, nothing else
-            7. If no clear client company name exists in titles, return "NONE"
-            
-            Examples of CORRECT extraction:
-            - From "Consolidated Financial Statements of Phoenix Group PLC" → "Phoenix Group PLC"
-            - From "Annual Report - ALDAR Properties PJSC" → "ALDAR Properties PJSC"
-            - From "Microsoft Corporation Financial Statements" → "Microsoft Corporation"
-            
-            Examples of WRONG extraction:
-            - From "The Group recognises revenue..." → DO NOT extract "The Group"
-            - From "The Company operates in..." → DO NOT extract "The Company"
-            - From "RAI LLP, Chartered Accountants" → DO NOT extract "RAI LLP" (this is the auditor)
-            - From "KPMG LLP, Dubai" → DO NOT extract "KPMG LLP" (this is the auditor)
-            - From "Ernst & Young LLP" → DO NOT extract (this is the auditor)
-            
-            PRIORITY: The company in the main title/header is the CLIENT, not companies mentioned in auditor sections.
-            """
-            
-            user_prompt = f"""Extract the primary company name from these document title/header lines ONLY:
-
-{title_context.strip()}
-
-Look for the official company name in document titles, not in business descriptions.
-Company name:"""
-
-            response = self.ai_service.openai_client.chat.completions.create(
-                model=self.ai_service.deployment_name,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
-                ],
-                max_completion_tokens=50
-            )
-            
-            ai_company = response.choices[0].message.content.strip() if response.choices[0].message.content else ""
-            
-            if ai_company and ai_company != "NONE" and len(ai_company) > 2:
-                # Clean and validate AI result
-                ai_company = re.sub(r'[^\w\s&\-\.,()]+', '', ai_company)  # Keep valid company name characters
-                ai_company = ai_company.strip(' ."')
-                
-                # ENHANCED AUDITOR REJECTION LOGIC
-                auditor_indicators = [
-                    'chartered accountants', 'audit', 'auditor', 'kpmg', 'ey', 'pwc', 
-                    'deloitte', 'ernst', 'young', 'rai llp', 'chartered', 'rai', 'accountants'
-                ]
-                
-                # Multiple checks to catch all auditor patterns
-                is_likely_auditor = (
-                    ai_company.lower().endswith('llp') or 
-                    ai_company.lower().endswith('chartered accountants') or
-                    'rai' in ai_company.lower() or  # Specifically catch RAI variations
-                    any(indicator in ai_company.lower() for indicator in auditor_indicators)
-                )
-                
-                # Log detailed filtering decision
-                logger.info(f"🔍 AUDITOR FILTER DEBUG - Testing: '{ai_company}'")
-                logger.info(f"   - Ends with 'llp': {ai_company.lower().endswith('llp')}")
-                logger.info(f"   - Contains 'rai': {'rai' in ai_company.lower()}")
-                logger.info(f"   - Contains auditor indicators: {any(indicator in ai_company.lower() for indicator in auditor_indicators)}")
-                logger.info(f"   - Final decision - is_likely_auditor: {is_likely_auditor}")
-                
-                # Reject if it looks like an auditor or generic term
-                if (len(ai_company) < 80 and 
-                    not is_likely_auditor and
-                    not any(term in ai_company.lower() for term in ['statement', 'report', 'audit', 'document', 'the group', 'the company']) and
-                    ai_company.lower() not in ['the group', 'the company', 'group', 'company']):
-                    logger.info(f"✅ AI extracted CLIENT company name: {ai_company}")
-                    return ai_company, 0.9, title_context[:200]
-                else:
-                    logger.info(f"🚫 REJECTED auditor/generic name: '{ai_company}' (is_auditor: {is_likely_auditor})")
+            for pattern in patterns:
+                matches = re.findall(pattern, text[:2000], re.MULTILINE)
+                for match in matches:
+                    if self._validate_company_name(match):
+                        logger.info(f"✅ ACCEPTED regex company: '{match}'")
+                        return match.strip(), 0.85, text[:200]
             
             return "", 0.0, ""
             
         except Exception as e:
-            logger.error(f"Error in AI company name extraction: {str(e)}")
+            logger.error(f"Error in regex company extraction: {str(e)}")
             return "", 0.0, ""
     
     def _extract_company_name_ner(self, text: str) -> Tuple[str, float, str]:
