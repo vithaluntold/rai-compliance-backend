@@ -4232,14 +4232,13 @@ async def update_document_metadata(
 ) -> dict:
     """Update document metadata after user edits."""
     try:
-        # Load existing results
-        results_file = Path(f"analysis_results/{document_id}.json")
+        # Load existing results using the proper path
+        results_file = ANALYSIS_RESULTS_DIR / f"{document_id}.json"
         if not results_file.exists():
             # List available documents for debugging
-            analysis_dir = Path("analysis_results")
             available_docs = []
-            if analysis_dir.exists():
-                available_docs = [f.stem for f in analysis_dir.glob("*.json")]
+            if ANALYSIS_RESULTS_DIR.exists():
+                available_docs = [f.stem for f in ANALYSIS_RESULTS_DIR.glob("*.json")]
             
             error_detail = f"Document {document_id} not found."
             if available_docs:
@@ -4257,10 +4256,36 @@ async def update_document_metadata(
         
         # Update the company metadata
         company_metadata = request.get('company_metadata', {})
-        if 'company_metadata' not in results:
-            results['company_metadata'] = {}
+        if 'metadata' not in results:
+            results['metadata'] = {}
         
-        results['company_metadata'].update(company_metadata)
+        # Update the metadata fields with simple values (frontend field mapping)
+        if 'company_name' in company_metadata:
+            results['metadata']['company_name_simple'] = company_metadata['company_name']
+        if 'nature_of_business' in company_metadata:
+            results['metadata']['nature_of_business_simple'] = company_metadata['nature_of_business']
+        if 'geography_of_operations' in company_metadata:
+            results['metadata']['operational_demographics_simple'] = company_metadata['geography_of_operations']
+        if 'financial_statement_type' in company_metadata:
+            results['metadata']['financial_statements_type_simple'] = company_metadata['financial_statement_type']
+        
+        # Also update the complex metadata structure if it exists
+        for field_name, simple_value in [
+            ('company_name', 'company_name_simple'),
+            ('nature_of_business', 'nature_of_business_simple'),
+            ('geography_of_operations', 'operational_demographics_simple'),
+            ('financial_statement_type', 'financial_statements_type_simple')
+        ]:
+            if field_name in company_metadata:
+                # Update simple value
+                results['metadata'][simple_value] = company_metadata[field_name]
+                
+                # Update complex structure if it exists
+                complex_field = simple_value.replace('_simple', '')
+                if complex_field in results['metadata']:
+                    if isinstance(results['metadata'][complex_field], dict):
+                        results['metadata'][complex_field]['value'] = company_metadata[field_name]
+                        results['metadata'][complex_field]['source'] = "User edited"
         
         # Save updated results
         with open(results_file, 'w') as f:
