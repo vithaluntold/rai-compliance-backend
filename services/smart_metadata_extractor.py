@@ -242,79 +242,170 @@ class SmartMetadataExtractor:
 
     def _extract_company_name_robust_ner(self, text: str) -> Tuple[str, float, str]:
         """
-        Extract CLIENT company name using robust NER with intelligent document structure analysis.
-        Distinguishes between client company and auditor firms by analyzing document context.
-        Returns (company_name, confidence, context)
+        Extract CLIENT company name using NER + AI intelligence.
+        
+        Strategy:
+        1. Use NER to extract ALL organization names with their context
+        2. Send all candidates to AI to intelligently decide which is the CLIENT company vs auditor
+        3. Return the CLIENT company name with high confidence
         """
         try:
-            # Get structured document context prioritizing client company areas
-            title_context = self._get_title_page_context(text)
+            logger.info("🧠 Starting NER + AI company name extraction")
             
-            # Use NER pipeline to extract ALL organizations first
-            if self.ner_pipeline:
-                # Process document in strategic sections
-                document_sections = self._analyze_document_sections(text)
-                
-                # Extract entities from each section with context scoring
-                scored_candidates = []
-                
-                for section_name, section_text, priority_weight in document_sections:
-                    if not section_text.strip():
-                        continue
-                        
-                    logger.info(f"🔍 Analyzing section: {section_name} (weight: {priority_weight})")
-                    
-                    # Process section in chunks
-                    chunks = [section_text[i:i+500] for i in range(0, min(len(section_text), 2000), 400)]
-                    
-                    for chunk in chunks:
-                        entities = self.ner_pipeline(chunk)
-                        org_entities = [e for e in entities if e['entity_group'] == 'ORG' and e['score'] > 0.85]
-                        
-                        for entity in org_entities:
-                            company_name = entity['word'].strip()
-                            base_confidence = entity['score']
-                            
-                            # Calculate context-aware score
-                            context_score = self._calculate_context_score(company_name, section_name, chunk)
-                            final_score = (base_confidence * 0.6) + (context_score * 0.4) * priority_weight
-                            
-                            scored_candidates.append({
-                                'name': company_name,
-                                'base_confidence': base_confidence,
-                                'context_score': context_score,
-                                'final_score': final_score,
-                                'section': section_name,
-                                'context_snippet': chunk[:150]
-                            })
-                
-                if scored_candidates:
-                    # Sort by final score (NER confidence + context + section priority)
-                    sorted_candidates = sorted(scored_candidates, key=lambda x: x['final_score'], reverse=True)
-                    
-                    logger.info(f"🎯 Found {len(sorted_candidates)} organization candidates:")
-                    for i, candidate in enumerate(sorted_candidates[:5]):
-                        logger.info(f"  {i+1}. '{candidate['name']}' - Final Score: {candidate['final_score']:.3f} "
-                                  f"(NER: {candidate['base_confidence']:.3f}, Context: {candidate['context_score']:.3f}, "
-                                  f"Section: {candidate['section']})")
-                    
-                    # Validate candidates starting with highest score
-                    for candidate in sorted_candidates[:5]:
-                        company_name = candidate['name']
-                        final_score = candidate['final_score']
-                        
-                        if self._validate_company_name(company_name):
-                            logger.info(f"✅ ACCEPTED CLIENT company: '{company_name}' (final score: {final_score:.3f})")
-                            return company_name, final_score, candidate['context_snippet']
-                        else:
-                            logger.info(f"🚫 REJECTED candidate: '{company_name}' (failed validation - likely auditor/generic)")
+            # Step 1: Use NER to extract ALL organizations with context
+            company_candidates = self._extract_all_organizations_with_context(text)
             
-            # Fallback to improved regex patterns
-            return self._extract_company_name_regex_enhanced(title_context)
+            if not company_candidates:
+                logger.warning("No organizations found by NER, falling back to regex")
+                return self._extract_company_name_regex_enhanced(text)
+            
+            # Step 2: Use AI to intelligently select the CLIENT company
+            client_company = self._ai_select_client_company(company_candidates, text)
+            
+            if client_company:
+                logger.info(f"✅ AI selected CLIENT company: '{client_company['name']}'")
+                return client_company['name'], client_company['confidence'], client_company['context']
+            else:
+                logger.warning("AI could not determine client company, using fallback")
+                return self._extract_company_name_regex_enhanced(text)
+                
+        except Exception as e:
+            logger.error(f"Error in NER + AI company extraction: {str(e)}")
+            return "", 0.0, ""
+    
+    def _extract_all_organizations_with_context(self, text: str) -> List[Dict[str, Any]]:
+        """
+        Use NER to extract ALL organizations with their surrounding context.
+        Returns list of: [{'name': str, 'confidence': float, 'context': str, 'position': int}, ...]
+        """
+        try:
+            if not self.ner_pipeline:
+                return []
+            
+            # Process the first 3000 characters (where company names typically appear)
+            text_chunk = text[:3000]
+            
+            # Extract entities using NER
+            entities = self.ner_pipeline(text_chunk)
+            org_entities = [e for e in entities if e['entity_group'] == 'ORG' and e['score'] > 0.85]
+            
+            logger.info(f"🔍 NER found {len(org_entities)} organization candidates")
+            
+            candidates = []
+            for entity in org_entities:
+                org_name = entity['word'].strip()
+                ner_confidence = entity['score']
+                
+                # Find the position of this organization in the text to extract context
+                start_pos = text_chunk.find(org_name)
+                if start_pos == -1:
+                    # Try case-insensitive search
+                    start_pos = text_chunk.lower().find(org_name.lower())
+                
+                if start_pos != -1:
+                    # Extract 200 characters of context around the organization name
+                    context_start = max(0, start_pos - 100)
+                    context_end = min(len(text_chunk), start_pos + len(org_name) + 100)
+                    context = text_chunk[context_start:context_end].strip()
+                    
+                    candidate = {
+                        'name': org_name,
+                        'confidence': ner_confidence,
+                        'context': context,
+                        'position': start_pos
+                    }
+                    candidates.append(candidate)
+                    
+                    logger.info(f"  � Found: '{org_name}' (confidence: {ner_confidence:.3f})")
+                    logger.info(f"      Context: '{context[:100]}...'")
+            
+            return candidates
             
         except Exception as e:
-            logger.error(f"Error in robust NER company extraction: {str(e)}")
-            return "", 0.0, ""
+            logger.error(f"Error extracting organizations with context: {str(e)}")
+            return []
+    
+    def _ai_select_client_company(self, candidates: List[Dict[str, Any]], full_text: str) -> Dict[str, Any]:
+        """
+        Use AI to intelligently select the CLIENT company from all organization candidates.
+        AI analyzes context to distinguish client company from auditor firms.
+        """
+        try:
+            if not candidates:
+                return None
+            
+            # Prepare the candidate information for AI
+            candidates_info = []
+            for i, candidate in enumerate(candidates, 1):
+                candidates_info.append(
+                    f"{i}. ORGANIZATION: '{candidate['name']}'\n"
+                    f"   NER CONFIDENCE: {candidate['confidence']:.3f}\n"
+                    f"   CONTEXT: \"{candidate['context']}\"\n"
+                )
+            
+            candidates_text = "\n".join(candidates_info)
+            
+            # Create AI prompt for intelligent client company selection
+            system_prompt = """You are an expert at analyzing financial documents to distinguish between CLIENT companies and AUDITOR firms.
+
+Your task: Analyze the organization candidates and their contexts to identify which one is the PRIMARY CLIENT COMPANY (whose financial statements these are), NOT the auditor firm.
+
+IMPORTANT RULES:
+1. CLIENT COMPANY appears in document titles like "Financial Statements of [CLIENT]"
+2. CLIENT COMPANY is the subject being audited, not the company doing the auditing
+3. AUDITOR FIRMS typically appear in "Independent Auditor's Report" sections
+4. AUDITOR FIRMS often end in "LLP", "Chartered Accountants", or are well-known audit firms (KPMG, PWC, EY, Deloitte, RAI)
+5. CLIENT COMPANY usually appears earlier in the document (title/header sections)
+
+Return ONLY the number (1, 2, 3, etc.) of the CLIENT COMPANY candidate. If no clear client company exists, return "NONE"."""
+
+            user_prompt = f"""DOCUMENT EXCERPT:
+{full_text[:1500]}
+
+ORGANIZATION CANDIDATES FOUND:
+{candidates_text}
+
+Analyze the context and determine which organization is the CLIENT COMPANY (not auditor).
+
+Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or "NONE" if unclear."""
+
+            # Call AI to make the decision
+            response = self.ai_service.openai_client.chat.completions.create(
+                model=self.ai_service.deployment_name,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                max_completion_tokens=50
+            )
+            
+            ai_response = response.choices[0].message.content.strip()
+            logger.info(f"🤖 AI decision: '{ai_response}'")
+            
+            # Parse AI response
+            try:
+                selected_index = int(ai_response) - 1  # Convert to 0-based index
+                if 0 <= selected_index < len(candidates):
+                    selected_candidate = candidates[selected_index].copy()
+                    selected_candidate['confidence'] = 0.95  # High confidence for AI selection
+                    
+                    logger.info(f"✅ AI selected candidate {selected_index + 1}: '{selected_candidate['name']}'")
+                    return selected_candidate
+                else:
+                    logger.warning(f"AI returned invalid index: {ai_response}")
+                    return None
+                    
+            except ValueError:
+                if ai_response.upper() == "NONE":
+                    logger.warning("AI could not determine client company")
+                    return None
+                else:
+                    logger.warning(f"AI returned unexpected response: {ai_response}")
+                    return None
+                    
+        except Exception as e:
+            logger.error(f"Error in AI client company selection: {str(e)}")
+            return None
     
     def _validate_company_name(self, name: str) -> bool:
         """Validate if the extracted name is a legitimate company name."""
@@ -410,168 +501,6 @@ class SmartMetadataExtractor:
             title_context = '\n'.join(first_lines[:10])
         
         return title_context.strip()
-    
-    def _analyze_document_sections(self, text: str) -> List[Tuple[str, str, float]]:
-        """
-        Analyze document structure and extract sections with priority weights.
-        Returns [(section_name, section_text, priority_weight), ...]
-        
-        Priority weights:
-        - Title/Header sections: 1.0 (highest - client company usually here)
-        - Financial statement headers: 0.9
-        - Early content: 0.7
-        - Auditor sections: 0.1 (lowest - we want to deprioritize these)
-        """
-        lines = text.split('\n')
-        sections = []
-        
-        # Section 1: Document Title & Headers (highest priority for client company)
-        title_section = self._extract_title_section(lines)
-        if title_section:
-            sections.append(("document_title", title_section, 1.0))
-        
-        # Section 2: Financial Statement Headers (high priority)
-        fs_headers = self._extract_financial_statement_headers(lines)
-        if fs_headers:
-            sections.append(("financial_headers", fs_headers, 0.9))
-        
-        # Section 3: Early Document Content (medium priority)
-        early_content = self._extract_early_content(lines)
-        if early_content:
-            sections.append(("early_content", early_content, 0.7))
-        
-        # Section 4: Business Description Areas (medium priority)
-        business_content = self._extract_business_sections(lines)
-        if business_content:
-            sections.append(("business_sections", business_content, 0.6))
-        
-        # Section 5: Auditor Sections (lowest priority - we want to avoid these for client company)
-        auditor_sections = self._extract_auditor_sections(lines)
-        if auditor_sections:
-            sections.append(("auditor_sections", auditor_sections, 0.1))
-        
-        return sections
-    
-    def _extract_title_section(self, lines: List[str]) -> str:
-        """Extract document title and header section (first 15 lines)."""
-        title_lines = []
-        for line in lines[:15]:
-            line = line.strip()
-            if line and not any(skip_term in line.lower() for skip_term in [
-                'page', 'independent auditor', 'we have audited', 'opinion'
-            ]):
-                title_lines.append(line)
-        return '\n'.join(title_lines[:10])
-    
-    def _extract_financial_statement_headers(self, lines: List[str]) -> str:
-        """Extract financial statement headers and titles."""
-        fs_lines = []
-        for i, line in enumerate(lines[:50]):  # Check first 50 lines
-            line = line.strip()
-            if any(fs_term in line.lower() for fs_term in [
-                'consolidated statement', 'income statement', 'balance sheet',
-                'cash flow', 'financial position', 'comprehensive income',
-                'consolidated financial statements', 'audited financial statements'
-            ]):
-                # Include context around financial statement headers
-                start_idx = max(0, i - 2)
-                end_idx = min(len(lines), i + 3)
-                context_block = '\n'.join(lines[start_idx:end_idx])
-                fs_lines.append(context_block)
-        
-        return '\n\n'.join(fs_lines)
-    
-    def _extract_early_content(self, lines: List[str]) -> str:
-        """Extract early document content (lines 15-50), excluding auditor sections."""
-        early_lines = []
-        for line in lines[15:50]:
-            line = line.strip()
-            if (line and len(line) > 10 and 
-                not any(auditor_term in line.lower() for auditor_term in [
-                    'independent auditor', 'chartered accountants', 'audit opinion',
-                    'we have audited', 'auditor\'s responsibility'
-                ])):
-                early_lines.append(line)
-        return '\n'.join(early_lines[:20])
-    
-    def _extract_business_sections(self, lines: List[str]) -> str:
-        """Extract business description and operation sections."""
-        business_lines = []
-        for i, line in enumerate(lines):
-            line = line.strip()
-            if any(business_term in line.lower() for business_term in [
-                'principal activities', 'nature of business', 'business overview',
-                'operations', 'the company operates', 'the group operates'
-            ]):
-                # Get context around business descriptions
-                start_idx = max(0, i - 1)
-                end_idx = min(len(lines), i + 5)
-                context_block = '\n'.join(lines[start_idx:end_idx])
-                business_lines.append(context_block)
-        
-        return '\n\n'.join(business_lines[:3])  # Limit to avoid too much text
-    
-    def _extract_auditor_sections(self, lines: List[str]) -> str:
-        """Extract auditor sections (we want to identify but deprioritize these)."""
-        auditor_lines = []
-        for i, line in enumerate(lines):
-            line = line.strip()
-            if any(auditor_term in line.lower() for auditor_term in [
-                'independent auditor', 'chartered accountants', 'auditor\'s report',
-                'audit opinion', 'we have audited', 'auditor\'s responsibility'
-            ]):
-                # Get limited context around auditor sections
-                start_idx = max(0, i)
-                end_idx = min(len(lines), i + 3)
-                context_block = '\n'.join(lines[start_idx:end_idx])
-                auditor_lines.append(context_block)
-        
-        return '\n\n'.join(auditor_lines[:2])  # Very limited auditor context
-    
-    def _calculate_context_score(self, company_name: str, section_name: str, context: str) -> float:
-        """
-        Calculate context score based on WHERE the company name appears and HOW it appears.
-        Higher scores for client company indicators, lower for auditor indicators.
-        """
-        name_lower = company_name.lower()
-        context_lower = context.lower()
-        score = 0.5  # Base score
-        
-        # POSITIVE indicators (client company)
-        if any(client_indicator in context_lower for client_indicator in [
-            'financial statements of', 'annual report', 'consolidated statements',
-            'for the year ended', 'company operates', 'principal activities'
-        ]):
-            score += 0.3
-            
-        # Company name appears in title-like context
-        if any(title_indicator in context_lower for title_indicator in [
-            'ltd', 'plc', 'pjsc', 'inc', 'corp', 'group', 'holdings'
-        ]) and company_name.count(' ') <= 4:  # Not too long
-            score += 0.2
-        
-        # Appears early in document (title/header sections get higher scores)
-        if section_name in ['document_title', 'financial_headers']:
-            score += 0.2
-        
-        # NEGATIVE indicators (likely auditor)
-        if any(auditor_indicator in context_lower for auditor_indicator in [
-            'chartered accountants', 'independent auditor', 'audit opinion',
-            'we have audited', 'auditor\'s report', 'llp'
-        ]):
-            score -= 0.4
-        
-        # Specific auditor firm patterns
-        if (name_lower.endswith('llp') or 
-            'rai' in name_lower or
-            any(audit_firm in name_lower for audit_firm in ['kpmg', 'pwc', 'ey', 'deloitte'])):
-            score -= 0.3
-        
-        # Generic terms (lower score)
-        if name_lower in ['group', 'company', 'the group', 'the company']:
-            score -= 0.2
-        
-        return max(0.0, min(1.0, score))  # Clamp between 0 and 1
     
     def _extract_company_name_regex_enhanced(self, text: str) -> Tuple[str, float, str]:
         """Enhanced regex-based extraction as fallback."""
