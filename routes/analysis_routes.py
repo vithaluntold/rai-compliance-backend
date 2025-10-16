@@ -4170,9 +4170,21 @@ async def update_document_metadata(
         # Load existing results
         results_file = Path(f"analysis_results/{document_id}.json")
         if not results_file.exists():
+            # List available documents for debugging
+            analysis_dir = Path("analysis_results")
+            available_docs = []
+            if analysis_dir.exists():
+                available_docs = [f.stem for f in analysis_dir.glob("*.json")]
+            
+            error_detail = f"Document {document_id} not found."
+            if available_docs:
+                error_detail += f" Available documents: {', '.join(available_docs)}"
+            else:
+                error_detail += " No documents found in analysis_results directory."
+                
             raise HTTPException(
                 status_code=404,
-                detail=f"Document {document_id} not found"
+                detail=error_detail
             )
         
         with open(results_file, 'r') as f:
