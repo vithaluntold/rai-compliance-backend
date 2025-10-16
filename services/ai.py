@@ -659,6 +659,120 @@ class AIService:
 
     # Section processing methods moved to document processor
 
+    async def _process_section(
+        self,
+        section: Dict[str, Any],
+        text: str,
+        document_id: Optional[str] = None,
+        standard_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Process a single section of the checklist (async)."""
+        try:
+            if document_id and self:
+                self.current_document_id = document_id
+            
+            section_name = section.get("section", "unknown")
+            original_title = section.get("title", "")
+            
+            # Compose full title as 'section_name - original_title' if not already present
+            if (
+                section_name
+                and original_title
+                and not original_title.startswith(section_name)
+            ):
+                full_title = f"{section_name} - {original_title}"
+            else:
+                full_title = original_title or section_name
+            
+            items = section.get("items", [])
+            logger.info(f"Processing section {section_name} with {len(items)} items")
+            
+            # Use a batch size for processing
+            CHUNK_SIZE = 50  # Process questions in batches
+            
+            processed_items = []
+            for i in range(0, len(items), CHUNK_SIZE):
+                batch = items[i : i + CHUNK_SIZE]
+
+                async def process_item_no_limits(item):
+                    """Process individual item without rate limiting."""
+                    # Mark question as processing in progress tracker
+                    if hasattr(self, "progress_tracker") and self.progress_tracker:
+                        self.progress_tracker.mark_question_processing(
+                            document_id,
+                            standard_id or "unknown",
+                            item.get("id", "unknown"),
+                        )
+
+                    loop = asyncio.get_running_loop()
+                    if self:
+                        self.current_document_id = document_id
+                    
+                    return await loop.run_in_executor(
+                        None, self.analyze_chunk, text, item["question"], standard_id
+                    )
+
+                # Create tasks without rate limiting - PROCESS ALL QUESTIONS
+                tasks = [process_item_no_limits(item) for item in batch]
+                batch_results = await asyncio.gather(*tasks, return_exceptions=True)
+                
+                for idx, result in enumerate(batch_results):
+                    item = batch[idx]
+                    if isinstance(result, Exception):
+                        logger.error(
+                            f"Error processing item {item.get('id')}: {str(result)}"
+                        )
+                        # Mark question as failed in progress tracker
+                        if hasattr(self, "progress_tracker") and self.progress_tracker:
+                            self.progress_tracker.mark_question_failed(
+                                document_id,
+                                standard_id or "unknown",
+                                item.get("id", "unknown"),
+                            )
+                        continue
+
+                    # Ensure result is a dictionary before unpacking
+                    if not isinstance(result, dict):
+                        item_id = item.get('id')
+                        logger.error(
+                            f"Invalid result type for item {item_id}: {type(result)}"
+                        )
+                        continue
+
+                    # Mark question as completed in progress tracker
+                    if hasattr(self, "progress_tracker") and self.progress_tracker:
+                        self.progress_tracker.mark_question_completed(
+                            document_id,
+                            standard_id or "unknown",
+                            item.get("id", "unknown"),
+                        )
+
+                    processed_items.append(
+                        {
+                            "id": item["id"],
+                            "question": item["question"],
+                            "reference": item.get("reference", ""),
+                            **result,
+                        }
+                    )
+
+            return {
+                "section": section_name,
+                "title": full_title,
+                "items": processed_items,
+            }
+            
+        except Exception as e:
+            logger.error(
+                f"Error processing section {section.get('section', 'unknown')}: {str(e)}"
+            )
+            return {
+                "section": section.get("section", "unknown"),
+                "title": section.get("title", "Unknown Section"),
+                "items": [],
+                "error": str(e),
+            }
+
     async def analyze_compliance(
         self, document_id: str, text: str, framework: str, standard: str
     ) -> Dict[str, Any]:

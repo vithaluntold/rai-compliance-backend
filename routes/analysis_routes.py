@@ -1899,8 +1899,41 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             # Extract simple values from nested smart extractor format for company_metadata
             def extract_value(field_data):
                 if isinstance(field_data, dict) and "value" in field_data:
-                    return field_data.get("value", "")
-                return str(field_data) if field_data else ""
+                    value = field_data.get("value", "")
+                else:
+                    value = str(field_data) if field_data else ""
+                
+                # Clean up verbose AI responses for company names
+                if value:
+                    # Remove common verbose patterns
+                    value = value.strip()
+                    
+                    # For company names, reject generic terms and verbose descriptions
+                    lower_val = value.lower()
+                    if any(term in lower_val for term in [
+                        'the group', 'the company', 'based on the document',
+                        'from the financial statements', 'according to the document',
+                        'the entity', 'this company', 'the client'
+                    ]):
+                        return ""
+                    
+                    # If it's longer than 100 characters, it's probably verbose - truncate or reject
+                    if len(value) > 100:
+                        # Try to extract just the company name from verbose response
+                        lines = value.split('\n')
+                        for line in lines[:3]:  # Check first 3 lines
+                            line = line.strip()
+                            if (len(line) < 80 and 
+                                any(suffix in line for suffix in ['Ltd', 'PJSC', 'PLC', 'Inc', 'Group', 'Corp', 'LLC']) and
+                                not any(word in line.lower() for word in ['based on', 'according to', 'from the'])):
+                                return line
+                        return ""  # Reject verbose responses
+                    
+                    # Length validation for company names
+                    if len(value) < 2 or len(value) > 80:
+                        return ""
+                
+                return value
             
             # Create company_metadata in the format frontend expects (simple values)
             # Try simplified version first, then fall back to nested format
@@ -1972,8 +2005,40 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
                     # Helper function to extract values from nested format
                     def _extract_field_value(field_data):
                         if isinstance(field_data, dict) and 'value' in field_data:
-                            return field_data['value']
-                        return field_data if field_data else ''
+                            value = field_data['value']
+                        else:
+                            value = str(field_data) if field_data else ''
+                        
+                        # Clean up verbose AI responses (same logic as extract_value above)
+                        if value:
+                            value = value.strip()
+                            
+                            # For company names, reject generic terms and verbose descriptions
+                            lower_val = value.lower()
+                            if any(term in lower_val for term in [
+                                'the group', 'the company', 'based on the document',
+                                'from the financial statements', 'according to the document',
+                                'the entity', 'this company', 'the client'
+                            ]):
+                                return ""
+                            
+                            # If it's longer than 100 characters, it's probably verbose - truncate or reject
+                            if len(value) > 100:
+                                # Try to extract just the company name from verbose response
+                                lines = value.split('\n')
+                                for line in lines[:3]:  # Check first 3 lines
+                                    line = line.strip()
+                                    if (len(line) < 80 and 
+                                        any(suffix in line for suffix in ['Ltd', 'PJSC', 'PLC', 'Inc', 'Group', 'Corp', 'LLC']) and
+                                        not any(word in line.lower() for word in ['based on', 'according to', 'from the'])):
+                                        return line
+                                return ""  # Reject verbose responses
+                            
+                            # Length validation for company names
+                            if len(value) < 2 or len(value) > 80:
+                                return ""
+                        
+                        return value
                     
                     # Split geography string into individual countries for frontend array
                     geography_str = _extract_field_value(old_metadata.get('operational_demographics', ''))
