@@ -865,37 +865,95 @@ class StandardIdentifier:
         }
     
     def _find_best_semantic_match(self, sentence: str, standard_descriptions: Dict[str, str]) -> Optional[Dict[str, Any]]:
-        """Find best matching standard using keyword-based semantic similarity"""
+        """Enhanced semantic matching with fuzzy logic and taxonomy concepts"""
         
         sentence_lower = sentence.lower()
+        sentence_words = set(re.findall(r'\b\w+\b', sentence_lower))
+        
         best_match = None
         best_score = 0.0
         
         for standard, description in standard_descriptions.items():
-            # Simple keyword matching approach (can be enhanced with embeddings later)
-            keywords = description.split()
+            description_words = set(re.findall(r'\b\w+\b', description.lower()))
             matched_keywords = []
-            score = 0.0
             
-            for keyword in keywords:
-                if keyword in sentence_lower:
-                    matched_keywords.append(keyword)
-                    # Weight longer keywords more heavily
-                    score += len(keyword) / 10.0
+            # Enhanced matching strategies
+            exact_matches = sentence_words.intersection(description_words)
+            fuzzy_matches = self._find_fuzzy_matches(sentence_words, description_words)
+            taxonomy_matches = self._find_taxonomy_concept_matches(sentence_lower, standard)
             
-            # Normalize score by description length
-            if len(keywords) > 0:
-                normalized_score = score / len(keywords)
-                
-                if normalized_score > best_score and len(matched_keywords) > 0:
-                    best_score = normalized_score
-                    best_match = {
-                        'standard': standard,
-                        'confidence': min(normalized_score, 0.95),  # Cap at 95%
-                        'keywords': matched_keywords[:5]  # Top 5 matching keywords
+            # Calculate composite score
+            exact_score = len(exact_matches) * 2.0  # Higher weight for exact matches
+            fuzzy_score = len(fuzzy_matches) * 1.5  # Medium weight for fuzzy matches  
+            taxonomy_score = len(taxonomy_matches) * 3.0  # Highest weight for taxonomy matches
+            
+            total_score = exact_score + fuzzy_score + taxonomy_score
+            
+            # Normalize by description length with minimum baseline
+            baseline_normalization = max(len(description_words), 5)
+            normalized_score = total_score / baseline_normalization
+            
+            if normalized_score > best_score and total_score > 0:
+                best_score = normalized_score
+                all_matches = list(exact_matches) + list(fuzzy_matches) + taxonomy_matches
+                best_match = {
+                    'standard': standard,
+                    'confidence': min(normalized_score * 0.8, 0.95),  # More conservative confidence
+                    'keywords': all_matches[:15],  # Increased context
+                    'match_types': {
+                        'exact': len(exact_matches),
+                        'fuzzy': len(fuzzy_matches), 
+                        'taxonomy': len(taxonomy_matches)
                     }
+                }
         
         return best_match
+    
+    def _find_fuzzy_matches(self, sentence_words: Set[str], description_words: Set[str]) -> Set[str]:
+        """Find fuzzy matches using stemming and common variations"""
+        fuzzy_matches = set()
+        
+        # Common financial/accounting word variations
+        stem_variations = {
+            'depreciat': ['depreciation', 'depreciate', 'depreciated', 'depreciating'],
+            'leas': ['lease', 'leased', 'leasing', 'lessor', 'lessee'],
+            'revenu': ['revenue', 'revenues'], 
+            'incom': ['income', 'incomes'],
+            'asset': ['assets', 'asset'],
+            'liabilit': ['liability', 'liabilities'],
+            'equit': ['equity', 'equities'],
+            'inventor': ['inventory', 'inventories'],
+            'receiv': ['receivable', 'receivables', 'received', 'receiving'],
+            'payabl': ['payable', 'payables', 'payment', 'payments'],
+            'invest': ['investment', 'investments', 'investor', 'investing'],
+            'impair': ['impairment', 'impaired', 'impairing']
+        }
+        
+        for sentence_word in sentence_words:
+            for description_word in description_words:
+                # Check stem matching
+                for stem, variations in stem_variations.items():
+                    if (sentence_word in variations and description_word in variations) or \
+                       (sentence_word.startswith(stem) and description_word.startswith(stem)):
+                        fuzzy_matches.add(f"{sentence_word}~{description_word}")
+        
+        return fuzzy_matches
+    
+    def _find_taxonomy_concept_matches(self, sentence: str, standard: str) -> List[str]:
+        """Find matches using taxonomy concept index"""
+        matches = []
+        
+        if not self.concept_index or 'by_keywords' not in self.concept_index:
+            return matches
+        
+        # Look for taxonomy concept keywords in sentence
+        for keyword, concept_ids in self.concept_index['by_keywords'].items():
+            if keyword.lower() in sentence and len(keyword) > 3:
+                # Check if concept relates to current standard
+                if any(standard.replace(' ', '').lower() in concept_id.lower() for concept_id in concept_ids):
+                    matches.append(f"tax:{keyword}")
+        
+        return matches[:5]  # Limit taxonomy matches
     
     def _extract_notes_sections(self, document_text: str, document_id: str, notes_start_pos: Optional[int] = None) -> List[NotesSection]:
         """Extract Notes to Accounts sections from document"""
@@ -974,7 +1032,7 @@ class StandardIdentifier:
                 section_title="Notes to Financial Statements",
                 note_number="1",
                 subsection=None,
-                content=notes_content[:50000],  # Limit to 50K chars to avoid token issues
+                content=notes_content,  # ✅ FIXED: Use full content instead of truncating to 50K chars
                 page_numbers=[1],
                 tagged_sentences=[]
             ))
@@ -1046,7 +1104,8 @@ class StandardIdentifier:
         if current_sentence.strip():
             sentences.append(current_sentence.strip())
         
-        return [s for s in sentences if len(s.strip()) > 20]
+        # ✅ FIXED: Reduce minimum sentence length from 20 to 10 chars to keep important financial data
+        return [s for s in sentences if len(s.strip()) > 10]
     
     def _identify_standards_for_sentence(self, sentence: str, section: NotesSection) -> List[StandardTag]:
         """Identify all applicable accounting standards for a sentence"""
@@ -1338,31 +1397,59 @@ class StandardIdentifier:
         return standard_names.get(standard_code, standard_code)
     
     def _build_concept_index(self):
-        """Build searchable index from taxonomy data"""
+        """Build comprehensive searchable index from taxonomy data"""
         
         if not self.taxonomy_data:
+            logger.warning("No taxonomy data available for concept indexing")
             return
         
-        # This would build the concept index similar to taxonomy integration
-        # Using the concepts data to create searchable keyword mappings
         self.concept_index = {
             "by_keywords": {},
             "by_standard": {},
             "by_category": {}
         }
         
-        # Extract and index taxonomy concepts (simplified version)
         concepts = self.taxonomy_data.get("concepts", {})
+        logger.info(f"Building concept index from {len(concepts)} taxonomy concepts")
+        
         for concept_id, concept_data in concepts.items():
-            # Extract keywords from concept name
+            # Extract from concept name (camelCase)
             name = concept_data.get("name", "")
-            keywords = re.findall(r'[A-Z][a-z]+', name)  # Extract camelCase words
+            camel_keywords = re.findall(r'[A-Z][a-z]+', name)
             
-            for keyword in keywords:
-                if len(keyword) > 3:  # Meaningful keywords only
-                    if keyword not in self.concept_index["by_keywords"]:
-                        self.concept_index["by_keywords"][keyword] = []
-                    self.concept_index["by_keywords"][keyword].append(concept_id)
+            # Extract from labels and documentation
+            labels = concept_data.get("labels", {})
+            documentation = concept_data.get("documentation", "")
+            
+            # Combine all text sources
+            all_text = f"{name} {' '.join(labels.values())} {documentation}".lower()
+            
+            # Extract meaningful keywords
+            text_keywords = re.findall(r'\b[a-z]{3,}\b', all_text)  # 3+ char words
+            
+            # Combine camelCase and text keywords
+            all_keywords = set(camel_keywords + text_keywords)
+            
+            # Index keywords
+            for keyword in all_keywords:
+                if len(keyword) > 2 and keyword not in ['the', 'and', 'for', 'with', 'that']:
+                    keyword_lower = keyword.lower()
+                    
+                    # Index by keyword
+                    if keyword_lower not in self.concept_index["by_keywords"]:
+                        self.concept_index["by_keywords"][keyword_lower] = []
+                    self.concept_index["by_keywords"][keyword_lower].append(concept_id)
+                    
+                    # Index by standard (extract from concept_id)
+                    if 'ifrs' in concept_id.lower() or 'ias' in concept_id.lower():
+                        standard_match = re.search(r'(ifrs\d+|ias\d+)', concept_id.lower())
+                        if standard_match:
+                            standard = standard_match.group(1).upper()
+                            if standard not in self.concept_index["by_standard"]:
+                                self.concept_index["by_standard"][standard] = []
+                            self.concept_index["by_standard"][standard].append(keyword_lower)
+        
+        logger.info(f"Concept index built: {len(self.concept_index['by_keywords'])} keywords indexed")
     
     def _load_header_standard_mapping(self):
         """Load mapping from section headers to accounting standards"""
