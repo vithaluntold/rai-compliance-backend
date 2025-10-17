@@ -603,18 +603,12 @@ async def get_ai_context_for_standard(document_id: str, standard_id: str, questi
     # 1. METADATA SECTION
     metadata = context_data.get("metadata", {})
     if metadata:
-        fs_type_value = _extract_value(metadata.get('financial_statements_type', ''))
-        logger.info(f"📊 AI SERVICE CREATED FINANCIAL STATEMENT TYPE BEING USED IN COMPLIANCE ANALYSIS: '{fs_type_value}'")
-        logger.info(f"💾 Full metadata being attached to AI context: {metadata}")
-        
         context_parts.append("=== COMPANY METADATA ===")
         context_parts.append(f"Company Name: {_extract_value(metadata.get('company_name', ''))}")
         context_parts.append(f"Nature of Business: {_extract_value(metadata.get('nature_of_business', ''))}")
         context_parts.append(f"Operational Demographics: {_extract_value(metadata.get('operational_demographics', ''))}")
-        context_parts.append(f"Financial Statements Type: {fs_type_value}")
+        context_parts.append(f"Financial Statements Type: {_extract_value(metadata.get('financial_statements_type', ''))}")
         context_parts.append("")
-        
-        logger.info(f"🔗 CONTEXT PREPARED: Financial Statements Type '{fs_type_value}' will be included in AI compliance analysis prompts")
     
     # 2. FINANCIAL STATEMENTS SECTION
     financial_statements = context_data.get("financial_statements", [])

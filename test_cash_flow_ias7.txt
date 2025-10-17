@@ -1,0 +1,56 @@
+PHOENIX GROUP PLC
+CONSOLIDATED STATEMENT OF CASH FLOWS
+FOR THE YEAR ENDED 31 DECEMBER 2024
+
+Operating activities                          2024      2023
+                                            AED'000   AED'000
+Profit for the year                          167,372   207,780
+Adjustments for:
+Depreciation of property and equipment        49,428    18,966
+Amortisation of intangible assets             1,064       365
+Amortisation of right-of-use assets             230       126
+Gain on disposal of property and equipment      (78)        -
+Finance cost                                  9,293       321
+Share of loss from associates                 8,748     4,284
+Foreign exchange loss / (gain)                   47       (87)
+Unrealized gain on digital assets           (87,582)  (94,490)
+
+(Working capital changes):
+Trade and other receivables                   21,110   (22,583)
+Inventories                                 (16,048)  (13,138)
+Due from related parties                     45,196   (37,404)
+Digital assets                               58,664    (1,525)
+Trade payables                                3,090       264
+Other liabilities                           (29,467)    5,027
+Due to related parties                           -    (2,622)
+                                           (65,935) (136,325)
+
+Employees' end of service benefits paid         (53)       (9)
+Finance income received                       1,115       273
+Net cash used in operating activities       (64,873) (136,061)
+
+Investing activities
+Purchase of intangible assets                  (836)      (40)
+Investment for acquisition of interest        (10,256)   (4,284)
+Purchase of property and equipment           (47,476)  (30,730)
+Net cash flows used in investing activities  (58,568)  (35,054)
+
+Financing activities
+Proceeds from public share issue                  -    370,628
+Repayment of amount due to related party     (54,711)        -
+Repayment of interest-bearing loans            (165)     (207)
+Proceeds from interest-bearing loans          15,000         -
+Finance cost paid                             (9,293)     (321)
+Advances and purchases of own shares          (1,930)        -
+Payment of lease liability                      (273)     (136)
+Funds repaid to shareholder on current account    -    (9,019)
+Fund repaid to shareholder                   (24,995)    7,979
+Proceeds from shareholders' loans             22,000         -
+Net cash flows used in financing activities  (54,367)  368,924
+
+Net decrease/(increase) in cash and equivalents (177,808) 197,809
+Net foreign exchange difference                   (47)      (87)
+Cash and cash equivalents at 1 January        198,165       443
+Cash and cash equivalents at 31 December       20,310   198,165
+
+This consolidated statement of cash flows shows the cash flows for Phoenix Group PLC and its subsidiaries for the year ended 31 December 2024.

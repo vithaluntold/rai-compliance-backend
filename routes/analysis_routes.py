@@ -576,15 +576,7 @@ async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
     # Use smart metadata extractor
     extractor = SmartMetadataExtractor()
     metadata_result = await extractor.extract_metadata_optimized(document_id, chunks)
-    
-    # Log the financial statements type that was extracted
-    if metadata_result and "financial_statements_type" in metadata_result:
-        fs_type_info = metadata_result["financial_statements_type"]
-        logger.info(f"💾 AI SERVICE FINAL RESULT - Financial Statements Type: '{fs_type_info.get('value', 'N/A')}' (confidence: {fs_type_info.get('confidence', 0)}, method: {fs_type_info.get('extraction_method', 'unknown')})")
-        logger.info(f"📝 Financial Statements Type Context: {fs_type_info.get('context', 'No context available')}")
-    
     logger.info(f"✅ Smart metadata extraction completed for document {document_id}")
-    logger.info(f"📊 COMPLETE METADATA RESULT: {metadata_result}")
     return metadata_result
 
 
@@ -2304,6 +2296,16 @@ async def select_framework(
     ai_svc: AIService = Depends(get_ai_service),
 ) -> Union[Dict[str, Any], JSONResponse]:
     try:
+        # 🚨 CRITICAL BUG DEBUGGING - Track exact standards being received
+        logger.info(f"🚨 FRAMEWORK SELECTION DEBUG - Document: {document_id}")
+        logger.info(f"🚨 RAW REQUEST from frontend: {request}")
+        logger.info(f"🚨 Framework received: {request.framework}")
+        logger.info(f"🚨 Standards received from frontend: {request.standards}")
+        logger.info(f"🚨 Standards count: {len(request.standards)}")
+        logger.info(f"🚨 Standards type: {type(request.standards)}")
+        for i, std in enumerate(request.standards):
+            logger.info(f"🚨 Standard {i+1}: '{std}' (type: {type(std)})")
+        
         logger.info(
             f"Selecting framework {request.framework} and standards "
             f"{request.standards} for document {document_id}"
@@ -2343,6 +2345,10 @@ async def select_framework(
             }
         )
         
+        # 🚨 CRITICAL BUG DEBUGGING - Track exactly what gets saved
+        logger.info(f"🚨 BEFORE SAVE - results['standards']: {results.get('standards', 'NOT SET')}")
+        logger.info(f"🚨 About to save these standards to file: {request.standards}")
+        
         # CRITICAL LOGGING: Track exactly what standards are being saved
         logger.info(f"🔒 FRAMEWORK SELECTION - Document: {document_id}")
         logger.info(f"🔒 SAVING FRAMEWORK: {request.framework}")
@@ -2367,6 +2373,24 @@ async def select_framework(
         )
 
         save_analysis_results(document_id, results)
+
+        # 🚨 CRITICAL BUG DEBUGGING - Verify what was actually saved
+        try:
+            with open(results_path, "r", encoding="utf-8") as f:
+                saved_results = json.load(f)
+            saved_standards = saved_results.get("standards", [])
+            logger.info(f"🚨 AFTER SAVE - File contains standards: {saved_standards}")
+            logger.info(f"🚨 AFTER SAVE - Standards count in file: {len(saved_standards)}")
+            
+            # Check if saved standards match what we intended to save
+            if saved_standards != request.standards:
+                logger.error(f"🚨 BUG DETECTED! Saved standards don't match request!")
+                logger.error(f"🚨 Expected: {request.standards}")
+                logger.error(f"🚨 Actually saved: {saved_standards}")
+            else:
+                logger.info(f"✅ Standards saved correctly as intended")
+        except Exception as e:
+            logger.error(f"🚨 Failed to verify saved results: {e}")
 
         # Extract document text
         text = await _extract_document_text(document_id)
