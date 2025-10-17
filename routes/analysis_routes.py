@@ -1945,7 +1945,10 @@ async def get_document_status(document_id: str) -> Union[Dict[str, Any], JSONRes
             
             # DEBUG: Log what we're extracting
             logger.info(f"🔍 DEBUG - Metadata keys available: {list(metadata.keys())}")
-            logger.info(f"🔍 DEBUG - Extracted values: company_name='{company_name}', nature='{nature_of_business[:50] if nature_of_business else ''}...', demo='{operational_demo}', type='{financial_type}'")
+            logger.info(f"🔍 DEBUG - Raw company_name field: {metadata.get('company_name', 'NOT_FOUND')}")
+            logger.info(f"🔍 DEBUG - Raw company_name_simple field: {metadata.get('company_name_simple', 'NOT_FOUND')}")
+            logger.info(f"🔍 DEBUG - extract_value result: '{extract_value(metadata.get('company_name', ''))}'")
+            logger.info(f"🔍 DEBUG - Final extracted values: company_name='{company_name}', nature='{nature_of_business[:50] if nature_of_business else ''}...', demo='{operational_demo}', type='{financial_type}'")
             
             # Split geography string into individual countries for frontend array
             geography_list = []
