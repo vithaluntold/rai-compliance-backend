@@ -613,7 +613,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                     # Validate company name
                     if (len(company_name) >= 5 and len(company_name) <= 80 and
                         not any(term in company_name.lower() for term in ['statement', 'report', 'audit', 'note', 'year', 'ended', 'page']) and
-                        company_name.lower() not in ['the group', 'the company', 'group', 'company']):
+                        company_name.lower() not in ['the company', 'company']):
                         
                         # Higher confidence for legal entity indicators
                         confidence = 0.8
@@ -656,7 +656,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                         
                         if (len(company_name) >= 5 and len(company_name) <= 80 and
                             not any(term in company_name.lower() for term in ['statement', 'report', 'audit', 'note', 'year', 'ended']) and
-                            company_name.lower() not in ['the group', 'the company', 'group', 'company']):
+                            company_name.lower() not in ['the company', 'company']):
                             
                             confidence = 0.85
                             if any(suffix in company_name for suffix in ['PJSC', 'PLC', 'Ltd', 'Limited']):
@@ -681,7 +681,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 
                 if match:
                     company_name = match.group(1).strip()
-                    if (company_name.lower() not in ['the group', 'the company', 'group', 'company'] and
+                    if (company_name.lower() not in ['the company', 'company'] and
                         not any(term in company_name.lower() for term in ['statement', 'report', 'audit'])):
                         
                         confidence = 0.75
