@@ -576,7 +576,15 @@ async def _extract_document_metadata(document_id: str, chunks: list) -> dict:
     # Use smart metadata extractor
     extractor = SmartMetadataExtractor()
     metadata_result = await extractor.extract_metadata_optimized(document_id, chunks)
+    
+    # Log the financial statements type that was extracted
+    if metadata_result and "financial_statements_type" in metadata_result:
+        fs_type_info = metadata_result["financial_statements_type"]
+        logger.info(f"💾 AI SERVICE FINAL RESULT - Financial Statements Type: '{fs_type_info.get('value', 'N/A')}' (confidence: {fs_type_info.get('confidence', 0)}, method: {fs_type_info.get('extraction_method', 'unknown')})")
+        logger.info(f"📝 Financial Statements Type Context: {fs_type_info.get('context', 'No context available')}")
+    
     logger.info(f"✅ Smart metadata extraction completed for document {document_id}")
+    logger.info(f"📊 COMPLETE METADATA RESULT: {metadata_result}")
     return metadata_result
 
 

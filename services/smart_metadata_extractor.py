@@ -226,17 +226,32 @@ class SmartMetadataExtractor:
 
         # Extract the 4th field - Financial Statements Type using simple pattern matching
         logger.info("📊 Extracting financial statements type using pattern matching")
+        logger.info(f"📄 Text sample for FS type detection (first 500 chars): {text[:500]}")
+        
         fs_type = "Consolidated"  # Default based on context showing "consolidated financial statements"
+        detection_reason = "Default value"
+        
+        # Check for consolidated statements
         if "consolidated" in text.lower() and "financial statements" in text.lower():
             fs_type = "Consolidated"
+            detection_reason = "Found 'consolidated' and 'financial statements' in document"
+            logger.info("✅ DETECTED: Consolidated financial statements in document text")
         elif "standalone" in text.lower() and "financial statements" in text.lower():
             fs_type = "Standalone"
+            detection_reason = "Found 'standalone' and 'financial statements' in document"
+            logger.info("✅ DETECTED: Standalone financial statements in document text")
         elif "separate" in text.lower() and "financial statements" in text.lower():
             fs_type = "Separate"
+            detection_reason = "Found 'separate' and 'financial statements' in document"
+            logger.info("✅ DETECTED: Separate financial statements in document text")
+        else:
+            logger.info("⚠️ NO EXPLICIT STATEMENT TYPE FOUND - using default 'Consolidated'")
+        
+        logger.info(f"🎯 AI SERVICE CREATED FINANCIAL STATEMENT TYPE: '{fs_type}' (Reason: {detection_reason})")
         
         results["financial_statements_type"]["value"] = fs_type
         results["financial_statements_type"]["confidence"] = 0.9
-        results["financial_statements_type"]["context"] = "Pattern matched from document content"
+        results["financial_statements_type"]["context"] = f"Pattern matched from document content - {detection_reason}"
 
         return results
 
@@ -852,6 +867,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 prompt = self._create_enhanced_demographics_prompt(context_text)
             elif field_name == "financial_statements_type":
                 prompt = self._create_enhanced_fs_type_prompt(context_text)
+                logger.info(f"🤖 AI PROMPT for financial_statements_type:\nSYSTEM: {prompt['system']}\nUSER: {prompt['user'][:300]}...")
             else:
                 return "", ""
             
@@ -866,7 +882,11 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
             )
             
             content = response.choices[0].message.content
-            logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else f"🤖 AI Response for {field_name}: {content}")
+            if field_name == "financial_statements_type":
+                logger.info(f"💡 AI SERVICE CREATED FINANCIAL STATEMENT TYPE: '{content}' from AI analysis")
+                logger.info(f"📊 Full AI Response for {field_name}: {content}")
+            else:
+                logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else f"🤖 AI Response for {field_name}: {content}")
             return content.strip() if content else "", context_text[:500]
             
         except Exception as e:
