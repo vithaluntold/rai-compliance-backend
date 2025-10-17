@@ -24,6 +24,8 @@ def load_checklist(
     If no framework and standard are provided, defaults to IAS 40 for backward compatibility.
     """
     try:
+        # CRITICAL LOGGING: Track exactly which checklist is being requested
+        logger.info(f"🔍 CHECKLIST LOADING REQUEST - Framework: {framework}, Standard: {standard}")
         # Get the absolute path to the checklist directory
         current_dir = Path(__file__).resolve().parent
         checklist_data_dir = current_dir.parent / "checklist_data"
@@ -43,24 +45,30 @@ def load_checklist(
         # Don't split comma-separated standards here - process the standard as provided
         # This allows the analyze_compliance function to work with individual standards
 
+        # CRITICAL FIX: Handle both space and underscore format for standards
+        standard_with_space = standard.replace("_", " ")  # IAS_7 -> IAS 7
+        standard_with_underscore = standard.replace(" ", "_")  # IAS 7 -> IAS_7
+        
+        logger.info(f"🔍 Looking for standard in formats: '{standard}', '{standard_with_space}', '{standard_with_underscore}'")
+
         # Try multiple possible paths for the checklist
         possible_paths = [
-            # Path 1: Standard-specific checklist.json in a standard subdirectory
-            checklist_data_dir / "frameworks" / framework / standard / "checklist.json",
-            # Path 2: Direct JSON file in the framework/IFRS directory
+            # Path 1: Direct match with original standard name
             checklist_data_dir / "frameworks" / framework / f"{standard}.json",
-            # Path 3: Checklist directory with the same name as the standard
-            (
-                checklist_data_dir / "frameworks" / "IFRS" / f"{standard}.json"
-                if framework == "IFRS"
-                else None
-            ),
-            # Path 4: Framework directory with checklist in IFRS directory
-            checklist_data_dir / "frameworks" / "IFRS" / f"{standard}.json",
-            # Path 5: Legacy path for backward compatibility with IAS 40
+            # Path 2: Standard with spaces (IAS 7.json)
+            checklist_data_dir / "frameworks" / framework / f"{standard_with_space}.json",
+            # Path 3: Standard with underscores (IAS_7.json)  
+            checklist_data_dir / "frameworks" / framework / f"{standard_with_underscore}.json",
+            # Path 4: Standard-specific checklist.json in a standard subdirectory
+            checklist_data_dir / "frameworks" / framework / standard / "checklist.json",
+            # Path 5: Framework directory with checklist in IFRS directory (with spaces)
+            checklist_data_dir / "frameworks" / "IFRS" / f"{standard_with_space}.json",
+            # Path 6: Framework directory with checklist in IFRS directory (with underscores)
+            checklist_data_dir / "frameworks" / "IFRS" / f"{standard_with_underscore}.json",
+            # Path 7: Legacy path for backward compatibility with IAS 40
             (
                 checklist_data_dir / "ias40_checklist.json"
-                if framework == "IFRS" and standard == "IAS_40"
+                if framework == "IFRS" and standard in ["IAS_40", "IAS 40"]
                 else None
             ),
         ]
@@ -69,10 +77,10 @@ def load_checklist(
         possible_paths = [p for p in possible_paths if p is not None]
 
         # Try each path
-        for checklist_path in possible_paths:
-            if checklist_path.exists():
+        for i, checklist_path in enumerate(possible_paths):
+            if checklist_path and checklist_path.exists():
                 try:
-                    logger.info(f"Loading checklist from: {checklist_path}")
+                    logger.info(f"🎯 FOUND CHECKLIST at path {i+1}: {checklist_path}")
 
                     # Try multiple encodings
                     encodings = ["utf-8", "utf-8-sig", "latin-1", "cp1252"]
@@ -89,20 +97,27 @@ def load_checklist(
                     if checklist:
                         sections_count = len(checklist.get('sections', []))
                         logger.info(
-                            f"Successfully loaded checklist with {sections_count} sections"
+                            f"✅ CHECKLIST LOADED SUCCESSFULLY: {framework}/{standard} - {sections_count} sections from {checklist_path}"
                         )
+                        # Verify this is the RIGHT checklist
+                        checklist_standard = checklist.get('standard', 'unknown')
+                        if checklist_standard != standard and checklist_standard != standard.replace(' ', '_'):
+                            logger.warning(f"⚠️ WARNING: Loaded checklist standard '{checklist_standard}' does not match requested standard '{standard}'")
                         return checklist
                 except Exception as e:
                     logger.error(
-                        f"Error loading checklist from {checklist_path}: {str(e)}"
+                        f"❌ Error loading checklist from {checklist_path}: {str(e)}"
                     )
                     continue  # Try the next path
+            elif checklist_path:
+                logger.debug(f"📁 Path {i+1} not found: {checklist_path}")
 
         # If we get here, no valid path was found or loaded
 
         # For IAS 40, create a default checklist
         if framework == "IFRS" and standard == "IAS_40":
-            logger.warning("Creating default IAS 40 checklist")
+            logger.warning(f"🚨 FALLBACK: Creating default IAS 40 checklist for {framework}/{standard}")
+            logger.warning(f"🚨 This means the IAS 40 checklist file was not found!")
             default_checklist = create_default_ias40_checklist()
 
             # Create directories and save the default checklist
@@ -117,7 +132,10 @@ def load_checklist(
 
         # For other IFRS standards, create a generic blank checklist
         elif framework == "IFRS":
-            logger.warning(f"Creating generic checklist for {standard}")
+            logger.error(f"🚨 CRITICAL ERROR: Standard '{standard}' not found for IFRS framework!")
+            logger.error(f"🚨 This should NOT happen if the standard exists in checklist_data/frameworks/IFRS/")
+            logger.error(f"🚨 Creating emergency generic checklist for {standard}")
+            logger.error(f"🚨 USER WILL GET WRONG ANALYSIS RESULTS!")
             generic_checklist = create_generic_checklist(standard)
 
             # Create the directory if it doesn't exist

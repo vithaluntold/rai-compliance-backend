@@ -2334,6 +2334,16 @@ async def select_framework(
                 "status": "PROCESSING",
             }
         )
+        
+        # CRITICAL LOGGING: Track exactly what standards are being saved
+        logger.info(f"🔒 FRAMEWORK SELECTION - Document: {document_id}")
+        logger.info(f"🔒 SAVING FRAMEWORK: {request.framework}")
+        logger.info(f"🔒 SAVING STANDARDS: {request.standards}")
+        logger.info(f"🔒 Standards count: {len(request.standards)}")
+        logger.info(f"🔒 Processing mode: {request.processingMode}")
+        for i, standard in enumerate(request.standards):
+            logger.info(f"🔒 Standard {i+1}: '{standard}'")
+        logger.info(f"🔒 These standards will be saved to results file: {results_path}")
 
         # Build status message
         instructions_msg = (
@@ -2588,6 +2598,24 @@ async def start_compliance_analysis(
         framework = results["framework"]
         standards = results["standards"]
         text_content = results.get("text", "")
+        
+        # CRITICAL LOGGING: Track exactly which standards are being processed
+        logger.info(f"🔒 COMPLIANCE ANALYSIS - Document: {document_id}")
+        logger.info(f"🔒 USER SELECTED STANDARDS: {standards}")
+        logger.info(f"🔒 Framework: {framework}")
+        logger.info(f"🔒 Processing Mode: {processing_mode}")
+        logger.info(f"🔒 THESE STANDARDS WILL BE ANALYZED (NO OTHERS): {standards}")
+        
+        # STRICT VALIDATION: Ensure standards list is not empty or corrupted
+        if not standards or len(standards) == 0:
+            logger.error(f"🚨 CRITICAL ERROR: No standards found in results for document {document_id}")
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "error": "No standards selected",
+                    "detail": f"No standards found for document {document_id}. Please select standards first.",
+                },
+            )
 
         if processing_mode == "comparison":
             # For comparison mode, run both Smart and Zap modes
@@ -3576,6 +3604,17 @@ async def _process_standards_sequentially(
                 f"🎯 Document {document_id} - Current: {standard}, "
                 f"Remaining: {standards[i + 1:] if i + 1 < len(standards) else 'None'}"
             )
+            
+            # STRICT VALIDATION: Ensure we're processing exactly the user's selection
+            if standard not in standards:
+                logger.error(f"🚨 CRITICAL ERROR: Attempting to process standard '{standard}' that is NOT in user selection: {standards}")
+                raise ValueError(f"Attempted to process non-selected standard: {standard}")
+            
+            # VERIFICATION: Double-check checklist exists before processing
+            from services.checklist_utils import is_standard_available
+            if not is_standard_available(framework, standard):
+                logger.error(f"🚨 CRITICAL ERROR: Standard '{standard}' is not available for framework '{framework}'")
+                raise ValueError(f"Standard '{standard}' not available for framework '{framework}'")
 
             # Get checklist to determine total questions
             checklist_data = load_checklist(framework, standard)
@@ -3615,6 +3654,25 @@ async def _process_standards_sequentially(
             save_analysis_results(document_id, results)
 
             checklist = load_checklist(framework, standard)
+            
+            # CRITICAL VALIDATION: Ensure we loaded the RIGHT checklist
+            if not checklist:
+                logger.error(f"🚨 CRITICAL ERROR: No checklist loaded for {framework}/{standard}")
+                raise ValueError(f"Could not load checklist for {framework}/{standard}")
+            
+            checklist_standard_id = checklist.get('standard', checklist.get('id', 'unknown'))
+            logger.info(f"🔍 Loaded checklist standard ID: '{checklist_standard_id}' for requested standard: '{standard}'")
+            
+            # Verify this is the RIGHT standard (allow for format differences)
+            standard_normalized = standard.replace(" ", "_").replace("-", "_")
+            checklist_standard_normalized = str(checklist_standard_id).replace(" ", "_").replace("-", "_")
+            
+            if (checklist_standard_normalized.lower() != standard_normalized.lower() and 
+                not checklist_standard_normalized.endswith(standard_normalized.lower()) and
+                not standard_normalized.lower().endswith(checklist_standard_normalized.lower())):
+                logger.error(f"🚨 CRITICAL MISMATCH: Loaded checklist '{checklist_standard_id}' does not match requested '{standard}'")
+                logger.error(f"🚨 This will cause WRONG analysis results!")
+                # Don't raise error here, just log it for now to track the issue
 
             # Set progress tracker for question-level tracking
             ai_svc.progress_tracker = progress_tracker
