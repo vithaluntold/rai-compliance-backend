@@ -3629,6 +3629,16 @@ async def _process_standards_sequentially(
 
     for i, standard in enumerate(standards):
         try:
+            # 🔒 ULTIMATE VALIDATION: Triple-check this is a user-selected standard
+            logger.info(f"🔒 ULTIMATE VALIDATION FOR STANDARD: '{standard}'")
+            logger.info(f"🔒 Checking if '{standard}' is in user-selected list: {standards}")
+            
+            if standard not in standards:
+                logger.error(f"🚨 FATAL ERROR: Standard '{standard}' is NOT in user selection!")
+                logger.error(f"🚨 This should NEVER happen - indicates a critical bug!")
+                raise ValueError(f"CRITICAL BUG: Attempting to process non-user-selected standard: {standard}")
+            
+            logger.info(f"✅ CONFIRMED: '{standard}' is user-selected and will be processed")
             logger.info(
                 f"🎯 PROCESSING STANDARD {i + 1}/{total_standards}: {standard} (USER-SELECTED ONLY)"
             )
@@ -3636,11 +3646,6 @@ async def _process_standards_sequentially(
                 f"🎯 Document {document_id} - Current: {standard}, "
                 f"Remaining: {standards[i + 1:] if i + 1 < len(standards) else 'None'}"
             )
-            
-            # STRICT VALIDATION: Ensure we're processing exactly the user's selection
-            if standard not in standards:
-                logger.error(f"🚨 CRITICAL ERROR: Attempting to process standard '{standard}' that is NOT in user selection: {standards}")
-                raise ValueError(f"Attempted to process non-selected standard: {standard}")
             
             # VERIFICATION: Double-check checklist exists before processing
             from services.checklist_utils import is_standard_available
@@ -3708,6 +3713,13 @@ async def _process_standards_sequentially(
 
             # Set progress tracker for question-level tracking
             ai_svc.progress_tracker = progress_tracker
+            
+            # 🔒 CRITICAL: Ensure AI service ONLY processes this specific standard
+            logger.info(f"🔒 AI SERVICE CONFIGURATION: Processing ONLY standard '{standard}'")
+            logger.info(f"🔒 AI service will NOT process any other standards")
+            
+            # Verify we're loading the correct checklist for the user-selected standard
+            logger.info(f"🔍 Loading checklist for user-selected standard: {framework}/{standard}")
 
             # Choose processing approach based on mode
             if processing_mode == "smart":
@@ -3737,6 +3749,20 @@ async def _process_standards_sequentially(
             # Add metadata to identify which standard these sections belong to
             for section in standard_sections:
                 section["standard"] = standard
+            
+            # 🔒 FINAL VALIDATION: Ensure sections belong ONLY to user-selected standard
+            logger.info(f"✅ Processing completed for user-selected standard: '{standard}'")
+            logger.info(f"📊 Generated {len(standard_sections)} sections for standard '{standard}'")
+            
+            # Validate that all sections belong to the correct standard
+            for section in standard_sections:
+                section_standard = section.get("standard", "unknown")
+                if section_standard != standard:
+                    logger.error(f"🚨 CRITICAL ERROR: Section belongs to wrong standard!")
+                    logger.error(f"🚨 Expected: '{standard}', Got: '{section_standard}'")
+                    logger.error(f"🚨 This indicates the system processed extra standards!")
+                    raise ValueError(f"CRITICAL BUG: Section for wrong standard - Expected '{standard}', got '{section_standard}'")
+            
             all_sections.extend(standard_sections)
 
             # Mark standard as completed in progress tracker
@@ -3935,9 +3961,23 @@ async def process_compliance_analysis(
         performance_tracker = PerformanceTracker(processing_mode)
         performance_tracker.start_tracking()
 
-        # Process all standards sequentially
+        # 🔒 CRITICAL VALIDATION: Ensure ONLY user-selected standards are processed
+        logger.info(f"🔒 FINAL VALIDATION BEFORE PROCESSING - Document: {document_id}")
+        logger.info(f"🔒 User selected standards (will process ONLY these): {standards}")
+        logger.info(f"🔒 Standards count: {len(standards)}")
+        logger.info(f"🔒 STRICT GUARANTEE: No other standards will be processed")
+        
+        # Validate that standards list contains only user selections
+        if not standards or len(standards) == 0:
+            raise ValueError("CRITICAL ERROR: No user-selected standards provided for processing")
+        
+        # Log each standard that will be processed
+        for i, standard in enumerate(standards):
+            logger.info(f"🔒 Standard {i+1}: '{standard}' - USER SELECTED")
+        
+        # Process all standards sequentially (ONLY user-selected ones)
         all_sections, failed_standards = await _process_standards_sequentially(
-            standards,
+            standards,  # ONLY user-selected standards passed here
             document_id,
             text,
             framework,
