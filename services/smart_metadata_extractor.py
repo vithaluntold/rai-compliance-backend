@@ -226,32 +226,17 @@ class SmartMetadataExtractor:
 
         # Extract the 4th field - Financial Statements Type using simple pattern matching
         logger.info("📊 Extracting financial statements type using pattern matching")
-        logger.info(f"📄 Text sample for FS type detection (first 500 chars): {text[:500]}")
-        
         fs_type = "Consolidated"  # Default based on context showing "consolidated financial statements"
-        detection_reason = "Default value"
-        
-        # Check for consolidated statements
         if "consolidated" in text.lower() and "financial statements" in text.lower():
             fs_type = "Consolidated"
-            detection_reason = "Found 'consolidated' and 'financial statements' in document"
-            logger.info("✅ DETECTED: Consolidated financial statements in document text")
         elif "standalone" in text.lower() and "financial statements" in text.lower():
             fs_type = "Standalone"
-            detection_reason = "Found 'standalone' and 'financial statements' in document"
-            logger.info("✅ DETECTED: Standalone financial statements in document text")
         elif "separate" in text.lower() and "financial statements" in text.lower():
             fs_type = "Separate"
-            detection_reason = "Found 'separate' and 'financial statements' in document"
-            logger.info("✅ DETECTED: Separate financial statements in document text")
-        else:
-            logger.info("⚠️ NO EXPLICIT STATEMENT TYPE FOUND - using default 'Consolidated'")
-        
-        logger.info(f"🎯 AI SERVICE CREATED FINANCIAL STATEMENT TYPE: '{fs_type}' (Reason: {detection_reason})")
         
         results["financial_statements_type"]["value"] = fs_type
         results["financial_statements_type"]["confidence"] = 0.9
-        results["financial_statements_type"]["context"] = f"Pattern matched from document content - {detection_reason}"
+        results["financial_statements_type"]["context"] = "Pattern matched from document content"
 
         return results
 
@@ -297,8 +282,8 @@ class SmartMetadataExtractor:
             if not self.ner_pipeline:
                 return []
             
-            # Process the first 3000 characters (where company names typically appear)
-            text_chunk = text[:3000]
+            # Process larger text chunk for better company detection - use first 50K chars or full text if smaller
+            text_chunk = text[:50000] if len(text) > 50000 else text
             
             # Extract entities using NER
             entities = self.ner_pipeline(text_chunk)
@@ -375,7 +360,7 @@ IMPORTANT RULES:
 Return ONLY the number (1, 2, 3, etc.) of the CLIENT COMPANY candidate. If no clear client company exists, return "NONE"."""
 
             user_prompt = f"""DOCUMENT EXCERPT:
-{full_text[:1500]}
+{full_text[:15000]}
 
 ORGANIZATION CANDIDATES FOUND:
 {candidates_text}
@@ -528,7 +513,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
             ]
             
             for pattern in patterns:
-                matches = re.findall(pattern, text[:2000], re.MULTILINE)
+                matches = re.findall(pattern, text[:8000], re.MULTILINE)
                 for match in matches:
                     if self._validate_company_name(match):
                         logger.info(f"✅ ACCEPTED regex company: '{match}'")
@@ -850,10 +835,11 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
             # Step 3: Create chunks from relevant sentences (up to 8000 characters)
             context_text = '. '.join(relevant_sentences)
             
-            # Truncate to 8000 characters if needed
-            if len(context_text) > 8000:
-                context_text = context_text[:8000] + "..."
-                logger.info(f"Truncated context for {field_name} to 8000 characters (was {len('. '.join(relevant_sentences))} chars)")
+            # Use larger context for better AI analysis - up to 50K characters or full context
+            max_context_size = 50000
+            if len(context_text) > max_context_size:
+                context_text = context_text[:max_context_size] + "..."
+                logger.info(f"Truncated context for {field_name} to {max_context_size:,} characters (was {len('. '.join(relevant_sentences))} chars)")
             else:
                 logger.info(f"Context for {field_name}: {len(context_text)} characters from {len(relevant_sentences)} sentences")
             
@@ -867,7 +853,6 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 prompt = self._create_enhanced_demographics_prompt(context_text)
             elif field_name == "financial_statements_type":
                 prompt = self._create_enhanced_fs_type_prompt(context_text)
-                logger.info(f"🤖 AI PROMPT for financial_statements_type:\nSYSTEM: {prompt['system']}\nUSER: {prompt['user'][:300]}...")
             else:
                 return "", ""
             
@@ -882,11 +867,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
             )
             
             content = response.choices[0].message.content
-            if field_name == "financial_statements_type":
-                logger.info(f"💡 AI SERVICE CREATED FINANCIAL STATEMENT TYPE: '{content}' from AI analysis")
-                logger.info(f"📊 Full AI Response for {field_name}: {content}")
-            else:
-                logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else f"🤖 AI Response for {field_name}: {content}")
+            logger.info(f"🤖 AI Response for {field_name}: {content[:200]}..." if content and len(content) > 200 else f"🤖 AI Response for {field_name}: {content}")
             return content.strip() if content else "", context_text[:500]
             
         except Exception as e:
@@ -1166,7 +1147,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 "Look for the official registered client company name that would appear on legal documents."
             ),
             "user": (
-                f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
+                f"DOCUMENT TEXT:\n{text[:15000]}\n\n"
                 "EXTRACT THE CLIENT COMPANY NAME (NOT AUDITOR):\n"
                 "- Look for the official CLIENT company name in document titles like 'Consolidated Financial Statements of [CLIENT NAME]'\n"
                 "- Include legal suffixes like PJSC, Ltd, LLC, Inc, Corporation, Group, PLC\n"
@@ -1187,7 +1168,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 "Include specific products, services, and business operations."
             ),
             "user": (
-                f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
+                f"DOCUMENT TEXT:\n{text[:15000]}\n\n"
                 "EXTRACT DETAILED BUSINESS NATURE AND ACTIVITIES:\n"
                 "- Describe the main business activities and operations\n"
                 "- Include specific products or services offered\n"
@@ -1207,7 +1188,7 @@ Return only the number of the CLIENT COMPANY candidate (e.g., "1", "2", "3") or 
                 "Provide context about the nature of operations in each country."
             ),
             "user": (
-                f"DOCUMENT TEXT:\n{text[:3000]}\n\n"
+                f"DOCUMENT TEXT:\n{text[:15000]}\n\n"
                 "EXTRACT OPERATIONAL DEMOGRAPHICS WITH CONTEXT:\n"
                 "- Identify countries where the company has actual operations\n"
                 "- Look for subsidiary locations, revenue by geography, operational bases\n"

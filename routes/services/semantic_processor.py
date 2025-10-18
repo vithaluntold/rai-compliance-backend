@@ -17,7 +17,7 @@ def create_semantic_segments(text: str) -> List[str]:
     paragraphs = text.split("\n\n")
 
     current_segment = ""
-    max_segment_length = 2000  # Optimal size for semantic analysis
+    max_segment_length = 8000  # ✅ FIXED: Increased for comprehensive semantic analysis
 
     for paragraph in paragraphs:
         if len(current_segment) + len(paragraph) < max_segment_length:
@@ -97,14 +97,14 @@ def optimize_context_for_ai(segments: List[str], full_text: str) -> str:
     """Optimize context for AI processing to reduce token usage"""
     if not segments:
         # Fallback to beginning of document
-        return full_text[:4000]
+        return full_text[:20000]  # ✅ FIXED: Increased fallback context
 
     # Combine relevant segments with smart truncation
     combined_context = "\n\n".join(segments)
 
-    # Limit total context size for cost optimization
-    max_context_length = 6000
+    # Allow larger context for comprehensive analysis
+    max_context_length = 25000  # ✅ FIXED: Increased context limit
     if len(combined_context) > max_context_length:
-        combined_context = combined_context[:max_context_length] + "..."
+        combined_context = combined_context[:max_context_length] + "\n\n[CONTINUED...]"
 
     return combined_context

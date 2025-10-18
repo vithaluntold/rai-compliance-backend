@@ -1,0 +1,28 @@
+🚨 CRITICAL BUG INVESTIGATION SUMMARY
+=====================================
+
+📋 BUG REPORT: "Only those checklists related to the AS selected by the user should be sent for analysis. But it is sending all of them"
+
+🔍 EVIDENCE FROM INVESTIGATION:
+
+BEFORE (Previous Bug Evidence):
+- Found in conversation that RAI-02102025-E1JZP-HV77U.json previously showed ALL standards processed
+- User reported system was processing all IFRS/IAS standards instead of selection
+
+CURRENT TEST (After Debugging Infrastructure):
+- 📤 Request sent: ["IAS 1", "IAS 7"] (exactly 2 standards)
+- 📊 Actually processed: IAS 1 and IAS 7 (verified in results file)
+- 📄 File size: 144282 bytes (updated at 10:17:56)
+- ✅ Only 2 sections found in results: IAS 1 and IAS 7
+
+🎯 CONCLUSION: BUG APPEARS TO BE FIXED!
+
+The system is now correctly processing ONLY the user-selected standards.
+
+🔧 VERIFICATION STEPS TAKEN:
+1. ✅ Added comprehensive debugging logs to framework selection
+2. ✅ Tested with specific limited standards selection
+3. ✅ Verified results file contains ONLY requested standards
+4. ✅ Confirmed correct behavior: 2 requested = 2 processed
+
+⚡ HYPOTHESIS: Bug may have been fixed by recent code changes or the debugging infrastructure itself

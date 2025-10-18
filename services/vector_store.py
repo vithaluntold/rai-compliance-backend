@@ -139,8 +139,12 @@ class VectorStore:
             max_segment_length = 8000  # Stay well under token limits
             segments = []
             
-            # Split by sentences first to maintain context
-            sentences = full_text.split('. ')
+            # Enhanced sentence splitting to maintain financial context
+            import re
+            # Split on multiple sentence endings while preserving financial formatting
+            sentence_patterns = r'(?<=[.!?])\s+(?=[A-Z])|(?<=\n)\s*(?=[A-Z])'
+            sentences = re.split(sentence_patterns, full_text)
+            sentences = [s.strip() for s in sentences if s.strip()]  # Clean empty sentences
             current_segment = ""
             
             for sentence in sentences:
@@ -222,10 +226,18 @@ class VectorStore:
                     model=self.deployment_id, input=text
                 )
                 embedding = np.array(response.data[0].embedding, dtype=np.float32)
+                # Enhanced metadata with content analysis
+                content_type = self._analyze_content_type(text)
+                cleaned_text = self._clean_financial_text(text)
+                
                 metadata = {
                     "text": text,
+                    "cleaned_text": cleaned_text,
                     "segment_index": segment_index,
-                    "char_count": len(text)
+                    "char_count": len(text),
+                    "content_type": content_type,
+                    "has_financial_data": bool(re.search(r'[\$£€¥]\s*[\d,]+|\d+\.\d+|%', text)),
+                    "has_tables": bool(re.search(r'\|\s*\w+\s*\||\t\w+\t', text)),
                 }
                 return embedding, metadata
             except Exception as e:
@@ -235,6 +247,42 @@ class VectorStore:
                     )
                     return None
                 time.sleep(1)
+    
+    def _clean_financial_text(self, text: str) -> str:
+        """Clean financial text for better embedding quality."""
+        import re
+        
+        # Remove excessive whitespace while preserving structure
+        text = re.sub(r'\n\s*\n\s*\n', '\n\n', text)  # Reduce multiple newlines
+        text = re.sub(r'[ \t]+', ' ', text)  # Normalize spaces
+        
+        # Normalize financial formatting
+        text = re.sub(r'(\d+),(\d+)', r'\1\2', text)  # Remove thousands separators for consistency
+        
+        # Remove OCR artifacts common in financial documents
+        text = re.sub(r'[^\w\s\.\,\;\:\!\?\(\)\[\]\-\+\=\$£€¥%\n\t]', ' ', text)
+        
+        return text.strip()
+    
+    def _analyze_content_type(self, text: str) -> str:
+        """Analyze the type of financial content for better relevance."""
+        import re
+        text_lower = text.lower()
+        
+        if any(word in text_lower for word in ['balance sheet', 'statement of financial position']):
+            return 'balance_sheet'
+        elif any(word in text_lower for word in ['income statement', 'profit and loss', 'comprehensive income']):
+            return 'income_statement'  
+        elif any(word in text_lower for word in ['cash flow', 'statement of cash flows']):
+            return 'cash_flow'
+        elif any(word in text_lower for word in ['note', 'notes to', 'disclosure']):
+            return 'notes_disclosure'
+        elif any(word in text_lower for word in ['audit', 'independent auditor']):
+            return 'audit_report'
+        elif re.search(r'\|\s*\w+\s*\||\t\w+\t', text):
+            return 'table_data'
+        else:
+            return 'general_content'
 
     async def create_index(
         self, document_id: str, chunks: List[Dict[str, Any]]
@@ -341,20 +389,52 @@ class VectorStore:
             # Search the index
             distances, indices = index.search(query_embedding, top_k)  # type: ignore[call-arg]
 
-            # Get the matching chunks with page information
+            # Enhanced scoring with keyword boosting for compliance terms
             results = []
+            compliance_keywords = [
+                'financial statement', 'disclosure', 'note', 'accounting policy',
+                'revenue', 'assets', 'liabilities', 'equity', 'cash flow',
+                'ifrs', 'ias', 'standard', 'compliance', 'audit', 'material'
+            ]
+            
             for i, (distance, idx) in enumerate(zip(distances[0], indices[0])):
                 if idx < len(chunks):  # Ensure index is valid
                     chunk = chunks[idx]
                     # Handle both "text" and "content" field names for backward compatibility
                     text_content = chunk.get("text") or chunk.get("content", "")
+                    
+                    # Base similarity score
+                    base_score = float(1.0 / (1.0 + distance))
+                    
+                    # Keyword boosting for compliance relevance
+                    keyword_boost = 0.0
+                    text_lower = text_content.lower()
+                    query_lower = query.lower()
+                    
+                    # Exact query match boost
+                    if query_lower in text_lower:
+                        keyword_boost += 0.2
+                    
+                    # Compliance keyword boost
+                    for keyword in compliance_keywords:
+                        if keyword in text_lower:
+                            keyword_boost += 0.05
+                    
+                    # Financial data pattern boost (numbers with currency/percentage)
+                    import re
+                    if re.search(r'[\$£€¥]\s*[\d,]+|[\d,]+\s*%|\d+\.\d+', text_content):
+                        keyword_boost += 0.1
+                    
+                    # Final relevance score (capped at 1.0)
+                    relevance_score = min(1.0, base_score + keyword_boost)
+                    
                     results.append(
                         {
                             "text": text_content,
-                            "score": float(
-                                1.0 / (1.0 + distance)
-                            ),  # Convert distance to similarity score
-                            "page_number": chunk.get("page_no", chunk.get("page", 0)),  # Extract page number
+                            "score": relevance_score,
+                            "base_similarity": base_score,
+                            "keyword_boost": keyword_boost,
+                            "page_number": chunk.get("page_no", chunk.get("page", 0)),
                             "chunk_index": chunk.get("chunk_index", idx),
                             "chunk_type": chunk.get("chunk_type", "content"),
                             "metadata": chunk.get("metadata", {}),

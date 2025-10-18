@@ -391,7 +391,7 @@ class HybridFinancialDetector:
                 
             statement = HybridDetectionResult(
                 statement_type=stmt_type,
-                content=text[:5000],  # Truncate for storage
+                content=text,  # 🔧 FIX: Preserve full content - no arbitrary truncation
                 confidence_score=confidence,
                 strategy_used=strategy,
                 pattern_confidence=pattern_result["confidence"],

@@ -152,9 +152,9 @@ class DocumentAnalyzer:
         """ZAP analysis: First 3000 chars + targeted keyword sections"""
         self.extraction_log.append("Starting ZAP Analysis...")
 
-        # Strategy 1: First 3000 characters (cover page + executive summary)
-        primary_content = text[:3000]
-        self.extraction_log.append("Extracted first 3000 characters")
+        # Strategy 1: Full document analysis (no artificial limits)
+        primary_content = text  # Use FULL document content - no truncation!
+        self.extraction_log.append(f"Extracted full document content ({len(text):,} characters) for comprehensive analysis")
 
         # Strategy 2: Find high-value keyword sections
         keyword_sections = self.keyword_extractor.find_keyword_sections(text)
@@ -173,9 +173,9 @@ class DocumentAnalyzer:
 
         final_content = primary_content + additional_content
 
-        # Ensure we don't exceed 5000 chars for zap mode
-        if len(final_content) > 5000:
-            final_content = final_content[:5000]
+        # No truncation - use full content for proper analysis
+        # Modern AI can handle large documents, and compliance analysis REQUIRES complete data
+        self.extraction_log.append(f"Using full content ({len(final_content):,} characters) - no truncation for compliance accuracy")
 
         return {
             "content": final_content,
@@ -204,10 +204,11 @@ class DocumentAnalyzer:
 
         # Strategy 2: Strategic sampling from different parts
 
-        # Part 1: First 2000 chars (cover + summary)
-        content_parts.append(text[:2000])
+        # Part 1: Document header and intro sections (dynamic sizing)
+        header_size = min(50000, len(text) // 3)  # Use up to 50K or 1/3 of document
+        content_parts.append(text[:header_size])
         sections_analyzed.append("document_header")
-        self.extraction_log.append("Extracted document header (2000 chars)")
+        self.extraction_log.append(f"Extracted document header and intro sections ({header_size:,} chars)")
 
         # Part 2: Target specific sections if found
         priority_sections = [
@@ -237,24 +238,25 @@ class DocumentAnalyzer:
                 for i, (pos, context) in enumerate(matches[:2]):
                     if remaining_space > 300:
                         content_parts.append(
-                            f"\n\n--- {category.upper()} CONTEXT ---\n{context[:300]}"
+                            f"\n\n--- {category.upper()} CONTEXT ---\n{context}"  # Use FULL context, not 300 chars!
                         )
                         remaining_space -= 300
                         keywords_found.append(f"{category}: match {i + 1}")
                         self.extraction_log.append(f"Added {category} context")
 
-        # Part 4: End of document sampling (sometimes contains summary info)
-        if remaining_space > 500 and len(text) > 5000:
-            end_content = text[-1000:]  # Last 1000 chars
+        # Part 4: End of document content (critical for complete analysis)
+        if len(text) > 5000:
+            end_size = min(50000, len(text) // 3)  # Use substantial end section
+            end_content = text[-end_size:]  # Use much larger end section
             content_parts.append(f"\n\n--- DOCUMENT END ---\n{end_content}")
             sections_analyzed.append("document_end")
             self.extraction_log.append("Added document end section")
 
         final_content = "".join(content_parts)
 
-        # Ensure we don't exceed 8000 chars for comprehensive mode
-        if len(final_content) > 8000:
-            final_content = final_content[:8000]
+        # Use full content - compliance analysis requires complete information
+        # No artificial truncation - let AI handle the full document for accurate compliance checking
+        self.extraction_log.append(f"Using complete document content ({len(final_content):,} chars) for thorough compliance analysis")
 
         return {
             "content": final_content,

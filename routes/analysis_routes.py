@@ -526,7 +526,7 @@ async def _process_document_chunks(document_id: str) -> list:
     
     # Create simple chunks for metadata extraction - just split by size
     raw_chunks = []
-    chunk_size = 3000
+    chunk_size = 12000  # ✅ FIXED: Increased chunk size for better analysis quality
     chunk_id = 1
     
     for i in range(0, len(full_text), chunk_size):
@@ -3217,7 +3217,7 @@ def _create_semantic_segments(text: str) -> List[str]:
     paragraphs = text.split("\n\n")
 
     current_segment = ""
-    max_segment_length = 2000  # Optimal size for semantic analysis
+    max_segment_length = 8000  # ✅ FIXED: Increased for comprehensive AI analysis
 
     for paragraph in paragraphs:
         if len(current_segment) + len(paragraph) < max_segment_length:
@@ -3297,15 +3297,15 @@ def _optimize_context_for_ai(segments: List[str], full_text: str) -> str:
     """Optimize context for AI processing to reduce token usage"""
     if not segments:
         # Fallback to beginning of document
-        return full_text[:4000]
+        return full_text[:20000]  # ✅ FIXED: Increased fallback context size
 
     # Combine relevant segments with smart truncation
     combined_context = "\n\n".join(segments)
 
-    # Limit total context size for cost optimization
-    max_context_length = 6000
+    # Allow larger context for comprehensive compliance analysis
+    max_context_length = 25000  # ✅ FIXED: Increased for better AI analysis quality
     if len(combined_context) > max_context_length:
-        combined_context = combined_context[:max_context_length] + "..."
+        combined_context = combined_context[:max_context_length] + "\n\n[CONTENT CONTINUES - TRUNCATED FOR PROCESSING]"
 
     return combined_context
 

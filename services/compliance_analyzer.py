@@ -627,7 +627,8 @@ class ComplianceAnalyzer:
                     })
                 # Include document extracts with page references
                 if chunk_data.get("text"):
-                    extract_text = chunk_data["text"][:500] + "..." if len(chunk_data["text"]) > 500 else chunk_data["text"]
+                    # 🔧 FIX: Use much larger chunks for comprehensive compliance analysis - no arbitrary truncation!
+                    extract_text = chunk_data["text"][:25000] + "..." if len(chunk_data["text"]) > 25000 else chunk_data["text"]
                     document_extracts.append({
                         "text": extract_text,
                         "page": chunk_data.get("page_number", 0),
@@ -725,10 +726,16 @@ class ComplianceAnalyzer:
                 if hasattr(stmt, 'strategy_used'):
                     content_parts.append(f"Strategy: {stmt.strategy_used.value}")
                 if hasattr(stmt, 'content'):
-                    # Truncate content to reasonable length for analysis
-                    content_preview = stmt.content[:2000] + "..." if len(stmt.content) > 2000 else stmt.content
-                    content_parts.append(f"Content Preview: {content_preview}")
-                content_parts.append("-" * 50)
+                    # 🔧 FIX: Provide full financial content for proper compliance analysis
+                    # Previous 2000 char limit was causing "very poor data chunks"
+                    if len(stmt.content) > 200000:  # Only truncate if EXTREMELY large (>200K chars)
+                        content_preview = stmt.content[:200000] + "\n\n[CONTENT TRUNCATED DUE TO SIZE - FIRST 200,000 CHARACTERS SHOWN]"
+                        logger.warning(f"Large financial statement content truncated: {len(stmt.content)} -> 200,000 chars")
+                    else:
+                        content_preview = stmt.content  # Use full content for better analysis
+                    
+                    content_parts.append(f"Full Financial Content ({len(stmt.content)} chars): {content_preview}")
+                content_parts.append("-" * 80)  # More visible separator
             
             return "\n".join(content_parts)
             
